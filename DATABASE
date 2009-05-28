@@ -1,0 +1,39 @@
+-- This file is part of Eadrax
+--
+-- Copyright (C) 2009 Eadrax Team
+--
+-- Eadrax is free software; you can redistribute it and/or
+-- modify it under the terms of the GNU General Public License
+-- as published by the Free Software Foundation; either version 2
+-- of the License, or (at your option) any later version.
+-- 
+-- Eadrax is distributed in the hope that it will be useful,
+-- but WITHOUT ANY WARRANTY; without even the implied warranty of
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-- GNU General Public License for more details.
+
+-- You should have received a copy of the GNU General Public License
+-- along with Eadrax; if not, write to the Free Software
+-- Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` int(11) NOT NULL auto_increment,
+  `username` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `description` text NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `msn` varchar(255) NOT NULL,
+  `gtalk` varchar(255) NOT NULL,
+  `yahoo` varchar(255) NOT NULL,
+  `skype` varchar(255) NOT NULL,
+  `website` varchar(255) NOT NULL,
+  `location` varchar(255) NOT NULL,
+  `dob` varchar(8) NOT NULL,
+  `gender` enum('Unknown','Male','Female') NOT NULL default 'Unknown',
+  `avatar` varchar(255) NOT NULL,
+  `logtime` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  `level` enum('Normal','Special','Staff','Admin') NOT NULL default 'Normal',
+  `lastactive` int(11) NOT NULL,
+  PRIMARY KEY  (`id`)
+)
