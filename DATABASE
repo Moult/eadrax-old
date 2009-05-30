@@ -16,24 +16,25 @@
 -- along with Eadrax; if not, write to the Free Software
 -- Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-
+DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) NOT NULL auto_increment,
-  `username` varchar(255) NOT NULL,
+  `username` varchar(50) NOT NULL,
   `password` varchar(255) NOT NULL,
   `description` text NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `msn` varchar(255) NOT NULL,
-  `gtalk` varchar(255) NOT NULL,
-  `yahoo` varchar(255) NOT NULL,
-  `skype` varchar(255) NOT NULL,
-  `website` varchar(255) NOT NULL,
-  `location` varchar(255) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `msn` varchar(50) NOT NULL,
+  `gtalk` varchar(50) NOT NULL,
+  `yahoo` varchar(50) NOT NULL,
+  `skype` varchar(50) NOT NULL,
+  `website` varchar(50) NOT NULL,
+  `location` varchar(50) NOT NULL,
   `dob` varchar(8) NOT NULL,
   `gender` enum('Unknown','Male','Female') NOT NULL default 'Unknown',
   `avatar` varchar(255) NOT NULL,
   `logtime` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
   `level` enum('Normal','Special','Staff','Admin') NOT NULL default 'Normal',
   `lastactive` int(11) NOT NULL,
-  PRIMARY KEY  (`id`)
-)
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `username` (`username`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;

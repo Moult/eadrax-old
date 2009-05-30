@@ -8,8 +8,21 @@
 	</p>
 </div>
 
-<ul>
-<?php foreach ($links as $title => $url): ?>
-	<li><?php echo ($title === 'License') ? html::file_anchor($url, html::specialchars($title)) : html::anchor($url, html::specialchars($title)) ?></li>
-<?php endforeach ?>
-</ul>
+<!-- Temporary test forms -->
+
+<form action="http://localhost/eadrax/users/register/" method="post">
+<input type="text" name="username"><input type="text" name="password">
+<input type="submit" value="register">
+</form>
+
+<form action="http://localhost/eadrax/users/login/" method="post">
+<input type="text" name="username"><input type="text" name="password">
+<input type="submit" value="login">
+</form>
+
+<?php
+if (!empty($content))
+{
+	echo $content;
+}
+?>

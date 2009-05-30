@@ -37,7 +37,7 @@ defined('SYSPATH') or die('No direct script access.');
  * @copyright	Copyright (C) 2009 Eadrax Team
  * @version		$Id$
  */
-class User_Model extends Model {
+class User_Model extends ORM {
 
 	/**
 	 * Set up routine.
@@ -52,26 +52,37 @@ class User_Model extends Model {
 	/**
 	 * Adds a new basic user row.
 	 *
-	 * Returns TRUE if succesful, else FALSE.
-	 *
-	 * @return bool
+	 * @return null
 	 */
 	public function add_user($username, $password)
 	{
-		// Set the necessary data from the sources.
-		$data = array(
-			'username' => $username,
-			'password' => md5($password),
-			'lastactive' => time()
-		);
+		$query = ORM::factory('user');
+		$query->username = $username;
+		$query->password = md5($password);
+		$query->save();
+	}
 
-		if ($this->db->insert('users', $data))
-		{ 
-			return TRUE;
+	/**
+	 * Checks if a username is unique.
+	 *
+	 * TRUE if yes, else FALSE.
+	 *
+	 * @param string $username The username to check.
+	 *
+	 * @return bool
+	 */
+	public function unique_user_name($post)
+	{
+		$count = ORM::factory('user')->where('username', $post['username'])->find_all()->count();
+		if ($count >= 1)
+		{
+			$post->add_error('username', 'unique');
+			return FALSE;
 		}
 		else
 		{
-			return FALSE;
+			return TRUE;
 		}
 	}
+
 }

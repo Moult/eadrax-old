@@ -30,8 +30,8 @@ $config['default'] = array
 	'connection'    => array
 	(
 		'type'     => 'mysql',
-		'user'     => 'username',
-		'pass'     => 'password',
+		'user'     => 'eadrax',
+		'pass'     => 'eadrax',
 		'host'     => 'localhost',
 		'port'     => FALSE,
 		'socket'   => FALSE,

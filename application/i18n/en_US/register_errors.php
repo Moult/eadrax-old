@@ -17,27 +17,20 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  * @category	Eadrax
- * @package		Core
+ * @package		User
  * @author		Eadrax Team
  * @copyright	Copyright (C) 2009 Eadrax Team
  */
 
-/**
- *
- * Core controller that everything uses.
- *
- * Sets some globally required methods and variables.
- *
- * @category	Eadrax
- * @package		Core
- * @subpackage	Controllers
- * @author		Eadrax Team
- * @copyright	Copyright (C) 2009 Eadrax Team
- * @version		$Id$
- */
-abstract class Core_Controller extends Template_Controller {
-	// We do not yet have a template.
-	public $template	= 'welcome_content';
-	public $site_name	= 'Eadrax';
-	public $slogan		= 'Totally awesome.';
-}
+$lang = array(
+	'username' => array(
+		'required'		=> 'The username cannot be blank.',
+		'length'		=> 'Username must be between 5-15 characters.',
+		'alpha_dash'	=> 'Username can only contain text, numbers, underscores and dashes.',
+		'unique'		=> 'This username is already taken.'
+	),
+
+	'password' => array(
+		'required'	=> 'The password cannot be blank.'
+	)
+);
