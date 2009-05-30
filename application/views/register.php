@@ -1,4 +1,11 @@
 <?php
+if (isset($errors))
+{
+	foreach ($errors as $error)
+	{
+		echo $error .'<br />';
+	}
+}
 echo form::open('users/register');
 echo form::open_fieldset();
 echo form::legend('Register an account');

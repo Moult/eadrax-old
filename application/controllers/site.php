@@ -17,62 +17,36 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  * @category	Eadrax
- * @package		User
+ * @package		Site
  * @author		Eadrax Team
  * @copyright	Copyright (C) 2009 Eadrax Team
  */
 
-defined('SYSPATH') or die('No direct script access.');
-
 /**
  *
- * Core controller that everything uses.
- *
- * Sets some globally required methods and variables.
+ * Static main website pages, including the homepage.
  *
  * @category	Eadrax
- * @package		User
- * @subpackage	Models
+ * @package		Site
+ * @subpackage	Controllers
  * @author		Eadrax Team
  * @copyright	Copyright (C) 2009 Eadrax Team
  * @version		$Id$
  */
-class User_Model extends ORM {
+class Site_Controller extends Core_Controller {
 	/**
-	 * Adds a new basic user row.
+	 * This is the index page of the site.
 	 *
 	 * @return null
 	 */
-	public function add_user($username, $password)
+	public function index()
 	{
-		$query = new Database();
-		$query->username = $username;
-		$query->password = md5($password);
-		$query->save();
-	}
+		// Example of view "widget" combining.
+		$welcome = 'Welcome to '. $this->site_name .'. Please log in below.';
 
-	/**
-	 * Checks if a username is unique.
-	 *
-	 * TRUE if yes, else FALSE.
-	 *
-	 * @param string $username The username to check.
-	 *
-	 * @return bool
-	 */
-	public function unique_user_name($post)
-	{
-		$db = new Database();
-		$count = $db->from('users')->where('username', $post['username'])->get()->count();
-		if ($count >= 1)
-		{
-			$post->add_error('username', 'unique');
-			return FALSE;
-		}
-		else
-		{
-			return TRUE;
-		}
-	}
+		// Let's get our login form!
+		$login = new View('login');
 
+		$this->template->content = array($welcome, $login);
+	}
 }
