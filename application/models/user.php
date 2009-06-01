@@ -37,7 +37,7 @@ defined('SYSPATH') or die('No direct script access.');
  * @copyright	Copyright (C) 2009 Eadrax Team
  * @version		$Id$
  */
-class User_Model extends ORM {
+class User_Model extends Model {
 	/**
 	 * Adds a new basic user row.
 	 *
@@ -46,9 +46,9 @@ class User_Model extends ORM {
 	public function add_user($username, $password)
 	{
 		$query = new Database();
-		$query->username = $username;
-		$query->password = md5($password);
-		$query->save();
+		$query->set('username', $username);
+		$query->set('password', md5($password));
+		$query->insert('users');
 	}
 
 	/**
