@@ -26,9 +26,7 @@ defined('SYSPATH') or die('No direct script access.');
 
 /**
  *
- * Core controller that everything uses.
- *
- * Sets some globally required methods and variables.
+ * Model for the users table.
  *
  * @category	Eadrax
  * @package		User
