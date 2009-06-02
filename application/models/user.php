@@ -43,7 +43,7 @@ class User_Model extends Model {
 	 */
 	public function add_user($username, $password)
 	{
-		$query = new Database();
+		$query = $this->db;
 		$query->set('username', $username);
 		$query->set('password', md5($password));
 		$query->insert('users');
@@ -60,7 +60,7 @@ class User_Model extends Model {
 	 */
 	public function unique_user_name($post)
 	{
-		$db = new Database();
+		$db = $this->db;
 		$count = $db->from('users')->where('username', $post['username'])->get()->count();
 		if ($count >= 1)
 		{
