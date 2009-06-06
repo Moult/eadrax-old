@@ -11,7 +11,7 @@ $config['site_domain'] = '/eadrax/';
  * specified, then the current protocol is used, or when possible, only an
  * absolute path (with no protocol/domain) is used.
  */
-$config['site_protocol'] = '';
+$config['site_protocol'] = 'http';
 
 /**
  * Name of the front controller for this application. Default: index.php
@@ -94,7 +94,8 @@ $config['extension_prefix'] = 'MY_';
  */
 $config['modules'] = array
 (
-	MODPATH.'authlite',      // Authentication
+	MODPATH.'authlite',     // Authentication
+	MODPATH.'openid',       // OpenID
 	// MODPATH.'kodoc',     // Self-generating documentation
 	// MODPATH.'gmaps',     // Google Maps integration
 	// MODPATH.'archive',   // Archive utility
