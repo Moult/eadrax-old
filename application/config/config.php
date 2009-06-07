@@ -95,7 +95,6 @@ $config['extension_prefix'] = 'MY_';
 $config['modules'] = array
 (
 	MODPATH.'authlite',     // Authentication
-	MODPATH.'openid',       // OpenID
 	// MODPATH.'kodoc',     // Self-generating documentation
 	// MODPATH.'gmaps',     // Google Maps integration
 	// MODPATH.'archive',   // Archive utility
