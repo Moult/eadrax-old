@@ -154,13 +154,13 @@ class Openid_Controller extends Core_Controller {
 		function getOpenIDURL() {
 			// Render a default page if we got a submission without an openid
 			// value.
-			if (empty($_GET['openid_identifier'])) {
+			if (empty($_POST['openid_identifier'])) {
 				$error = "Expected an OpenID URL.";
 				echo 'OpenID borked up. Go to normal registration now.';
 				return FALSE;
 			}
 
-			return $_GET['openid_identifier'];
+			return $_POST['openid_identifier'];
 		}
 
 		function run() {
@@ -188,9 +188,9 @@ class Openid_Controller extends Core_Controller {
 				$auth_request->addExtension($sreg_request);
 			}
 
-			if (isset($_GET['policies']))
+			if (isset($_POST['policies']))
 			{
-				$policy_uris = $_GET['policies'];
+				$policy_uris = $_POST['policies'];
 			}
 			else
 			{

@@ -61,10 +61,10 @@ class User_Model extends Model {
 	public function unique_user_name($post)
 	{
 		$db = $this->db;
-		$count = $db->from('users')->where('username', $post['username'])->get()->count();
+		$count = $db->from('users')->where('username', $post['openid_identifier'])->get()->count();
 		if ($count >= 1)
 		{
-			$post->add_error('username', 'unique');
+			$post->add_error('openid_identifier', 'unique');
 			return FALSE;
 		}
 		else

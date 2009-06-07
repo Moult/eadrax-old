@@ -23,7 +23,7 @@
  */
 
 $lang = array(
-	'username' => array(
+	'openid_identifier' => array(
 		'required'		=> 'The username cannot be blank.',
 		'length'		=> 'Username must be between 5-15 characters.',
 		'alpha_dash'	=> 'Username can only contain text, numbers, underscores and dashes.',

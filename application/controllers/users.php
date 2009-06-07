@@ -46,14 +46,14 @@ class Users_Controller extends Core_Controller {
 
 		if ($this->input->post())
 		{
-			$username = $this->input->post('username');
+			$username = $this->input->post('openid_identifier');
 			$password = $this->input->post('password');
 
 			$validate = new Validation($this->input->post());
 			$validate->pre_filter('trim');
-			$validate->add_rules('username', 'required', 'length[5, 15]', 'alpha_dash');
+			$validate->add_rules('openid_identifier', 'required', 'length[5, 15]', 'alpha_dash');
 			$validate->add_rules('password', 'required');
-			$validate->add_callbacks('username', array($user_model, 'unique_user_name'));
+			$validate->add_callbacks('openid_identifier', array($user_model, 'unique_user_name'));
 
 			if ($validate->validate())
 			{
@@ -71,7 +71,7 @@ class Users_Controller extends Core_Controller {
 				// Errors have occured. Fill in the form and set errors.
 				$register_view = new View('register');
 				$register_view->form	= arr::overwrite(array(
-					'username' => '',
+					'openid_identifier' => '',
 					'password' => ''
 					), $validate->as_array());
 				$register_view->errors	= $validate->errors('register_errors');
@@ -86,7 +86,7 @@ class Users_Controller extends Core_Controller {
 			$register_view = new View('register');
 
 			// If we didn't press submit, we want a blank form.
-			$register_view->form = array('username'=>'');
+			$register_view->form = array('openid_identifier'=>'');
 
 			// Generate the content.
 			$this->template->content = array($register_view);
@@ -103,7 +103,7 @@ class Users_Controller extends Core_Controller {
 	{
 		if ($this->input->post())
 		{
-			$username = $this->input->post('username');
+			$username = $this->input->post('openid_identifier');
 			$password = $this->input->post('password');
 
 			if (empty($remember))
