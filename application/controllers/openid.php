@@ -33,7 +33,7 @@
  * @copyright	Copyright (C) 2009 Eadrax Team
  * @version		$Id$
  */
-class Openid_Controller extends Core_Controller {
+abstract class Openid_Controller extends Core_Controller {
 	/**
 	 * We need the Auth libraries by Janrain to function.
 	 *
@@ -155,8 +155,6 @@ class Openid_Controller extends Core_Controller {
 			// Render a default page if we got a submission without an openid
 			// value.
 			if (empty($_POST['openid_identifier'])) {
-				$error = "Expected an OpenID URL.";
-				echo 'OpenID borked up. Go to normal registration now.';
 				return FALSE;
 			}
 
@@ -172,8 +170,6 @@ class Openid_Controller extends Core_Controller {
 
 			// No auth request means we can't begin OpenID.
 			if (!$auth_request) {
-				// displayError("Authentication error; not a valid OpenID.");
-				echo 'OpenID borked up. Go to normal registration now.';
 				return FALSE;
 			}
 
@@ -215,7 +211,6 @@ class Openid_Controller extends Core_Controller {
 				// If the redirect URL can't be built, display an error
 				// message.
 				if (Auth_OpenID::isFailure($redirect_url)) {
-					// displayError("Could not redirect to server: " . $redirect_url->message);
 					return FALSE;
 				} else {
 					// Send redirect.
@@ -268,11 +263,11 @@ class Openid_Controller extends Core_Controller {
 		if ($response->status == Auth_OpenID_CANCEL) {
 			// This means the authentication was cancelled.
 			$msg = 'Verification cancelled.';
-			echo 'OpenID borked up. Go to normal registration now.';
+			echo 'There was an error with your OpenID provider, please contact the administrator of this site to notify them of this problem, or register without OpenID.';
 		} else if ($response->status == Auth_OpenID_FAILURE) {
 			// Authentication failed; display the error message.
 			$msg = "OpenID authentication failed: " . $response->message;
-			echo 'OpenID borked up. Go to normal registration now.';
+			echo 'There was an error with your OpenID provider, please contact the administrator of this site to notify them of this problem, or register without OpenID.';
 		} else if ($response->status == Auth_OpenID_SUCCESS) {
 			// This means the authentication succeeded; extract the
 			// identity URL and Simple Registration data (if it was
@@ -308,18 +303,6 @@ class Openid_Controller extends Core_Controller {
 
 			// We're DONE here.
 		}
-	}
-
-	/**
-	 * Testing registration page
-	 *
-	 * @return null
-	 */
-	public function register()
-	{
-		$this->_common();
-		$openid = new View('openid');
-		$this->template->content = array($openid);
 	}
 
 }

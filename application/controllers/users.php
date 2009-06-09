@@ -33,7 +33,7 @@
  * @copyright	Copyright (C) 2009 Eadrax Team
  * @version		$Id$
  */
-class Users_Controller extends Core_Controller {
+class Users_Controller extends Openid_Controller {
 	/**
 	 * Process to register a user account.
 	 *
@@ -49,6 +49,17 @@ class Users_Controller extends Core_Controller {
 			$username = $this->input->post('openid_identifier');
 			$password = $this->input->post('password');
 
+			// This line runs the OpenID check. If the OpenID check succeeds, it 
+			// will automatically continue with the OpenID registration system. 
+			// If it fails (hence the user is not using OpenID), it will return 
+			// false and continue with normal registration.
+			// Note: The OpenID can also fail in the _later_ part of 
+			// authentication, after it has redirected to a completely different 
+			// method in the OpenID controller. It currently does _not_ fall 
+			// back to normal registration if this happens.
+			$this->try_auth();
+
+			// ...and we continue doing normal registration.
 			$validate = new Validation($this->input->post());
 			$validate->pre_filter('trim');
 			$validate->add_rules('openid_identifier', 'required', 'length[5, 15]', 'alpha_dash');
