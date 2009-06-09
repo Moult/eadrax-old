@@ -291,17 +291,65 @@ abstract class Openid_Controller extends Core_Controller {
 			$pape_resp = Auth_OpenID_PAPE_Response::fromSuccessResponse($response);
 
 			// Do they have a nickname?
-			if (isset($nickname))
+			if (!isset($nickname))
 			{
-				// OpenID succesfull.
-				$this->template->content = array('We will log your url as '. $esc_identity .' and bind the openid to an auto generated user with the username '. $nickname .' with a random password.');
-			}
-			else
-			{
-				// They NEED a nickname.
+				// If not, then it should be blank.
+				$nickname = '';
 			}
 
-			// We're DONE here.
+			// If the OpenID was succesful, what about the nickname they 
+			// provided? Note: $esc_identity = OpenID URL.
+			$this->_validate($nickname, $esc_identity);
+
+		}
+	}
+
+	/**
+	 * Function to validate OpenID nickname.
+	 *
+	 * This might seem like code reuse, but it actually isn't because in this 
+	 * case the OpenID URL is preserved and reused in the form, and the 
+	 * registration process also involves some binding.
+	 *
+	 * @param string $username	The nickname to validate.
+	 * @param string $openid	The OpenID URL we are binding to.
+	 *
+	 * @return null
+	 */
+	public function _validate($username, $openid)
+	{
+		// Load necessary models.
+		$user_model = new User_Model;
+
+		$validate = new Validation(array('openid_identifier' => $username));
+		$validate->pre_filter('trim');
+		$validate->add_rules('openid_identifier', 'required', 'length[5, 15]', 'alpha_dash');
+		$validate->add_callbacks('openid_identifier', array($user_model, 'unique_user_name'));
+
+		if ($validate->validate())
+		{
+			// Everything went great! Let's first generate a password...
+			$password = 'foo';
+
+			// ... and then register the user!
+			$user_model->add_user($username, $password);
+
+			// Then load our success view.
+			$register_success_view = new View('register_success');
+
+			// Then generate content.
+			$this->template->content = array($register_success_view);
+		}
+		else
+		{
+			// Errors have occured. Fill in the form and set errors.
+			// Note that this time we fill in the "username" with the "openid"
+			$register_view = new View('register');
+			$register_view->form	= array('openid_identifier' => $openid);
+			$register_view->errors	= $validate->errors('register_errors');
+
+			// Generate the content.
+			$this->template->content = array($register_view);
 		}
 	}
 
