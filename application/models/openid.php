@@ -37,7 +37,7 @@ defined('SYSPATH') or die('No direct script access.');
  */
 class Openid_Model extends Model {
 	/**
-	 * Adds a new basic user row.
+	 * Adds a new basic user row and binds an OpenID to it.
 	 *
 	 * @return null
 	 */
@@ -63,4 +63,27 @@ class Openid_Model extends Model {
 		$bind_openid->insert('openid');
 	}
 
+	/**
+	 * Checks if an OpenID is unique.
+	 *
+	 * TRUE if yes, else FALSE.
+	 *
+	 * @param array $post The array containing the OpenID to check.
+	 *
+	 * @return bool
+	 */
+	public function unique_openid($post)
+	{
+		$db = $this->db;
+		$count = $db->from('openid')->where('url', $post['openid_url'])->get()->count();
+		if ($count >= 1)
+		{
+			$post->add_error('openid_url', 'unique');
+			return FALSE;
+		}
+		else
+		{
+			return TRUE;
+		}
+	}
 }

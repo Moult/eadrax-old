@@ -32,5 +32,9 @@ $lang = array(
 
 	'password' => array(
 		'required'	=> 'The password cannot be blank.'
+	),
+
+	'openid_url' => array(
+		'unique' => 'This OpenID is already in use.'
 	)
 );

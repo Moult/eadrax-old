@@ -54,7 +54,7 @@ class User_Model extends Model {
 	 *
 	 * TRUE if yes, else FALSE.
 	 *
-	 * @param string $username The username to check.
+	 * @param array $post The array containing the username to check.
 	 *
 	 * @return bool
 	 */

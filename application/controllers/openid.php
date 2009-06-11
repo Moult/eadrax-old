@@ -322,10 +322,11 @@ abstract class Openid_Controller extends Core_Controller {
 		$user_model   = new User_Model;
 		$openid_model = new Openid_Model;
 
-		$validate = new Validation(array('openid_identifier' => $username));
+		$validate = new Validation(array('openid_identifier' => $username, 'openid_url' => $openid));
 		$validate->pre_filter('trim');
 		$validate->add_rules('openid_identifier', 'required', 'length[5, 15]', 'alpha_dash');
 		$validate->add_callbacks('openid_identifier', array($user_model, 'unique_user_name'));
+		$validate->add_callbacks('openid_url', array($openid_model, 'unique_openid'));
 
 		if ($validate->validate())
 		{
