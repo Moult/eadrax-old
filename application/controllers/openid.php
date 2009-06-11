@@ -319,7 +319,8 @@ abstract class Openid_Controller extends Core_Controller {
 	public function _validate($username, $openid)
 	{
 		// Load necessary models.
-		$user_model = new User_Model;
+		$user_model   = new User_Model;
+		$openid_model = new Openid_Model;
 
 		$validate = new Validation(array('openid_identifier' => $username));
 		$validate->pre_filter('trim');
@@ -328,11 +329,8 @@ abstract class Openid_Controller extends Core_Controller {
 
 		if ($validate->validate())
 		{
-			// Everything went great! Let's first generate a password...
-			$password = 'foo';
-
-			// ... and then register the user!
-			$user_model->add_user($username, $password);
+			// Let's register the user!
+			$openid_model->add_user($username, $openid);
 
 			// Then load our success view.
 			$register_success_view = new View('register_success');
