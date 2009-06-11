@@ -43,10 +43,10 @@ class User_Model extends Model {
 	 */
 	public function add_user($username, $password)
 	{
-		$query = $this->db;
-		$query->set('username', $username);
-		$query->set('password', md5($password));
-		$query->insert('users');
+		$add_user = $this->db;
+		$add_user->set('username', $username);
+		$add_user->set('password', md5($password));
+		$add_user->insert('users');
 	}
 
 	/**
