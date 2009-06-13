@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS `categories` (
   `id` int(11) NOT NULL auto_increment,
   `name` varchar(255) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 INSERT INTO `categories` (`id`, `name`) VALUES
 (1, '2D Animation'),
@@ -77,3 +77,23 @@ INSERT INTO `categories` (`id`, `name`) VALUES
 (17, 'Vector Art'),
 (18, 'Video'),
 (19, 'Website Programming');
+
+DROP TABLE IF EXISTS `projects`;
+CREATE TABLE IF NOT EXISTS `projects` (
+  `id` int(11) NOT NULL auto_increment,
+  `uid` int(11) NOT NULL,
+  `cid` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `website` varchar(255) NOT NULL,
+  `contributors` varchar(255) NOT NULL,
+  `icon` varchar(255) NOT NULL,
+  `description` text NOT NULL,
+  `logtime` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  PRIMARY KEY  (`id`),
+  KEY `uid` (`uid`),
+  KEY `cid` (`cid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE `projects`
+  ADD CONSTRAINT `projects_ibfk_2` FOREIGN KEY (`cid`) REFERENCES `categories` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `projects_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
