@@ -49,3 +49,31 @@ CREATE TABLE IF NOT EXISTS `openid` (
 
 ALTER TABLE `openid`
   ADD CONSTRAINT `openid_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+DROP TABLE IF EXISTS `categories`;
+CREATE TABLE IF NOT EXISTS `categories` (
+  `id` int(11) NOT NULL auto_increment,
+  `name` varchar(255) NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
+
+INSERT INTO `categories` (`id`, `name`) VALUES
+(1, '2D Animation'),
+(2, '3D Animation'),
+(3, '3D Modeling'),
+(4, 'Application Programming'),
+(5, 'Digital Paintings'),
+(6, 'Documents & Articles'),
+(7, 'Games'),
+(8, 'Homework'),
+(9, 'Interface Design'),
+(10, 'Literature & Fiction'),
+(11, 'Magazines & Newsletters'),
+(12, 'Miscellaneous'),
+(13, 'Music'),
+(14, 'Posters'),
+(15, 'Presentations'),
+(16, 'Sound Effects'),
+(17, 'Vector Art'),
+(18, 'Video'),
+(19, 'Website Programming');
