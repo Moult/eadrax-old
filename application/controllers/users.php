@@ -114,9 +114,6 @@ class Users_Controller extends Openid_Controller {
 	{
 		if ($this->input->post())
 		{
-			// Load necessary models.
-			$openid_model = new Openid_Model;
-
 			$username = $this->input->post('openid_identifier');
 			$password = $this->input->post('password');
 
