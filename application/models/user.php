@@ -35,7 +35,7 @@ defined('SYSPATH') or die('No direct script access.');
  * @copyright	Copyright (C) 2009 Eadrax Team
  * @version		$Id$
  */
-class User_Model extends Model {
+class User_Model extends ORM {
 	/**
 	 * Adds a new basic user row.
 	 *

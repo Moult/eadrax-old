@@ -50,7 +50,6 @@ class Openid_Model extends Model {
 
 		// Find the UID of the user we just created.
 		$uid = $this->db;
-		$uid = $uid->select('id');
 		$uid = $uid->where(array('username'=>$username,'password'=>'openid'));
 		$uid = $uid->get('users');
 		$uid = $uid->current();
@@ -68,22 +67,51 @@ class Openid_Model extends Model {
 	 *
 	 * TRUE if yes, else FALSE.
 	 *
-	 * @param array $post The array containing the OpenID to check.
+	 * @param array $post		The array containing the OpenID to check.
+	 * @param bool	$callback	If the function is used as a callback.
 	 *
 	 * @return bool
 	 */
-	public function unique_openid($post)
+	public function unique_openid($post, $callback = TRUE)
 	{
 		$db = $this->db;
 		$count = $db->from('openid')->where('url', $post['openid_url'])->get()->count();
 		if ($count >= 1)
 		{
-			$post->add_error('openid_url', 'unique');
+			if ($callback == TRUE)
+			{
+				$post->add_error('openid_url', 'unique');
+			}
 			return FALSE;
 		}
 		else
 		{
 			return TRUE;
 		}
+	}
+
+	/**
+	 * Returns the username of the account the OpenID is binded to.
+	 *
+	 * @param string $openid The OpenID URL.
+	 *
+	 * @return string
+	 */
+	public function get_openid_username($openid)
+	{
+		// Get the UID of the OpenID account.
+		$openid_uid = $this->db;
+		$openid_uid = $openid_uid->where(array('url'=>$openid));
+		$openid_uid = $openid_uid->get('openid');
+		$openid_uid = $openid_uid->current();
+		$openid_uid = $openid_uid->uid;
+
+		// Find the username with the corresponding UID.
+		$username = $this->db;
+		$username = $username->where(array('id'=>$openid_uid));
+		$username = $username->get('users');
+		$username = $username->current();
+
+		return $username->username;
 	}
 }

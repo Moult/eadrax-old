@@ -57,7 +57,7 @@ class Users_Controller extends Openid_Controller {
 			// authentication, after it has redirected to a completely different 
 			// method in the OpenID controller. It currently does _not_ fall 
 			// back to normal registration if this happens.
-			$this->try_auth();
+			$this->try_auth(FALSE);
 
 			// ...and we continue doing normal registration.
 			$validate = new Validation($this->input->post());
@@ -114,14 +114,64 @@ class Users_Controller extends Openid_Controller {
 	{
 		if ($this->input->post())
 		{
+			// Load necessary models.
+			$openid_model = new Openid_Model;
+
 			$username = $this->input->post('openid_identifier');
 			$password = $this->input->post('password');
 
 			if (empty($remember))
 			{
-				$remember = false;
+				$remember = FALSE;
 			}
 
+			// Run the OpenID authentication. If it fails, it'll continue with 
+			// normal user login. If not, it'll continue the registration in 
+			// Openid_Controller->finish_login();
+			$this->try_auth(TRUE);
+
+			// Do normal login.
+			$this->_login_user($username, $password, $remember, FALSE);
+
+		}
+		else
+		{
+			// Load the view.
+			$login_view = new View('login');
+
+			// Generate the content
+			$this->template->content = array($login_view);
+		}
+	}
+
+	/**
+	 * Logs the user into the system.
+	 *
+	 * @param string $username	The username of the user to log in.
+	 * @param string $password	The password of the user. Option for OpenID.
+	 * @param string $remember	Whether or not to remember the login.
+	 * @param bool	 $openid	TRUE if we are logging in via OpenID else FALSE.
+	 *
+	 * @return null
+	 */
+	public function _login_user($username, $password, $remember, $openid)
+	{
+		if ($openid == TRUE)
+		{
+			// When logging in via OpenID, we don't need $password. So we force 
+			// the user to log in.
+			$authlite = new Authlite();
+			if ($authlite->force_login($username))
+			{
+				// Load the view.
+				$login_view = new View('login_success');
+
+				// Generate the content.
+				$this->template->content = array($login_view);
+			}
+		}
+		elseif ($openid == FALSE)
+		{
 			$authlite = new Authlite();
 			if ($authlite->login($username, $password, $remember))
 			{
@@ -141,14 +191,6 @@ class Users_Controller extends Openid_Controller {
 				// Generate the content
 				$this->template->content = array($login_view);
 			}
-		}
-		else
-		{
-			// Load the view.
-			$login_view = new View('login');
-
-			// Generate the content
-			$this->template->content = array($login_view);
 		}
 	}
 

@@ -128,7 +128,14 @@ abstract class Openid_Controller extends Core_Controller {
 		}
 
 		function getReturnTo() {
-			return sprintf("%s://%s:%s%s/finish_auth",
+			return sprintf("%s://%s:%s%s/finish_auth/",
+						   getScheme(), $_SERVER['SERVER_NAME'],
+						   $_SERVER['SERVER_PORT'],
+						   dirname($_SERVER['PHP_SELF']));
+		}
+
+		function getReturnToLogin() {
+			return sprintf("%s://%s:%s%s/finish_login/",
 						   getScheme(), $_SERVER['SERVER_NAME'],
 						   $_SERVER['SERVER_PORT'],
 						   dirname($_SERVER['PHP_SELF']));
@@ -145,11 +152,16 @@ abstract class Openid_Controller extends Core_Controller {
 	/**
 	 * Authenticates the OpenID.
 	 *
-	 * Returns True if else false.
+	 * Redirects to finish_auth if the user is registering with an OpenID. If 
+	 * logging in with an OpenID, it will redirect to finish_login. If it fails 
+	 * to authenticate the OpenID, depending on $login, it will display the 
+	 * appropriate error page.
 	 *
-	 * @return bool
+	 * @param bool $login TRUE if you are logging in, FALSE if registering.
+	 *
+	 * @return null
 	 */
-	public function try_auth()
+	public function try_auth($login)
 	{
 		function getOpenIDURL() {
 			// Render a default page if we got a submission without an openid
@@ -161,7 +173,7 @@ abstract class Openid_Controller extends Core_Controller {
 			return $_POST['openid_identifier'];
 		}
 
-		function run() {
+		function run($login) {
 			$openid = getOpenIDURL();
 			$consumer = getConsumer();
 
@@ -173,12 +185,21 @@ abstract class Openid_Controller extends Core_Controller {
 				return FALSE;
 			}
 
-			$sreg_request = Auth_OpenID_SRegRequest::build(
-											 // Required
-											 array('nickname')
-											 // Optional
-											 //array('fullname', 'email')
-											 );
+			if ($login == TRUE)
+			{
+				// If we are just loggng in, we don't need information.
+				$sreg_request = Auth_OpenID_SRegRequest::build();
+			}
+			elseif ($login == FALSE)
+			{
+				// If registering, we need a nickname to use.
+				$sreg_request = Auth_OpenID_SRegRequest::build(
+					// Required
+					array('nickname')
+					// Optional
+					//array('fullname', 'email')
+				);
+			}
 
 			if ($sreg_request) {
 				$auth_request->addExtension($sreg_request);
@@ -205,8 +226,14 @@ abstract class Openid_Controller extends Core_Controller {
 			// For OpenID 1, send a redirect.  For OpenID 2, use a Javascript
 			// form to send a POST request to the server.
 			if ($auth_request->shouldSendRedirect()) {
-				$redirect_url = $auth_request->redirectURL(getTrustRoot(),
-														   getReturnTo());
+				if ($login == TRUE)
+				{
+					$redirect_url = $auth_request->redirectURL(getTrustRoot(), getReturnToLogin());
+				}
+				elseif ($login == FALSE)
+				{
+					$redirect_url = $auth_request->redirectURL(getTrustRoot(), getReturnTo());
+				}
 
 				// If the redirect URL can't be built, display an error
 				// message.
@@ -219,8 +246,14 @@ abstract class Openid_Controller extends Core_Controller {
 			} else {
 				// Generate form markup and render it.
 				$form_id = 'openid_message';
-				$form_html = $auth_request->htmlMarkup(getTrustRoot(), getReturnTo(),
-													   false, array('id' => $form_id));
+				if ($login == TRUE)
+				{
+					$form_html = $auth_request->htmlMarkup(getTrustRoot(), getReturnToLogin(), false, array('id' => $form_id));
+				}
+				else
+				{
+					$form_html = $auth_request->htmlMarkup(getTrustRoot(), getReturnTo(), false, array('id' => $form_id));
+				}
 
 				// Display an error if the form markup couldn't be generated;
 				// otherwise, render the HTML.
@@ -235,11 +268,11 @@ abstract class Openid_Controller extends Core_Controller {
 		// After defining the functions we need, let's run them.
 		$this->_common();
 		session_start();
-		run();
+		run($login);
 	}
 
 	/**
-	 * Finish off the authentication process.
+	 * Finish off the authentication process for registering.
 	 *
 	 * @return null
 	 */
@@ -300,7 +333,79 @@ abstract class Openid_Controller extends Core_Controller {
 			// If the OpenID was succesful, what about the nickname they 
 			// provided? Note: $esc_identity = OpenID URL.
 			$this->_validate($nickname, $esc_identity);
+		}
+	}
 
+	/**
+	 * Finish off the authentication process for logging in.
+	 *
+	 * @return null
+	 */
+	public function finish_login()
+	{
+		// Load necessary models.
+		$openid_model = new Openid_Model;
+
+		$this->_common();
+		session_start();
+
+		function escape($thing) {
+			return htmlentities($thing);
+		}
+
+		$consumer = getConsumer();
+
+		// Complete the authentication process using the server's
+		// response.
+		$return_to = getReturnToLogin();
+		$response = $consumer->complete($return_to);
+
+		// Check the response status.
+		if ($response->status == Auth_OpenID_CANCEL) {
+			// This means the authentication was cancelled.
+			$msg = 'Verification cancelled.';
+			echo 'There was an error with your OpenID provider, please contact the administrator of this site to notify them of this problem, or register without OpenID.';
+		} else if ($response->status == Auth_OpenID_FAILURE) {
+			// Authentication failed; display the error message.
+			$msg = "OpenID authentication failed: " . $response->message;
+			echo 'There was an error with your OpenID provider, please contact the administrator of this site to notify them of this problem, or register without OpenID.';
+		} else if ($response->status == Auth_OpenID_SUCCESS) {
+			// This means the authentication succeeded; extract the
+			// identity URL and Simple Registration data (if it was
+			// returned).
+			$openid = $response->getDisplayIdentifier();
+			$esc_identity = escape($openid);
+
+			if ($response->endpoint->canonicalID) {
+				$escaped_canonicalID = escape($response->endpoint->canonicalID);
+				$success .= '  (XRI CanonicalID: '.$escaped_canonicalID.') ';
+			}
+
+			$sreg_resp = Auth_OpenID_SRegResponse::fromSuccessResponse($response);
+
+			$sreg = $sreg_resp->contents();
+
+			$pape_resp = Auth_OpenID_PAPE_Response::fromSuccessResponse($response);
+
+			// Let's see if it's a registered OpenID.
+			if (!$openid_model->unique_openid(array('openid_url'=>$esc_identity), FALSE))
+			{
+				// Yes, it _is_ an OpenID.
+				// Let's change $username from the URL to the real username.
+				$username = $openid_model->get_openid_username($esc_identity);
+				$this->_login_user($username, FALSE, FALSE, TRUE);
+			}
+			else
+			{
+				// It is a proper OpenID, but we don't have it in our database.
+				// Load the view.
+				$login_view = new View('login');
+
+				// There is an error!
+				$login_view->error = 'The OpenID is not bound to a user account.';
+				// Generate the content
+				$this->template->content = array($login_view);
+			}
 		}
 	}
 
