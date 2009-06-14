@@ -40,4 +40,35 @@ abstract class Core_Controller extends Template_Controller {
 	public $template	= 'template';
 	public $site_name	= 'Eadrax';
 	public $slogan		= 'Totally awesome.';
+
+	/**
+	 * Redirects users to the login form if they are not signed in.
+	 *
+	 * @param bool $reverse If TRUE, does the opposite.
+	 *
+	 * @return null
+	 */
+	public function restrict_access($reverse = FALSE)
+	{
+		// Load necessary authentication modules.
+		$authlite = new Authlite;
+
+		if ($reverse == FALSE)
+		{
+			if ($authlite->logged_in() == FALSE)
+			{
+				// Not elegant, rewrite later.
+				die ('You cannot access this page. Please log in.';
+			}
+		}
+		elseif ($reverse == TRUE)
+		{
+			if ($authlite->logged_in() == TRUE)
+			{
+				// Not elegant, rewrite later.
+				// Useful for login/register pages.
+				die ('Only guests can access this page.';
+			}
+		}
+	}
 }
