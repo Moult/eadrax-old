@@ -1,14 +1,16 @@
 <?php
-if (isset($error))
+if (isset($errors))
 {
-	echo $error .'<br />';
+	foreach ($errors as $error)
+	{
+		echo $error .'<br />';
+	}
 }
-
 echo form::open('users/login');
 echo form::open_fieldset();
 echo form::legend('Log in');
 echo form::label('username', 'Username:');
-echo form::input('openid_identifier');
+echo form::input('openid_identifier', $form['openid_identifier']);
 echo form::label('password', 'Password:');
 echo form::password('password');
 echo form::submit('submit', 'login');
