@@ -96,4 +96,16 @@ class Project_Model extends Model {
 		}
 	}
 
+	/**
+	 * Deletes a project.
+	 *
+	 * @param int $pid The project ID to delete.
+	 *
+	 * @return null
+	 */
+	public function delete_project($pid)
+	{
+		$delete_project = $this->db;
+		$delete_project = $delete_project->where('id', $pid)->delete('projects');
+	}
 }
