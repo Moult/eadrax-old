@@ -37,23 +37,33 @@ defined('SYSPATH') or die('No direct script access.');
  */
 class Project_Model extends Model {
 	/**
-	 * Adds a new project with the data specified in $data.
+	 * Adds/Edits a project with the data specified in $data.
 	 *
 	 * Providing information for website, contributors, icon, id and logtime are 
-	 * not necessary.
+	 * not necessary. If $pid is set to an ID of a project, it will update that 
+	 * project row.
 	 *
-	 * @param array $data An array with field_name=>content for data to add.
+	 * @param array $data	An array with field_name=>content for data to add.
+	 * @param int	$pid	If not set to false, it will update the project.
 	 *
 	 * @return null
 	 */
-	public function add_project($data)
+	public function manage_project($data, $pid = FALSE)
 	{
-		$add_project = $this->db;
+		$manage_project = $this->db;
 		foreach ($data as $key => $value)
 		{
-			$add_project->set($key, $value);
+			$manage_project->set($key, $value);
 		}
-		$add_project->insert('projects');
+		if ($pid == FALSE)
+		{
+			$manage_project->insert('projects');
+		}
+		else
+		{
+			$manage_project->where('id', $pid);
+			$manage_project->update('projects');
+		}
 	}
 
 	/**
