@@ -41,6 +41,36 @@ abstract class Core_Controller extends Template_Controller {
 	public $site_name	= 'Eadrax';
 	public $slogan		= 'Totally awesome.';
 
+	// Useful authentication variables.
+	public $logged_in;
+	public $username;
+	public $uid;
+
+	/**
+	 * Sets up some useful variables.
+	 *
+	 * @return null
+	 */
+	public function __construct()
+	{
+		parent::__construct();
+
+		// Set the useful authentication variables.
+		$authlite = new Authlite;
+		if ($authlite->logged_in() == TRUE)
+		{
+			$this->username		= $authlite->get_user()->username;
+			$this->uid			= $authlite->get_user()->id;
+			$this->logged_in	= TRUE;
+		}
+		elseif ($authlite->logged_in() == FALSE)
+		{
+			$this->username		= FALSE;
+			$this->uid			= FALSE;
+			$this->logged_in	= FALSE;
+		}
+	}
+
 	/**
 	 * Redirects users to the login form if they are not signed in.
 	 *
@@ -50,24 +80,21 @@ abstract class Core_Controller extends Template_Controller {
 	 */
 	public function restrict_access($reverse = FALSE)
 	{
-		// Load necessary authentication modules.
-		$authlite = new Authlite;
-
 		if ($reverse == FALSE)
 		{
-			if ($authlite->logged_in() == FALSE)
+			if ($this->logged_in() == FALSE)
 			{
 				// Not elegant, rewrite later.
-				die ('You cannot access this page. Please log in.';
+				die ('You cannot access this page. Please log in.');
 			}
 		}
 		elseif ($reverse == TRUE)
 		{
-			if ($authlite->logged_in() == TRUE)
+			if ($this->logged_in() == TRUE)
 			{
 				// Not elegant, rewrite later.
 				// Useful for login/register pages.
-				die ('Only guests can access this page.';
+				die ('Only guests can access this page.');
 			}
 		}
 	}

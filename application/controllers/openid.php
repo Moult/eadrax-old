@@ -267,7 +267,6 @@ abstract class Openid_Controller extends Core_Controller {
 
 		// After defining the functions we need, let's run them.
 		$this->_common();
-		session_start();
 		run($login);
 	}
 
@@ -279,7 +278,6 @@ abstract class Openid_Controller extends Core_Controller {
 	public function finish_auth()
 	{
 		$this->_common();
-		session_start();
 
 		function escape($thing) {
 			return htmlentities($thing);
@@ -347,7 +345,6 @@ abstract class Openid_Controller extends Core_Controller {
 		$openid_model = new Openid_Model;
 
 		$this->_common();
-		session_start();
 
 		function escape($thing) {
 			return htmlentities($thing);
