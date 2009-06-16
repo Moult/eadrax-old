@@ -22,27 +22,8 @@
  * @copyright	Copyright (C) 2009 Eadrax Team
  */
 
-$lang = array(
-	'name' => array(
-		'required'		=> 'The project name cannot be blank.',
-		'length'		=> 'Project name must be between 1-25 characters.',
-		'standard_text'	=> 'There are illegal characters in the project name.'
-	),
+// Set the default category ID that will be selected on the dropdown form.
+$config['default_cid'] = '12';
 
-	'website' => array(
-		'url' => 'This is not a valid website URL.'
-	),
-
-	'contributors' => array(
-		'standard_text' => 'There are illegal characters in the contributors list.'
-	),
-
-	'description' => array(
-		'required' => 'The description cannot be blank.'
-	),
-
-	'cid' => array(
-		'required' => 'Please choose a category.',
-		'between' => 'The category you have chosen does not exist.'
-	)
-);
+// The maximum ID of the category list.
+$config['max_cid'] = '19';

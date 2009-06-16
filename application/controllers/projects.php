@@ -53,6 +53,7 @@ class Projects_Controller extends Core_Controller {
 			$website		= $this->input->post('website');
 			$contributors	= $this->input->post('contributors');
 			$description	= $this->input->post('description');
+			$cid			= $this->input->post('cid');
 
 			$validate = new Validation($this->input->post());
 			$validate->pre_filter('trim');
@@ -60,13 +61,14 @@ class Projects_Controller extends Core_Controller {
 			$validate->add_rules('website', 'url');
 			$validate->add_rules('contributors', 'standard_text');
 			$validate->add_rules('description', 'required');
+			$validate->add_rules('cid', 'required', 'between[1, '. Kohana::config('projects.max_cid') .']');
 
 			if ($validate->validate())
 			{
 				// Everything went great! Let's add the project.
 				$project_model->manage_project(array(
 					'uid'			=> $this->uid,
-					'cid'			=> '1', # TODO until we create category support
+					'cid'			=> $cid,
 					'name'			=> $name,
 					'website'		=> $website,
 					'contributors'	=> $contributors,
@@ -91,6 +93,9 @@ class Projects_Controller extends Core_Controller {
 					), $validate->as_array());
 				$project_form_view->errors = $validate->errors('project_errors');
 
+				// Set project categories.
+				$project_form_view->categories = $project_model->categories();
+
 				// Generate the content.
 				$this->template->content = array($project_form_view);
 			}
@@ -107,6 +112,9 @@ class Projects_Controller extends Core_Controller {
 				'contributors' => '',
 				'description' => ''
 			);
+
+			// Set project categories.
+			$project_form_view->categories = $project_model->categories();
 
 			// Generate the content.
 			$this->template->content = array($project_form_view);

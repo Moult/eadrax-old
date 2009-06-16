@@ -12,6 +12,18 @@
 class valid_Core {
 
 	/**
+	 * Validate integers between a range of values (inclusive).
+	 *
+	 * @param	int		$int
+	 * @param	array	$range
+	 * @return	boolean
+	 */
+	public static function between($int, array $range)
+	{
+		return is_numeric($int) && $int >= $range[0] && $int <= $range[1];
+	}
+
+	/**
 	 * Validate email, commonly used characters only
 	 *
 	 * @param   string   email address

@@ -108,4 +108,21 @@ class Project_Model extends Model {
 		$delete_project = $this->db;
 		$delete_project = $delete_project->where('id', $pid)->delete('projects');
 	}
+
+	/**
+	 * Returns an array with a list of categories.
+	 *
+	 * @return array
+	 */
+	public function categories()
+	{
+		$categories = $this->db;
+		$categories = $categories->from('categories')->get();
+
+		foreach ($categories as $category)
+		{
+			$category_list[$category->id] = $category->name;
+		}
+		return $category_list;
+	}
 }
