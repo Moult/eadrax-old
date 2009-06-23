@@ -65,6 +65,27 @@ class Projects_Controller extends Core_Controller {
 
 			if ($validate->validate())
 			{
+				// First check whether or not we even have an icon to validate.
+				if (!empty($_FILES))
+				{
+					// Do not forget we need to validate the file.
+					$files = new Validation($_FILES);
+					$files = $files->add_rules('icon', 'upload::valid', 'upload::type[jpg,png]', 'upload::size[1M]');
+
+					if ($files->validate())
+					{
+						// Upload and resize the image.
+						$filename = upload::save('icon');
+						Image::factory($filename)->resize(80, 80, Image::WIDTH)->save(DOCROOT .'uploads/icons/'. basename($filename));
+						unlink($filename);
+						$icon_filename = basename($filename);
+					}
+					else
+					{
+						die ('Your upload has failed.');
+					}
+				}
+				
 				// Everything went great! Let's add the project.
 				$project_model->manage_project(array(
 					'uid'			=> $this->uid,
@@ -72,7 +93,8 @@ class Projects_Controller extends Core_Controller {
 					'name'			=> $name,
 					'website'		=> $website,
 					'contributors'	=> $contributors,
-					'description'	=> $description
+					'description'	=> $description,
+					'icon'			=> $icon_filename
 					));
 
 				// Then load our success view.
