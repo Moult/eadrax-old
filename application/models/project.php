@@ -125,4 +125,22 @@ class Project_Model extends Model {
 		}
 		return $category_list;
 	}
+
+	/**
+	 * Returns all the data about a project with the id $pid.
+	 *
+	 * @param int $pid
+	 * 
+	 * @return array
+	 */
+	public function project_information($pid)
+	{
+		$project_information = new Database();
+		$project_information = $project_information->where('id', $pid);
+		$project_information = $project_information->get('projects');
+		$project_information = $project_information->result(FALSE);
+		$project_information = $project_information->current();
+
+		return $project_information;
+	}
 }
