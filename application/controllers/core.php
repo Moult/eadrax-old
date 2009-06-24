@@ -82,7 +82,7 @@ abstract class Core_Controller extends Template_Controller {
 	{
 		if ($reverse == FALSE)
 		{
-			if ($this->logged_in() == FALSE)
+			if ($this->logged_in == FALSE)
 			{
 				// Not elegant, rewrite later.
 				die ('You cannot access this page. Please log in.');
@@ -90,7 +90,7 @@ abstract class Core_Controller extends Template_Controller {
 		}
 		elseif ($reverse == TRUE)
 		{
-			if ($this->logged_in() == TRUE)
+			if ($this->logged_in == TRUE)
 			{
 				// Not elegant, rewrite later.
 				// Useful for login/register pages.
