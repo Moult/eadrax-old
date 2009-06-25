@@ -279,7 +279,50 @@ class Projects_Controller extends Core_Controller {
 			// Generate the content.
 			$this->template->content = array($project_edit_form_view);
 		}
+	}
 
+	/**
+	 * Deletes a project.
+	 *
+	 * @param int $pid The project ID of the project to delete.
+	 *
+	 * @return null
+	 */
+	public function delete($pid)
+	{	
+		// Only logged in users are allowed.
+		$this->restrict_access();
+
+		// Load necessary models.
+		$project_model = new Project_Model;
+
+		// First check if you own the project.
+		if (!empty($pid) && $project_model->check_project_owner($pid, $this->uid))
+		{
+			// Determine the value of the project's icon.
+			$icon_filename	= $project_model->project_information($pid);
+			$icon_filename	= $icon_filename['icon'];
+
+			// Is there an existing image?
+			if (!empty($icon_filename))
+			{
+				// Delete the file.
+				unlink(DOCROOT .'uploads/icons/'. $icon_filename);
+			}
+
+			// Delete the project.
+			$project_model->delete_project($pid);
+		}
+		else
+		{
+			die('Please ensure an ID is specified and you own the project.'); # TODO dying isn't good.
+		}
+
+		// Load views.
+		$project_delete_view = new View('project_delete');
+
+		// Generate the content.
+		$this->template->content = array($project_delete_view);
 	}
 
 }
