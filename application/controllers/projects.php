@@ -201,6 +201,13 @@ class Projects_Controller extends Core_Controller {
 				// First check whether or not we even have an icon to validate.
 				if (!empty($_FILES) && !empty($_FILES['icon']['name']))
 				{
+					// Is there an existing image?
+					if (!empty($icon_filename))
+					{
+						// Delete the file.
+						unlink(DOCROOT .'uploads/icons/'. $icon_filename);
+					}
+
 					// Do not forget we need to validate the file.
 					$files = new Validation($_FILES);
 					$files = $files->add_rules('icon', 'upload::valid', 'upload::type[jpg,png]', 'upload::size[1M]');
