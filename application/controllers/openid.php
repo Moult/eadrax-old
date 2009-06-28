@@ -96,7 +96,7 @@ abstract class Openid_Controller extends Core_Controller {
 			 * created elsewhere.  After you're done playing with the example
 			 * script, you'll have to remove this directory manually.
 			 */
-			$store_path = "/tmp/_php_consumer_test";
+			$store_path = DOCROOT ."application/tmp/_php_consumer_test";
 
 			if (!file_exists($store_path) &&
 				!mkdir($store_path)) {
