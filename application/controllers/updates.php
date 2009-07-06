@@ -24,7 +24,7 @@
 
 /**
  *
- * Users controller for tasks related to user management
+ * Updates controller added for update system.
  *
  * @category	Eadrax
  * @package		Update
