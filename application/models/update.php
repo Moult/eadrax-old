@@ -22,52 +22,19 @@
  * @copyright	Copyright (C) 2009 Eadrax Team
  */
 
+defined('SYSPATH') or die('No direct script access.');
+
 /**
  *
- * Updates controller added for update system.
+ * Model for the updates table.
  *
  * @category	Eadrax
  * @package		Update
- * @subpackage	Controllers
+ * @subpackage	Models
  * @author		Eadrax Team
  * @copyright	Copyright (C) 2009 Eadrax Team
  * @version		$Id$
  */
-class Updates_Controller extends Core_Controller {
-	/**
-	 * Adds a new update.
-	 *
-	 * @return null
-	 */
-	public function index()
-	{
-		// Logged in users and guest users will have different abilities when 
-		// submitting updates to the website.
-		if ($this->logged_in == TRUE)
-		{
-			// If the person is logged in...MAKE SURE THEY REALLY ARE.
-			$this->restrict_access();
-
-			// Load necessary models.
-			$update_model = new Update_Model;
-
-			if ($this->input->post())
-			{
-				// TODO
-			}
-			else
-			{
-				// Load the necessary view.
-				$update_form_view = new View('update_form');
-
-				// Generate the content.
-				$this->template->content = array($update_form_view);
-			}
-		}
-		else
-		{
-			// The person is a guest...
-			// TODO
-		}
-	}
+class Update_Model extends Model {
+	// TODO
 }
