@@ -97,3 +97,24 @@ CREATE TABLE IF NOT EXISTS `projects` (
 ALTER TABLE `projects`
   ADD CONSTRAINT `projects_ibfk_2` FOREIGN KEY (`cid`) REFERENCES `categories` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `projects_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+DROP TABLE IF EXISTS `updates`;
+CREATE TABLE IF NOT EXISTS `updates` (
+  `id` int(11) NOT NULL auto_increment,
+  `pid` int(11) NOT NULL,
+  `uid` int(11) NOT NULL,
+  `summary` varchar(255) NOT NULL,
+  `filename` varchar(255) NOT NULL,
+  `detail` text NOT NULL,
+  `syntax` varchar(255) NOT NULL,
+  `pastebin` text NOT NULL,
+  `ext` varchar(10) NOT NULL,
+  `logtime` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  PRIMARY KEY  (`id`),
+  KEY `pid` (`pid`),
+  KEY `uid` (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE `updates`
+  ADD CONSTRAINT `updates_ibfk_2` FOREIGN KEY (`uid`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `updates_ibfk_1` FOREIGN KEY (`pid`) REFERENCES `projects` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
