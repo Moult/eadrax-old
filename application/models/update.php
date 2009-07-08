@@ -36,5 +36,31 @@ defined('SYSPATH') or die('No direct script access.');
  * @version		$Id$
  */
 class Update_Model extends Model {
-	// TODO
+	/**
+	 * Adds/Edits a update with the data specified in $data.
+	 *
+	 * If $uid is set to an ID of an update, it will update that update row.
+	 *
+	 * @param array $data	An array with field_name=>content for data to add.
+	 * @param int	$uid	If not set to false, it will update the update row.
+	 *
+	 * @return null
+	 */
+	public function manage_update($data, $uid = FALSE)
+	{
+		$manage_update = $this->db;
+		foreach ($data as $key => $value)
+		{
+			$manage_update->set($key, $value);
+		}
+		if ($uid == FALSE)
+		{
+			$manage_update->insert('updates');
+		}
+		else
+		{
+			$manage_update->where('id', $uid);
+			$manage_update->update('updates');
+		}
+	}
 }

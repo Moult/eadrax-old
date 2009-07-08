@@ -118,3 +118,22 @@ CREATE TABLE IF NOT EXISTS `updates` (
 ALTER TABLE `updates`
   ADD CONSTRAINT `updates_ibfk_2` FOREIGN KEY (`uid`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `updates_ibfk_1` FOREIGN KEY (`pid`) REFERENCES `projects` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+INSERT INTO `users` (
+`username` ,
+`password` ,
+`description`
+)
+VALUES (
+'Guest', 'guest', 'This is a special user to represent guest submissions on the website. Please register to access all the features of the website.'
+) 
+
+INSERT INTO `projects` (
+`uid` ,
+`cid` ,
+`name` ,
+`description` 
+)
+VALUES (
+'1', '12', 'Uncategorised', 'Every update that is not part of any user-defined project is put into this section. This includes updates submitted by guest users.'
+);

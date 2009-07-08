@@ -45,7 +45,7 @@ class Updates_Controller extends Core_Controller {
 		// submitting updates to the website.
 		if ($this->logged_in == TRUE)
 		{
-			// If the person is logged in...MAKE SURE THEY REALLY ARE.
+			// If the person is logged in...make sure they really are.
 			$this->restrict_access();
 
 			// Load necessary models.
@@ -53,12 +53,57 @@ class Updates_Controller extends Core_Controller {
 
 			if ($this->input->post())
 			{
+				$summary	= $this->input->post('summary');
+				$detail		= $this->input->post('detail');
+				$pid		= 1; # TODO
+
+				// Begin to validate the information.
+				$validate = new Validation($this->input->post());
+				$validate->pre_filter('trim');
+				$validate->add_rules('summary', 'required', 'length[5, 70]', 'standard_text');
+				$validate->add_rules('detail', 'standard_text');
+
+				if ($validate->validate())
+				{
+					// Everything went great! Let's add the update.
+					$update_model->manage_update(array(
+						'uid' => $this->uid,
+						'summary' => $summary,
+						'detail' => $detail,
+						'pid' => $pid
+					));
+
+					// Then load our success view.
+					$update_success_view = new View('update_success');
+
+					// Then generate content.
+					$this->template->content = array($update_success_view);
+				}
+				else
+				{
+					// Errors have occured. Fill in the form and set errors.
+					$update_form_view = new View('update_form');
+					$update_form_view->form = arr::overwrite(array(
+						'summary' => '',
+						'detail' => ''
+					), $validate->as_array());
+					$update_form_view->errors = $validate->errors('update_errors');
+
+					// Generate the content.
+					$this->template->content = array($update_form_view);
+				}
 				// TODO
 			}
 			else
 			{
 				// Load the necessary view.
 				$update_form_view = new View('update_form');
+
+				// If we didn't press submit, we want a blank form.
+				$update_form_view->form = array(
+					'summary' => '',
+					'detail' => ''
+				);
 
 				// Generate the content.
 				$this->template->content = array($update_form_view);
