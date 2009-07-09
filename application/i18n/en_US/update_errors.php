@@ -31,5 +31,11 @@ $lang = array(
 
 	'detail' => array(
 		'standard_text' => 'There are illegal characters in the detailed description.'
+	),
+
+	'pid' => array(
+		'required' => 'Please provide a project for this update to be part of.',
+		'project_owner' => 'You can only add updates to projects you have created.',
+		'digit' => 'Your project seems to be invalid.'
 	)
 );

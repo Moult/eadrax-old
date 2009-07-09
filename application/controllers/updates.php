@@ -49,19 +49,22 @@ class Updates_Controller extends Core_Controller {
 			$this->restrict_access();
 
 			// Load necessary models.
-			$update_model = new Update_Model;
+			$update_model	= new Update_Model;
+			$project_model	= new Project_Model;
 
 			if ($this->input->post())
 			{
 				$summary	= $this->input->post('summary');
 				$detail		= $this->input->post('detail');
-				$pid		= 1; # TODO
+				$pid		= $this->input->post('pid');
 
 				// Begin to validate the information.
 				$validate = new Validation($this->input->post());
 				$validate->pre_filter('trim');
 				$validate->add_rules('summary', 'required', 'length[5, 70]', 'standard_text');
 				$validate->add_rules('detail', 'standard_text');
+				$validate->add_rules('pid', 'required', 'digit');
+				$validate->add_callbacks('pid', array($this, '_validate_project_owner'));
 
 				if ($validate->validate())
 				{
@@ -89,6 +92,9 @@ class Updates_Controller extends Core_Controller {
 					), $validate->as_array());
 					$update_form_view->errors = $validate->errors('update_errors');
 
+					// Set list of projects.
+					$update_form_view->projects = $project_model->projects($this->uid);
+
 					// Generate the content.
 					$this->template->content = array($update_form_view);
 				}
@@ -105,6 +111,9 @@ class Updates_Controller extends Core_Controller {
 					'detail' => ''
 				);
 
+				// Set list of projects.
+				$update_form_view->projects = $project_model->projects($this->uid);
+
 				// Generate the content.
 				$this->template->content = array($update_form_view);
 			}
@@ -113,6 +122,25 @@ class Updates_Controller extends Core_Controller {
 		{
 			// The person is a guest...
 			// TODO
+		}
+	}
+
+	/**
+	 * Validates that the owner of a project is the logged in user.
+	 *
+	 */
+	public function _validate_project_owner(Validation $array, $field)
+	{
+		$project_model = new Project_Model;
+
+		$project_uid = $project_model->project_information($array[$field]);
+		$project_uid = $project_uid['uid'];
+
+		// We also allow the project uid to be 1, as this is a project owned by 
+		// a guest - used for special universal projects.
+		if ($project_uid != $this->uid && $project_uid != 1)
+		{
+			$array->add_error($field, 'project_owner');
 		}
 	}
 }

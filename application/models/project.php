@@ -143,4 +143,30 @@ class Project_Model extends Model {
 
 		return $project_information;
 	}
+
+	/**
+	 * Returns an array with a list of projects owned by a user.
+	 *
+	 * @param int $uid The ID of the user who owns the projects.
+	 *
+	 * @return array
+	 */
+	public function projects($uid)
+	{
+		$projects = $this->db;
+		$projects = $projects->from('projects')->where('uid', $uid)->get();
+
+		$project_list = array();
+
+		// Add the special project "uncategorised".
+		$project_list[1] = $this->project_information(1);
+		$project_list[1] = $project_list[1]['name'];
+
+		foreach ($projects as $project)
+		{
+			$project_list[$project->id] = $project->name;
+		}
+
+		return $project_list;
+	}
 }
