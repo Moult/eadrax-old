@@ -58,6 +58,10 @@ class Updates_Controller extends Core_Controller {
 				$detail		= $this->input->post('detail');
 				$pid		= $this->input->post('pid');
 
+				// Let's first assume there is no file being uploaded.
+				$attachment_filename = '';
+				$extension = '';
+
 				// Begin to validate the information.
 				$validate = new Validation($this->input->post());
 				$validate->pre_filter('trim');
@@ -68,12 +72,101 @@ class Updates_Controller extends Core_Controller {
 
 				if ($validate->validate())
 				{
+					// Check whether or not we even have a file to validate.
+					if (!empty($_FILES) && !empty($_FILES['attachment']['name']))
+					{
+						// Do not forget we need to validate the file.
+						$files = new Validation($_FILES);
+						$files = $files->add_rules('attachment', 'upload::valid', 'upload::type[gif,jpg,png,svg,tiff,bmp,exr,pdf,zip,rar,tar,tar.gz,tar.bz,ogg,wmv,mp3,wav,avi,mpg,mov,swf,flv,blend,xcf,doc,ppt,xls,odt,ods,odp,odg,psd,fla,ai,indd,aep]', 'upload::size[50M]');
+
+						if ($files->validate())
+						{
+							// Upload the file as normal.
+							$filename = upload::save('attachment', NULL, DOCROOT .'uploads/files/');
+							$attachment_filename = basename($filename);
+
+							// Let's determine what extension this file is.
+							$extension = strtolower(substr(strrchr($_FILES['attachment']['name'], '.'), 1));
+
+							// If it is an image, we need to thumbnail it.
+							if ($extension == 'gif' || $extension == 'jpg' || $extension == 'png')
+							{
+								Image::factory($filename)->resize(80, 80, Image::WIDTH)->save(DOCROOT .'uploads/icons/'. basename($filename));
+							}
+
+							// If it is a video, we need to encode it.
+							// HTML 5 is not out yet, so support goes through 
+							// the FLV format. Oh well :)
+							if ($extension == 'avi' || $extension == 'mpg' || $extension == 'mov' || $extension == 'flv' || $extension == 'ogg' || $extension == 'wmv')
+							{
+								// Define files.
+								$src_file  = DOCROOT .'uploads/files/'. basename($filename);
+								$dest_file = DOCROOT .'uploads/files/'. substr(basename($filename), 0, -3) .'flv';
+								$dest_img  = DOCROOT .'uploads/icons/'. substr(basename($filename), 0, -3) .'jpg';
+
+								// Define ffmpeg application path.
+								$ffmpeg_path = Kohana::config('updates.ffmpeg_path');
+
+								// If it is not already an FLV we need to encode it.
+								if ($extension != 'flv') {
+									$ffmpeg_obj = new ffmpeg_movie($src_file);
+
+									// Needed function for next section.
+									function make_multiple_two ($value)
+									{
+										$s_type = gettype($value/2); 
+
+										if($s_type == "integer")
+										{
+											return $value;
+										}
+										else
+										{
+											return ($value-1);
+										}
+									}
+									// Save needed variables for conversion.
+									$src_width = make_multiple_two($ffmpeg_obj->getFrameWidth());
+									$src_height = make_multiple_two($ffmpeg_obj->getFrameHeight());
+									$src_fps = $ffmpeg_obj->getFrameRate();
+									$src_ab = intval($ffmpeg_obj->getAudioBitRate()/1000);
+									// Dion Moult: This is because flv only 
+									// supports certain audio sample rates - or 
+									// to the best of my knowledge they do.
+									// $src_ar = $ffmpeg_obj->getAudioSampleRate();
+									$src_ar = 44100;
+
+									// Do the encoding!
+									exec($ffmpeg_path ." -i ". $src_file ." -ar ". $src_ar ." -ab ". $src_ab ." -f flv -s ". $src_width ."x". $src_height ." ". $dest_file);
+
+									// We will delete the original !.flv file 
+									// to save space on the server. If they want 
+									// to distribute a !.flv file let them host 
+									// it elsewhere.
+									unlink($src_file);
+								}
+
+								// Let's create the image.
+								exec($ffmpeg_path ." -i ". $dest_file ." -an -ss 00:00:09 -t 00:00:01 -r 1 -y ". $dest_img);
+
+								// Let's turn the image into a thumbnail.
+								Image::factory($dest_img)->resize(80, 80, Image::WIDTH)->save($dest_img);
+							}
+
+						}
+						else
+						{
+							die('Your upload has failed.'); # TODO dying is never good.
+						}
+					}
 					// Everything went great! Let's add the update.
 					$update_model->manage_update(array(
 						'uid' => $this->uid,
 						'summary' => $summary,
 						'detail' => $detail,
-						'pid' => $pid
+						'pid' => $pid,
+						'filename' => $attachment_filename,
+						'ext' => $extension
 					));
 
 					// Then load our success view.
