@@ -37,5 +37,9 @@ $lang = array(
 		'required' => 'Please provide a project for this update to be part of.',
 		'project_owner' => 'You can only add updates to projects you have created.',
 		'digit' => 'Your project seems to be invalid.'
+	),
+
+	'syntax' => array(
+		'syntax_language' => 'Syntax highlighting for that language is not supported'
 	)
 );

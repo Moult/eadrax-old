@@ -57,6 +57,8 @@ class Updates_Controller extends Core_Controller {
 				$summary	= $this->input->post('summary');
 				$detail		= $this->input->post('detail');
 				$pid		= $this->input->post('pid');
+				$syntax		= $this->input->post('syntax');
+				$pastebin	= $this->input->post('pastebin');
 
 				// Let's first assume there is no file being uploaded.
 				$attachment_filename = '';
@@ -69,6 +71,7 @@ class Updates_Controller extends Core_Controller {
 				$validate->add_rules('detail', 'standard_text');
 				$validate->add_rules('pid', 'required', 'digit');
 				$validate->add_callbacks('pid', array($this, '_validate_project_owner'));
+				$validate->add_callbacks('syntax', array($this, '_validate_syntax_language'));
 
 				if ($validate->validate())
 				{
@@ -77,7 +80,7 @@ class Updates_Controller extends Core_Controller {
 					{
 						// Do not forget we need to validate the file.
 						$files = new Validation($_FILES);
-						$files = $files->add_rules('attachment', 'upload::valid', 'upload::type[gif,jpg,png,svg,tiff,bmp,exr,pdf,zip,rar,tar,tar.gz,tar.bz,ogg,wmv,mp3,wav,avi,mpg,mov,swf,flv,blend,xcf,doc,ppt,xls,odt,ods,odp,odg,psd,fla,ai,indd,aep]', 'upload::size[50M]');
+						$files = $files->add_rules('attachment', 'upload::valid', 'upload::type['. Kohana::config('updates.filetypes') .']', 'upload::size[50M]');
 
 						if ($files->validate())
 						{
@@ -166,7 +169,9 @@ class Updates_Controller extends Core_Controller {
 						'detail' => $detail,
 						'pid' => $pid,
 						'filename' => $attachment_filename,
-						'ext' => $extension
+						'ext' => $extension,
+						'pastebin' => $pastebin,
+						'syntax' => $syntax
 					));
 
 					// Then load our success view.
@@ -181,12 +186,16 @@ class Updates_Controller extends Core_Controller {
 					$update_form_view = new View('update_form');
 					$update_form_view->form = arr::overwrite(array(
 						'summary' => '',
-						'detail' => ''
+						'detail' => '',
+						'pastebin' => ''
 					), $validate->as_array());
 					$update_form_view->errors = $validate->errors('update_errors');
 
 					// Set list of projects.
 					$update_form_view->projects = $project_model->projects($this->uid);
+
+					// Set list of syntax highlight options.
+					$update_form_view->languages = Kohana::config('updates.languages');
 
 					// Generate the content.
 					$this->template->content = array($update_form_view);
@@ -201,11 +210,15 @@ class Updates_Controller extends Core_Controller {
 				// If we didn't press submit, we want a blank form.
 				$update_form_view->form = array(
 					'summary' => '',
-					'detail' => ''
+					'detail' => '',
+					'pastebin' => ''
 				);
 
 				// Set list of projects.
 				$update_form_view->projects = $project_model->projects($this->uid);
+
+				// Set list of syntax highlight options.
+				$update_form_view->languages = Kohana::config('updates.languages');
 
 				// Generate the content.
 				$this->template->content = array($update_form_view);
@@ -221,6 +234,10 @@ class Updates_Controller extends Core_Controller {
 	/**
 	 * Validates that the owner of a project is the logged in user.
 	 *
+	 * @param Validation $array The array containing validation information.
+	 * @param $field The key for the value.
+	 *
+	 * @return null
 	 */
 	public function _validate_project_owner(Validation $array, $field)
 	{
@@ -234,6 +251,23 @@ class Updates_Controller extends Core_Controller {
 		if ($project_uid != $this->uid && $project_uid != 1)
 		{
 			$array->add_error($field, 'project_owner');
+		}
+	}
+
+	/**
+	 * Validates that there is actually a possible syntax highlighter for the 
+	 * language that the user has chosen.
+	 *
+	 * @param Validation $array The array containing validation information.
+	 * @param $field The key for the value.
+	 *
+	 * @return null
+	 */
+	public function _validate_syntax_language(Validation $array, $field)
+	{
+		if (!array_key_exists($array[$field], Kohana::config('updates.languages')))
+		{
+			$array->add_error($field, 'syntax_language');
 		}
 	}
 }
