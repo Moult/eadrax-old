@@ -86,10 +86,12 @@ class Updates_Controller extends Core_Controller {
 						{
 							// Upload the file as normal.
 							$filename = upload::save('attachment', NULL, DOCROOT .'uploads/files/');
-							$attachment_filename = basename($filename);
 
 							// Let's determine what extension this file is.
 							$extension = strtolower(substr(strrchr($_FILES['attachment']['name'], '.'), 1));
+
+							// Now determine the file name.
+							$attachment_filename = substr(basename($filename), 0, -strlen($extension)-1);
 
 							// If it is an image, we need to thumbnail it.
 							if ($extension == 'gif' || $extension == 'jpg' || $extension == 'png')
@@ -128,6 +130,7 @@ class Updates_Controller extends Core_Controller {
 											return ($value-1);
 										}
 									}
+
 									// Save needed variables for conversion.
 									$src_width = make_multiple_two($ffmpeg_obj->getFrameWidth());
 									$src_height = make_multiple_two($ffmpeg_obj->getFrameHeight());
@@ -151,6 +154,9 @@ class Updates_Controller extends Core_Controller {
 
 								// Let's create the image.
 								exec($ffmpeg_path ." -i ". $dest_file ." -an -ss 00:00:09 -t 00:00:01 -r 1 -y ". $dest_img);
+
+								// Now our filetype extension has changed!
+								$extension = 'flv';
 
 								// Let's turn the image into a thumbnail.
 								Image::factory($dest_img)->resize(80, 80, Image::WIDTH)->save($dest_img);

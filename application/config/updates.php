@@ -25,7 +25,7 @@
 // Set the path to the ffmpeg application binary.
 $config['ffmpeg_path'] = '/usr/bin/ffmpeg';
 
-$config['filetypes'] = 'gif,jpg,png,svg,tiff,bmp,exr,pdf,zip,rar,tar,tar.gz,tar.bz,ogg,wmv,mp3,wav,avi,mpg,mov,swf,flv,blend,xcf,doc,ppt,xls,odt,ods,odp,odg,psd,fla,ai,indd,aep';
+$config['filetypes'] = 'gif,jpg,png,svg,tiff,bmp,exr,pdf,zip,rar,tar,gz,bz,7z,ogg,wmv,mp3,wav,avi,mpg,mov,swf,flv,blend,xcf,doc,ppt,xls,odt,ods,odp,odg,psd,fla,ai,indd,aep,txt,cab,csv,exe,diff,patch,rtf,torrent';
 
 // Languages to support for syntax highlighting.
 $config['languages'] = array(
