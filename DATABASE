@@ -119,6 +119,21 @@ ALTER TABLE `updates`
   ADD CONSTRAINT `updates_ibfk_2` FOREIGN KEY (`uid`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `updates_ibfk_1` FOREIGN KEY (`pid`) REFERENCES `projects` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
+DROP TABLE IF EXISTS `comments`;
+CREATE TABLE IF NOT EXISTS `comments` (
+  `id` int(11) NOT NULL auto_increment,
+  `uid` int(11) NOT NULL,
+  `upid` int(11) NOT NULL,
+  `comment` text NOT NULL,
+  PRIMARY KEY  (`id`),
+  KEY `uid` (`uid`),
+  KEY `upid` (`upid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE `comments`
+  ADD CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`upid`) REFERENCES `updates` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
 INSERT INTO `users` (
 `username` ,
 `password` ,
