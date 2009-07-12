@@ -145,6 +145,9 @@ class Updates_Controller extends Core_Controller {
 									// Do the encoding!
 									exec($ffmpeg_path ." -i ". $src_file ." -ar ". $src_ar ." -ab ". $src_ab ." -f flv -s ". $src_width ."x". $src_height ." ". $dest_file);
 
+									// Now our filetype extension has changed!
+									$extension = 'flv';
+
 									// We will delete the original !.flv file 
 									// to save space on the server. If they want 
 									// to distribute a !.flv file let them host 
@@ -152,16 +155,51 @@ class Updates_Controller extends Core_Controller {
 									unlink($src_file);
 								}
 
-								// Let's create the image.
-								exec($ffmpeg_path ." -i ". $dest_file ." -an -ss 00:00:09 -t 00:00:01 -r 1 -y ". $dest_img);
+								// Before snapshotting the video to make a 
+								// thumbnail image, let's find out the length of 
+								// the video.
+								$ffmpeg_output = array();
+								exec($ffmpeg_path ." -i ". $dest_file ." 2>&1", $ffmpeg_output);
 
-								// Now our filetype extension has changed!
-								$extension = 'flv';
+								// Search each line in the $ffmpeg_output.
+								foreach ($ffmpeg_output as $key => $value)
+								{
+									if (preg_match('/Duration: [0-9]{2}:[0-9]{2}:[0-9]{2}/', $value, $matches))
+									{
+										// Now we are sure we have found the 
+										// duration, get the value we need.
+										$duration = substr($matches[0], 10);
 
-								// Let's turn the image into a thumbnail.
-								Image::factory($dest_img)->resize(80, 80, Image::WIDTH)->save($dest_img);
+										// Calculate the half-time.
+										$duration_h = floor(substr($duration, 0, 2)/2);
+										if ($duration_h%2 == 1)
+										{
+											$duration_m = floor((substr($duration, 3, 2)+60)/2);
+										}
+										else
+										{
+											$duration_m = floor(substr($duration, 3, 2)/2);
+										}
+										if ($duration_m%2 == 1)
+										{
+											$duration_s = floor((substr($duration, 6, 2)+60)/2);
+										}
+										else
+										{
+											$duration_s = floor(substr($duration, 6, 2)/2);
+										}
+
+										// Let's create the image.
+										exec($ffmpeg_path ." -i ". $dest_file ." -an -ss ". $duration_h .":". $duration_m .":". $duration_s ." -t 00:00:01 -r 1 -y ". $dest_img);
+
+										// Let's turn the image into a thumbnail.
+										Image::factory($dest_img)->resize(80, 80, Image::WIDTH)->save($dest_img);
+
+										// We're done here.
+										break;
+									}
+								}
 							}
-
 						}
 						else
 						{
