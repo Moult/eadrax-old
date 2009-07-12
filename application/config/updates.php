@@ -25,9 +25,17 @@
 // Set the path to the ffmpeg application binary.
 $config['ffmpeg_path'] = '/usr/bin/ffmpeg';
 
+// The upload size limit for users per update.
+$config['user_upload_limit'] = '50M';
+
+// The upload size limit for guests per update.
+$config['guest_upload_limit'] = '5M';
+
+// The allowed filetypes for users on the website.
 $config['filetypes'] = 'gif,jpg,png,svg,tiff,bmp,exr,pdf,zip,rar,tar,gz,bz,7z,ogg,wmv,mp3,wav,avi,mpg,mov,swf,flv,blend,xcf,doc,ppt,xls,odt,ods,odp,odg,psd,fla,ai,indd,aep,txt,cab,csv,exe,diff,patch,rtf,torrent';
 
 // Languages to support for syntax highlighting.
+// Note: these must be supported by GeSHi.
 $config['languages'] = array(
 	'0' => 'None',
 	'abap' => 'ABAP',

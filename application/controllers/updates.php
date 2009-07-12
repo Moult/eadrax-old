@@ -41,222 +41,215 @@ class Updates_Controller extends Core_Controller {
 	 */
 	public function index()
 	{
-		// Logged in users and guest users will have different abilities when 
-		// submitting updates to the website.
-		if ($this->logged_in == TRUE)
+		// Load necessary models.
+		$update_model	= new Update_Model;
+		$project_model	= new Project_Model;
+
+		if ($this->input->post())
 		{
-			// If the person is logged in...make sure they really are.
-			$this->restrict_access();
+			$summary	= $this->input->post('summary');
+			$detail		= $this->input->post('detail');
+			$syntax		= $this->input->post('syntax');
+			$pastebin	= $this->input->post('pastebin');
 
-			// Load necessary models.
-			$update_model	= new Update_Model;
-			$project_model	= new Project_Model;
-
-			if ($this->input->post())
+			if ($this->logged_in == TRUE)
 			{
-				$summary	= $this->input->post('summary');
-				$detail		= $this->input->post('detail');
-				$pid		= $this->input->post('pid');
-				$syntax		= $this->input->post('syntax');
-				$pastebin	= $this->input->post('pastebin');
-
-				// Let's first assume there is no file being uploaded.
-				$attachment_filename = '';
-				$extension = '';
-
-				// Begin to validate the information.
-				$validate = new Validation($this->input->post());
-				$validate->pre_filter('trim');
-				$validate->add_rules('summary', 'required', 'length[5, 70]', 'standard_text');
-				$validate->add_rules('detail', 'standard_text');
-				$validate->add_rules('pid', 'required', 'digit');
-				$validate->add_callbacks('pid', array($this, '_validate_project_owner'));
-				$validate->add_callbacks('syntax', array($this, '_validate_syntax_language'));
-
-				if ($validate->validate())
-				{
-					// Check whether or not we even have a file to validate.
-					if (!empty($_FILES) && !empty($_FILES['attachment']['name']))
-					{
-						// Do not forget we need to validate the file.
-						$files = new Validation($_FILES);
-						$files = $files->add_rules('attachment', 'upload::valid', 'upload::type['. Kohana::config('updates.filetypes') .']', 'upload::size[50M]');
-
-						if ($files->validate())
-						{
-							// Upload the file as normal.
-							$filename = upload::save('attachment', NULL, DOCROOT .'uploads/files/');
-
-							// Let's determine what extension this file is.
-							$extension = strtolower(substr(strrchr($_FILES['attachment']['name'], '.'), 1));
-
-							// Now determine the file name.
-							$attachment_filename = substr(basename($filename), 0, -strlen($extension)-1);
-
-							// If it is an image, we need to thumbnail it.
-							if ($extension == 'gif' || $extension == 'jpg' || $extension == 'png')
-							{
-								Image::factory($filename)->resize(80, 80, Image::WIDTH)->save(DOCROOT .'uploads/icons/'. basename($filename));
-							}
-
-							// If it is a video, we need to encode it.
-							// HTML 5 is not out yet, so support goes through 
-							// the FLV format. Oh well :)
-							if ($extension == 'avi' || $extension == 'mpg' || $extension == 'mov' || $extension == 'flv' || $extension == 'ogg' || $extension == 'wmv')
-							{
-								// Define files.
-								$src_file  = DOCROOT .'uploads/files/'. basename($filename);
-								$dest_file = DOCROOT .'uploads/files/'. substr(basename($filename), 0, -3) .'flv';
-								$dest_img  = DOCROOT .'uploads/icons/'. substr(basename($filename), 0, -3) .'jpg';
-
-								// Define ffmpeg application path.
-								$ffmpeg_path = Kohana::config('updates.ffmpeg_path');
-
-								// If it is not already an FLV we need to encode it.
-								if ($extension != 'flv') {
-									$ffmpeg_obj = new ffmpeg_movie($src_file);
-
-									// Needed function for next section.
-									function make_multiple_two ($value)
-									{
-										$s_type = gettype($value/2); 
-
-										if($s_type == "integer")
-										{
-											return $value;
-										}
-										else
-										{
-											return ($value-1);
-										}
-									}
-
-									// Save needed variables for conversion.
-									$src_width = make_multiple_two($ffmpeg_obj->getFrameWidth());
-									$src_height = make_multiple_two($ffmpeg_obj->getFrameHeight());
-									$src_fps = $ffmpeg_obj->getFrameRate();
-									$src_ab = intval($ffmpeg_obj->getAudioBitRate()/1000);
-									// Dion Moult: This is because flv only 
-									// supports certain audio sample rates - or 
-									// to the best of my knowledge they do.
-									// $src_ar = $ffmpeg_obj->getAudioSampleRate();
-									$src_ar = 44100;
-
-									// Do the encoding!
-									exec($ffmpeg_path ." -i ". $src_file ." -ar ". $src_ar ." -ab ". $src_ab ." -f flv -s ". $src_width ."x". $src_height ." ". $dest_file);
-
-									// Now our filetype extension has changed!
-									$extension = 'flv';
-
-									// We will delete the original !.flv file 
-									// to save space on the server. If they want 
-									// to distribute a !.flv file let them host 
-									// it elsewhere.
-									unlink($src_file);
-								}
-
-								// Before snapshotting the video to make a 
-								// thumbnail image, let's find out the length of 
-								// the video.
-								$ffmpeg_output = array();
-								exec($ffmpeg_path ." -i ". $dest_file ." 2>&1", $ffmpeg_output);
-
-								// Search each line in the $ffmpeg_output.
-								foreach ($ffmpeg_output as $key => $value)
-								{
-									if (preg_match('/Duration: [0-9]{2}:[0-9]{2}:[0-9]{2}/', $value, $matches))
-									{
-										// Now we are sure we have found the 
-										// duration, get the value we need.
-										$duration = substr($matches[0], 10);
-
-										// Calculate the half-time.
-										$duration_h = floor(substr($duration, 0, 2)/2);
-										if ($duration_h%2 == 1)
-										{
-											$duration_m = floor((substr($duration, 3, 2)+60)/2);
-										}
-										else
-										{
-											$duration_m = floor(substr($duration, 3, 2)/2);
-										}
-										if ($duration_m%2 == 1)
-										{
-											$duration_s = floor((substr($duration, 6, 2)+60)/2);
-										}
-										else
-										{
-											$duration_s = floor(substr($duration, 6, 2)/2);
-										}
-
-										// Let's create the image.
-										exec($ffmpeg_path ." -i ". $dest_file ." -an -ss ". $duration_h .":". $duration_m .":". $duration_s ." -t 00:00:01 -r 1 -y ". $dest_img);
-
-										// Let's turn the image into a thumbnail.
-										Image::factory($dest_img)->resize(80, 80, Image::WIDTH)->save($dest_img);
-
-										// We're done here.
-										break;
-									}
-								}
-							}
-						}
-						else
-						{
-							die('Your upload has failed.'); # TODO dying is never good.
-						}
-					}
-					// Everything went great! Let's add the update.
-					$update_model->manage_update(array(
-						'uid' => $this->uid,
-						'summary' => $summary,
-						'detail' => $detail,
-						'pid' => $pid,
-						'filename' => $attachment_filename,
-						'ext' => $extension,
-						'pastebin' => $pastebin,
-						'syntax' => $syntax
-					));
-
-					// Then load our success view.
-					$update_success_view = new View('update_success');
-
-					// Then generate content.
-					$this->template->content = array($update_success_view);
-				}
-				else
-				{
-					// Errors have occured. Fill in the form and set errors.
-					$update_form_view = new View('update_form');
-					$update_form_view->form = arr::overwrite(array(
-						'summary' => '',
-						'detail' => '',
-						'pastebin' => ''
-					), $validate->as_array());
-					$update_form_view->errors = $validate->errors('update_errors');
-
-					// Set list of projects.
-					$update_form_view->projects = $project_model->projects($this->uid);
-
-					// Set list of syntax highlight options.
-					$update_form_view->languages = Kohana::config('updates.languages');
-
-					// Generate the content.
-					$this->template->content = array($update_form_view);
-				}
-				// TODO
+				$pid = $this->input->post('pid');
 			}
 			else
 			{
-				// Load the necessary view.
-				$update_form_view = new View('update_form');
+				$pid = 1;
+			}
 
-				// If we didn't press submit, we want a blank form.
-				$update_form_view->form = array(
+			// Let's first assume there is no file being uploaded.
+			$attachment_filename = '';
+			$extension = '';
+
+			// Begin to validate the information.
+			$validate = new Validation($this->input->post());
+			$validate->pre_filter('trim');
+			$validate->add_rules('summary', 'required', 'length[5, 70]', 'standard_text');
+			$validate->add_rules('detail', 'standard_text');
+			$validate->add_callbacks('syntax', array($this, '_validate_syntax_language'));
+
+			// If the person is logged in, validate project information.
+			if ($this->logged_in == TRUE)
+			{
+				$validate->add_rules('pid', 'required', 'digit');
+				$validate->add_callbacks('pid', array($this, '_validate_project_owner'));
+			}
+
+			if ($validate->validate())
+			{
+				// Check whether or not we even have a file to validate.
+				if (!empty($_FILES) && !empty($_FILES['attachment']['name']))
+				{
+					// The upload size limit will be different for guests and normal users.
+					if ($this->logged_in == TRUE)
+					{
+						$size_limit = Kohana::config('updates.user_upload_limit');
+					}
+					else
+					{
+						$size_limit = Kohana::config('updates.guest_upload_limit');
+					}
+
+					// Do not forget we need to validate the file.
+					$files = new Validation($_FILES);
+					$files = $files->add_rules('attachment', 'upload::valid', 'upload::type['. Kohana::config('updates.filetypes') .']', 'upload::size['. $size_limit .']');
+
+					if ($files->validate())
+					{
+						// Upload the file as normal.
+						$filename = upload::save('attachment', NULL, DOCROOT .'uploads/files/');
+
+						// Let's determine what extension this file is.
+						$extension = strtolower(substr(strrchr($_FILES['attachment']['name'], '.'), 1));
+
+						// Now determine the file name.
+						$attachment_filename = substr(basename($filename), 0, -strlen($extension)-1);
+
+						// If it is an image, we need to thumbnail it.
+						if ($extension == 'gif' || $extension == 'jpg' || $extension == 'png')
+						{
+							Image::factory($filename)->resize(80, 80, Image::WIDTH)->save(DOCROOT .'uploads/icons/'. basename($filename));
+						}
+
+						// If it is a video, we need to encode it.
+						// HTML 5 is not out yet, so support goes through 
+						// the FLV format. Oh well :)
+						if ($extension == 'avi' || $extension == 'mpg' || $extension == 'mov' || $extension == 'flv' || $extension == 'ogg' || $extension == 'wmv')
+						{
+							// Define files.
+							$src_file  = DOCROOT .'uploads/files/'. basename($filename);
+							$dest_file = DOCROOT .'uploads/files/'. substr(basename($filename), 0, -3) .'flv';
+							$dest_img  = DOCROOT .'uploads/icons/'. substr(basename($filename), 0, -3) .'jpg';
+
+							// Define ffmpeg application path.
+							$ffmpeg_path = Kohana::config('updates.ffmpeg_path');
+
+							// If it is not already an FLV we need to encode it.
+							if ($extension != 'flv') {
+								$ffmpeg_obj = new ffmpeg_movie($src_file);
+
+								// Needed function for next section.
+								function make_multiple_two ($value)
+								{
+									$s_type = gettype($value/2); 
+
+									if($s_type == "integer")
+									{
+										return $value;
+									}
+									else
+									{
+										return ($value-1);
+									}
+								}
+
+								// Save needed variables for conversion.
+								$src_width = make_multiple_two($ffmpeg_obj->getFrameWidth());
+								$src_height = make_multiple_two($ffmpeg_obj->getFrameHeight());
+								$src_fps = $ffmpeg_obj->getFrameRate();
+								$src_ab = intval($ffmpeg_obj->getAudioBitRate()/1000);
+								// Dion Moult: This is because flv only 
+								// supports certain audio sample rates - or 
+								// to the best of my knowledge they do.
+								// $src_ar = $ffmpeg_obj->getAudioSampleRate();
+								$src_ar = 44100;
+
+								// Do the encoding!
+								exec($ffmpeg_path ." -i ". $src_file ." -ar ". $src_ar ." -ab ". $src_ab ." -f flv -s ". $src_width ."x". $src_height ." ". $dest_file);
+
+								// Now our filetype extension has changed!
+								$extension = 'flv';
+
+								// We will delete the original !.flv file 
+								// to save space on the server. If they want 
+								// to distribute a !.flv file let them host 
+								// it elsewhere.
+								unlink($src_file);
+							}
+
+							// Before snapshotting the video to make a 
+							// thumbnail image, let's find out the length of 
+							// the video.
+							$ffmpeg_output = array();
+							exec($ffmpeg_path ." -i ". $dest_file ." 2>&1", $ffmpeg_output);
+
+							// Search each line in the $ffmpeg_output.
+							foreach ($ffmpeg_output as $key => $value)
+							{
+								if (preg_match('/Duration: [0-9]{2}:[0-9]{2}:[0-9]{2}/', $value, $matches))
+								{
+									// Now we are sure we have found the 
+									// duration, get the value we need.
+									$duration = substr($matches[0], 10);
+
+									// Calculate the half-time.
+									$duration_h = floor(substr($duration, 0, 2)/2);
+									if ($duration_h%2 == 1)
+									{
+										$duration_m = floor((substr($duration, 3, 2)+60)/2);
+									}
+									else
+									{
+										$duration_m = floor(substr($duration, 3, 2)/2);
+									}
+									if ($duration_m%2 == 1)
+									{
+										$duration_s = floor((substr($duration, 6, 2)+60)/2);
+									}
+									else
+									{
+										$duration_s = floor(substr($duration, 6, 2)/2);
+									}
+
+									// Let's create the image.
+									exec($ffmpeg_path ." -i ". $dest_file ." -an -ss ". $duration_h .":". $duration_m .":". $duration_s ." -t 00:00:01 -r 1 -y ". $dest_img);
+
+									// Let's turn the image into a thumbnail.
+									Image::factory($dest_img)->resize(80, 80, Image::WIDTH)->save($dest_img);
+
+									// We're done here.
+									break;
+								}
+							}
+						}
+					}
+					else
+					{
+						die('Your upload has failed.'); # TODO dying is never good.
+					}
+				}
+				// Everything went great! Let's add the update.
+				$update_model->manage_update(array(
+					'uid' => $this->uid,
+					'summary' => $summary,
+					'detail' => $detail,
+					'pid' => $pid,
+					'filename' => $attachment_filename,
+					'ext' => $extension,
+					'pastebin' => $pastebin,
+					'syntax' => $syntax
+				));
+
+				// Then load our success view.
+				$update_success_view = new View('update_success');
+
+				// Then generate content.
+				$this->template->content = array($update_success_view);
+			}
+			else
+			{
+				// Errors have occured. Fill in the form and set errors.
+				$update_form_view = new View('update_form');
+				$update_form_view->form = arr::overwrite(array(
 					'summary' => '',
 					'detail' => '',
 					'pastebin' => ''
-				);
+				), $validate->as_array());
+				$update_form_view->errors = $validate->errors('update_errors');
 
 				// Set list of projects.
 				$update_form_view->projects = $project_model->projects($this->uid);
@@ -270,8 +263,24 @@ class Updates_Controller extends Core_Controller {
 		}
 		else
 		{
-			// The person is a guest...
-			// TODO
+			// Load the necessary view.
+			$update_form_view = new View('update_form');
+
+			// If we didn't press submit, we want a blank form.
+			$update_form_view->form = array(
+				'summary' => '',
+				'detail' => '',
+				'pastebin' => ''
+			);
+
+			// Set list of projects.
+			$update_form_view->projects = $project_model->projects($this->uid);
+
+			// Set list of syntax highlight options.
+			$update_form_view->languages = Kohana::config('updates.languages');
+
+			// Generate the content.
+			$this->template->content = array($update_form_view);
 		}
 	}
 

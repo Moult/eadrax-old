@@ -9,8 +9,11 @@ if (isset($errors))
 echo form::open_multipart('updates');
 echo form::open_fieldset();
 echo form::legend('Add an Update');
-echo form::label('pid', 'Project:');
-echo form::dropdown('pid', $projects, 1) .'<br />';
+if ($this->logged_in == TRUE)
+{
+	echo form::label('pid', 'Project:');
+	echo form::dropdown('pid', $projects, 1) .'<br />';
+}
 echo form::label('summary', 'Update summary:');
 echo form::input('summary', $form['summary']) .'<br />';
 echo form::label('detail', 'Description:');
