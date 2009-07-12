@@ -143,4 +143,41 @@ class Update_Model extends Model {
 		}
 		$add_comment->insert('comments');
 	}
+
+	/**
+	 * Deletes a comment.
+	 *
+	 * @param int $cid The comment ID to delete.
+	 *
+	 * @return null
+	 */
+	public function delete_comment($cid)
+	{
+		$delete_comment = $this->db;
+		$delete_comment = $delete_comment->where('id', $cid)->delete('comments');
+	}
+
+	/**
+	 * Checks if a user owns a comment.
+	 *
+	 * @param int $cid The comment ID of the comment to check.
+	 * @param int $uid The user ID of the user.
+	 *
+	 * @return mixed
+	 */
+	public function check_comment_owner($cid, $uid = FALSE)
+	{
+		$db = $this->db;
+		$check_owner = $db->from('comments')->where(array('uid' => $uid, 'id' => $cid))->get()->count();
+
+		// $uid != 1 because guests cannot own anything.
+		if ($check_owner >= 1 && $uid != 1)
+		{
+			return TRUE;
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
 }

@@ -494,4 +494,38 @@ class Updates_Controller extends Core_Controller {
 			$this->template->content = array($comment_form_view);
 		}
 	}
+
+	/**
+	 * Deletes a comment.
+	 *
+	 * @param int $cid The comment ID of the comment to delete.
+	 *
+	 * @return null
+	 */
+	public function delete_comment($cid = FALSE)
+	{	
+		// Only logged in users are allowed.
+		$this->restrict_access();
+
+		// Load necessary models.
+		$update_model = new Update_Model;
+
+		// First check if you own the comment.
+		if (!empty($cid) && $update_model->check_comment_owner($cid, $this->uid))
+		{
+			// Delete the comment.
+			$update_model->delete_comment($cid);
+		}
+		else
+		{
+			die('Please ensure an ID is specified and you wrote the comment.'); # TODO dying isn't good.
+		}
+
+		// Load views.
+		$comment_delete_view = new View('comment_delete');
+
+		// Generate the content.
+		$this->template->content = array($comment_delete_view);
+	}
+
 }
