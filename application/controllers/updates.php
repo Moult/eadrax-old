@@ -385,4 +385,51 @@ class Updates_Controller extends Core_Controller {
 			$array->add_error($field, 'syntax_language');
 		}
 	}
+
+	/**
+	 * Deletes an update.
+	 *
+	 * @param int $uid The update ID of the update to delete.
+	 *
+	 * @return null
+	 */
+	public function delete($uid = FALSE)
+	{	
+		// Only logged in users are allowed.
+		$this->restrict_access();
+
+		// Load necessary models.
+		$update_model = new Update_Model;
+
+		// First check if you own the update.
+		if (!empty($uid) && $update_model->check_update_owner($uid, $this->uid))
+		{
+			// Determine the value of the updates's attached file.
+			$filename	= $update_model->update_information($uid);
+			$filename	= $filename['filename'];
+			$extension	= $update_model->update_information($uid);
+			$extension	= $extension['ext'];
+
+			// Is there an existing attachment?
+			if (!empty($filename))
+			{
+				// Delete the file.
+				unlink(DOCROOT .'uploads/files/'. $filename .'.'. $extension);
+				unlink(DOCROOT .'uploads/icons/'. $filename .'.jpg');
+			}
+
+			// Delete the update.
+			$update_model->delete_update($uid);
+		}
+		else
+		{
+			die('Please ensure an ID is specified and you own the update.'); # TODO dying isn't good.
+		}
+
+		// Load views.
+		$update_delete_view = new View('update_delete');
+
+		// Generate the content.
+		$this->template->content = array($update_delete_view);
+	}
 }

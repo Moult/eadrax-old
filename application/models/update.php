@@ -113,4 +113,17 @@ class Update_Model extends Model {
 
 		return $update_information;
 	}
+
+	/**
+	 * Deletes an update.
+	 *
+	 * @param int $uid The update ID to delete.
+	 *
+	 * @return null
+	 */
+	public function delete_update($uid)
+	{
+		$delete_update = $this->db;
+		$delete_update = $delete_update->where('id', $uid)->delete('updates');
+	}
 }
