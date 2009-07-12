@@ -432,4 +432,66 @@ class Updates_Controller extends Core_Controller {
 		// Generate the content.
 		$this->template->content = array($update_delete_view);
 	}
+
+	/**
+	 * TODO: This function demonstrates the use of the commenting ability.
+	 *
+	 * This will later be deleted to be integrated into the update view.
+	 *
+	 * @param int $uid The update ID to add the comment to.
+	 *
+	 * @return null
+	 */
+	public function comment($uid)
+	{
+		// Load necessary models.
+		$update_model = new Update_Model;
+
+		if ($this->input->post())
+		{
+			$comment = $this->input->post('comment');
+
+			// Validate the comment.
+			$validate = new Validation($this->input->post());
+			$validate->pre_filter('trim');
+			$validate->add_rules('comment', 'required', 'length[2, 400]', 'standard_text');
+
+			if ($validate->validate())
+			{
+				$update_model->add_comment(array(
+					'uid' => $this->uid,
+					'upid' => $uid,
+					'comment' => $comment
+				));
+
+				// Load our success view.
+				$comment_success_view = new View('comment_success');
+
+				// Then generate content.
+				$this->template->content = array($comment_success_view);
+			}
+			else
+			{
+				// Errors have occured. Fill in the form and set errors.
+				$comment_form_view = new View('comment_form');
+				$comment_form_view->uid = $uid;
+				$comment_form_view->form = arr::overwrite(array(
+					'comment' => ''
+				), $validate->as_array());
+				$comment_form_view->errors = $validate->errors('comment_errors');
+
+				// Generate the content.
+				$this->template->content = array($comment_form_view);
+			}
+		}
+		else
+		{
+			$comment_form_view = new View('comment_form');
+			$comment_form_view->uid = $uid;
+			$comment_form_view->form = array(
+				'comment' => ''
+			);
+			$this->template->content = array($comment_form_view);
+		}
+	}
 }

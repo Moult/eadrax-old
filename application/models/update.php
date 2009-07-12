@@ -126,4 +126,21 @@ class Update_Model extends Model {
 		$delete_update = $this->db;
 		$delete_update = $delete_update->where('id', $uid)->delete('updates');
 	}
+
+	/**
+	 * Adds a comment with the data specified in $data.
+	 *
+	 * @param array $data	An array with field_name=>content for data to add.
+	 *
+	 * @return null
+	 */
+	public function add_comment($data)
+	{
+		$add_comment = $this->db;
+		foreach ($data as $key => $value)
+		{
+			$add_comment->set($key, $value);
+		}
+		$add_comment->insert('comments');
+	}
 }
