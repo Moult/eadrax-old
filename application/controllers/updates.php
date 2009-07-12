@@ -35,15 +35,28 @@
  */
 class Updates_Controller extends Core_Controller {
 	/**
-	 * Adds a new update.
+	 * Adds/edits an update.
+	 *
+	 * @param int $uid If update ID is specified, we will edit it instead of 
+	 * adding a new update.
 	 *
 	 * @return null
 	 */
-	public function index()
+	public function add($uid = FALSE)
 	{
 		// Load necessary models.
 		$update_model	= new Update_Model;
 		$project_model	= new Project_Model;
+
+		// If editing...
+		if ($uid != FALSE)
+		{
+			// ... make sure they own the update,
+			if (!$update_model->check_update_owner($uid, $this->uid))
+			{
+				die('You are not allowed to edit this update.');
+			}
+		}
 
 		if ($this->input->post())
 		{
@@ -61,9 +74,19 @@ class Updates_Controller extends Core_Controller {
 				$pid = 1;
 			}
 
-			// Let's first assume there is no file being uploaded.
-			$attachment_filename = '';
-			$extension = '';
+			if ($uid == FALSE)
+			{
+				// Let's first assume there is no file being uploaded.
+				$attachment_filename = '';
+				$extension = '';
+			}
+			else
+			{
+				$attachment_filename = $update_model->update_information($uid);
+				$attachment_filename = $attachment_filename['filename'];
+				$extension = $update_model->update_information($uid);
+				$extension = $extension['ext'];
+			}
 
 			// Begin to validate the information.
 			$validate = new Validation($this->input->post());
@@ -84,6 +107,14 @@ class Updates_Controller extends Core_Controller {
 				// Check whether or not we even have a file to validate.
 				if (!empty($_FILES) && !empty($_FILES['attachment']['name']))
 				{
+					// If there is an existing file...
+					if (!empty($attachment_filename))
+					{
+						// ... Delete it!
+						unlink(DOCROOT .'uploads/files/'. $attachment_filename .'.'. $extension);
+						unlink(DOCROOT .'uploads/icons/'. $attachment_filename .'.jpg');
+					}
+
 					// The upload size limit will be different for guests and normal users.
 					if ($this->logged_in == TRUE)
 					{
@@ -112,7 +143,7 @@ class Updates_Controller extends Core_Controller {
 						// If it is an image, we need to thumbnail it.
 						if ($extension == 'gif' || $extension == 'jpg' || $extension == 'png')
 						{
-							Image::factory($filename)->resize(80, 80, Image::WIDTH)->save(DOCROOT .'uploads/icons/'. basename($filename));
+							Image::factory($filename)->resize(80, 80, Image::WIDTH)->save(DOCROOT .'uploads/icons/'. substr(basename($filename), 0, -3) .'jpg');
 						}
 
 						// If it is a video, we need to encode it.
@@ -222,17 +253,35 @@ class Updates_Controller extends Core_Controller {
 						die('Your upload has failed.'); # TODO dying is never good.
 					}
 				}
-				// Everything went great! Let's add the update.
-				$update_model->manage_update(array(
-					'uid' => $this->uid,
-					'summary' => $summary,
-					'detail' => $detail,
-					'pid' => $pid,
-					'filename' => $attachment_filename,
-					'ext' => $extension,
-					'pastebin' => $pastebin,
-					'syntax' => $syntax
-				));
+
+				if ($uid == FALSE)
+				{
+					// Everything went great! Let's add the update.
+					$update_model->manage_update(array(
+						'uid' => $this->uid,
+						'summary' => $summary,
+						'detail' => $detail,
+						'pid' => $pid,
+						'filename' => $attachment_filename,
+						'ext' => $extension,
+						'pastebin' => $pastebin,
+						'syntax' => $syntax
+					));
+				}
+				else
+				{
+					// Everything went great! Let's edit the update.
+					$update_model->manage_update(array(
+						'uid' => $this->uid,
+						'summary' => $summary,
+						'detail' => $detail,
+						'pid' => $pid,
+						'filename' => $attachment_filename,
+						'ext' => $extension,
+						'pastebin' => $pastebin,
+						'syntax' => $syntax
+					), $uid);
+				}
 
 				// Then load our success view.
 				$update_success_view = new View('update_success');
@@ -251,6 +300,11 @@ class Updates_Controller extends Core_Controller {
 				), $validate->as_array());
 				$update_form_view->errors = $validate->errors('update_errors');
 
+				if ($uid != FALSE)
+				{
+					$update_form_view->uid = $uid;
+				}
+
 				// Set list of projects.
 				$update_form_view->projects = $project_model->projects($this->uid);
 
@@ -266,12 +320,20 @@ class Updates_Controller extends Core_Controller {
 			// Load the necessary view.
 			$update_form_view = new View('update_form');
 
-			// If we didn't press submit, we want a blank form.
-			$update_form_view->form = array(
-				'summary' => '',
-				'detail' => '',
-				'pastebin' => ''
-			);
+			if ($uid == FALSE)
+			{
+				// If we didn't press submit, we want a blank form.
+				$update_form_view->form = array(
+					'summary' => '',
+					'detail' => '',
+					'pastebin' => ''
+				);
+			}
+			else
+			{
+				$update_form_view->form = $update_model->update_information($uid);
+				$update_form_view->uid = $uid;
+			}
 
 			// Set list of projects.
 			$update_form_view->projects = $project_model->projects($this->uid);

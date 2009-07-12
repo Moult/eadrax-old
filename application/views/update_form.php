@@ -6,9 +6,23 @@ if (isset($errors))
 		echo $error .'<br />';
 	}
 }
-echo form::open_multipart('updates');
+if (isset($uid))
+{
+	echo form::open_multipart('updates/add/'. $uid .'/');
+}
+else
+{
+	echo form::open_multipart('updates/add/');
+}
 echo form::open_fieldset();
-echo form::legend('Add an Update');
+if (isset($uid))
+{
+	echo form::legend('Edit Update');
+}
+else
+{
+	echo form::legend('Add an Update');
+}
 if ($this->logged_in == TRUE)
 {
 	echo form::label('pid', 'Project:');
@@ -24,7 +38,14 @@ echo form::label('syntax', 'Syntax Highlight:');
 echo form::dropdown('syntax', $languages, 1) .'<br />';
 echo form::label('pastebin', 'Pastebin:');
 echo form::textarea('pastebin', $form['pastebin']) .'<br />';
-echo form::submit('submit', 'add update');
+if (isset($uid))
+{
+	echo form::submit('submit', 'edit update');
+}
+else
+{
+	echo form::submit('submit', 'add update');
+}
 echo form::close_fieldset();
 echo form::close();
 ?>

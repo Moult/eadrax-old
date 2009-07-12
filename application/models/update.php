@@ -63,4 +63,54 @@ class Update_Model extends Model {
 			$manage_update->update('updates');
 		}
 	}
+
+	/**
+	 * Checks if a user owns a update, or returns the uid of the one who does.
+	 *
+	 * @param int $upid The update ID of the update to check.
+	 * @param int $uid The user ID of the user.
+	 *
+	 * @return mixed
+	 */
+	public function check_update_owner($upid, $uid = FALSE)
+	{
+		$db = $this->db;
+		if ($uid === FALSE)
+		{
+			$find_owner = $db->from('updates')->where('id', $upid)->get()->current();
+			return $find_owner->uid;
+		}
+		else
+		{
+			$check_owner = $db->from('updates')->where(array('uid' => $uid, 'id' => $upid))->get()->count();
+
+			// $uid != 1 because guests cannot own anything.
+			if ($check_owner >= 1 && $uid != 1)
+			{
+				return TRUE;
+			}
+			else
+			{
+				return FALSE;
+			}
+		}
+	}
+
+	/**
+	 * Returns all the data about an update with the id $uid.
+	 *
+	 * @param int $uid
+	 * 
+	 * @return array
+	 */
+	public function update_information($uid)
+	{
+		$update_information = new Database();
+		$update_information = $update_information->where('id', $uid);
+		$update_information = $update_information->get('updates');
+		$update_information = $update_information->result(FALSE);
+		$update_information = $update_information->current();
+
+		return $update_information;
+	}
 }
