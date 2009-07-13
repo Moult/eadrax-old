@@ -149,6 +149,20 @@ ALTER TABLE `kudos`
   ADD CONSTRAINT `kudos_ibfk_2` FOREIGN KEY (`upid`) REFERENCES `updates` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `kudos_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
+DROP TABLE IF EXISTS `subscribe`;
+CREATE TABLE IF NOT EXISTS `subscribe` (
+  `id` int(11) NOT NULL auto_increment,
+  `pid` int(11) NOT NULL,
+  `uid` int(11) NOT NULL,
+  PRIMARY KEY  (`id`),
+  KEY `pid` (`pid`),
+  KEY `uid` (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE `subscribe`
+  ADD CONSTRAINT `subscribe_ibfk_2` FOREIGN KEY (`uid`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `subscribe_ibfk_1` FOREIGN KEY (`pid`) REFERENCES `projects` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
 INSERT INTO `users` (
 `username` ,
 `password` ,
