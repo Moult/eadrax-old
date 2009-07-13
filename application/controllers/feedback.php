@@ -198,9 +198,14 @@ class Feedback_Controller extends Core_Controller {
 		$update_model = new Update_Model;
 		$project_model = new Project_Model;
 		$subscribe_model = new Subscribe_Model;
+		$track_model = new Track_Model;
 
+		$project_uid = $project_model->project_information($pid);
+		$project_uid = $project_uid['uid'];
+
+		// We cannot subscribe to somebody we are tracking.
 		// First check if they have already subscribed themselves...
-		if ($subscribe_model->check_project_subscriber($pid, $this->uid) || !$project_model->check_project_exists($pid))
+		if ($subscribe_model->check_project_subscriber($pid, $this->uid) || !$project_model->check_project_exists($pid) || $track_model->check_track_owner($project_uid, $this->uid))
 		{
 			// Load error view.
 			$subscribe_error_view = new View('subscribe_error');
@@ -210,7 +215,7 @@ class Feedback_Controller extends Core_Controller {
 		}
 		else
 		{
-			// Add the kudos!
+			// Subscribe the user!
 			$subscribe_model->subscribe($pid, $this->uid);
 
 			// Load success view.
@@ -218,6 +223,41 @@ class Feedback_Controller extends Core_Controller {
 
 			// Generate the content.
 			$this->template->content = array($subscribe_success_view);
+		}
+	}
+
+	/**
+	 * Unsubscribes a project subscription.
+	 *
+	 * @param int $pid The pid to untrack.
+	 *
+	 * @return null
+	 */
+	public function unsubscribe($pid)
+	{
+		// Only logged in users are allowed.
+		$this->restrict_access();
+
+		// Load necessary models.
+		$subscribe_model = new Subscribe_Model;
+
+		if ($subscribe_model->check_project_subscriber($pid, $this->uid))
+		{
+			$subscribe_model->delete($pid, $this->uid);
+
+			// Load success view.
+			$unsubscribe_success_view = new View('unsubscribe_success');
+
+			// Generate the content.
+			$this->template->content = array($unsubscribe_success_view);
+		}
+		else
+		{
+			// Load error view.
+			$unsubscribe_error_view = new View('unsubscribe_error');
+
+			// Generate the content.
+			$this->template->content = array($unsubscribe_error_view);
 		}
 	}
 
@@ -256,7 +296,7 @@ class Feedback_Controller extends Core_Controller {
 				$delete = $track_model->check_user_subscribe($uid, $this->uid);
 				foreach($delete as $row)
 				{
-					$subscribe_model->delete($row->id);
+					$subscribe_model->delete($row->pid, $row->uid);
 				}
 			}
 
@@ -268,6 +308,41 @@ class Feedback_Controller extends Core_Controller {
 
 			// Generate the content.
 			$this->template->content = array($track_success_view);
+		}
+	}
+
+	/**
+	 * Untracks a user.
+	 *
+	 * @param int $uid The uid to untrack.
+	 *
+	 * @return null
+	 */
+	public function untrack($uid)
+	{
+		// Only logged in users are allowed.
+		$this->restrict_access();
+
+		// Load necessary models.
+		$track_model = new Track_Model;
+
+		if ($track_model->check_track_owner($uid, $this->uid))
+		{
+			$track_model->delete($uid, $this->uid);
+
+			// Load success view.
+			$untrack_success_view = new View('untrack_success');
+
+			// Generate the content.
+			$this->template->content = array($untrack_success_view);
+		}
+		else
+		{
+			// Load error view.
+			$untrack_error_view = new View('untrack_error');
+
+			// Generate the content.
+			$this->template->content = array($untrack_error_view);
 		}
 	}
 

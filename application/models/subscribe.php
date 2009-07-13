@@ -87,13 +87,14 @@ class Subscribe_Model extends Model {
 	/**
 	 * Deletes a subscribe row.
 	 *
-	 * @param int $id The subscribe ID.
+	 * @param int $pid The project ID.
+	 * @param int $uid The user ID.
 	 *
 	 * @return null
 	 */
-	public function delete($id)
+	public function delete($pid, $uid)
 	{
 		$delete = $this->db;
-		$delete = $delete->where('id', $id)->delete('subscribe');
+		$delete = $delete->where(array('pid' => $pid, 'uid' => $uid))->delete('subscribe');
 	}
 }

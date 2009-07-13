@@ -95,7 +95,7 @@ class Track_Model extends Model {
 	public function check_user_subscribe($tuid, $uid)
 	{
 		$check = $this->db;
-		$check = $check->select('subscribe.id')
+		$check = $check->select('subscribe.uid', 'subscribe.pid')
 			->from('projects')
 			->where(array(
 			'projects.uid' => $tuid,
@@ -112,5 +112,19 @@ class Track_Model extends Model {
 		{
 			return FALSE;
 		}
+	}
+
+	/**
+	 * Deletes a track row.
+	 *
+	 * @param int $tuid The tracked ID.
+	 * @param int $uid The user ID.
+	 *
+	 * @return null
+	 */
+	public function delete($tuid, $uid)
+	{
+		$delete = $this->db;
+		$delete = $delete->where(array('track' => $tuid, 'uid' => $uid))->delete('track');
 	}
 }
