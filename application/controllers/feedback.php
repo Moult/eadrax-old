@@ -183,6 +183,45 @@ class Feedback_Controller extends Core_Controller {
 	}
 
 	/**
+	 * Subscribes the user to a project.
+	 *
+	 * @param int $uid The update ID to give the kudos to.
+	 *
+	 * @return null
+	 */
+	public function subscribe($pid)
+	{
+		// Only logged in users are allowed.
+		$this->restrict_access();
+
+		// Load necessary models.
+		$update_model = new Update_Model;
+		$project_model = new Project_Model;
+		$subscribe_model = new Subscribe_Model;
+
+		// First check if they have already subscribed themselves...
+		if ($subscribe_model->check_project_subscriber($pid, $this->uid) || !$project_model->check_project_exists($pid))
+		{
+			// Load error view.
+			$subscribe_error_view = new View('subscribe_error');
+
+			// Generate the content.
+			$this->template->content = array($subscribe_error_view);
+		}
+		else
+		{
+			// Add the kudos!
+			$subscribe_model->subscribe($pid, $this->uid);
+
+			// Load success view.
+			$subscribe_success_view = new View('subscribe_success');
+
+			// Generate the content.
+			$this->template->content = array($subscribe_success_view);
+		}
+	}
+
+	/**
 	 * Validates a captcha.
 	 *
 	 * @param Validation $array The array containing validation information.

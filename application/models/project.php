@@ -169,4 +169,26 @@ class Project_Model extends Model {
 
 		return $project_list;
 	}
+
+	/**
+	 * Checks if a project exists.
+	 *
+	 * @param int $pid The project ID to check.
+	 *
+	 * @return bool
+	 */
+	public function check_project_exists($pid)
+	{
+		$db = $this->db;
+		$check_exists = $db->from('projects')->where(array('id' => $pid))->get()->count();
+
+		if ($check_exists >= 1)
+		{
+			return TRUE;
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
 }
