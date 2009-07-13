@@ -139,6 +139,7 @@ CREATE TABLE IF NOT EXISTS `kudos` (
   `id` int(11) NOT NULL auto_increment,
   `uid` int(11) NOT NULL,
   `upid` int(11) NOT NULL,
+  `logtime` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
   PRIMARY KEY  (`id`),
   KEY `uid` (`uid`),
   KEY `upid` (`upid`)

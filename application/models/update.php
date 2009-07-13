@@ -97,6 +97,28 @@ class Update_Model extends Model {
 	}
 
 	/**
+	 * Checks if an update exists.
+	 *
+	 * @param int $upid The update ID to check.
+	 *
+	 * @return bool
+	 */
+	public function check_update_exists($upid)
+	{
+		$db = $this->db;
+		$check_exists = $db->from('updates')->where(array('id' => $upid))->get()->count();
+
+		if ($check_exists >= 1)
+		{
+			return TRUE;
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
+
+	/**
 	 * Returns all the data about an update with the id $uid.
 	 *
 	 * @param int $uid
@@ -205,18 +227,27 @@ class Update_Model extends Model {
 	}
 
 	/**
-	 * Adds a kudos row.
+	 * Adds a kudos row or returns the number of kudos.
 	 *
 	 * @param int $upid The update ID.
 	 * @param int $uid The user ID.
 	 *
-	 * @return null
+	 * @return mixed
 	 */
-	public function kudos($upid, $uid)
+	public function kudos($upid, $uid = FALSE)
 	{
-		$kudos = $this->db;
-		$kudos->set('upid', $upid);
-		$kudos->set('uid', $uid);
-		$kudos->insert('kudos');
+		if ($uid == FALSE)
+		{
+			$kudos = $this->db;
+			$kudos = $kudos->from('kudos')->where(array('upid' => $upid))->get()->count();
+			return $kudos;
+		}
+		else
+		{
+			$kudos = $this->db;
+			$kudos->set('upid', $upid);
+			$kudos->set('uid', $uid);
+			$kudos->insert('kudos');
+		}
 	}
 }

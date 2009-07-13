@@ -453,6 +453,12 @@ class Updates_Controller extends Core_Controller {
 		// Load necessary models.
 		$update_model = new Update_Model;
 
+		// Does the uid even exist?
+		if (!$update_model->check_update_exists($uid))
+		{
+			die('That update does not even exist!'); # TODO dying isn't good
+		}
+
 		if ($this->input->post())
 		{
 			$comment = $this->input->post('comment');
@@ -573,8 +579,9 @@ class Updates_Controller extends Core_Controller {
 		// Load necessary models.
 		$update_model = new Update_Model;
 
-		// First check if they have already kudos'd the update...
-		if ($update_model->check_kudos_owner($uid, $this->uid))
+		// First check if they have already kudos'd the update and they don't 
+		// own the update themselves...
+		if ($update_model->check_kudos_owner($uid, $this->uid) || $update_model->check_update_owner($uid, $this->uid) || !$update_model->check_update_exists($uid))
 		{
 			// Load error view.
 			$kudos_error_view = new View('kudos_error');
