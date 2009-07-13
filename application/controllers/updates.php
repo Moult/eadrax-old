@@ -456,6 +456,12 @@ class Updates_Controller extends Core_Controller {
 			$validate->pre_filter('trim');
 			$validate->add_rules('comment', 'required', 'length[2, 400]', 'standard_text');
 
+			if ($this->logged_in == FALSE)
+			{
+				$captcha = $this->input->post('captcha');
+				$validate->add_callbacks('captcha', array($this, '_validate_captcha'));
+			}
+
 			if ($validate->validate())
 			{
 				$update_model->add_comment(array(
@@ -528,4 +534,21 @@ class Updates_Controller extends Core_Controller {
 		$this->template->content = array($comment_delete_view);
 	}
 
+	/**
+	 * Validates a captcha.
+	 *
+	 * @param Validation $array The array containing validation information.
+	 * @param $field The key for the value.
+	 *
+	 * @return null
+	 */
+	public function _validate_captcha(Validation $array, $field)
+	{
+		$this->securimage = new Securimage;
+
+		if ($this->securimage->check($array[$field]) == FALSE)
+		{
+			$array->add_error($field, 'captcha');
+		}
+	}
 }

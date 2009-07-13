@@ -22,14 +22,26 @@
  * @copyright	Copyright (C) 2009 Eadrax Team
  */
 
-$lang = array(
-	'comment' => array(
-		'required'		=> 'The comment cannot be blank.',
-		'length'		=> 'Comment must be between 2-400 characters.',
-		'standard_text'	=> 'There are illegal characters in the comment.'
-	),
-
-	'captcha' => array(
-		'captcha' => 'You have entered the CAPTCHA code wrong.'
-	)
-);
+/**
+ *
+ * Updates controller added for update system.
+ *
+ * @category	Eadrax
+ * @package		Update
+ * @subpackage	Controllers
+ * @author		Eadrax Team
+ * @copyright	Copyright (C) 2009 Eadrax Team
+ * @version		$Id$
+ */
+class Image_Controller extends Core_Controller {
+	/**
+	 * Displays the CAPTCHA image.
+	 *
+	 * @return null
+	 */
+	public function securimage()
+	{
+		$this->securimage = new Securimage;
+		$this->securimage->show();
+	}
+}
