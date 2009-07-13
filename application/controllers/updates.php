@@ -196,7 +196,7 @@ class Updates_Controller extends Core_Controller {
 								$src_ar = 44100;
 
 								// Do the encoding!
-								exec($ffmpeg_path ." -i ". $src_file ." -ar ". $src_ar ." -ab ". $src_ab ." -f flv -s ". $src_width ."x". $src_height ." ". $dest_file);
+								exec($ffmpeg_path ." -i ". escapeshellarg($src_file) ." -ar ". $src_ar ." -ab ". $src_ab ." -f flv -s ". $src_width ."x". $src_height ." ". escapeshellarg($dest_file));
 
 								// Now our filetype extension has changed!
 								$extension = 'flv';
@@ -212,7 +212,7 @@ class Updates_Controller extends Core_Controller {
 							// thumbnail image, let's find out the length of 
 							// the video.
 							$ffmpeg_output = array();
-							exec($ffmpeg_path ." -i ". $dest_file ." 2>&1", $ffmpeg_output);
+							exec($ffmpeg_path ." -i ". escapeshellarg($dest_file) ." 2>&1", $ffmpeg_output);
 
 							// Search each line in the $ffmpeg_output.
 							foreach ($ffmpeg_output as $key => $value)
@@ -243,7 +243,7 @@ class Updates_Controller extends Core_Controller {
 									}
 
 									// Let's create the image.
-									exec($ffmpeg_path ." -i ". $dest_file ." -an -ss ". $duration_h .":". $duration_m .":". $duration_s ." -t 00:00:01 -r 1 -y ". $dest_img);
+									exec($ffmpeg_path ." -i ". escapeshellarg($dest_file) ." -an -ss ". $duration_h .":". $duration_m .":". $duration_s ." -t 00:00:01 -r 1 -y ". escapeshellarg($dest_img));
 
 									// Let's turn the image into a thumbnail.
 									Image::factory($dest_img)->resize(80, 80, Image::WIDTH)->save($dest_img);
