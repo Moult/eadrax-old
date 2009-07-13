@@ -6,7 +6,7 @@ if (isset($errors))
 		echo $error .'<br />';
 	}
 }
-echo form::open_multipart('updates/comment/'. $uid .'/');
+echo form::open_multipart('feedback/add/'. $uid .'/');
 echo form::open_fieldset();
 echo form::legend('Add a Comment');
 echo form::label('comment', 'Comment:');
