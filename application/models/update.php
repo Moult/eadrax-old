@@ -180,4 +180,43 @@ class Update_Model extends Model {
 			return FALSE;
 		}
 	}
+
+	/**
+	 * Checks if a user has already kudos'd an update.
+	 *
+	 * @param int $upid The update id to check.
+	 * @param int $uid The user id to check.
+	 *
+	 * @return bool
+	 */
+	public function check_kudos_owner($upid, $uid)
+	{
+		$db = $this->db;
+		$check_owner = $db->from('kudos')->where(array('uid' => $uid, 'upid' => $upid))->get()->count();
+
+		if ($check_owner >= 1)
+		{
+			return TRUE;
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
+
+	/**
+	 * Adds a kudos row.
+	 *
+	 * @param int $upid The update ID.
+	 * @param int $uid The user ID.
+	 *
+	 * @return null
+	 */
+	public function kudos($upid, $uid)
+	{
+		$kudos = $this->db;
+		$kudos->set('upid', $upid);
+		$kudos->set('uid', $uid);
+		$kudos->insert('kudos');
+	}
 }

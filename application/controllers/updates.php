@@ -557,4 +557,41 @@ class Updates_Controller extends Core_Controller {
 			$array->add_error($field, 'captcha');
 		}
 	}
+
+	/**
+	 * Adds a kudos to an update.
+	 *
+	 * @param int $uid The update ID to give the kudos to.
+	 *
+	 * @return null
+	 */
+	public function kudos($uid)
+	{
+		// Only logged in users are allowed.
+		$this->restrict_access();
+
+		// Load necessary models.
+		$update_model = new Update_Model;
+
+		// First check if they have already kudos'd the update...
+		if ($update_model->check_kudos_owner($uid, $this->uid))
+		{
+			// Load error view.
+			$kudos_error_view = new View('kudos_error');
+
+			// Generate the content.
+			$this->template->content = array($kudos_error_view);
+		}
+		else
+		{
+			// Add the kudos!
+			$update_model->kudos($uid, $this->uid);
+
+			// Load success view.
+			$kudos_success_view = new View('kudos_success');
+
+			// Generate the content.
+			$this->template->content = array($kudos_success_view);
+		}
+	}
 }
