@@ -185,7 +185,7 @@ class Feedback_Controller extends Core_Controller {
 	/**
 	 * Subscribes the user to a project.
 	 *
-	 * @param int $uid The update ID to give the kudos to.
+	 * @param int $pid The project ID to subscribe to.
 	 *
 	 * @return null
 	 */
@@ -218,6 +218,56 @@ class Feedback_Controller extends Core_Controller {
 
 			// Generate the content.
 			$this->template->content = array($subscribe_success_view);
+		}
+	}
+
+	/**
+	 * Makes a user track another user.
+	 *
+	 * @param int $uid The user ID to track.
+	 *
+	 * @return null
+	 */
+	public function track($uid)
+	{
+		// Only logged in users are allowed.
+		$this->restrict_access();
+
+		// Load necessary models.
+		$user_model = new User_Model;
+		$track_model = new Track_Model;
+		$subscribe_model = new Subscribe_Model;
+
+		// First check if they are already tracking the user...
+		if ($track_model->check_track_owner($uid, $this->uid) || !$user_model->check_user_exists($uid))
+		{
+			// Load error view.
+			$track_error_view = new View('track_error');
+
+			// Generate the content.
+			$this->template->content = array($track_error_view);
+		}
+		else
+		{
+			// Check if they are subscribed to any of the user's projects.
+			if ($track_model->check_user_subscribe($uid, $this->uid))
+			{
+				// Delete the subscribes.
+				$delete = $track_model->check_user_subscribe($uid, $this->uid);
+				foreach($delete as $row)
+				{
+					$subscribe_model->delete($row->id);
+				}
+			}
+
+			// Track the person!
+			$track_model->track($uid, $this->uid);
+
+			// Load success view.
+			$track_success_view = new View('track_success');
+
+			// Generate the content.
+			$this->template->content = array($track_success_view);
 		}
 	}
 

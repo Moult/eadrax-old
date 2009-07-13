@@ -73,4 +73,25 @@ class User_Model extends ORM {
 		}
 	}
 
+	/**
+	 * Checks if a user exists.
+	 *
+	 * @param int $uid The user ID to check.
+	 *
+	 * @return bool
+	 */
+	public function check_user_exists($uid)
+	{
+		$db = $this->db;
+		$check_exists = $db->from('users')->where(array('id' => $uid))->get()->count();
+
+		if ($check_exists >= 1)
+		{
+			return TRUE;
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
 }

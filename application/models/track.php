@@ -26,7 +26,7 @@ defined('SYSPATH') or die('No direct script access.');
 
 /**
  *
- * Model for the subscribe table.
+ * Model for the track table.
  *
  * @category	Eadrax
  * @package		Update
@@ -35,21 +35,21 @@ defined('SYSPATH') or die('No direct script access.');
  * @copyright	Copyright (C) 2009 Eadrax Team
  * @version		$Id$
  */
-class Subscribe_Model extends Model {
+class Track_Model extends Model {
 	/**
-	 * Checks if a user has already subscribed to a project.
+	 * Checks if a user has already tracked a user.
 	 *
-	 * @param int $pid The project id to check.
+	 * @param int $tuid The tracked user id to check.
 	 * @param int $uid The user id to check.
 	 *
 	 * @return bool
 	 */
-	public function check_project_subscriber($pid, $uid)
+	public function check_track_owner($tuid, $uid)
 	{
 		$db = $this->db;
-		$check_subscriber = $db->from('subscribe')->where(array('pid' => $pid, 'uid' => $uid))->get()->count();
+		$check_owner = $db->from('track')->where(array('uid' => $uid, 'track' => $tuid))->get()->count();
 
-		if ($check_subscriber >= 1)
+		if ($check_owner >= 1)
 		{
 			return TRUE;
 		}
@@ -60,40 +60,57 @@ class Subscribe_Model extends Model {
 	}
 
 	/**
-	 * Adds a subscribe row or returns the number of subscribers.
+	 * Adds a track row or returns the number of tracks.
 	 *
-	 * @param int $pid The subscribe ID.
+	 * @param int $tuid The tracked user ID.
 	 * @param int $uid The user ID.
 	 *
 	 * @return mixed
 	 */
-	public function subscribe($pid, $uid = FALSE)
+	public function track($tuid, $uid = FALSE)
 	{
 		if ($uid == FALSE)
 		{
-			$subscribers = $this->db;
-			$subscribers = $subscribers->from('subscribe')->where(array('pid' => $pid))->get()->count();
-			return $subscribers;
+			$track = $this->db;
+			$track = $track->from('track')->where(array('track' => $tuid))->get()->count();
+			return $track;
 		}
 		else
 		{
-			$subscribe = $this->db;
-			$subscribe->set('pid', $pid);
-			$subscribe->set('uid', $uid);
-			$subscribe->insert('subscribe');
+			$track = $this->db;
+			$track->set('track', $tuid);
+			$track->set('uid', $uid);
+			$track->insert('track');
 		}
 	}
 
 	/**
-	 * Deletes a subscribe row.
+	 * Checks if a user has subscribed to any of another user's projects.
 	 *
-	 * @param int $id The subscribe ID.
+	 * @param int $tuid The uid of the projects owner.
+	 * @param int $uid The uid of the subscriber.
 	 *
-	 * @return null
+	 * @return int
 	 */
-	public function delete($id)
+	public function check_user_subscribe($tuid, $uid)
 	{
-		$delete = $this->db;
-		$delete = $delete->where('id', $id)->delete('subscribe');
+		$check = $this->db;
+		$check = $check->select('subscribe.id')
+			->from('projects')
+			->where(array(
+			'projects.uid' => $tuid,
+			'subscribe.uid' => $uid
+		))->join('subscribe', array(
+			'projects.id' => 'subscribe.pid'
+		))->get();
+		$count = $check->count();
+		if ($count >= 1)
+		{
+			return $check;
+		}
+		else
+		{
+			return FALSE;
+		}
 	}
 }
