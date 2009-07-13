@@ -41,5 +41,9 @@ $lang = array(
 
 	'syntax' => array(
 		'syntax_language' => 'Syntax highlighting for that language is not supported'
+	),
+
+	'captcha' => array(
+		'captcha' => 'You have entered the CAPTCHA code wrong.'
 	)
 );

@@ -38,6 +38,12 @@ echo form::label('syntax', 'Syntax Highlight:');
 echo form::dropdown('syntax', $languages, 1) .'<br />';
 echo form::label('pastebin', 'Pastebin:');
 echo form::textarea('pastebin', $form['pastebin']) .'<br />';
+if ($this->logged_in == FALSE)
+{
+	echo form::label('captcha', 'CAPTCHA:');
+	echo form::input('captcha', '', 'maxlength="6"') .'<br />';
+	echo html::image('image/securimage', NULL, TRUE);
+}
 if (isset($uid))
 {
 	echo form::submit('submit', 'edit update');

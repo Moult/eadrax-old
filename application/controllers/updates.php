@@ -101,6 +101,12 @@ class Updates_Controller extends Core_Controller {
 				$validate->add_rules('pid', 'required', 'digit');
 				$validate->add_callbacks('pid', array($this, '_validate_project_owner'));
 			}
+			else
+			{
+				// If not logged in, validate the CAPTCHA!
+				$captcha = $this->input->post('captcha');
+				$validate->add_callbacks('captcha', array($this, '_validate_captcha'));
+			}
 
 			if ($validate->validate())
 			{
