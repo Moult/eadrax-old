@@ -35,6 +35,35 @@
  */
 class Updates_Controller extends Core_Controller {
 	/**
+	 * Displays an update.
+	 *
+	 * @param int $uid The update ID to display.
+	 *
+	 * @return null
+	 */
+	public function view($uid)
+	{
+		// Load necessary models.
+		$update_model	= new Update_Model;
+		$project_model	= new Project_Model;
+
+		// Let's grab all the information we can about the update.
+		$update_information = $update_model->update_information($uid);
+
+		// Load the view.
+		$update_view = new View('update');
+
+		// All this information is very useful to the view, let's pass it on.
+		foreach ($update_information as $key => $value)
+		{
+			$update_view->$key = $value;
+		}
+
+		// Generate the content.
+		$this->template->content = array($update_view);
+	}
+
+	/**
 	 * Adds/edits an update.
 	 *
 	 * @param int $uid If update ID is specified, we will edit it instead of 
