@@ -59,6 +59,26 @@ class Updates_Controller extends Core_Controller {
 			$update_view->$key = $value;
 		}
 
+		// Now let's start parsing information.
+
+		// How should we display the attachment?
+		if (empty($update_information['filename']))
+		{
+			$update_view->display = FALSE;
+		}
+		elseif ($update_information['ext'] == 'jpg' || $update_information['ext'] == 'png' || $update_information['ext'] == 'gif')
+		{
+			$update_view->display = 'image';
+		}
+		elseif ($update_information['ext'] == 'avi' || $update_information['ext'] == 'mpg' || $update_information['ext'] == 'mov' || $update_information['ext'] == 'flv' || $update_information['ext'] == 'ogg' || $update_information['ext'] == 'wmv')
+		{
+			$update_view->display = 'video';
+		}
+		else
+		{
+			$update_view->display = 'download';
+		}
+
 		// Generate the content.
 		$this->template->content = array($update_view);
 	}
@@ -148,6 +168,11 @@ class Updates_Controller extends Core_Controller {
 						// ... Delete it!
 						unlink(DOCROOT .'uploads/files/'. $attachment_filename .'.'. $extension);
 						unlink(DOCROOT .'uploads/icons/'. $attachment_filename .'.jpg');
+
+						if (file_exists(DOCROOT .'uploads/files/'. $filename .'_fit.jpg'))
+						{
+							unlink(DOCROOT .'uploads/files/'. $filename .'_fit.jpg');
+						}
 					}
 
 					// The upload size limit will be different for guests and normal users.
@@ -178,6 +203,14 @@ class Updates_Controller extends Core_Controller {
 						// If it is an image, we need to thumbnail it.
 						if ($extension == 'gif' || $extension == 'jpg' || $extension == 'png')
 						{
+							// If the width is greater than the layout width...
+							list($width, $height, $type, $attr) = getimagesize($filename);
+							if ($width > Kohana::config('updates.fit_width'))
+							{
+								// ... we need to resize it.
+								Image::factory($filename)->resize(Kohana::config('updates.fit_width'), Kohana::config('updates.fit_height'), Image::WIDTH)->save(DOCROOT .'uploads/files/'. substr(basename($filename), 0, -4) .'_fit.jpg');
+							}
+
 							Image::factory($filename)->resize(80, 80, Image::WIDTH)->save(DOCROOT .'uploads/icons/'. substr(basename($filename), 0, -3) .'jpg');
 						}
 
@@ -451,6 +484,11 @@ class Updates_Controller extends Core_Controller {
 				// Delete the file.
 				unlink(DOCROOT .'uploads/files/'. $filename .'.'. $extension);
 				unlink(DOCROOT .'uploads/icons/'. $filename .'.jpg');
+
+				if (file_exists(DOCROOT .'uploads/files/'. $filename .'_fit.jpg'))
+				{
+					unlink(DOCROOT .'uploads/files/'. $filename .'_fit.jpg');
+				}
 			}
 
 			// Delete the update.
@@ -466,5 +504,23 @@ class Updates_Controller extends Core_Controller {
 
 		// Generate the content.
 		$this->template->content = array($update_delete_view);
+	}
+
+	/**
+	 * Validates a captcha.
+	 *
+	 * @param Validation $array The array containing validation information.
+	 * @param $field The key for the value.
+	 *
+	 * @return null
+	 */
+	public function _validate_captcha(Validation $array, $field)
+	{
+		$this->securimage = new Securimage;
+
+		if ($this->securimage->check($array[$field]) == FALSE)
+		{
+			$array->add_error($field, 'captcha');
+		}
 	}
 }
