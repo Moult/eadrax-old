@@ -79,6 +79,23 @@ class Updates_Controller extends Core_Controller {
 			$update_view->display = 'download';
 		}
 
+		// Parse the pastebin.
+		if (!empty($update_information['pastebin']))
+		{
+			$geshi = new GeSHi($update_information['pastebin'], $update_information['syntax']);
+			$geshi->set_language_path(DOCROOT .'modules/geshi/resource/');
+			$geshi->set_header_type(GESHI_HEADER_PRE_VALID);
+			$geshi->enable_line_numbers(GESHI_FANCY_LINE_NUMBERS);
+			$geshi->enable_classes();
+
+			// This is HORRIBLE. I feel evil even typing this.
+			echo '<style type="text/css"><!--';
+			echo $geshi->get_stylesheet();
+			echo '--></style>';
+
+			$update_view->pastebin = $geshi->parse_code();
+		}
+
 		// Generate the content.
 		$this->template->content = array($update_view);
 	}
