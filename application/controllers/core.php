@@ -56,14 +56,14 @@ abstract class Core_Controller extends Template_Controller {
 		parent::__construct();
 
 		// Set the useful authentication variables.
-		$authlite = new Authlite;
-		if ($authlite->logged_in() == TRUE)
+		$this->authlite = new Authlite;
+		if ($this->authlite->logged_in() == TRUE)
 		{
-			$this->username		= $authlite->get_user()->username;
-			$this->uid			= $authlite->get_user()->id;
+			$this->username		= $this->authlite->get_user()->username;
+			$this->uid			= $this->authlite->get_user()->id;
 			$this->logged_in	= TRUE;
 		}
-		elseif ($authlite->logged_in() == FALSE)
+		elseif ($this->authlite->logged_in() == FALSE)
 		{
 			$this->username		= FALSE;
 			$this->uid			= FALSE;
