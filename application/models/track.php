@@ -85,6 +85,27 @@ class Track_Model extends Model {
 	}
 
 	/**
+	 * Returns a list of people who are tracking a user.
+	 *
+	 * @param int $uid The user ID.
+	 *
+	 * @return array
+	 */
+	public function track_list($uid)
+	{
+		$track = $this->db;
+		$track = $track->from('track')->where(array('track' => $uid))->orderby('id', 'DESC')->get();
+		$track_list = array();
+
+		foreach($track as $row)
+		{
+			$track_list[] = $row->uid;
+		}
+
+		return $track_list;
+	}
+
+	/**
 	 * Checks if a user has subscribed to any of another user's projects.
 	 *
 	 * @param int $tuid The uid of the projects owner.

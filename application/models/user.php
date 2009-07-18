@@ -94,4 +94,22 @@ class User_Model extends ORM {
 			return FALSE;
 		}
 	}
+
+	/**
+	 * Returns all the data about a user with the id $uid.
+	 *
+	 * @param int $uid
+	 * 
+	 * @return array
+	 */
+	public function user_information($uid)
+	{
+		$user_information = new Database();
+		$user_information = $user_information->where('id', $uid);
+		$user_information = $user_information->get('users');
+		$user_information = $user_information->result(FALSE);
+		$user_information = $user_information->current();
+
+		return $user_information;
+	}
 }

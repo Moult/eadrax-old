@@ -41,23 +41,37 @@ class Dashboard_Controller extends Core_Controller {
 	 */
 	public function index()
 	{
-		// Load necessary authentication modules.
-		$authlite = new Authlite;
+		// Only logged in users are allowed.
+		$this->restrict_access();
 
-		// Only logged in users can access the dashboard.
-		if ($authlite->logged_in() == TRUE)
-		{
-			// Yes, you are logged in.
-			echo 'You are logged in. Welcome, '. $authlite->get_user()->username .'.';
-		}
-		elseif ($authlite->logged_in() == FALSE)
-		{
-			// If not logged in, go and log in!
-			// Load the view.
-			$login = new View('login');
+		// Load necessary models.
+		$user_model = new User_Model;
+		$track_model = new Track_Model;
 
-			// Display the page.
-			$this->template->content = array($login);
+		// Load the view.
+		$dashboard_view = new View('dashboard');
+
+		// Send some basic variables to the view.
+		$dashboard_view->username = $this->username;
+
+		// Create the "tracking" widget.
+		$dashboard_tracking_view = new View('dashboard_tracking');
+		$dashboard_tracking_view->total = $track_model->track($this->uid);
+		$track_uids = $track_model->track_list($this->uid);
+		$track_list = array();
+
+		// Track uids only contains uids, however usernames are useful for the 
+		// view too!
+		foreach ($track_uids as $uid)
+		{
+			$username = $user_model->user_information($uid);
+			$username = $username['username'];
+			$track_list[] = array($uid, $username);
 		}
+
+		$dashboard_tracking_view->track_list = $track_list;
+
+		// Generate the content.
+		$this->template->content = array($dashboard_view, $dashboard_tracking_view);
 	}
 }
