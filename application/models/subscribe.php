@@ -85,6 +85,27 @@ class Subscribe_Model extends Model {
 	}
 
 	/**
+	 * Returns a list of people who are subscribed to a project.
+	 *
+	 * @param int $pid The project ID.
+	 *
+	 * @return array
+	 */
+	public function subscribe_list($pid)
+	{
+		$subscribe = $this->db;
+		$subscribe = $subscribe->from('subscribe')->where(array('pid' => $pid))->orderby('id', 'DESC')->get();
+		$subscribe_list = array();
+
+		foreach($subscribe as $row)
+		{
+			$subscribe_list[] = $row->uid;
+		}
+
+		return $subscribe_list;
+	}
+
+	/**
 	 * Deletes a subscribe row.
 	 *
 	 * @param int $pid The project ID.
