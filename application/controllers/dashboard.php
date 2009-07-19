@@ -106,7 +106,109 @@ class Dashboard_Controller extends Core_Controller {
 		$dashboard_subscribed_view->project_subscribe_list = $project_subscribe_list;
 		$dashboard_subscribed_view->total = $subscribed_total;
 
+		// Create the "popular_projects" widget.
+		$dashboard_popular_projects_view = new View('dashboard_popular_projects');
+
 		// Generate the content.
-		$this->template->content = array($dashboard_view, $dashboard_tracking_view, $dashboard_subscribed_view);
+		$this->template->content = array($dashboard_view, $dashboard_tracking_view, $dashboard_subscribed_view, $dashboard_popular_projects_view);
+	}
+
+	/**
+	 * Draws a pie chart of popular projects based on subscribers for user $uid
+	 *
+	 * @param int $uid The uid to draw for.
+	 *
+	 * @return null
+	 */
+	public function popular_project_subscribers($uid)
+	{
+		// Load necessary models.
+		$project_model = new Project_Model;
+		$subscribe_model = new Subscribe_Model;
+
+		// Calculate the information needed in the graph.
+		$projects = $project_model->projects($uid);
+
+		// We will not track the "Uncategorised" project as it is special.
+		unset($projects[1]);
+
+		$project_subscribe_list = array();
+		$project_name_list = array();
+
+		foreach ($projects as $pid => $p_name)
+		{
+			$subscribed_number = $subscribe_model->subscribe($pid);
+			$project_subscribe_list[] = $subscribed_number;
+			$project_name_list[] = $p_name .' ('. $subscribed_number .')';
+		}
+
+		// ... require needed files for graph generation.
+		require Kohana::find_file('vendor', 'pchart/pChart/pData', $required = TRUE, $ext = 'class');
+		require Kohana::find_file('vendor', 'pchart/pChart/pChart', $required = TRUE, $ext = 'class');
+
+		// Dataset definition
+		$DataSet = new pData;
+		$DataSet->AddPoint($project_subscribe_list, 'Serie1');
+		$DataSet->AddPoint($project_name_list, 'Serie2');
+		$DataSet->AddAllSeries();
+		$DataSet->SetAbsciseLabelSerie('Serie2');
+
+		// Initialise the graph
+		$Test = new pChart(410,200);  
+		$Test->drawFilledRoundedRectangle(7,7,403,193,5,240,240,240);  
+		$Test->drawRoundedRectangle(5,5,405,195,5,230,230,230); 
+
+		// Draw the pie chart
+		$Test->setFontProperties(DOCROOT.'application/vendor/pchart/Fonts/tahoma.ttf',8);
+		$Test->drawPieGraph($DataSet->GetData(),$DataSet->GetDataDescription(),160,90,110,PIE_PERCENTAGE,TRUE,50,20,5);  
+		$Test->drawPieLegend(310,15,$DataSet->GetData(),$DataSet->GetDataDescription(),250,250,250); 
+
+		//$Test->Render('example10.png');
+		$Test->Stroke('example10.png');
+	}
+
+
+	/**
+	 * Draws a random testing graph
+	 *
+	 * DEMO CODE FOR pChart CLASS. WILL REMOVE LATER.
+	 */
+	public function graph()
+	{
+		require Kohana::find_file('vendor', 'pchart/pChart/pData', $required = TRUE, $ext = 'class');
+		require Kohana::find_file('vendor', 'pchart/pChart/pChart', $required = TRUE, $ext = 'class');
+
+		// Dataset definition
+		$DataSet = new pData;
+		//$DataSet->ImportFromCSV('./application/vendor/pchart/Sample/datawithtitle.csv',",",array(1,2,3),TRUE,0);
+		$DataSet->AddPoint(array(1,4,2,3,1,4,2,0,4,5,6,3));
+		$DataSet->AddSerie();
+		$DataSet->SetSerieName('Sample Data', 'Serie1');
+		//$DataSet->AddAllSeries();
+		//$DataSet->SetAbsciseLabelSerie();
+
+		// Initialise the graph
+		$Test = new pChart(700,230);
+		$Test->setFontProperties(DOCROOT.'application/vendor/pchart/Fonts/tahoma.ttf',8);
+		$Test->setGraphArea(60,30,680,200);
+		$Test->drawFilledRoundedRectangle(7,7,693,223,5,240,240,240);
+		$Test->drawRoundedRectangle(5,5,695,225,5,230,230,230);
+		$Test->drawGraphArea(255,255,255);
+		$Test->drawScale($DataSet->GetData(),$DataSet->GetDataDescription(),SCALE_NORMAL,150,150,150,TRUE,0,2);
+		$Test->drawGrid(4,220,220,220);
+
+		// Draw the 0 line
+		$Test->setFontProperties(DOCROOT.'application/vendor/pchart/Fonts/tahoma.ttf',6);
+		$Test->drawTreshold(0,143,55,72,TRUE,TRUE);
+
+		// Draw the filled line graph
+		$Test->drawLineGraph($DataSet->GetData(),$DataSet->GetDataDescription());
+
+		// Finish the graph
+		$Test->setFontProperties(DOCROOT.'application/vendor/pchart/Fonts/tahoma.ttf',8);
+		$Test->drawLegend(65,35,$DataSet->GetDataDescription(),255,255,255);
+		$Test->setFontProperties(DOCROOT.'application/vendor/pchart/Fonts/tahoma.ttf',10);
+		$Test->drawTitle(60,22,"Example 6",50,50,50,585);
+		$Test->Stroke("example6.png");
 	}
 }
