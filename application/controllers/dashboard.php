@@ -49,6 +49,7 @@ class Dashboard_Controller extends Core_Controller {
 		$track_model = new Track_Model;
 		$subscribe_model = new Subscribe_Model;
 		$project_model = new Project_Model;
+		$kudos_model = new Kudos_Model;
 
 		// Load the view.
 		$dashboard_view = new View('dashboard');
@@ -106,11 +107,80 @@ class Dashboard_Controller extends Core_Controller {
 		$dashboard_subscribed_view->project_subscribe_list = $project_subscribe_list;
 		$dashboard_subscribed_view->total = $subscribed_total;
 
+		// Create the "kudos" widget.
+		$dashboard_kudos_view = new View('dashboard_kudos');
+		$kudos_total = 0;
+
+		foreach ($projects as $pid => $p_name)
+		{
+			$kudos_number = $kudos_model->kudos_project($pid);
+
+			// Add up the number of kudos
+			$kudos_total = $kudos_total + $kudos_number;
+		}
+
+		// Set all the information we gathered...
+		$dashboard_kudos_view->total = $kudos_total;
+
 		// Create the "popular_projects" widget.
 		$dashboard_popular_projects_view = new View('dashboard_popular_projects');
 
 		// Generate the content.
-		$this->template->content = array($dashboard_view, $dashboard_tracking_view, $dashboard_subscribed_view, $dashboard_popular_projects_view);
+		$this->template->content = array($dashboard_view, $dashboard_tracking_view, $dashboard_subscribed_view, $dashboard_popular_projects_view, $dashboard_kudos_view);
+	}
+
+	/**
+	 * Draws a pie chart of popular projects based on kudos for user $uid
+	 *
+	 * @param int $uid The uid to draw for.
+	 *
+	 * @return null
+	 */
+	public function popular_project_kudos($uid)
+	{
+		// Load necessary models.
+		$project_model = new Project_Model;
+		$kudos_model = new Kudos_Model;
+
+		// Calculate the information needed in the graph.
+		$projects = $project_model->projects($uid);
+
+		// We will not track the "Uncategorised" project as it is special.
+		unset($projects[1]);
+
+		$project_kudos_list = array();
+		$project_name_list = array();
+
+		foreach ($projects as $pid => $p_name)
+		{
+			$kudos_number = $kudos_model->kudos_project($pid);
+			$project_kudos_list[] = $kudos_number;
+			$project_name_list[] = $p_name .' ('. $kudos_number .')';
+		}
+
+		// ... require needed files for graph generation.
+		require Kohana::find_file('vendor', 'pchart/pChart/pData', $required = TRUE, $ext = 'class');
+		require Kohana::find_file('vendor', 'pchart/pChart/pChart', $required = TRUE, $ext = 'class');
+
+		// Dataset definition
+		$DataSet = new pData;
+		$DataSet->AddPoint($project_kudos_list, 'Serie1');
+		$DataSet->AddPoint($project_name_list, 'Serie2');
+		$DataSet->AddAllSeries();
+		$DataSet->SetAbsciseLabelSerie('Serie2');
+
+		// Initialise the graph
+		$Test = new pChart(410,200);  
+		$Test->drawFilledRoundedRectangle(7,7,403,193,5,240,240,240);  
+		$Test->drawRoundedRectangle(5,5,405,195,5,230,230,230); 
+
+		// Draw the pie chart
+		$Test->setFontProperties(DOCROOT.'application/vendor/pchart/Fonts/tahoma.ttf',8);
+		$Test->drawPieGraph($DataSet->GetData(),$DataSet->GetDataDescription(),160,90,110,PIE_PERCENTAGE,TRUE,50,20,5);  
+		$Test->drawPieLegend(310,15,$DataSet->GetData(),$DataSet->GetDataDescription(),250,250,250); 
+
+		//$Test->Render('example10.png');
+		$Test->Stroke('example10.png');
 	}
 
 	/**

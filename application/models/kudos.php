@@ -83,4 +83,25 @@ class Kudos_Model extends Model {
 			$kudos->insert('kudos');
 		}
 	}
+
+	/**
+	 * Returns the total number of kudos a project has.
+	 *
+	 * @param int $pid The project ID.
+	 *
+	 * @return array
+	 */
+	public function kudos_project($pid)
+	{
+		$kudos = $this->db;
+		$kudos = $kudos->select('kudos.upid')
+			->from('updates')
+			->where(array(
+				'updates.pid' => $pid
+			))->join('kudos', array(
+				'kudos.upid' => 'updates.id'
+			))->get();
+		$count = $kudos->count();
+		return $count;
+	}
 }
