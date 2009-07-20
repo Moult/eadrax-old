@@ -88,16 +88,18 @@ class Kudos_Model extends Model {
 	 * Returns the total number of kudos a project has.
 	 *
 	 * @param int $pid The project ID.
+	 * @param int $uid The user id of the project.
 	 *
 	 * @return array
 	 */
-	public function kudos_project($pid)
+	public function kudos_project($pid, $uid)
 	{
 		$kudos = $this->db;
 		$kudos = $kudos->select('kudos.upid')
 			->from('updates')
 			->where(array(
-				'updates.pid' => $pid
+				'updates.pid' => $pid,
+				'updates.uid' => $uid
 			))->join('kudos', array(
 				'kudos.upid' => 'updates.id'
 			))->get();

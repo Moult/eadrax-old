@@ -79,28 +79,28 @@ class Dashboard_Controller extends Core_Controller {
 		$subscribed_total = 0;
 		$projects = $project_model->projects($this->uid);
 
-		// We will not track the "Uncategorised" project as it is special.
-		unset($projects[1]);
-
 		$project_subscribe_list = array();
 
 		foreach ($projects as $pid => $p_name)
 		{
-			$subscribe_uids = $subscribe_model->subscribe_list($pid);
-			$subscribe_list = array();
-
-			foreach ($subscribe_uids as $uid)
+			if ($pid != 1)
 			{
-				$username = $user_model->user_information($uid);
-				$username = $username['username'];
-				$subscribe_list[] = array($uid, $username);
+				$subscribe_uids = $subscribe_model->subscribe_list($pid);
+				$subscribe_list = array();
+
+				foreach ($subscribe_uids as $uid)
+				{
+					$username = $user_model->user_information($uid);
+					$username = $username['username'];
+					$subscribe_list[] = array($uid, $username);
+				}
+
+				$subscribed_number = $subscribe_model->subscribe($pid);
+				$project_subscribe_list[$pid] = array($p_name, $subscribed_number, $subscribe_list);
+
+				// Add up the number of subscribers
+				$subscribed_total = $subscribed_total + $subscribed_number;
 			}
-
-			$subscribed_number = $subscribe_model->subscribe($pid);
-			$project_subscribe_list[$pid] = array($p_name, $subscribed_number, $subscribe_list);
-
-			// Add up the number of subscribers
-			$subscribed_total = $subscribed_total + $subscribed_number;
 		}
 
 		// Set all the information we gathered...
@@ -113,7 +113,7 @@ class Dashboard_Controller extends Core_Controller {
 
 		foreach ($projects as $pid => $p_name)
 		{
-			$kudos_number = $kudos_model->kudos_project($pid);
+			$kudos_number = $kudos_model->kudos_project($pid, $this->uid);
 
 			// Add up the number of kudos
 			$kudos_total = $kudos_total + $kudos_number;
@@ -125,9 +125,64 @@ class Dashboard_Controller extends Core_Controller {
 		// Create the "popular_projects" widget.
 		$dashboard_popular_projects_view = new View('dashboard_popular_projects');
 
+		// Create the "projects_activity" widget.
+		$dashboard_projects_activity_view = new View('dashboard_projects_activity');
+
 		// Generate the content.
-		$this->template->content = array($dashboard_view, $dashboard_tracking_view, $dashboard_subscribed_view, $dashboard_popular_projects_view, $dashboard_kudos_view);
+		$this->template->content = array($dashboard_view, $dashboard_tracking_view, $dashboard_subscribed_view, $dashboard_popular_projects_view, $dashboard_kudos_view, $dashboard_projects_activity_view);
 	}
+
+	/**
+	 * Draws a pie chart of project activity for user $uid
+	 *
+	 * @param int $uid The uid to draw for.
+	 *
+	 * @return null
+	 */
+	public function projects_activity($uid)
+	{
+		// Load necessary models.
+		$project_model = new Project_Model;
+		$update_model = new Update_Model;
+
+		// Calculate the information needed in the graph.
+		$projects = $project_model->projects($uid);
+
+		$project_kudos_list = array();
+		$project_name_list = array();
+
+		foreach ($projects as $pid => $p_name)
+		{
+			$update_number = $update_model->project_updates($pid, $uid);
+			$project_update_list[] = $update_number;
+			$project_name_list[] = $p_name .' ('. $update_number .')';
+		}
+
+		// ... require needed files for graph generation.
+		require Kohana::find_file('vendor', 'pchart/pChart/pData', $required = TRUE, $ext = 'class');
+		require Kohana::find_file('vendor', 'pchart/pChart/pChart', $required = TRUE, $ext = 'class');
+
+		// Dataset definition
+		$DataSet = new pData;
+		$DataSet->AddPoint($project_update_list, 'Serie1');
+		$DataSet->AddPoint($project_name_list, 'Serie2');
+		$DataSet->AddAllSeries();
+		$DataSet->SetAbsciseLabelSerie('Serie2');
+
+		// Initialise the graph
+		$Test = new pChart(440,200);  
+		$Test->drawFilledRoundedRectangle(7,7,433,193,5,240,240,240);  
+		$Test->drawRoundedRectangle(5,5,435,195,5,230,230,230); 
+
+		// Draw the pie chart
+		$Test->setFontProperties(DOCROOT.'application/vendor/pchart/Fonts/tahoma.ttf',8);
+		$Test->drawPieGraph($DataSet->GetData(),$DataSet->GetDataDescription(),160,90,110,PIE_PERCENTAGE,TRUE,50,20,5);  
+		$Test->drawPieLegend(310,15,$DataSet->GetData(),$DataSet->GetDataDescription(),250,250,250); 
+
+		//$Test->Render('example10.png');
+		$Test->Stroke('example10.png');
+	}
+
 
 	/**
 	 * Draws a pie chart of popular projects based on kudos for user $uid
@@ -145,15 +200,12 @@ class Dashboard_Controller extends Core_Controller {
 		// Calculate the information needed in the graph.
 		$projects = $project_model->projects($uid);
 
-		// We will not track the "Uncategorised" project as it is special.
-		unset($projects[1]);
-
 		$project_kudos_list = array();
 		$project_name_list = array();
 
 		foreach ($projects as $pid => $p_name)
 		{
-			$kudos_number = $kudos_model->kudos_project($pid);
+			$kudos_number = $kudos_model->kudos_project($pid, $uid);
 			$project_kudos_list[] = $kudos_number;
 			$project_name_list[] = $p_name .' ('. $kudos_number .')';
 		}
@@ -170,9 +222,9 @@ class Dashboard_Controller extends Core_Controller {
 		$DataSet->SetAbsciseLabelSerie('Serie2');
 
 		// Initialise the graph
-		$Test = new pChart(410,200);  
-		$Test->drawFilledRoundedRectangle(7,7,403,193,5,240,240,240);  
-		$Test->drawRoundedRectangle(5,5,405,195,5,230,230,230); 
+		$Test = new pChart(440,200);  
+		$Test->drawFilledRoundedRectangle(7,7,433,193,5,240,240,240);  
+		$Test->drawRoundedRectangle(5,5,435,195,5,230,230,230); 
 
 		// Draw the pie chart
 		$Test->setFontProperties(DOCROOT.'application/vendor/pchart/Fonts/tahoma.ttf',8);
@@ -195,21 +247,33 @@ class Dashboard_Controller extends Core_Controller {
 		// Load necessary models.
 		$project_model = new Project_Model;
 		$subscribe_model = new Subscribe_Model;
+		$track_model = new Track_Model;
 
 		// Calculate the information needed in the graph.
 		$projects = $project_model->projects($uid);
 
 		// We will not track the "Uncategorised" project as it is special.
-		unset($projects[1]);
+		//unset($projects[1]);
 
 		$project_subscribe_list = array();
 		$project_name_list = array();
 
 		foreach ($projects as $pid => $p_name)
 		{
-			$subscribed_number = $subscribe_model->subscribe($pid);
-			$project_subscribe_list[] = $subscribed_number;
-			$project_name_list[] = $p_name .' ('. $subscribed_number .')';
+			if ($pid == 1)
+			{
+				// Because you cannot subscribe to uncategorised projects, this 
+				// will instead show the number of people tracking you.
+				$subscribed_number = $track_model->track($uid);
+				$project_subscribe_list[] = $subscribed_number;
+				$project_name_list[] = 'Trackers ('. $subscribed_number .')';
+			}
+			else
+			{
+				$subscribed_number = $subscribe_model->subscribe($pid);
+				$project_subscribe_list[] = $subscribed_number;
+				$project_name_list[] = $p_name .' ('. $subscribed_number .')';
+			}
 		}
 
 		// ... require needed files for graph generation.
@@ -224,9 +288,9 @@ class Dashboard_Controller extends Core_Controller {
 		$DataSet->SetAbsciseLabelSerie('Serie2');
 
 		// Initialise the graph
-		$Test = new pChart(410,200);  
-		$Test->drawFilledRoundedRectangle(7,7,403,193,5,240,240,240);  
-		$Test->drawRoundedRectangle(5,5,405,195,5,230,230,230); 
+		$Test = new pChart(440,200);  
+		$Test->drawFilledRoundedRectangle(7,7,433,193,5,240,240,240);  
+		$Test->drawRoundedRectangle(5,5,435,195,5,230,230,230); 
 
 		// Draw the pie chart
 		$Test->setFontProperties(DOCROOT.'application/vendor/pchart/Fonts/tahoma.ttf',8);

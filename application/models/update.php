@@ -148,4 +148,19 @@ class Update_Model extends Model {
 		$delete_update = $this->db;
 		$delete_update = $delete_update->where('id', $uid)->delete('updates');
 	}
+
+	/**
+	 * Returns the number of updates in a project.
+	 *
+	 * @param int $pid The project ID.
+	 * @param int $uid The user ID who owns the project.
+	 *
+	 * @return array
+	 */
+	public function project_updates($pid, $uid)
+	{
+		$db = $this->db;
+		$count = $db->from('updates')->where(array('pid' => $pid, 'uid' => $uid))->get()->count();
+		return $count;
+	}
 }
