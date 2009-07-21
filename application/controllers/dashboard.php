@@ -50,6 +50,7 @@ class Dashboard_Controller extends Core_Controller {
 		$subscribe_model = new Subscribe_Model;
 		$project_model = new Project_Model;
 		$kudos_model = new Kudos_Model;
+		$update_model = new Update_Model;
 
 		// Load the view.
 		$dashboard_view = new View('dashboard');
@@ -128,8 +129,98 @@ class Dashboard_Controller extends Core_Controller {
 		// Create the "projects_activity" widget.
 		$dashboard_projects_activity_view = new View('dashboard_projects_activity');
 
+		// Create the "update_activity" widget.
+		$dashboard_update_activity_view = new View('dashboard_update_activity');
+
 		// Generate the content.
-		$this->template->content = array($dashboard_view, $dashboard_tracking_view, $dashboard_subscribed_view, $dashboard_popular_projects_view, $dashboard_kudos_view, $dashboard_projects_activity_view);
+		$this->template->content = array($dashboard_view, $dashboard_update_activity_view, $dashboard_tracking_view, $dashboard_subscribed_view, $dashboard_popular_projects_view, $dashboard_kudos_view, $dashboard_projects_activity_view);
+	}
+
+	/**
+	 * Draws a line chart of update activity for user $uid
+	 *
+	 * @param int $uid The uid to draw for.
+	 *
+	 * @return null
+	 */
+	public function update_activity($uid)
+	{
+		// Load necessary models.
+		$project_model = new Project_Model;
+		$update_model = new Update_Model;
+
+		// Calculate the time ranges 5 weeks into the past.
+		$week8_end = date("Y-m-d", strtotime("last Monday"));
+		$week8_start = date("Y-m-d", strtotime("last Monday", strtotime($week8_end)));
+		$week7_start = date("Y-m-d", strtotime("last Monday", strtotime($week8_start)));
+		$week6_start = date("Y-m-d", strtotime("last Monday", strtotime($week7_start)));
+		$week5_start = date("Y-m-d", strtotime("last Monday", strtotime($week6_start)));
+		$week4_start = date("Y-m-d", strtotime("last Monday", strtotime($week5_start)));
+		$week3_start = date("Y-m-d", strtotime("last Monday", strtotime($week4_start)));
+		$week2_start = date("Y-m-d", strtotime("last Monday", strtotime($week3_start)));
+		$week1_start = date("Y-m-d", strtotime("last Monday", strtotime($week2_start)));
+
+		// Calculate the information needed in the graph.
+		$projects = $project_model->projects($uid);
+
+		$activity_list = array();
+		$activity_list[] = $update_model->update_number_time($this->uid, $week1_start, $week2_start);
+		$activity_list[] = $update_model->update_number_time($this->uid, $week2_start, $week3_start);
+		$activity_list[] = $update_model->update_number_time($this->uid, $week3_start, $week4_start);
+		$activity_list[] = $update_model->update_number_time($this->uid, $week4_start, $week5_start);
+		$activity_list[] = $update_model->update_number_time($this->uid, $week5_start, $week6_start);
+		$activity_list[] = $update_model->update_number_time($this->uid, $week6_start, $week7_start);
+		$activity_list[] = $update_model->update_number_time($this->uid, $week7_start, $week8_start);
+		$activity_list[] = $update_model->update_number_time($this->uid, $week8_start, $week8_end);
+
+		// Reformat the dates to show in the graph nicely.
+		$date_array = array(
+			date("d/m", strtotime($week2_start)),
+			date("d/m", strtotime($week3_start)),
+			date("d/m", strtotime($week4_start)),
+			date("d/m", strtotime($week5_start)),
+			date("d/m", strtotime($week6_start)),
+			date("d/m", strtotime($week7_start)),
+			date("d/m", strtotime($week8_start)),
+			date("d/m", strtotime($week8_end))
+		);
+
+
+		// ... require needed files for graph generation.
+		require Kohana::find_file('vendor', 'pchart/pChart/pData', $required = TRUE, $ext = 'class');
+		require Kohana::find_file('vendor', 'pchart/pChart/pChart', $required = TRUE, $ext = 'class');
+
+		// Dataset definition
+		$DataSet = new pData;
+		$DataSet->AddPoint($activity_list);
+		$DataSet->AddSerie();
+		$DataSet->AddPoint($date_array,"XLabel");
+		$DataSet->SetSerieName('Updates', 'Serie1');
+		$DataSet->SetAbsciseLabelSerie("XLabel");
+		$DataSet->SetYAxisName("Updates");
+
+		// Initialise the graph
+		$Test = new pChart(700,230);
+		$Test->setFontProperties(DOCROOT.'application/vendor/pchart/Fonts/tahoma.ttf',8);
+		$Test->setGraphArea(60,30,680,200);
+		$Test->drawFilledRoundedRectangle(7,7,693,223,5,240,240,240);
+		$Test->drawRoundedRectangle(5,5,695,225,5,230,230,230);
+		$Test->drawGraphArea(255,255,255);
+		$Test->drawScale($DataSet->GetData(),$DataSet->GetDataDescription(),SCALE_NORMAL,150,150,150,TRUE,0,2);
+		$Test->drawGrid(4,220,220,220);
+
+		// Draw the 0 line
+		$Test->setFontProperties(DOCROOT.'application/vendor/pchart/Fonts/tahoma.ttf',6);
+		$Test->drawTreshold(0,143,55,72,TRUE,TRUE);
+
+		// Draw the line graph
+		$Test->drawLineGraph($DataSet->GetData(),$DataSet->GetDataDescription());
+		$Test->drawPlotGraph($DataSet->GetData(),$DataSet->GetDataDescription(),3,2,255,255,255);
+
+		// Finish the graph
+		$Test->setFontProperties(DOCROOT.'application/vendor/pchart/Fonts/tahoma.ttf',8);
+		$Test->setFontProperties(DOCROOT.'application/vendor/pchart/Fonts/tahoma.ttf',10);
+		$Test->Stroke("example6.png");
 	}
 
 	/**

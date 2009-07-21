@@ -163,4 +163,20 @@ class Update_Model extends Model {
 		$count = $db->from('updates')->where(array('pid' => $pid, 'uid' => $uid))->get()->count();
 		return $count;
 	}
+
+	/**
+	 * Returns the number of updates by a user within two dates.
+	 *
+	 * @param int $uid The user ID.
+	 * @param int $start The start date.
+	 * @param int $end The end date.
+	 *
+	 * @return int
+	 */
+	public function update_number_time($uid, $start, $end)
+	{
+		$db = $this->db;
+		$count = $db->from('updates')->where(array('uid' => $uid, 'logtime <' => $end, 'logtime >=' => $start))->get()->count();
+		return $count;
+	}
 }
