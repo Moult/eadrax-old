@@ -125,15 +125,130 @@ class Dashboard_Controller extends Core_Controller {
 
 		// Create the "popular_projects" widget.
 		$dashboard_popular_projects_view = new View('dashboard_popular_projects');
+		list($width, $height, $type, $attr) = getimagesize(url::site('dashboard/popular_project_subscribers/'. $this->uid));
+		if ($width == 1)
+		{
+			$dashboard_popular_projects_view->error = TRUE;
+		}
 
 		// Create the "projects_activity" widget.
 		$dashboard_projects_activity_view = new View('dashboard_projects_activity');
+		list($width, $height, $type, $attr) = getimagesize(url::site('dashboard/projects_activity/'. $this->uid));
+		if ($width == 1)
+		{
+			$dashboard_projects_activity_view->error = TRUE;
+		}
 
 		// Create the "update_activity" widget.
 		$dashboard_update_activity_view = new View('dashboard_update_activity');
 
+		// Create the "comment_activity" widget.
+		$dashboard_comment_activity_view = new View('dashboard_comment_activity');
+
 		// Generate the content.
-		$this->template->content = array($dashboard_view, $dashboard_update_activity_view, $dashboard_tracking_view, $dashboard_subscribed_view, $dashboard_popular_projects_view, $dashboard_kudos_view, $dashboard_projects_activity_view);
+		$this->template->content = array($dashboard_view, $dashboard_update_activity_view, $dashboard_comment_activity_view, $dashboard_tracking_view, $dashboard_subscribed_view, $dashboard_popular_projects_view, $dashboard_kudos_view, $dashboard_projects_activity_view);
+	}
+
+	/**
+	 * Draws a line chart of comment activity for user $uid
+	 *
+	 * This graph shows comments directed at the user $uid as well as the 
+	 * comments created by the user $uid.
+	 *
+	 * @param int $uid The uid to draw for.
+	 *
+	 * @return null
+	 */
+	public function comment_activity($uid)
+	{
+		// Load necessary models.
+		$project_model = new Project_Model;
+		$comment_model = new Comment_Model;
+
+		// Calculate the time ranges 5 weeks into the past.
+		$week8_end = date("Y-m-d", strtotime("last Monday"));
+		$week8_start = date("Y-m-d", strtotime("last Monday", strtotime($week8_end)));
+		$week7_start = date("Y-m-d", strtotime("last Monday", strtotime($week8_start)));
+		$week6_start = date("Y-m-d", strtotime("last Monday", strtotime($week7_start)));
+		$week5_start = date("Y-m-d", strtotime("last Monday", strtotime($week6_start)));
+		$week4_start = date("Y-m-d", strtotime("last Monday", strtotime($week5_start)));
+		$week3_start = date("Y-m-d", strtotime("last Monday", strtotime($week4_start)));
+		$week2_start = date("Y-m-d", strtotime("last Monday", strtotime($week3_start)));
+		$week1_start = date("Y-m-d", strtotime("last Monday", strtotime($week2_start)));
+
+		$comment_by_list = array();
+		$comment_by_list[] = $comment_model->comment_number_time($this->uid, $week1_start, $week2_start);
+		$comment_by_list[] = $comment_model->comment_number_time($this->uid, $week2_start, $week3_start);
+		$comment_by_list[] = $comment_model->comment_number_time($this->uid, $week3_start, $week4_start);
+		$comment_by_list[] = $comment_model->comment_number_time($this->uid, $week4_start, $week5_start);
+		$comment_by_list[] = $comment_model->comment_number_time($this->uid, $week5_start, $week6_start);
+		$comment_by_list[] = $comment_model->comment_number_time($this->uid, $week6_start, $week7_start);
+		$comment_by_list[] = $comment_model->comment_number_time($this->uid, $week7_start, $week8_start);
+		$comment_by_list[] = $comment_model->comment_number_time($this->uid, $week8_start, $week8_end);
+
+		$comment_for_list = array();
+		$comment_for_list[] = $comment_model->comment_for_number_time($this->uid, $week1_start, $week2_start);
+		$comment_for_list[] = $comment_model->comment_for_number_time($this->uid, $week2_start, $week3_start);
+		$comment_for_list[] = $comment_model->comment_for_number_time($this->uid, $week3_start, $week4_start);
+		$comment_for_list[] = $comment_model->comment_for_number_time($this->uid, $week4_start, $week5_start);
+		$comment_for_list[] = $comment_model->comment_for_number_time($this->uid, $week5_start, $week6_start);
+		$comment_for_list[] = $comment_model->comment_for_number_time($this->uid, $week6_start, $week7_start);
+		$comment_for_list[] = $comment_model->comment_for_number_time($this->uid, $week7_start, $week8_start);
+		$comment_for_list[] = $comment_model->comment_for_number_time($this->uid, $week8_start, $week8_end);
+
+
+		// Reformat the dates to show in the graph nicely.
+		$date_array = array(
+			date("d/m", strtotime($week2_start)),
+			date("d/m", strtotime($week3_start)),
+			date("d/m", strtotime($week4_start)),
+			date("d/m", strtotime($week5_start)),
+			date("d/m", strtotime($week6_start)),
+			date("d/m", strtotime($week7_start)),
+			date("d/m", strtotime($week8_start)),
+			date("d/m", strtotime($week8_end))
+		);
+
+
+		// ... require needed files for graph generation.
+		require Kohana::find_file('vendor', 'pchart/pChart/pData', $required = TRUE, $ext = 'class');
+		require Kohana::find_file('vendor', 'pchart/pChart/pChart', $required = TRUE, $ext = 'class');
+
+		// Dataset definition
+		$DataSet = new pData;
+		$DataSet->AddPoint($comment_by_list,"Serie1");
+		$DataSet->AddPoint($comment_for_list,"Serie2");
+		$DataSet->AddSerie('Serie1');
+		$DataSet->AddSerie('Serie2');
+		$DataSet->AddPoint($date_array,"XLabel");
+		$DataSet->SetSerieName('By you', 'Serie1');
+		$DataSet->SetSerieName('For you', 'Serie2');
+		$DataSet->SetAbsciseLabelSerie("XLabel");
+		$DataSet->SetYAxisName("Comments");
+
+		// Initialise the graph
+		$Test = new pChart(700,230);
+		$Test->setFontProperties(DOCROOT.'application/vendor/pchart/Fonts/tahoma.ttf',8);
+		$Test->setGraphArea(60,30,680,200);
+		$Test->drawFilledRoundedRectangle(7,7,693,223,5,240,240,240);
+		$Test->drawRoundedRectangle(5,5,695,225,5,230,230,230);
+		$Test->drawGraphArea(255,255,255);
+		$Test->drawScale($DataSet->GetData(),$DataSet->GetDataDescription(),SCALE_NORMAL,150,150,150,TRUE,0,2);
+		$Test->drawGrid(4,220,220,220);
+
+		// Draw the 0 line
+		$Test->setFontProperties(DOCROOT.'application/vendor/pchart/Fonts/tahoma.ttf',6);
+		$Test->drawTreshold(0,143,55,72,TRUE,TRUE);
+
+		// Draw the line graph
+		$Test->drawLineGraph($DataSet->GetData(),$DataSet->GetDataDescription());
+		$Test->drawPlotGraph($DataSet->GetData(),$DataSet->GetDataDescription(),3,2,255,255,255);
+
+		// Finish the graph
+		$Test->setFontProperties(DOCROOT.'application/vendor/pchart/Fonts/tahoma.ttf',8);
+		$Test->drawLegend(65,35,$DataSet->GetDataDescription(),255,255,255);
+		$Test->setFontProperties(DOCROOT.'application/vendor/pchart/Fonts/tahoma.ttf',10);
+		$Test->Stroke("example6.png");
 	}
 
 	/**
@@ -159,9 +274,6 @@ class Dashboard_Controller extends Core_Controller {
 		$week3_start = date("Y-m-d", strtotime("last Monday", strtotime($week4_start)));
 		$week2_start = date("Y-m-d", strtotime("last Monday", strtotime($week3_start)));
 		$week1_start = date("Y-m-d", strtotime("last Monday", strtotime($week2_start)));
-
-		// Calculate the information needed in the graph.
-		$projects = $project_model->projects($uid);
 
 		$activity_list = array();
 		$activity_list[] = $update_model->update_number_time($this->uid, $week1_start, $week2_start);
@@ -241,12 +353,22 @@ class Dashboard_Controller extends Core_Controller {
 
 		$project_kudos_list = array();
 		$project_name_list = array();
+		$total = 0;
 
 		foreach ($projects as $pid => $p_name)
 		{
 			$update_number = $update_model->project_updates($pid, $uid);
 			$project_update_list[] = $update_number;
 			$project_name_list[] = $p_name .' ('. $update_number .')';
+			$total = $total + $update_number;
+		}
+
+		if ($total == 0)
+		{
+			$handle = ImageCreate(1,1) or die('fail');
+			header("content-type: image/jpeg");
+			Imagejpeg($handle);
+			die();
 		}
 
 		// ... require needed files for graph generation.
@@ -348,6 +470,7 @@ class Dashboard_Controller extends Core_Controller {
 
 		$project_subscribe_list = array();
 		$project_name_list = array();
+		$total = 0;
 
 		foreach ($projects as $pid => $p_name)
 		{
@@ -365,6 +488,15 @@ class Dashboard_Controller extends Core_Controller {
 				$project_subscribe_list[] = $subscribed_number;
 				$project_name_list[] = $p_name .' ('. $subscribed_number .')';
 			}
+			$total = $total + $subscribed_number;
+		}
+
+		if ($total == 0)
+		{
+			$handle = ImageCreate(1,1) or die('fail');
+			header("content-type: image/jpeg");
+			Imagejpeg($handle);
+			die();
 		}
 
 		// ... require needed files for graph generation.
