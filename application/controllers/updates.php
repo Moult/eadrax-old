@@ -47,6 +47,9 @@ class Updates_Controller extends Core_Controller {
 		$update_model	= new Update_Model;
 		$project_model	= new Project_Model;
 
+		// We have viewed the update, let's update the update statistics :D
+		$update_model->view($uid);
+
 		// Let's grab all the information we can about the update.
 		$update_information = $update_model->update_information($uid);
 
