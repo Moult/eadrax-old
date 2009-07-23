@@ -35,6 +35,28 @@
  */
 class Projects_Controller extends Core_Controller {
 	/**
+	 * View a project.
+	 *
+	 * This will show the latest updates in a concise and paginated form 
+	 * together with a project overview.
+	 *
+	 * @param int $pid The project ID to view.
+	 *
+	 * @return null
+	 */
+	public function view($pid)
+	{
+		// Load necessary models.
+		$update_model	= new Update_Model;
+		$project_model	= new Project_Model;
+
+		// Let's update the project view statistics
+		$project_model->view($pid);
+
+		// TODO
+	}
+
+	/**
 	 * Process to add/edit a project.
 	 *
 	 * @param int $pid If a project ID is specified, we will edit instead of 
