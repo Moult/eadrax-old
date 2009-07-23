@@ -191,4 +191,19 @@ class Project_Model extends Model {
 			return FALSE;
 		}
 	}
+
+	/**
+	 * Adds a view to a project.
+	 *
+	 * @param int $pid The project id to add the view to.
+	 *
+	 * @return null
+	 */
+	public function view($pid)
+	{
+		$view = $this->db;
+		$view = $view->set('views', new Database_Expression('views+1'));
+		$view = $view->where('id', $pid);
+		$view = $view->update('projects');
+	}
 }

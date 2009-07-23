@@ -6,9 +6,23 @@ if (isset($errors))
 		echo $error .'<br />';
 	}
 }
-echo form::open_multipart('projects/add');
+if (isset($pid))
+{
+	echo form::open_multipart('projects/add/'. $pid .'/');
+}
+else
+{
+	echo form::open_multipart('projects/add/');
+}
 echo form::open_fieldset();
-echo form::legend('Add a Project');
+if (isset($pid))
+{
+	echo form::legend('Edit Project');
+}
+else
+{
+	echo form::legend('Add a Project');
+}
 echo form::label('name', 'Project Name:');
 echo form::input('name', $form['name']) .'<br />';
 echo form::label('cid', 'Category:');
@@ -21,7 +35,14 @@ echo form::label('description', 'Description:');
 echo form::textarea('description', $form['description']) .'<br />';
 echo form::label('icon', 'Project Icon:');
 echo form::upload(array('name'=>'icon')) .'<br />';
-echo form::submit('submit', 'add project');
+if (isset($pid))
+{
+	echo form::submit('submit', 'edit project');
+}
+else
+{
+	echo form::submit('submit', 'add project');
+}
 echo form::close_fieldset();
 echo form::close();
 ?>

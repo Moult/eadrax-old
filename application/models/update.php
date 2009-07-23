@@ -65,6 +65,21 @@ class Update_Model extends Model {
 	}
 
 	/**
+	 * Adds a view to an update.
+	 *
+	 * @param int $uid The update id to add the view to.
+	 *
+	 * @return null
+	 */
+	public function view($uid)
+	{
+		$view = $this->db;
+		$view = $view->set('views', new Database_Expression('views+1'));
+		$view = $view->where('id', $uid);
+		$view = $view->update('updates');
+	}
+
+	/**
 	 * Checks if a user owns a update, or returns the uid of the one who does.
 	 *
 	 * @param int $upid The update ID of the update to check.
