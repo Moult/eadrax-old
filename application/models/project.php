@@ -206,4 +206,31 @@ class Project_Model extends Model {
 		$view = $view->where('id', $pid);
 		$view = $view->update('projects');
 	}
+
+	/**
+	 * Returns the number of project views for a user within two dates.
+	 *
+	 * @param int $uid The user ID.
+	 * @param int $start The start date.
+	 * @param int $end The end date.
+	 *
+	 * @return int
+	 */
+	public function view_number_time($uid, $start, $end)
+	{
+		$count = 0;
+		$db = $this->db;
+		$projects = $db
+			->from('projects')
+			->where(array(
+				'uid' => $uid,
+				'logtime <' => $end,
+				'logtime >=' => $start
+			))->get();
+		foreach($projects as $row)
+		{
+			$count = $count + $row->views;
+		}
+		return $count;
+	}
 }

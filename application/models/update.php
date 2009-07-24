@@ -194,4 +194,31 @@ class Update_Model extends Model {
 		$count = $db->from('updates')->where(array('uid' => $uid, 'logtime <' => $end, 'logtime >=' => $start))->get()->count();
 		return $count;
 	}
+
+	/**
+	 * Returns the number of update views for a user within two dates.
+	 *
+	 * @param int $uid The user ID.
+	 * @param int $start The start date.
+	 * @param int $end The end date.
+	 *
+	 * @return int
+	 */
+	public function view_number_time($uid, $start, $end)
+	{
+		$count = 0;
+		$db = $this->db;
+		$updates = $db
+			->from('updates')
+			->where(array(
+				'uid' => $uid,
+				'logtime <' => $end,
+				'logtime >=' => $start
+			))->get();
+		foreach($updates as $row)
+		{
+			$count = $count + $row->views;
+		}
+		return $count;
+	}
 }
