@@ -205,6 +205,7 @@ class Dashboard_Controller extends Core_Controller {
 		// ... require needed files for graph generation.
 		require Kohana::find_file('vendor', 'pchart/pChart/pData', $required = TRUE, $ext = 'class');
 		require Kohana::find_file('vendor', 'pchart/pChart/pChart', $required = TRUE, $ext = 'class');
+		require Kohana::find_file('vendor', 'pchart/pChart/pCache', $required = TRUE, $ext = 'class');
 
 		// Dataset definition
 		$DataSet = new pData;
@@ -213,6 +214,10 @@ class Dashboard_Controller extends Core_Controller {
 		$DataSet->AddPoint($date_array,"XLabel");
 		$DataSet->SetAbsciseLabelSerie("XLabel");
 		$DataSet->SetYAxisName("Views");
+
+		// Cache definition
+		$Cache = new pCache();
+		$Cache->GetFromCache('view_activity_'. $uid, $DataSet->GetData());
 
 		// Initialise the graph
 		$Test = new pChart(700,230);
@@ -233,9 +238,8 @@ class Dashboard_Controller extends Core_Controller {
 		$Test->drawPlotGraph($DataSet->GetData(),$DataSet->GetDataDescription(),3,2,255,255,255);
 
 		// Finish the graph
-		$Test->setFontProperties(DOCROOT.'application/vendor/pchart/Fonts/tahoma.ttf',8);
-		$Test->setFontProperties(DOCROOT.'application/vendor/pchart/Fonts/tahoma.ttf',10);
-		$Test->Stroke("example6.png");
+		$Cache->WriteToCache('view_activity_'. $uid, $DataSet->GetData(), $Test);
+		$Test->Stroke();
 	}
 
 	/**
@@ -302,6 +306,7 @@ class Dashboard_Controller extends Core_Controller {
 		// ... require needed files for graph generation.
 		require Kohana::find_file('vendor', 'pchart/pChart/pData', $required = TRUE, $ext = 'class');
 		require Kohana::find_file('vendor', 'pchart/pChart/pChart', $required = TRUE, $ext = 'class');
+		require Kohana::find_file('vendor', 'pchart/pChart/pCache', $required = TRUE, $ext = 'class');
 
 		// Dataset definition
 		$DataSet = new pData;
@@ -314,6 +319,10 @@ class Dashboard_Controller extends Core_Controller {
 		$DataSet->SetSerieName('For you', 'Serie2');
 		$DataSet->SetAbsciseLabelSerie("XLabel");
 		$DataSet->SetYAxisName("Comments");
+
+		// Cache definition
+		$Cache = new pCache();
+		$Cache->GetFromCache('comment_activity_'. $uid, $DataSet->GetData());
 
 		// Initialise the graph
 		$Test = new pChart(700,230);
@@ -337,7 +346,9 @@ class Dashboard_Controller extends Core_Controller {
 		$Test->setFontProperties(DOCROOT.'application/vendor/pchart/Fonts/tahoma.ttf',8);
 		$Test->drawLegend(65,35,$DataSet->GetDataDescription(),255,255,255);
 		$Test->setFontProperties(DOCROOT.'application/vendor/pchart/Fonts/tahoma.ttf',10);
-		$Test->Stroke("example6.png");
+
+		$Cache->WriteToCache('comment_activity_'. $uid, $DataSet->GetData(), $Test);
+		$Test->Stroke();
 	}
 
 	/**
@@ -390,6 +401,7 @@ class Dashboard_Controller extends Core_Controller {
 		// ... require needed files for graph generation.
 		require Kohana::find_file('vendor', 'pchart/pChart/pData', $required = TRUE, $ext = 'class');
 		require Kohana::find_file('vendor', 'pchart/pChart/pChart', $required = TRUE, $ext = 'class');
+		require Kohana::find_file('vendor', 'pchart/pChart/pCache', $required = TRUE, $ext = 'class');
 
 		// Dataset definition
 		$DataSet = new pData;
@@ -399,6 +411,10 @@ class Dashboard_Controller extends Core_Controller {
 		$DataSet->SetSerieName('Updates', 'Serie1');
 		$DataSet->SetAbsciseLabelSerie("XLabel");
 		$DataSet->SetYAxisName("Updates");
+
+		// Cache definition
+		$Cache = new pCache();
+		$Cache->GetFromCache('update_activity_'. $uid, $DataSet->GetData());
 
 		// Initialise the graph
 		$Test = new pChart(700,230);
@@ -419,9 +435,8 @@ class Dashboard_Controller extends Core_Controller {
 		$Test->drawPlotGraph($DataSet->GetData(),$DataSet->GetDataDescription(),3,2,255,255,255);
 
 		// Finish the graph
-		$Test->setFontProperties(DOCROOT.'application/vendor/pchart/Fonts/tahoma.ttf',8);
-		$Test->setFontProperties(DOCROOT.'application/vendor/pchart/Fonts/tahoma.ttf',10);
-		$Test->Stroke("example6.png");
+		$Cache->WriteToCache('update_activity_'. $uid, $DataSet->GetData(), $Test);
+		$Test->Stroke();
 	}
 
 	/**
@@ -463,6 +478,7 @@ class Dashboard_Controller extends Core_Controller {
 		// ... require needed files for graph generation.
 		require Kohana::find_file('vendor', 'pchart/pChart/pData', $required = TRUE, $ext = 'class');
 		require Kohana::find_file('vendor', 'pchart/pChart/pChart', $required = TRUE, $ext = 'class');
+		require Kohana::find_file('vendor', 'pchart/pChart/pCache', $required = TRUE, $ext = 'class');
 
 		// Dataset definition
 		$DataSet = new pData;
@@ -470,6 +486,10 @@ class Dashboard_Controller extends Core_Controller {
 		$DataSet->AddPoint($project_name_list, 'Serie2');
 		$DataSet->AddAllSeries();
 		$DataSet->SetAbsciseLabelSerie('Serie2');
+
+		// Cache definition
+		$Cache = new pCache();
+		$Cache->GetFromCache('projects_activity_'. $uid, $DataSet->GetData());
 
 		// Initialise the graph
 		$Test = new pChart(440,200);  
@@ -481,8 +501,8 @@ class Dashboard_Controller extends Core_Controller {
 		$Test->drawPieGraph($DataSet->GetData(),$DataSet->GetDataDescription(),160,90,110,PIE_PERCENTAGE,TRUE,50,20,5);  
 		$Test->drawPieLegend(310,15,$DataSet->GetData(),$DataSet->GetDataDescription(),250,250,250); 
 
-		//$Test->Render('example10.png');
-		$Test->Stroke('example10.png');
+		$Cache->WriteToCache('projects_activity_'. $uid, $DataSet->GetData(), $Test);
+		$Test->Stroke();
 	}
 
 
@@ -515,6 +535,7 @@ class Dashboard_Controller extends Core_Controller {
 		// ... require needed files for graph generation.
 		require Kohana::find_file('vendor', 'pchart/pChart/pData', $required = TRUE, $ext = 'class');
 		require Kohana::find_file('vendor', 'pchart/pChart/pChart', $required = TRUE, $ext = 'class');
+		require Kohana::find_file('vendor', 'pchart/pChart/pCache', $required = TRUE, $ext = 'class');
 
 		// Dataset definition
 		$DataSet = new pData;
@@ -522,6 +543,10 @@ class Dashboard_Controller extends Core_Controller {
 		$DataSet->AddPoint($project_name_list, 'Serie2');
 		$DataSet->AddAllSeries();
 		$DataSet->SetAbsciseLabelSerie('Serie2');
+
+		// Cache definition
+		$Cache = new pCache();
+		$Cache->GetFromCache('popular_project_kudos_'. $uid, $DataSet->GetData());
 
 		// Initialise the graph
 		$Test = new pChart(440,200);  
@@ -533,8 +558,8 @@ class Dashboard_Controller extends Core_Controller {
 		$Test->drawPieGraph($DataSet->GetData(),$DataSet->GetDataDescription(),160,90,110,PIE_PERCENTAGE,TRUE,50,20,5);  
 		$Test->drawPieLegend(310,15,$DataSet->GetData(),$DataSet->GetDataDescription(),250,250,250); 
 
-		//$Test->Render('example10.png');
-		$Test->Stroke('example10.png');
+		$Cache->WriteToCache('popular_project_kudos_'. $uid, $DataSet->GetData(), $Test);
+		$Test->Stroke();
 	}
 
 	/**
@@ -591,6 +616,7 @@ class Dashboard_Controller extends Core_Controller {
 		// ... require needed files for graph generation.
 		require Kohana::find_file('vendor', 'pchart/pChart/pData', $required = TRUE, $ext = 'class');
 		require Kohana::find_file('vendor', 'pchart/pChart/pChart', $required = TRUE, $ext = 'class');
+		require Kohana::find_file('vendor', 'pchart/pChart/pCache', $required = TRUE, $ext = 'class');
 
 		// Dataset definition
 		$DataSet = new pData;
@@ -598,6 +624,10 @@ class Dashboard_Controller extends Core_Controller {
 		$DataSet->AddPoint($project_name_list, 'Serie2');
 		$DataSet->AddAllSeries();
 		$DataSet->SetAbsciseLabelSerie('Serie2');
+
+		// Cache definition
+		$Cache = new pCache();
+		$Cache->GetFromCache('popular_project_subscribers_'. $uid, $DataSet->GetData());
 
 		// Initialise the graph
 		$Test = new pChart(440,200);  
@@ -609,52 +639,7 @@ class Dashboard_Controller extends Core_Controller {
 		$Test->drawPieGraph($DataSet->GetData(),$DataSet->GetDataDescription(),160,90,110,PIE_PERCENTAGE,TRUE,50,20,5);  
 		$Test->drawPieLegend(310,15,$DataSet->GetData(),$DataSet->GetDataDescription(),250,250,250); 
 
-		//$Test->Render('example10.png');
-		$Test->Stroke('example10.png');
-	}
-
-
-	/**
-	 * Draws a random testing graph
-	 *
-	 * DEMO CODE FOR pChart CLASS. WILL REMOVE LATER.
-	 */
-	public function graph()
-	{
-		require Kohana::find_file('vendor', 'pchart/pChart/pData', $required = TRUE, $ext = 'class');
-		require Kohana::find_file('vendor', 'pchart/pChart/pChart', $required = TRUE, $ext = 'class');
-
-		// Dataset definition
-		$DataSet = new pData;
-		//$DataSet->ImportFromCSV('./application/vendor/pchart/Sample/datawithtitle.csv',",",array(1,2,3),TRUE,0);
-		$DataSet->AddPoint(array(1,4,2,3,1,4,2,0,4,5,6,3));
-		$DataSet->AddSerie();
-		$DataSet->SetSerieName('Sample Data', 'Serie1');
-		//$DataSet->AddAllSeries();
-		//$DataSet->SetAbsciseLabelSerie();
-
-		// Initialise the graph
-		$Test = new pChart(700,230);
-		$Test->setFontProperties(DOCROOT.'application/vendor/pchart/Fonts/tahoma.ttf',8);
-		$Test->setGraphArea(60,30,680,200);
-		$Test->drawFilledRoundedRectangle(7,7,693,223,5,240,240,240);
-		$Test->drawRoundedRectangle(5,5,695,225,5,230,230,230);
-		$Test->drawGraphArea(255,255,255);
-		$Test->drawScale($DataSet->GetData(),$DataSet->GetDataDescription(),SCALE_NORMAL,150,150,150,TRUE,0,2);
-		$Test->drawGrid(4,220,220,220);
-
-		// Draw the 0 line
-		$Test->setFontProperties(DOCROOT.'application/vendor/pchart/Fonts/tahoma.ttf',6);
-		$Test->drawTreshold(0,143,55,72,TRUE,TRUE);
-
-		// Draw the filled line graph
-		$Test->drawLineGraph($DataSet->GetData(),$DataSet->GetDataDescription());
-
-		// Finish the graph
-		$Test->setFontProperties(DOCROOT.'application/vendor/pchart/Fonts/tahoma.ttf',8);
-		$Test->drawLegend(65,35,$DataSet->GetDataDescription(),255,255,255);
-		$Test->setFontProperties(DOCROOT.'application/vendor/pchart/Fonts/tahoma.ttf',10);
-		$Test->drawTitle(60,22,"Example 6",50,50,50,585);
-		$Test->Stroke("example6.png");
+		$Cache->WriteToCache('popular_project_subscribers_'. $uid, $DataSet->GetData(), $Test);
+		$Test->Stroke();
 	}
 }

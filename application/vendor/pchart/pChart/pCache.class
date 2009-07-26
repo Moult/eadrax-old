@@ -35,10 +35,10 @@
  class pCache
   {
    var $HashKey     = "";
-   var $CacheFolder = "Cache/";
+   var $CacheFolder = "/var/www/localhost/htdocs/eadrax/application/vendor/pchart/Cache/";
 
    /* Create the pCache object */
-   function pCache($CacheFolder="Cache/")
+   function pCache($CacheFolder="/var/www/localhost/htdocs/eadrax/application/vendor/pchart/Cache/")
     {
      $this->CacheFolder = $CacheFolder;
     }
