@@ -57,7 +57,13 @@ class Project_Model extends Model {
 		}
 		if ($pid == FALSE)
 		{
-			$manage_project->insert('projects');
+			$result = $manage_project->insert('projects');
+
+			// Log for newsfeeds.
+			$newsfeed = $this->db->set(array(
+				'uid' => $data['uid'],
+				'pid' => $result->insert_id()
+			))->insert('news');
 		}
 		else
 		{
@@ -107,6 +113,9 @@ class Project_Model extends Model {
 	{
 		$delete_project = $this->db;
 		$delete_project = $delete_project->where('id', $pid)->delete('projects');
+
+		// Log for newsfeeds.
+		$newsfeed = $this->db->where('pid', $pid)->delete('news');
 	}
 
 	/**

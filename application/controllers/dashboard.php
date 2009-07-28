@@ -51,6 +51,7 @@ class Dashboard_Controller extends Core_Controller {
 		$project_model = new Project_Model;
 		$kudos_model = new Kudos_Model;
 		$update_model = new Update_Model;
+		$comment_model = new Comment_Model;
 
 		// Load the view.
 		$dashboard_view = new View('dashboard');
@@ -148,8 +149,66 @@ class Dashboard_Controller extends Core_Controller {
 		// Create the "comment_activity" widget.
 		$dashboard_comment_activity_view = new View('dashboard_comment_activity');
 
+		// Create news "newsfeed" widget.
+		$dashboard_newsfeed_view = new View('dashboard_newsfeed');
+
+		// Prepare the newsfeed.
+		$newsfeed = $update_model->news($this->uid);
+		$news_view = array();
+
+		foreach($newsfeed as $news)
+		{
+			// The logtime should be human readable.
+			$logtime = date("jS F H:i", strtotime($news->logtime));
+
+			// The username is always useful!
+			$user = $user_model->user_information($news->uid);
+			$user = $user['username'];
+
+			if (!empty($news->cid))
+			{
+				$comment_information = $comment_model->comment_information($news->cid);
+				$news_view[] = '<b>'. $logtime .'</b> A comment "'. $comment_information['comment'] .'" (id '. $news->cid .') was made by '. $user .' (id '. $news->uid .') on the update '. $news->upid;
+			}
+			elseif (!empty($news->upid))
+			{
+				$update = $update_model->update_information($news->upid);
+				$update = $update['summary'];
+				$project = $project_model->project_information($news->pid);
+				$project = $project['name'];
+				$news_view[] = '<b>'. $logtime .'</b>'. $user .' (id '. $news->uid .') has created a new update "'. $update .'" id '. $news->upid .' of project "'. $project .'" (id '. $news->pid .')';
+			}
+			elseif (!empty($news->pid))
+			{
+				$project = $project_model->project_information($news->pid);
+				$project = $project['name'];
+				$news_view[] = '<b>'. $logtime .'</b>'. $user .' (id '. $news->uid .') has created a new project "'. $project .'" (id '. $news->pid .')';
+			}
+			elseif (!empty($news->kid))
+			{
+				$update = $update_model->update_information($news->kid);
+				$update = $update['summary'];
+				$news_view[] = '<b>'. $logtime .'</b>'. $user .' (id '. $news->uid .') has kudos\'d the update "'. $update .'" (id '. $news->kid .')';
+			}
+			elseif (!empty($news->sid))
+			{
+				$project = $project_model->project_information($news->sid);
+				$project = $project['name'];
+				$news_view[] = '<b>'. $logtime .'</b>'. $user .' (id '. $news->uid .') has subscribed to '. $project .' (id '. $news->sid .')';
+
+			}
+			elseif (!empty($news->tid))
+			{
+				$track_user = $user_model->user_information($news->tid);
+				$track_user = $track_user['username'];
+				$news_view[] = '<b>'. $logtime .'</b>'. $user .' (id '. $news->uid .') has started tracking '. $track_user .' (id '. $news->tid .')';
+			}
+		}
+
+		$dashboard_newsfeed_view->newsfeed = $news_view;
+
 		// Generate the content.
-		$this->template->content = array($dashboard_view, $dashboard_update_activity_view, $dashboard_comment_activity_view, $dashboard_view_activity_view, $dashboard_tracking_view, $dashboard_subscribed_view, $dashboard_popular_projects_view, $dashboard_kudos_view, $dashboard_projects_activity_view);
+		$this->template->content = array($dashboard_view, $dashboard_newsfeed_view, $dashboard_update_activity_view, $dashboard_comment_activity_view, $dashboard_view_activity_view, $dashboard_tracking_view, $dashboard_subscribed_view, $dashboard_popular_projects_view, $dashboard_kudos_view, $dashboard_projects_activity_view);
 	}
 
 	/**

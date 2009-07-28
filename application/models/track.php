@@ -81,6 +81,12 @@ class Track_Model extends Model {
 			$track->set('track', $tuid);
 			$track->set('uid', $uid);
 			$track->insert('track');
+
+			// Log for newsfeeds.
+			$newsfeed = $this->db->set(array(
+				'uid' => $data['uid'],
+				'tid' => $data['tuid']
+			))->insert('news');
 		}
 	}
 
@@ -147,5 +153,8 @@ class Track_Model extends Model {
 	{
 		$delete = $this->db;
 		$delete = $delete->where(array('track' => $tuid, 'uid' => $uid))->delete('track');
+
+		// Log for newsfeeds.
+		$newsfeed = $this->db->where(array('uid' => $uid, 'tid' => $tuid))->delete('news');
 	}
 }

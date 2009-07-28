@@ -81,6 +81,12 @@ class Subscribe_Model extends Model {
 			$subscribe->set('pid', $pid);
 			$subscribe->set('uid', $uid);
 			$subscribe->insert('subscribe');
+
+			// Log for newsfeeds.
+			$newsfeed = $this->db->set(array(
+				'uid' => $data['uid'],
+				'sid' => $data['pid']
+			))->insert('news');
 		}
 	}
 
@@ -117,5 +123,8 @@ class Subscribe_Model extends Model {
 	{
 		$delete = $this->db;
 		$delete = $delete->where(array('pid' => $pid, 'uid' => $uid))->delete('subscribe');
+
+		// Log for newsfeeds.
+		$newsfeed = $this->db->where(array('uid' => $uid, 'sid' => $pid))->delete('news');
 	}
 }

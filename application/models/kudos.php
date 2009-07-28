@@ -81,6 +81,12 @@ class Kudos_Model extends Model {
 			$kudos->set('upid', $upid);
 			$kudos->set('uid', $uid);
 			$kudos->insert('kudos');
+
+			// Log for newsfeeds.
+			$newsfeed = $this->db->set(array(
+				'uid' => $data['uid'],
+				'kid' => $data['upid']
+			))->insert('news');
 		}
 	}
 

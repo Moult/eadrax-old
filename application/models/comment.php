@@ -51,7 +51,16 @@ class Comment_Model extends Model {
 		{
 			$add_comment->set($key, $value);
 		}
-		$add_comment->insert('comments');
+		$result = $add_comment->insert('comments');
+
+		// Log for newsfeeds.
+		$pid = $this->db->from('updates')->where('id', $data['upid'])->get()->current()->pid;
+		$newsfeed = $this->db->set(array(
+			'uid' => $data['uid'],
+			'cid' => $result->insert_id(),
+			'upid' => $data['upid'],
+			'pid' => $pid
+		))->insert('news');
 	}
 
 	/**
@@ -65,6 +74,9 @@ class Comment_Model extends Model {
 	{
 		$delete_comment = $this->db;
 		$delete_comment = $delete_comment->where('id', $cid)->delete('comments');
+
+		// Log for newsfeeds.
+		$newsfeed = $this->db->where('cid', $cid)->delete('news');
 	}
 
 	/**
@@ -130,5 +142,23 @@ class Comment_Model extends Model {
 				'comments.upid' => 'updates.id'
 			))->get()->count();
 		return $count;
+	}
+
+	/**
+	 * Returns all the data about a comment with the id $cid.
+	 *
+	 * @param int $cid
+	 * 
+	 * @return array
+	 */
+	public function comment_information($cid)
+	{
+		$comment_information = new Database();
+		$comment_information = $comment_information->where('id', $cid);
+		$comment_information = $comment_information->get('comments');
+		$comment_information = $comment_information->result(FALSE);
+		$comment_information = $comment_information->current();
+
+		return $comment_information;
 	}
 }

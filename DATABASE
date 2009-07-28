@@ -127,6 +127,7 @@ CREATE TABLE IF NOT EXISTS `comments` (
   `uid` int(11) NOT NULL,
   `upid` int(11) NOT NULL,
   `comment` text NOT NULL,
+  `logtime` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
   PRIMARY KEY  (`id`),
   KEY `uid` (`uid`),
   KEY `upid` (`upid`)
@@ -156,6 +157,7 @@ CREATE TABLE IF NOT EXISTS `subscribe` (
   `id` int(11) NOT NULL auto_increment,
   `pid` int(11) NOT NULL,
   `uid` int(11) NOT NULL,
+  `logtime` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`),
   KEY `uid` (`uid`)
@@ -170,6 +172,7 @@ CREATE TABLE IF NOT EXISTS `track` (
   `id` int(11) NOT NULL auto_increment,
   `track` int(11) NOT NULL,
   `uid` int(11) NOT NULL,
+  `logtime` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
   PRIMARY KEY  (`id`),
   KEY `track` (`track`),
   KEY `uid` (`uid`)
@@ -178,6 +181,20 @@ CREATE TABLE IF NOT EXISTS `track` (
 ALTER TABLE `track`
   ADD CONSTRAINT `track_ibfk_2` FOREIGN KEY (`uid`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `track_ibfk_1` FOREIGN KEY (`track`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+DROP TABLE IF EXISTS `news`;
+CREATE TABLE IF NOT EXISTS `news` (
+  `id` int(11) NOT NULL auto_increment,
+  `uid` int(11) NOT NULL,
+  `cid` int(11) NOT NULL,
+  `upid` int(11) NOT NULL,
+  `pid` int(11) NOT NULL,
+  `kid` int(11) NOT NULL,
+  `sid` int(11) NOT NULL,
+  `tid` int(11) NOT NULL,
+  `logtime` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 INSERT INTO `users` (
 `username` ,

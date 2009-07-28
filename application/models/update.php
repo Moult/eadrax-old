@@ -55,7 +55,14 @@ class Update_Model extends Model {
 		}
 		if ($uid == FALSE)
 		{
-			$manage_update->insert('updates');
+			$result = $manage_update->insert('updates');
+
+			// Log for newsfeeds.
+			$newsfeed = $this->db->set(array(
+				'uid' => $data['uid'],
+				'upid' => $result->insert_id(),
+				'pid' => $data['pid']
+			))->insert('news');
 		}
 		else
 		{
@@ -160,8 +167,10 @@ class Update_Model extends Model {
 	 */
 	public function delete_update($uid)
 	{
-		$delete_update = $this->db;
-		$delete_update = $delete_update->where('id', $uid)->delete('updates');
+		$delete_update = $this->db->where('id', $uid)->delete('updates');
+
+		// Log for newsfeeds.
+		$newsfeed = $this->db->where('upid', $uid)->delete('news');
 	}
 
 	/**
@@ -220,5 +229,57 @@ class Update_Model extends Model {
 			$count = $count + $row->views;
 		}
 		return $count;
+	}
+
+	/**
+	 * Returns with a list of newsfeed items for a user.
+	 *
+	 * @param int $uid The user ID.
+	 *
+	 * @return array
+	 */
+	public function news($uid)
+	{
+		$db = $this->db;
+
+		// Let's start to build a query.
+		$query = '';
+		$first = TRUE;
+
+		$tracks = $db->from('track')->where('uid', $uid)->get();
+		$subscribes = $db->from('subscribe')->where('uid', $uid)->get();
+
+		foreach ($tracks as $row)
+		{
+			if ($first == TRUE)
+			{
+				$first = FALSE;
+				$query = $query .'SELECT * FROM news WHERE uid='. $row->track;
+			}
+			else
+			{
+				$query = $query .' UNION SELECT * FROM news WHERE uid='. $row->track;
+			}
+		}
+
+		foreach ($subscribes as $row)
+		{
+
+			if ($first == TRUE)
+			{
+				$first = FALSE;
+				$query = $query .'SELECT * FROM news WHERE pid='. $row->pid;
+			}
+			else
+			{
+				$query = $query .' UNION SELECT * FROM news WHERE pid='. $row->pid;
+			}
+		}
+
+		// Finish off the query.
+		$query = $query .' ORDER BY logtime DESC LIMIT 8';
+		$news = $db->query($query);
+
+		return $news;
 	}
 }
