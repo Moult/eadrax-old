@@ -88,6 +88,7 @@ CREATE TABLE IF NOT EXISTS `projects` (
   `contributors` varchar(255) NOT NULL,
   `icon` varchar(255) NOT NULL,
   `description` text NOT NULL,
+  ``views` int(11) NOT NULL,
   `logtime` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
   PRIMARY KEY  (`id`),
   KEY `uid` (`uid`),
@@ -109,6 +110,7 @@ CREATE TABLE IF NOT EXISTS `updates` (
   `syntax` varchar(255) NOT NULL,
   `pastebin` text NOT NULL,
   `ext` varchar(10) NOT NULL,
+  `views` int(11) NOT NULL,
   `logtime` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`),
@@ -118,3 +120,97 @@ CREATE TABLE IF NOT EXISTS `updates` (
 ALTER TABLE `updates`
   ADD CONSTRAINT `updates_ibfk_2` FOREIGN KEY (`uid`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `updates_ibfk_1` FOREIGN KEY (`pid`) REFERENCES `projects` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+DROP TABLE IF EXISTS `comments`;
+CREATE TABLE IF NOT EXISTS `comments` (
+  `id` int(11) NOT NULL auto_increment,
+  `uid` int(11) NOT NULL,
+  `upid` int(11) NOT NULL,
+  `comment` text NOT NULL,
+  `logtime` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  PRIMARY KEY  (`id`),
+  KEY `uid` (`uid`),
+  KEY `upid` (`upid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE `comments`
+  ADD CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`upid`) REFERENCES `updates` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+DROP TABLE IF EXISTS `kudos`;
+CREATE TABLE IF NOT EXISTS `kudos` (
+  `id` int(11) NOT NULL auto_increment,
+  `uid` int(11) NOT NULL,
+  `upid` int(11) NOT NULL,
+  `logtime` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  PRIMARY KEY  (`id`),
+  KEY `uid` (`uid`),
+  KEY `upid` (`upid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE `kudos`
+  ADD CONSTRAINT `kudos_ibfk_2` FOREIGN KEY (`upid`) REFERENCES `updates` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `kudos_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+DROP TABLE IF EXISTS `subscribe`;
+CREATE TABLE IF NOT EXISTS `subscribe` (
+  `id` int(11) NOT NULL auto_increment,
+  `pid` int(11) NOT NULL,
+  `uid` int(11) NOT NULL,
+  `logtime` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  PRIMARY KEY  (`id`),
+  KEY `pid` (`pid`),
+  KEY `uid` (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE `subscribe`
+  ADD CONSTRAINT `subscribe_ibfk_2` FOREIGN KEY (`uid`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `subscribe_ibfk_1` FOREIGN KEY (`pid`) REFERENCES `projects` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+DROP TABLE IF EXISTS `track`;
+CREATE TABLE IF NOT EXISTS `track` (
+  `id` int(11) NOT NULL auto_increment,
+  `track` int(11) NOT NULL,
+  `uid` int(11) NOT NULL,
+  `logtime` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  PRIMARY KEY  (`id`),
+  KEY `track` (`track`),
+  KEY `uid` (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE `track`
+  ADD CONSTRAINT `track_ibfk_2` FOREIGN KEY (`uid`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `track_ibfk_1` FOREIGN KEY (`track`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+DROP TABLE IF EXISTS `news`;
+CREATE TABLE IF NOT EXISTS `news` (
+  `id` int(11) NOT NULL auto_increment,
+  `uid` int(11) NOT NULL,
+  `cid` int(11) NOT NULL,
+  `upid` int(11) NOT NULL,
+  `pid` int(11) NOT NULL,
+  `kid` int(11) NOT NULL,
+  `sid` int(11) NOT NULL,
+  `tid` int(11) NOT NULL,
+  `logtime` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+INSERT INTO `users` (
+`username` ,
+`password` ,
+`description`
+)
+VALUES (
+'Guest', 'guest', 'This is a special user to represent guest submissions on the website. Please register to access all the features of the website.'
+) 
+
+INSERT INTO `projects` (
+`uid` ,
+`cid` ,
+`name` ,
+`description` 
+)
+VALUES (
+'1', '12', 'Uncategorised', 'Every update that is not part of any user-defined project is put into this section. This includes updates submitted by guest users.'
+);

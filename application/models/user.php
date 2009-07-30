@@ -73,4 +73,43 @@ class User_Model extends ORM {
 		}
 	}
 
+	/**
+	 * Checks if a user exists.
+	 *
+	 * @param int $uid The user ID to check.
+	 *
+	 * @return bool
+	 */
+	public function check_user_exists($uid)
+	{
+		$db = $this->db;
+		$check_exists = $db->from('users')->where(array('id' => $uid))->get()->count();
+
+		if ($check_exists >= 1)
+		{
+			return TRUE;
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
+
+	/**
+	 * Returns all the data about a user with the id $uid.
+	 *
+	 * @param int $uid
+	 * 
+	 * @return array
+	 */
+	public function user_information($uid)
+	{
+		$user_information = new Database();
+		$user_information = $user_information->where('id', $uid);
+		$user_information = $user_information->get('users');
+		$user_information = $user_information->result(FALSE);
+		$user_information = $user_information->current();
+
+		return $user_information;
+	}
 }

@@ -65,8 +65,8 @@ abstract class Core_Controller extends Template_Controller {
 		}
 		elseif ($this->authlite->logged_in() == FALSE)
 		{
-			$this->username		= FALSE;
-			$this->uid			= FALSE;
+			$this->username		= 'Guest';
+			$this->uid			= 1;
 			$this->logged_in	= FALSE;
 		}
 	}

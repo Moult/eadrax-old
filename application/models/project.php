@@ -57,7 +57,13 @@ class Project_Model extends Model {
 		}
 		if ($pid == FALSE)
 		{
-			$manage_project->insert('projects');
+			$result = $manage_project->insert('projects');
+
+			// Log for newsfeeds.
+			$newsfeed = $this->db->set(array(
+				'uid' => $data['uid'],
+				'pid' => $result->insert_id()
+			))->insert('news');
 		}
 		else
 		{
@@ -107,6 +113,9 @@ class Project_Model extends Model {
 	{
 		$delete_project = $this->db;
 		$delete_project = $delete_project->where('id', $pid)->delete('projects');
+
+		// Log for newsfeeds.
+		$newsfeed = $this->db->where('pid', $pid)->delete('news');
 	}
 
 	/**
@@ -142,5 +151,95 @@ class Project_Model extends Model {
 		$project_information = $project_information->current();
 
 		return $project_information;
+	}
+
+	/**
+	 * Returns an array with a list of projects owned by a user.
+	 *
+	 * @param int $uid The ID of the user who owns the projects.
+	 *
+	 * @return array
+	 */
+	public function projects($uid)
+	{
+		$projects = $this->db;
+		$projects = $projects->from('projects')->where('uid', $uid)->get();
+
+		$project_list = array();
+
+		// Add the special project "uncategorised".
+		$project_list[1] = $this->project_information(1);
+		$project_list[1] = $project_list[1]['name'];
+
+		foreach ($projects as $project)
+		{
+			$project_list[$project->id] = $project->name;
+		}
+
+		return $project_list;
+	}
+
+	/**
+	 * Checks if a project exists.
+	 *
+	 * @param int $pid The project ID to check.
+	 *
+	 * @return bool
+	 */
+	public function check_project_exists($pid)
+	{
+		$db = $this->db;
+		$check_exists = $db->from('projects')->where(array('id' => $pid))->get()->count();
+
+		if ($check_exists >= 1)
+		{
+			return TRUE;
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
+
+	/**
+	 * Adds a view to a project.
+	 *
+	 * @param int $pid The project id to add the view to.
+	 *
+	 * @return null
+	 */
+	public function view($pid)
+	{
+		$view = $this->db;
+		$view = $view->set('views', new Database_Expression('views+1'));
+		$view = $view->where('id', $pid);
+		$view = $view->update('projects');
+	}
+
+	/**
+	 * Returns the number of project views for a user within two dates.
+	 *
+	 * @param int $uid The user ID.
+	 * @param int $start The start date.
+	 * @param int $end The end date.
+	 *
+	 * @return int
+	 */
+	public function view_number_time($uid, $start, $end)
+	{
+		$count = 0;
+		$db = $this->db;
+		$projects = $db
+			->from('projects')
+			->where(array(
+				'uid' => $uid,
+				'logtime <' => $end,
+				'logtime >=' => $start
+			))->get();
+		foreach($projects as $row)
+		{
+			$count = $count + $row->views;
+		}
+		return $count;
 	}
 }
