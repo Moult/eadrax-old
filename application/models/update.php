@@ -249,37 +249,44 @@ class Update_Model extends Model {
 		$tracks = $db->from('track')->where('uid', $uid)->get();
 		$subscribes = $db->from('subscribe')->where('uid', $uid)->get();
 
-		foreach ($tracks as $row)
+		if ($tracks->count() || $subscribes->count())
 		{
-			if ($first == TRUE)
+			foreach ($tracks as $row)
 			{
-				$first = FALSE;
-				$query = $query .'SELECT * FROM news WHERE uid='. $row->track;
+				if ($first == TRUE)
+				{
+					$first = FALSE;
+					$query = $query .'SELECT * FROM news WHERE uid='. $row->track;
+				}
+				else
+				{
+					$query = $query .' UNION SELECT * FROM news WHERE uid='. $row->track;
+				}
 			}
-			else
-			{
-				$query = $query .' UNION SELECT * FROM news WHERE uid='. $row->track;
-			}
-		}
 
-		foreach ($subscribes as $row)
+			foreach ($subscribes as $row)
+			{
+
+				if ($first == TRUE)
+				{
+					$first = FALSE;
+					$query = $query .'SELECT * FROM news WHERE pid='. $row->pid;
+				}
+				else
+				{
+					$query = $query .' UNION SELECT * FROM news WHERE pid='. $row->pid;
+				}
+			}
+
+			// Finish off the query.
+			$query = $query .' ORDER BY logtime DESC LIMIT 8';
+			$news = $db->query($query);
+		}
+		else
 		{
-
-			if ($first == TRUE)
-			{
-				$first = FALSE;
-				$query = $query .'SELECT * FROM news WHERE pid='. $row->pid;
-			}
-			else
-			{
-				$query = $query .' UNION SELECT * FROM news WHERE pid='. $row->pid;
-			}
+			// no news? Blank array.
+			$news = array();
 		}
-
-		// Finish off the query.
-		$query = $query .' ORDER BY logtime DESC LIMIT 8';
-		$news = $db->query($query);
-
 		return $news;
 	}
 }
