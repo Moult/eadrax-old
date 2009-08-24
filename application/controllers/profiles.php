@@ -51,9 +51,7 @@ class Profiles_Controller extends Openid_Controller {
 		$this->template->content = array($content);
 	}
 	
-	
-	
-	public function update($id = NULL)
+	/*public function update($id = NULL)
 	{	
 		$content = new View('profiles/update');
 		$content->user = ORM::factory('user', $id);
@@ -88,33 +86,47 @@ class Profiles_Controller extends Openid_Controller {
 		$content->error = $post->errors('profile_errors');
 		
 		$this->template->content = array($content);
-	}
+	}*/
 	
-	/*public function update($id = NULL)
-	{	
-		$content = new View('profiles/update');
-		$content->user = ORM::factory('user', $id);
+	public function update($id = NULL)
+	{
+		$user = ORM::factory('user', $id);
 		
 		$form = Formo::factory()
-			->add('email')
-			->add('name', array('required'=>FALSE))
-			->add('textarea', 'notes')
+			->add('description', array('value'=>$user->description))
+			->add('email', array('value'=>$user->email))
+			->add('msn', array('value'=>$user->msn))
+			->add('gtalk', array('value'=>$user->gtalk))
+			->add('yahoo', array('value'=>$user->yahoo))
+			->add('skype', array('value'=>$user->skype))
+			->add('website', array('value'=>$user->website))
+			->add('location', array('value'=>$user->location))
+			->add_select('gender', Kohana::config('profiles.gender'), array('value'=>$user->gender))
 			->add('submit');
 			
 		$form->add_rule('name', array('length[10,20]', 'email'));
 		
 		if($form->validate()) {
+			$user->description = $form->description->value;
+			$user->email = $form->email->value;
+			$user->msn = $form->msn->value;
+			$user->gtalk = $form->gtalk->value;
+			$user->yahoo = $form->yahoo->value;
+			$user->skype = $form->skype->value;
+			$user->website = $form->website->value;
+			$user->location = $form->location->value;
+			$user->gender = $form->gender->value;
 			
-			$content->user->email = $validate->email;
-			
-			if($content->user->save()){
+			if($user->save()){
                 // Setting message for user
                 $this->session->set_flash('message', 'You have successfully added "'.$_POST['title'].'".');
                 url::redirect('profiles');
             }
 		}
-		$content->data = $form->get(TRUE);
+		
+		$content = new View('profiles/update', $form->get(TRUE));
+		$content->user = $user;
 		
 		$this->template->content = array($content);
-	}*/
+	}
 }

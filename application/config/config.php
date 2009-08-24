@@ -4,7 +4,7 @@
  * then a full URL will be used, eg: http://localhost/kohana/. If it only includes
  * the path, and a site_protocol is specified, the domain will be auto-detected.
  */
-$config['site_domain'] = '/eadrax/';
+$config['site_domain'] = $_SERVER['SERVER_NAME'];
 
 /**
  * Force a default protocol to be used by the site. If no site_protocol is
@@ -95,6 +95,7 @@ $config['extension_prefix'] = 'MY_';
 $config['modules'] = array
 (
 	MODPATH.'authlite',     // Authentication
+	MODPATH.'formo',     // Form Generation
 	// MODPATH.'kodoc',     // Self-generating documentation
 	// MODPATH.'gmaps',     // Google Maps integration
 	// MODPATH.'archive',   // Archive utility
