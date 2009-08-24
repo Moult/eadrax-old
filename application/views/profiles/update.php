@@ -41,11 +41,15 @@
 	</p>
 	<p>
 		<label for="dob">DOB</label>
+		<?php echo $dob; ?>
+		<span class="<?php echo $dob->error_msg_class; ?>"><?php echo $dob->error; ?></span>
 	</p>
 	<p>
 		<label for="gender">Gender</label>
 		<?php echo $gender; ?>
 		<span class="<?php echo $gender->error_msg_class; ?>"><?php echo $gender->error; ?></span>
 	</p>
-	<p><input type="submit" value="Update"></p>
-</form>
+	<p>
+		<?php echo $submit; ?>
+	</p>
+<?php echo $close; ?>
