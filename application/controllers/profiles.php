@@ -51,70 +51,68 @@ class Profiles_Controller extends Openid_Controller {
 		$this->template->content = array($content);
 	}
 	
-	
-	
 	public function update($id = NULL)
-	{	
-		$content = new View('profiles/update');
-		$content->user = ORM::factory('user', $id);
+	{
+		$user = ORM::factory('user', $id);
 		
-		$post = new Validation($_POST);
-        $post->pre_filter('trim',true)
-        	 ->pre_filter('strtolower', 'website');
+		$form = Formo::factory()
+			->add('description', array('value'=>$user->description, 'required'=>FALSE))
+			->add('email', array('value'=>$user->email, 'required'=>FALSE))
+			->add('msn', array('value'=>$user->msn, 'required'=>FALSE))
+			->add('gtalk', array('value'=>$user->gtalk, 'required'=>FALSE))
+			->add('yahoo', array('value'=>$user->yahoo, 'required'=>FALSE))
+			->add('skype', array('value'=>$user->skype, 'required'=>FALSE))
+			->add('website', array('value'=>$user->website))
+			->add('location', array('value'=>$user->location))
+			->add('dob', array('value'=> $user->dob,'required'=>FALSE))
+			->add_select('gender', Kohana::config('profiles.gender'), array('value'=>$user->gender))
+			->add('submit');
 		
-         // Rules
-        $post->add_rules('email', 'valid::email');
-    
-		$content->repopulate = $post;
-		
-		if($post->validate()) {
-			$content->user->description = $post->description;
-			$content->user->email = $post->email;
-			$content->user->msn = $post->msn;
-			$content->user->gtalk = $post->gtalk;
-			$content->user->yahoo = $post->yahoo;
-			$content->user->skype = $post->skype;
-			$content->user->website = $post->website;
-			$content->user->location = $post->location;
-			$content->user->dob = $post->dob;
-			$content->user->gender = $post->gender;
+		if($form->validate()) {
+			$user->description = $form->description->value;
+			$user->email = $form->email->value;
+			$user->msn = $form->msn->value;
+			$user->gtalk = $form->gtalk->value;
+			$user->yahoo = $form->yahoo->value;
+			$user->skype = $form->skype->value;
+			$user->website = $form->website->value;
+			$user->location = $form->location->value;
+			$user->dob = $form->dob->value;
+			$user->gender = $form->gender->value;
 			
-			if($content->user->save()){
+			if($user->save()){
+                // Setting message for user
                 url::redirect('profiles');
             }
 		}
 		
-		// Return errors from the language file.
-		$content->error = $post->errors('profile_errors');
+		$content = new View('profiles/update', $form->get(TRUE));
+		$content->user = $user;
 		
 		$this->template->content = array($content);
 	}
 	
-	/*public function update($id = NULL)
-	{	
-		$content = new View('profiles/update');
-		$content->user = ORM::factory('user', $id);
+	public function change_password($id = NILL) {
+		$user = ORM::factory('user', $id);
 		
 		$form = Formo::factory()
-			->add('email')
-			->add('name', array('required'=>FALSE))
-			->add('textarea', 'notes')
+			->add('password')->type('password')->rule('matches[password2]', 'The password does not match')
+    		->add('password2')->type('password')->label('Confirm Password')
 			->add('submit');
 			
-		$form->add_rule('name', array('length[10,20]', 'email'));
+		// $form->add_rule('password', array('matches[password2]', 'Does not match'));
 		
 		if($form->validate()) {
+			$user->password = $this->authlite->hash($form->password->value);
 			
-			$content->user->email = $validate->email;
-			
-			if($content->user->save()){
+			if($user->save()){
                 // Setting message for user
-                $this->session->set_flash('message', 'You have successfully added "'.$_POST['title'].'".');
                 url::redirect('profiles');
             }
 		}
-		$content->data = $form->get(TRUE);
+		
+		$content = new View('profiles/password', $form->get(TRUE));
 		
 		$this->template->content = array($content);
-	}*/
+	}
 }

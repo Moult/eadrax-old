@@ -198,7 +198,8 @@ class Users_Controller extends Openid_Controller {
 	 */
 	public function logout()
 	{
-		$authlite = new Authlite();
-		$authlite->logout();
+		if($this->authlite->logout()){
+			url::redirect();
+		}
 	}
 }

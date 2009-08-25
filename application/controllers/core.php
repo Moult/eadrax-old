@@ -69,6 +69,23 @@ abstract class Core_Controller extends Template_Controller {
 			$this->uid			= 1;
 			$this->logged_in	= FALSE;
 		}
+		
+		// Loading Libraries
+		$this->session = Session::instance();
+		
+		$this->head = Head::instance();
+
+		// Javascripts
+		$this->head->javascript->append_file('js/lib/jquery-1.3.2.min.js');
+		$this->head->javascript->append_file('js/lib/jquery-ui-1.7.2.custom.min.js');
+		$this->head->javascript->append_file('js/base.js');
+
+		// Stylesheets
+		$this->head->css->append_file('css/ui-darkness/jquery-ui-1.7.2.custom');
+
+		$this->head->title->set($this->site_name .' | '. $this->slogan);
+		
+		$this->template->set_global('head', $this->head);
 	}
 
 	/**
