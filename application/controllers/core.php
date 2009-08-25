@@ -37,7 +37,7 @@
  */
 abstract class Core_Controller extends Template_Controller {
 	// We do not yet have a template.
-	public $template	= 'template';
+	public $template	= 'template/template';
 	public $site_name	= 'Eadrax';
 	public $slogan		= 'Totally awesome.';
 

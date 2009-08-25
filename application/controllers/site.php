@@ -44,9 +44,12 @@ class Site_Controller extends Core_Controller {
 		// Example of view "widget" combining.
 		$welcome = 'Welcome to '. $this->site_name .'. Please log in below.';
 
+		// Introduction Page.
+		$introduction_view = new View('introduction');
+
 		// Let's get our login form!
 		$login = new View('login');
 
-		$this->template->content = array($welcome, $login);
+		$this->template->content = array($introduction_view, $login);
 	}
 }
