@@ -1,7 +1,7 @@
 <div class="introduction_box">
-	<h1>
+	<h2>
 		Show people what you're working on
-	</h1>
+	</h2>
 	<p>
 		Whenever you want to quickly dump files online to show your current progress on a project, here's where you do it.
 	</p>
@@ -14,9 +14,9 @@
 <div class="front_page_divider"></div>
 
 <div class="introduction_box">
-	<h1>
+	<h2>
 		Get feedback from the community
-	</h1>
+	</h2>
 	<p>
 		Anybody can leave you comments either on individual files or your project as a whole.
 	</p>
@@ -29,9 +29,9 @@
 <div class="front_page_divider"></div>
 
 <div class="introduction_box">
-	<h1>
+	<h2>
 		Discover and log your own progress
-	</h1>
+	</h2>
 	<p>
 		Check out when you were most active on a project, and its progress over time.
 	</p>

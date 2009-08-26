@@ -5,40 +5,40 @@
         <!-- <FOOTER> -->
         <div id="footer">
             <div id="project_categories">
-                <h1>
+                <h3>
                     Project Categories
-                </h1>
+                </h3>
 
-                <div id="categories_1">
-                    <a href="#">2D Animation</a><br />
-                    <a href="#">3D Animation</a><br />
-                    <a href="#">3D Modeling</a><br />
-                    <a href="#">Application Programming</a><br />
-                    <a href="#">Digital Paintings</a><br />
-                    <a href="#">Documents & Articles</a><br />
-                    <a href="#">Games</a><br />
-                    <a href="#">Homework</a><br />
-                    <a href="#">Interface Design</a><br />
-                    <a href="#">Literature & Fiction</a>
-                </div>
+                <ol id="categories_1">
+                    <li><a href="#">2D Animation</a></li>
+                    <li><a href="#">3D Animation</a></li>
+                    <li><a href="#">3D Modeling</a></li>
+                    <li><a href="#">Application Programming</a></li>
+                    <li><a href="#">Digital Paintings</a></li>
+                    <li><a href="#">Documents & Articles</a></li>
+                    <li><a href="#">Games</a></li>
+                    <li><a href="#">Homework</a></li>
+                    <li><a href="#">Interface Design</a></li>
+                    <li><a href="#">Literature & Fiction</a></li>
+                </ol>
 
-                <div id="categories_2">
-                    <a href="#">Magazines & Newsletters</a><br />
-                    <a href="#">Miscellaneous</a><br />
-                    <a href="#">Music</a><br />
-                    <a href="#">Posters</a><br />
-                    <a href="#">Presentations</a><br />
-                    <a href="#">Sound Effects</a><br />
-                    <a href="#">Vector Art</a><br />
-                    <a href="#">Video</a><br />
-                    <a href="#">Website Programming</a>
-                </div>
+                <ol id="categories_2">
+                    <li><a href="#">Magazines & Newsletters</a></li>
+                    <li><a href="#">Miscellaneous</a></li>
+                    <li><a href="#">Music</a></li>
+                    <li><a href="#">Posters</a></li>
+                    <li><a href="#">Presentations</a></li>
+                    <li><a href="#">Sound Effects</a></li>
+                    <li><a href="#">Vector Art</a></li>
+                    <li><a href="#">Video</a></li>
+                    <li><a href="#">Website Programming</a></li>
+                </ol>
             </div>
 
             <div id="latest_wips">
-                <h1>
+                <h3>
                     Latest WIPs
-                </h1>
+                </h3>
                 <div class="latest_wip">
                     <div class="latest_wippic"></div>
                     <a href="#" class="latest_wip_title">WIP Title</a><br />

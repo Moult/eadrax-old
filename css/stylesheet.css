@@ -543,7 +543,7 @@ em
 
 }
 
-#content_top h1
+#content_top h2
 
 {
 
@@ -631,7 +631,7 @@ em
 
 }
 
-.section_top h1
+.section_top h2
 
 {
 
@@ -716,7 +716,7 @@ em
 
 }
 
-#content h1
+#content h2
 
 {
 
@@ -794,7 +794,7 @@ em
 }
 
 
-#project_categories h1, #latest_wips h1
+#project_categories h3, #latest_wips h3
 
 {
 
