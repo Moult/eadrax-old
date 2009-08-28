@@ -101,17 +101,15 @@ abstract class Core_Controller extends Template_Controller {
 		{
 			if ($this->logged_in == FALSE)
 			{
-				// Not elegant, rewrite later.
-				die ('You cannot access this page. Please log in.');
+				url::redirect('users/login');
 			}
 		}
 		elseif ($reverse == TRUE)
 		{
 			if ($this->logged_in == TRUE)
 			{
-				// Not elegant, rewrite later.
 				// Useful for login/register pages.
-				die ('Only guests can access this page.');
+				url::redirect('dashboard');
 			}
 		}
 	}

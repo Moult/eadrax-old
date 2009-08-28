@@ -41,6 +41,9 @@ class Users_Controller extends Openid_Controller {
 	 */
 	public function register()
 	{
+		// We only want logged in people.
+		$this->restrict_access(TRUE);
+
 		// Load necessary models.
 		$user_model = new User_Model;
 
@@ -112,6 +115,8 @@ class Users_Controller extends Openid_Controller {
 	 */
 	public function login()
 	{
+		$this->restrict_access(TRUE);
+
 		if ($this->input->post())
 		{
 			$username = $this->input->post('openid_identifier');
