@@ -246,6 +246,21 @@ em
 
 }
 
+#login_form_title a
+
+{
+    color: #264560;
+	text-decoration: none;
+	border-bottom: 1px dotted #264560;
+}
+
+#login_form_title a:hover
+
+{
+	color: #2645B0;
+	border-bottom: 0px;
+}
+
 #login_form
 
 {

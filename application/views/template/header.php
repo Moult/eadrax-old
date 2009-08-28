@@ -97,19 +97,17 @@
 
                 <div id="login_form">
                     <div id="login_form_title">
-                        Log in or Register
+						Log in or <a href="<?php echo url::base(); ?>users/register/">Register</a>
                     </div>
-
-                    <?php //echo form_open('users/register'); ?>
-
+                    <?php echo form::open('users/login'); ?>
                         <div id="username_field">
-                            <input type="text" name="username" />
+							<?php echo form::input('openid_identifier'); ?>
                         </div>
                         <div id="terms">
                             (<a href="#">terms of use</a>)
                         </div>
                         <div id="password_field">
-                            <input type="password" name="password" />
+							<?php echo form::password('password'); ?>
                         </div>
                         <div id="signin">
                             <input type="image" style="border: 0;" src="<?php echo url::base(); ?>images/signin.png" />
