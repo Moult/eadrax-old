@@ -88,7 +88,7 @@ CREATE TABLE IF NOT EXISTS `projects` (
   `contributors` varchar(255) NOT NULL,
   `icon` varchar(255) NOT NULL,
   `description` text NOT NULL,
-  ``views` int(11) NOT NULL,
+  `views` int(11) NOT NULL,
   `logtime` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
   PRIMARY KEY  (`id`),
   KEY `uid` (`uid`),
