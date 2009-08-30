@@ -41,15 +41,12 @@ class Site_Controller extends Core_Controller {
 	 */
 	public function index()
 	{
-		// Example of view "widget" combining.
-		$welcome = 'Welcome to '. $this->site_name .'. Please log in below.';
-
 		// Introduction Page.
 		$introduction_view = new View('introduction');
 
 		// Let's get our login form!
-		$login = new View('login');
+		$changelog_view = new View('changelog');
 
-		$this->template->content = array($introduction_view, $login);
+		$this->template->content = array($introduction_view, $changelog_view);
 	}
 }

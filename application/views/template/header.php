@@ -61,7 +61,7 @@
 
         <div id="container">
             <h1 id="title">
-				Title and logo to be redone.
+				Title and logo to be redone.<br /><a href="<?php echo url::base(); ?>">Go to homepage</a>
                 <!--<img src="<?php echo url::base(); ?>images/wipup.png" width="203" height="50" alt="WIPUP" />-->
             </h1>
 
@@ -119,7 +119,7 @@
 
         <div id="bar">
             <div class="bar_text">
-                <a href="#">Learn more about WIPUP</a> &#8226; We are running the ___ version. We are still UNDER CONSTRUCTION
+                <a href="#">Learn more about WIPUP</a> &#8226; Last updated __. Still UNDER CONSTRUCTION
             </div>
 
             <form action="" method="post">

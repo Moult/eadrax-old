@@ -1,4 +1,4 @@
-<h2>Login here because the other login doesn't work yet.</h2>
+<h2>Login here</h2>
 <?php
 if (isset($error))
 {
