@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  * @category	Eadrax
- * @package		Project
+ * @package		Profile
  * @author		Eadrax Team
  * @copyright	Copyright (C) 2009 Eadrax Team
  */
