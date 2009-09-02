@@ -1,6 +1,6 @@
 <div class="left">
 	<h2>
-		<img src="/images/icons/circle_green.png" width="48" height="48" class="icon" alt="" />
+		<img src="<?php echo url::base(); ?>images/icons/circle_green.png" width="48" height="48" class="icon" alt="" />
 		Get ready to join WIPUP.
 	</h2>
 
@@ -16,29 +16,25 @@
 		<form action="<?php echo url::base(); ?>users/register/" method="post">
 			<fieldset>
 				<legend>
-					<img src="/images/icons/form.png" alt="" width="16" height="16" class="icon" />
+					<img src="<?php echo url::base(); ?>/images/icons/form.png" alt="" width="16" height="16" class="icon" />
 					Create an account
 				</legend>
 				<div class="elements">
 					<p>
-						<?php
-						echo form::label('username', 'Username:');
-						echo form::input('openid_identifier', $form['openid_identifier']);
-						?>
+						<label for="openid_identifier">Username:</label>
+						<input type="text" name="openid_identifier" value="<?php echo $form['openid_identifier']; ?>" <?php if (isset($errors['openid_identifier'])) { echo 'class="error"'; } ?> />
 					</p>
 
 					<p>
-						<?php
-						echo form::label('password', 'Password:');
-						echo form::password('password');
-						?>
+						<label for="password">Password:</label>
+						<input type="password" name="password" <?php if (isset($errors['password'])) { echo 'class="error"'; } ?> />
 					</p>
 
 					<p class="submit">
-						<input type="submit" name="submit" class="submit" value="Login or Register" />
+						<input type="submit" name="submit" class="submit" value="Register Account" />
 					</p>
 
-					<p style="text-align: center;">
+					<p>
 						By using this site, you agree to our <a href="<?php echo url::base() .'site/legal/'; ?>">legal and licensing information</a>.
 					</p>
 				</div>
@@ -51,6 +47,10 @@
 </div>
 
 <div class="right">
+
+	<?php
+	if (isset($errors)) {
+	?>
 	<div class="form">
 		<fieldset>
 			<legend>
@@ -58,38 +58,19 @@
 				Errors Occured
 			</legend>
 			<div class="elements">
-				<p>
-					asdf
-				</p>
+				<ol class="errors">
+				<?php
+				foreach ($errors as $error) {
+					echo '<li>'. $error .'</li><br />';
+				}
+				?>
+				</ol>
 			</div>
 		</fieldset>
 	</div>
+	<?php } ?>
 
 	<div id="picture">
 		<img src="/images/user_picture.png" alt="" />
 	</div>
 </div>
-
-
-
-<?php
-if (isset($errors))
-{
-	foreach ($errors as $error)
-	{
-		echo $error .'<br />';
-	}
-}
-/**
-echo form::open('users/register');
-echo form::open_fieldset();
-echo form::legend('Register an account');
-echo form::label('username', 'Username:');
-echo form::input('openid_identifier', $form['openid_identifier']);
-echo form::label('password', 'Password:');
-echo form::password('password');
-echo form::submit('submit', 'register');
-echo form::close_fieldset();
-echo form::close();
- */
-?>

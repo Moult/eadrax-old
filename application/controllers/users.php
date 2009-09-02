@@ -76,9 +76,10 @@ class Users_Controller extends Openid_Controller {
 
 				// Then load our success view.
 				$register_success_view = new View('register_success');
+				$register_introduction_view = new View('register_introduction');
 
 				// Then generate content.
-				$this->template->content = array($register_success_view);
+				$this->template->content = array($register_success_view, $register_introduction_view);
 			}
 			else
 			{

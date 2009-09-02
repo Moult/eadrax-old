@@ -26,14 +26,6 @@
         <!-- CSS styling and browser compatibility resets -->
         <link rel="stylesheet" type="text/css" href="<?php echo url::base(); ?>css/reset.css" />
         <link rel="stylesheet" type="text/css" href="<?php echo url::base(); ?>css/stylesheet.css" />
-        <!-- Nifty Cube support 
-        <script type="text/javascript" src="/js/niftycube.js"></script>
-        <script type="text/javascript">
-        window.onload=function(){
-        Nifty("ul.column h3","top transparent");
-        }
-        </script> 
-		-->
 
 <?php
 // If we are viewing an update, we need a couple more fancy stuff.

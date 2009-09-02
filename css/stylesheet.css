@@ -22,7 +22,7 @@ input, textarea
 	background-repeat: repeat-x;
 	font-family: Arial;
 	color: #000;
-	font-size: 11px;
+	font-size: 13px;
 	font-weight: bold;
 }
 
@@ -135,6 +135,7 @@ em
 	margin-right: 5px;
 	font-family: arial;
 	font-size: 15px;
+	border: 0px;
 }
 
 #upload_file
@@ -347,6 +348,7 @@ em
 	font-family: arial;
     font-weight: bold;
 	font-size: 12px;
+	border: 0px;
 }
 
 #search_button
@@ -674,6 +676,12 @@ em
     border: 1px solid #F00;
 }
 
+.errors
+{
+	color: #BB0000;
+	font-weight: bold;
+}
+
 /*
 NIFTYNESS
 */
@@ -721,6 +729,25 @@ NIFTYNESS
 	font-family: Arial;
 	font-weight: normal;
 	font-size: 12px;
+	clear: both;
+	overflow: hidden;
+}
+
+.form label
+{
+	float: left;
+	clear: left;
+	width: 100px;
+	font-size: 14px;
+	line-height: 15px;
+}
+
+.form input
+{
+	float: left;
+	height: 15px;
+	width: 200px;
+	clear: right;
 }
 
 .form ul
@@ -752,10 +779,10 @@ NIFTYNESS
 }
 
 .submit input
-
 {
+	margin-left: auto;
 	width: 200px;
-
+	height: 25px;
 }
 
 #picture
