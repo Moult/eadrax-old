@@ -49,4 +49,15 @@ class Site_Controller extends Core_Controller {
 
 		$this->template->content = array($introduction_view, $changelog_view);
 	}
+
+	/**
+	 * Page that shows legal information.
+	 *
+	 * @return null
+	 */
+	public function legal()
+	{
+		$legal_view = new View('legal');
+		$this->template->content = array($legal_view);
+	}
 }

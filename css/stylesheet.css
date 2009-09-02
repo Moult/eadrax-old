@@ -393,6 +393,7 @@ em
 
 #content_top
 {
+	padding-top: 10px;
     width: 830px;
     min-height: 230px;
     float: left;
@@ -407,12 +408,23 @@ em
 	margin-bottom: 10px;
 }
 
-#content_top p
+#content_top p, .section_top p
 {
     font-family: Arial;
     font-size: 12px;
     color: #000;
 	margin-bottom: 10px;
+}
+
+#content_top ul
+{
+	list-style-type: disc;
+	margin-bottom: 10px;
+}
+
+#content_top li
+{
+	margin-bottom: 5px;
 }
 
 #content_top_right
@@ -467,15 +479,6 @@ em
     background-repeat: no-repeat;
     padding: 10px;
     padding-top: 30px;
-}
-
-.section_top p
-{
-    font-family: Arial;
-    font-size: 12px;
-    color: #000;
-    padding: 10px;
-    padding-top: 0px;
 }
 
 .section_top_right
