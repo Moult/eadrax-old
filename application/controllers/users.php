@@ -179,10 +179,13 @@ class Users_Controller extends Openid_Controller {
 			if ($authlite->login($username, $password, $remember))
 			{
 				// Load the view.
-				$login_view = new View('login_success');
+				$login_success_view = new View('login_success');
+
+				// Give it some basic variables.
+				$login_success_view->username = $username;
 
 				// Generate the content.
-				$this->template->content = array($login_view);
+				$this->template->content = array($login_success_view);
 			}
 			else
 			{
@@ -190,7 +193,8 @@ class Users_Controller extends Openid_Controller {
 				$login_view = new View('login');
 
 				// There is an error!
-				$login_view->error = 'You have failed to log in';
+				$login_view->errors = array('openid_identifier' => 'Your account details do not match');
+
 				// Generate the content
 				$this->template->content = array($login_view);
 			}

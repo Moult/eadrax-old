@@ -32,3 +32,7 @@
 		Whenever you're bored, just click this to be brought to a random file, ready for you to see what others are up to.
 	</li>
 </ul>
+
+<p>
+	We recommend updating your profile, creating a project, then start adding updates like there's no tomorrow!
+</p>

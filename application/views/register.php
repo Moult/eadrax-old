@@ -16,7 +16,7 @@
 		<form action="<?php echo url::base(); ?>users/register/" method="post">
 			<fieldset>
 				<legend>
-					<img src="<?php echo url::base(); ?>/images/icons/form.png" alt="" width="16" height="16" class="icon" />
+					<img src="<?php echo url::base(); ?>images/icons/form.png" alt="" width="16" height="16" class="icon" />
 					Create an account
 				</legend>
 				<div class="elements">
@@ -41,8 +41,6 @@
 			</fieldset>
 		</form>
 	</div>
-
-
 
 </div>
 
