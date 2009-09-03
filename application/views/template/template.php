@@ -16,6 +16,7 @@ if (!empty($content))
 		}
 		elseif ($i == 1)
 		{
+			echo '<div class="section_divider"></div>';
 			echo '<div class="section_top_left"></div>';
 			echo '<div class="section_top">';
 			echo $block;

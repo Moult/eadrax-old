@@ -403,7 +403,7 @@ em
 	padding-right: 10px;
 }
 
-#content_top h2
+#content_top h2, .section_top h2
 {
 	margin-bottom: 10px;
 }
@@ -466,19 +466,14 @@ em
 
 .section_top
 {
-    width: 850px;
+    width: 830px;
     min-height: 230px;
     float: left;
     background-image: url('../images/content_top_bg.png');
     background-repeat: repeat-x;
-}
-
-.section_top h2
-{
-    background-image: url('../images/section_top.png');
-    background-repeat: no-repeat;
-    padding: 10px;
-    padding-top: 30px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 10px;
 }
 
 .section_top_right
@@ -488,6 +483,16 @@ em
     width: 5px;
     height: 230px;
     margin-right: auto;
+}
+
+.section_divider
+{
+    background-image: url('../images/section_top.png');
+    background-repeat: no-repeat;
+	clear: both;
+	height: 24px;
+	width: 850px;
+	margin-left: 5px;
 }
 
 /*
@@ -692,7 +697,7 @@ NIFTYNESS
 .left
 {
 	float: left;
-	width: 553px;
+	width: 555px;
 	width: 67%;
     padding: 0px;
 }
@@ -727,7 +732,6 @@ NIFTYNESS
 
 .form p
 {
-	margin: 0px;
     padding: 0px;
 	font-family: Arial;
 	font-weight: normal;
