@@ -50,25 +50,23 @@
 	if (isset($errors)) {
 	?>
 	<div class="form">
-		<fieldset>
-			<legend>
-				<img src="/images/icons/warning_16.png" alt="" width="16" height="16" class="icon" />
-				Errors Occured
-			</legend>
-			<div class="elements">
-				<ol class="errors">
-				<?php
-				foreach ($errors as $error) {
-					echo '<li>'. $error .'</li><br />';
-				}
-				?>
-				</ol>
-			</div>
-		</fieldset>
+		<h3>
+			<img src="/images/icons/warning_16.png" alt="" width="16" height="16" class="icon" />
+			Errors Occured
+		</h3>
+		<div class="elements">
+			<ol class="errors">
+			<?php
+			foreach ($errors as $error) {
+				echo '<li>'. $error .'</li><br />';
+			}
+			?>
+			</ol>
+		</div>
 	</div>
 	<?php } ?>
 
 	<div id="picture">
-		<img src="/images/user_picture.png" alt="" />
+		<img src="<?php echo url::base(); ?>/images/icons/user_picture.png" alt="" />
 	</div>
 </div>

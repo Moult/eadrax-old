@@ -44,7 +44,7 @@ class Update_Model extends Model {
 	 * @param array $data	An array with field_name=>content for data to add.
 	 * @param int	$uid	If not set to false, it will update the update row.
 	 *
-	 * @return null
+	 * @return int
 	 */
 	public function manage_update($data, $uid = FALSE)
 	{
@@ -63,11 +63,15 @@ class Update_Model extends Model {
 				'upid' => $result->insert_id(),
 				'pid' => $data['pid']
 			))->insert('news');
+
+			return $result->insert_id();
 		}
 		else
 		{
 			$manage_update->where('id', $uid);
 			$manage_update->update('updates');
+
+			return $uid;
 		}
 	}
 

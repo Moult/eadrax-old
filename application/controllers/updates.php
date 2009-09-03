@@ -345,7 +345,7 @@ class Updates_Controller extends Core_Controller {
 				if ($uid == FALSE)
 				{
 					// Everything went great! Let's add the update.
-					$update_model->manage_update(array(
+					$uid = $update_model->manage_update(array(
 						'uid' => $this->uid,
 						'summary' => $summary,
 						'detail' => $detail,
@@ -373,9 +373,14 @@ class Updates_Controller extends Core_Controller {
 
 				// Then load our success view.
 				$update_success_view = new View('update_success');
+				$update_information_view = new View('update_information');
+
+				// Pass some useful information.
+				$update_success_view->uid = $uid;
+				$update_information_view->uid = $uid;
 
 				// Then generate content.
-				$this->template->content = array($update_success_view);
+				$this->template->content = array($update_success_view, $update_information_view);
 			}
 			else
 			{

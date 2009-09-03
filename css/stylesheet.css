@@ -16,7 +16,6 @@ input, textarea
 {
 	background-color: #EEE;
 	border: 1px solid #CCC;
-	width: 100%;
 	background-color: #D8D8D8;
 	background-image: url('../images/formbg.gif');
 	background-repeat: repeat-x;
@@ -24,6 +23,12 @@ input, textarea
 	color: #000;
 	font-size: 13px;
 	font-weight: bold;
+}
+
+textarea
+{
+	width: 400px;
+	height: 90px;
 }
 
 strong
@@ -716,7 +721,7 @@ NIFTYNESS
     padding: 0;
 }
 
-.form legend 
+.form legend, .form h3
 {
 	background-image: url('../images/column_bg.png');
 	margin: 0px;
@@ -768,6 +773,13 @@ NIFTYNESS
 {
 	list-style-type: decimal;
 	margin-left: 19px;
+}
+
+.form h4
+{
+	font-weight: bold;
+	font-size: 14px;
+	margin-bottom: 5px;
 }
 
 .elements
