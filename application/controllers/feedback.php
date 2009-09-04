@@ -63,23 +63,19 @@ class Feedback_Controller extends Core_Controller {
 		{
 			// Delete the comment.
 			$comment_model->delete_comment($cid);
+			url::redirect('updates/view/'. $comment_upid .'/');
 		}
 		// or if you own the update itself...
 		elseif (!empty($cid) && $update_uid == $this->uid && $this->uid != 1)
 		{
 			// Delete the comment.
 			$comment_model->delete_comment($cid);
+			url::redirect('updates/view/'. $comment_upid .'/');
 		}
 		else
 		{
 			die('Please ensure an ID is specified and you wrote the comment.'); # TODO dying isn't good.
 		}
-
-		// Load views.
-		$comment_delete_view = new View('comment_delete');
-
-		// Generate the content.
-		$this->template->content = array($comment_delete_view);
 	}
 
 	/**

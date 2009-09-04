@@ -67,7 +67,6 @@ class Updates_Controller extends Core_Controller {
 		// Send the comment view some useful information.
 		$comment_form_view->uid = $uid;
 		$comment_form_view->update_uid = $update_information['uid'];
-		$comment_form_view->comment_total = $comment_model->comment_update_number($uid);
 
 		// Let's deal with comment submits first.
 		if ($this->input->post())
@@ -119,6 +118,7 @@ class Updates_Controller extends Core_Controller {
 		// Let's load all the comments now we know all the comments are up to 
 		// date and added successfully.
 		$comment_form_view->comments = $comment_model->comment_update($uid);
+		$comment_form_view->comment_total = $comment_model->comment_update_number($uid);
 
 		// Store the appropriate user information for any user who has 
 		// commented on the update.

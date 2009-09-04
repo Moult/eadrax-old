@@ -15,6 +15,12 @@
 	</p>
 	<?php } ?>
 
+	<?php if ($comment_total == 0) { ?>
+	<p>
+		Uhoh! It seems as though there are <strong>no comments yet</strong> for this update. Why don't you leave one?
+	</p>
+	<?php } ?>
+
 	<div class="form">
 		<form action="<?php echo url::base(); ?>updates/view/<?php echo $uid; ?>/" method="post">
 			<fieldset>
