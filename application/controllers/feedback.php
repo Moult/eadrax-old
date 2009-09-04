@@ -35,81 +35,6 @@
  */
 class Feedback_Controller extends Core_Controller {
 	/**
-	 * TODO: This function demonstrates the use of the commenting ability.
-	 *
-	 * This will later be deleted to be integrated into the update view.
-	 *
-	 * @param int $uid The update ID to add the comment to.
-	 *
-	 * @return null
-	 */
-	public function add($uid)
-	{
-		// Load necessary models.
-		$update_model = new Update_Model;
-		$comment_model = new Comment_Model;
-
-		// Does the uid even exist?
-		if (!$update_model->check_update_exists($uid))
-		{
-			die('That update does not even exist!'); # TODO dying isn't good
-		}
-
-		if ($this->input->post())
-		{
-			$comment = $this->input->post('comment');
-
-			// Validate the comment.
-			$validate = new Validation($this->input->post());
-			$validate->pre_filter('trim');
-			$validate->add_rules('comment', 'required', 'length[2, 400]', 'standard_text');
-
-			if ($this->logged_in == FALSE)
-			{
-				$captcha = $this->input->post('captcha');
-				$validate->add_callbacks('captcha', array($this, '_validate_captcha'));
-			}
-
-			if ($validate->validate())
-			{
-				$comment_model->add_comment(array(
-					'uid' => $this->uid,
-					'upid' => $uid,
-					'comment' => $comment
-				));
-
-				// Load our success view.
-				$comment_success_view = new View('comment_success');
-
-				// Then generate content.
-				$this->template->content = array($comment_success_view);
-			}
-			else
-			{
-				// Errors have occured. Fill in the form and set errors.
-				$comment_form_view = new View('comment_form');
-				$comment_form_view->uid = $uid;
-				$comment_form_view->form = arr::overwrite(array(
-					'comment' => ''
-				), $validate->as_array());
-				$comment_form_view->errors = $validate->errors('comment_errors');
-
-				// Generate the content.
-				$this->template->content = array($comment_form_view);
-			}
-		}
-		else
-		{
-			$comment_form_view = new View('comment_form');
-			$comment_form_view->uid = $uid;
-			$comment_form_view->form = array(
-				'comment' => ''
-			);
-			$this->template->content = array($comment_form_view);
-		}
-	}
-
-	/**
 	 * Deletes a comment.
 	 *
 	 * @param int $cid The comment ID of the comment to delete.
@@ -125,8 +50,22 @@ class Feedback_Controller extends Core_Controller {
 		$update_model = new Update_Model;
 		$comment_model = new Comment_Model;
 
+		// Which update does this comment belong to?
+		$comment_upid = $comment_model->comment_information($cid);
+		$comment_upid = $comment_upid['upid'];
+
+		// Who owns that update?
+		$update_uid = $update_model->update_information($comment_upid);
+		$update_uid = $update_uid['uid'];
+
 		// First check if you own the comment.
 		if (!empty($cid) && $comment_model->check_comment_owner($cid, $this->uid))
+		{
+			// Delete the comment.
+			$comment_model->delete_comment($cid);
+		}
+		// or if you own the update itself...
+		elseif (!empty($cid) && $update_uid == $this->uid && $this->uid != 1)
 		{
 			// Delete the comment.
 			$comment_model->delete_comment($cid);

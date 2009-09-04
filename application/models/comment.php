@@ -161,4 +161,30 @@ class Comment_Model extends Model {
 
 		return $comment_information;
 	}
+
+	/**
+	 * Returns all the comments for an update with the id $uid.
+	 *
+	 * @param int $uid The update UID.
+	 *
+	 * @return array
+	 */
+	public function comment_update($uid)
+	{
+		$comment_update = $this->db->from('comments')->where('upid', $uid)->orderby('id', 'ASC')->get();
+		return $comment_update;
+	}
+
+	/**
+	 * Returns the number of comments for an update with the id $uid.
+	 *
+	 * @param int $uid The update UID.
+	 *
+	 * @return array
+	 */
+	public function comment_update_number($uid)
+	{
+		$comment_update_number = $this->db->from('comments')->where('upid', $uid)->get()->count();
+		return $comment_update_number;
+	}
 }

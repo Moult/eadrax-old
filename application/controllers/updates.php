@@ -46,6 +46,7 @@ class Updates_Controller extends Core_Controller {
 		// Load necessary models.
 		$update_model	= new Update_Model;
 		$user_model		= new User_Model;
+		$comment_model	= new Comment_Model;
 
 		// We have viewed the update, let's update the update statistics :D
 		$update_model->view($uid);
@@ -53,13 +54,78 @@ class Updates_Controller extends Core_Controller {
 		// Let's grab all the information we can about the update.
 		$update_information = $update_model->update_information($uid);
 
-		// Load the view.
+		// Load the views.
 		$update_view = new View('update');
+		$comment_form_view = new View('comment_form');
 
 		// All this information is very useful to the view, let's pass it on.
 		foreach ($update_information as $key => $value)
 		{
 			$update_view->$key = $value;
+		}
+
+		// Send the comment view some useful information.
+		$comment_form_view->uid = $uid;
+		$comment_form_view->update_uid = $update_information['uid'];
+		$comment_form_view->comment_total = $comment_model->comment_update_number($uid);
+
+		// Let's deal with comment submits first.
+		if ($this->input->post())
+		{
+			$comment = $this->input->post('comment');
+
+			// Validate the comment.
+			$validate = new Validation($this->input->post());
+			$validate->pre_filter('trim');
+			$validate->add_rules('comment', 'required', 'length[2, 400]');
+
+			if ($this->logged_in == FALSE)
+			{
+				$captcha = $this->input->post('captcha');
+				$validate->add_callbacks('captcha', array($this, '_validate_captcha'));
+			}
+
+			if ($validate->validate())
+			{
+				$comment_model->add_comment(array(
+					'uid' => $this->uid,
+					'upid' => $uid,
+					'comment' => $comment
+				));
+
+				$comment_form_view->form = array(
+					'comment' => ''
+				);
+			}
+			else
+			{
+				// Errors have occured. Fill in the form and set errors.
+				$comment_form_view->form = arr::overwrite(array(
+					'comment' => ''
+				), $validate->as_array());
+				$comment_form_view->errors = $validate->errors('comment_errors');
+
+				// Generate the content.
+				$this->template->content = array($comment_form_view);
+			}
+		}
+		else
+		{
+			$comment_form_view->form = array(
+				'comment' => ''
+			);
+		}
+
+		// Let's load all the comments now we know all the comments are up to 
+		// date and added successfully.
+		$comment_form_view->comments = $comment_model->comment_update($uid);
+
+		// Store the appropriate user information for any user who has 
+		// commented on the update.
+		foreach ($comment_form_view->comments as $row)
+		{
+			$comment_var_name = 'comment'. $row->uid;
+			$comment_form_view->$comment_var_name = $user_model->user_information($row->uid);
 		}
 
 		// Now let's start parsing information.
@@ -157,11 +223,11 @@ class Updates_Controller extends Core_Controller {
 		// Generate the content.
 		if (isset($display_pastebin))
 		{
-			$this->template->content = array($update_view, $pastebin_view);
+			$this->template->content = array($update_view, $pastebin_view, $comment_form_view);
 		}
 		else
 		{
-			$this->template->content = array($update_view);
+			$this->template->content = array($update_view, $comment_form_view);
 		}
 	}
 
