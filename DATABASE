@@ -89,7 +89,7 @@ CREATE TABLE IF NOT EXISTS `projects` (
   `icon` varchar(255) NOT NULL,
   `description` text NOT NULL,
   `views` int(11) NOT NULL,
-  `logtime` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  `logtime` timestamp NOT NULL default CURRENT_TIMESTAMP,
   PRIMARY KEY  (`id`),
   KEY `uid` (`uid`),
   KEY `cid` (`cid`)
@@ -111,7 +111,7 @@ CREATE TABLE IF NOT EXISTS `updates` (
   `pastebin` text NOT NULL,
   `ext` varchar(10) NOT NULL,
   `views` int(11) NOT NULL,
-  `logtime` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  `logtime` timestamp NOT NULL default CURRENT_TIMESTAMP,
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`),
   KEY `uid` (`uid`)

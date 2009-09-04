@@ -32,10 +32,10 @@ $config['user_upload_limit'] = '50M';
 $config['guest_upload_limit'] = '5M';
 
 // The layout width that update previews cannot be bigger than.
-$config['fit_width'] = 200;
+$config['fit_width'] = 830;
 
 // The layout height that update previews cannot be bigger than.
-$config['fit_height'] = 500;
+$config['fit_height'] = 600;
 
 // The allowed filetypes for users on the website.
 $config['filetypes'] = 'gif,jpg,png,svg,tiff,bmp,exr,pdf,zip,rar,tar,gz,bz,7z,ogg,wmv,mp3,wav,avi,mpg,mov,swf,flv,blend,xcf,doc,ppt,xls,odt,ods,odp,odg,psd,fla,ai,indd,aep,txt,cab,csv,exe,diff,patch,rtf,torrent';

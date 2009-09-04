@@ -45,7 +45,7 @@ class Updates_Controller extends Core_Controller {
 	{
 		// Load necessary models.
 		$update_model	= new Update_Model;
-		$project_model	= new Project_Model;
+		$user_model		= new User_Model;
 
 		// We have viewed the update, let's update the update statistics :D
 		$update_model->view($uid);
@@ -63,6 +63,37 @@ class Updates_Controller extends Core_Controller {
 		}
 
 		// Now let's start parsing information.
+
+		// Parse the user (creator of the update)
+		if ($update_information['uid'] != 1)
+		{
+			$update_view->user_information = $user_model->user_information($update_information['uid']);
+		}
+
+		// Parse the project.
+		if ($update_information['pid'] != 1)
+		{
+			// Since we have an associated project, let's find out information 
+			// about it.
+			// Load necessary models - we only need this if there is a project.
+			$project_model	= new Project_Model;
+
+			$update_view->project_information = $project_model->project_information($update_information['pid']);
+		}
+
+		// Parse the timeline.
+		$check_previous = $update_model->check_timeline_previous($uid, $update_information['pid']);
+		if (!empty($check_previous))
+		{
+			$update_view->first = $check_previous['first'];
+			$update_view->previous = $check_previous['previous'];
+		}
+		$check_next = $update_model->check_timeline_next($uid, $update_information['pid']);
+		if (!empty($check_next))
+		{
+			$update_view->next = $check_next['next'];
+			$update_view->last = $check_next['last'];
+		}
 
 		// How should we display the attachment?
 		if (empty($update_information['filename']))
@@ -85,6 +116,9 @@ class Updates_Controller extends Core_Controller {
 		// Parse the pastebin.
 		if (!empty($update_information['pastebin']))
 		{
+			// Load the pastebin view.
+			$pastebin_view = new View('pastebin');
+
 			$geshi = new GeSHi($update_information['pastebin'], $update_information['syntax']);
 			$geshi->set_language_path(DOCROOT .'modules/geshi/resource/');
 			$geshi->set_header_type(GESHI_HEADER_PRE_VALID);
@@ -96,11 +130,39 @@ class Updates_Controller extends Core_Controller {
 			echo $geshi->get_stylesheet();
 			echo '--></style>';
 
-			$update_view->pastebin = $geshi->parse_code();
+			$pastebin_view->pastebin = $geshi->parse_code();
+			$pastebin_view->vanilla = $update_information['pastebin'];
+			$pastebin_view->syntax = $update_information['syntax'];
+
+			$display_pastebin = TRUE;
 		}
 
+        // Parse the description
+        if (!empty($update_information['detail'])) {
+            // This parsing properly puts the detail in paragraph blocks.
+            $format = 'style="font-size:16px; margin-bottom: 10px;"';
+            $detail = '<p '. $format .'>'. $update_information['detail'] .'</p>';
+            $detail = preg_replace("/(?:\r?\n)+/", '</p><p '. $format .'>', $detail);
+
+            $update_view->detail = $detail;
+
+            // If we are not embedding something...
+            if ($update_view->display == FALSE) {
+                // ...but we ARE showing detailed description...
+                $update_view->display == TRUE;
+                // ...then they don't get the "no more detail" message!
+            }
+        }
+
 		// Generate the content.
-		$this->template->content = array($update_view);
+		if (isset($display_pastebin))
+		{
+			$this->template->content = array($update_view, $pastebin_view);
+		}
+		else
+		{
+			$this->template->content = array($update_view);
+		}
 	}
 
 	/**
@@ -160,8 +222,7 @@ class Updates_Controller extends Core_Controller {
 			// Begin to validate the information.
 			$validate = new Validation($this->input->post());
 			$validate->pre_filter('trim');
-			$validate->add_rules('summary', 'required', 'length[5, 70]', 'standard_text');
-			$validate->add_rules('detail', 'standard_text');
+			$validate->add_rules('summary', 'required', 'length[5, 70]');
 			$validate->add_callbacks('syntax', array($this, '_validate_syntax_language'));
 
 			// If the person is logged in, validate project information.
@@ -212,7 +273,7 @@ class Updates_Controller extends Core_Controller {
 					if ($files->validate())
 					{
 						// Upload the file as normal.
-						$filename = upload::save('attachment', NULL, DOCROOT .'uploads/files/');
+						$filename = upload::save('attachment', time() . strtolower($_FILES['attachment']['name']), DOCROOT .'uploads/files/');
 
 						// Let's determine what extension this file is.
 						$extension = strtolower(substr(strrchr($_FILES['attachment']['name'], '.'), 1));

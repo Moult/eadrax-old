@@ -293,4 +293,110 @@ class Update_Model extends Model {
 		}
 		return $news;
 	}
+
+	/**
+	 * Returns the first and previous of an update in a project if it exists.
+	 *
+	 * @param int $id The id of the update.
+	 * @param int $pid The pid of the project the update is part of.
+	 *
+	 * return mixed
+	 */
+	public function check_timeline_previous($id, $pid)
+	{
+		// Parse the timeline. Do we have a <<, <?
+
+		// If the project is uncategorised, we have to limit it to the user's 
+		// submissions, or only guest submissions.
+		if ($pid == 1)
+		{
+			$uid = $this->update_information($id);
+			$uid = $uid['uid'];
+			$check = $this->db->from('updates')->where(array('pid' => $pid, 'uid' => $uid, 'id <' => $id))->orderby('id', 'DESC')->limit(1)->get();
+		}
+		else
+		{
+			$check = $this->db->from('updates')->where(array('pid' => $pid, 'id <' => $id))->orderby('id', 'DESC')->limit(1)->get();
+		}
+
+		$check_rows = $check->count();
+		$check = $check->current();
+
+		if ($check_rows > 0)
+		{
+			// Yep, we have a <, and therefore also a <<.
+			$data['previous'] = $check->id;
+
+			// ...and now for the <<.
+			if (isset($uid))
+			{
+				$first = $this->db->from('updates')->where(array('pid' => $pid, 'uid' => $uid, 'id <' => $id))->orderby('id', 'ASC')->limit(1)->get()->current();
+			}
+			else
+			{
+				$first = $this->db->from('updates')->where(array('pid' => $pid, 'id <' => $id))->orderby('id', 'ASC')->limit(1)->get()->current();
+			}
+
+			$data['first'] = $first->id;
+
+			return $data;
+		}
+		else
+		{
+			return NULL;
+		}
+	}
+
+	/**
+	 * Returns the last and next of an update in a project if it exists.
+	 *
+	 * @param int $id The id of the update.
+	 * @param int $pid The pid of the project the update is part of.
+	 *
+	 * return mixed
+	 */
+	public function check_timeline_next($id, $pid)
+	{
+		// Parse the timeline. Do we have a >, >>?
+
+		// If the project is uncategorised, we have to limit it to the user's 
+		// submissions, or only guest submissions.
+		if ($pid == 1)
+		{
+			$uid = $this->update_information($id);
+			$uid = $uid['uid'];
+			$check = $this->db->from('updates')->where(array('pid' => $pid, 'uid' => $uid, 'id >' => $id))->orderby('id', 'ASC')->limit(1)->get();
+		}
+		else
+		{
+			$check = $this->db->from('updates')->where(array('pid' => $pid, 'id >' => $id))->orderby('id', 'ASC')->limit(1)->get();
+		}
+
+		$check_rows = $check->count();
+		$check = $check->current();
+
+		if ($check_rows > 0)
+		{
+			// Yep, we have a >, and therefore also a >>.
+			$data['next'] = $check->id;
+
+			// ...and now for the >>.
+			if (isset($uid))
+			{
+				$last = $this->db->from('updates')->where(array('pid' => $pid, 'uid' => $uid, 'id >' => $id))->orderby('id', 'DESC')->limit(1)->get()->current();
+			}
+			else
+			{
+				$last = $this->db->from('updates')->where(array('pid' => $pid, 'id >' => $id))->orderby('id', 'DESC')->limit(1)->get()->current();
+			}
+
+			$data['last'] = $last->id;
+
+			return $data;
+		}
+		else
+		{
+			return NULL;
+		}
+	}
 }

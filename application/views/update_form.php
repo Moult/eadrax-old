@@ -20,9 +20,9 @@
 
 	<div class="form">
 		<?php if (isset($uid)) { ?>
-		<form action="<?php echo url::base(); ?>updates/add/<?php echo $uid; ?>/" method="post">
+		<form action="<?php echo url::base(); ?>updates/add/<?php echo $uid; ?>/" method="post" enctype="multipart/form-data">
 		<?php } else { ?>
-		<form action="<?php echo url::base(); ?>updates/add/" method="post">
+		<form action="<?php echo url::base(); ?>updates/add/" method="post" enctype="multipart/form-data">
 		<?php } ?>
 			<fieldset>
 				<legend>
