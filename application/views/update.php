@@ -1,5 +1,3 @@
-Viewing update <?php echo $id; ?><br />
-
 <h2>
 	<img src="<?php echo url::base(); ?>images/icons/spanner_48.png" width="48" height="48" class="icon" alt="" />
 	<?php echo $summary; ?>
@@ -47,10 +45,10 @@ Viewing update <?php echo $id; ?><br />
 if ($this->uid == $uid && $this->uid != 1) {
 ?>
         <li style="width: 70px; display: inline;">
-            <input style="width: 70px;" type="button" onClick="parent.location='<?php echo url::base() .'update/edit/'. $id .'/'; ?>'" value="Edit">
+            <input style="width: 70px;" type="button" onClick="parent.location='<?php echo url::base() .'updates/add/'. $id .'/'; ?>'" value="Edit">
         </li>
         <li style="width: 70px; display: inline;">
-            <input style="width: 70px;" type="button" onClick="parent.location='lol'" value="Delete">
+            <input style="width: 70px;" type="button" onClick="parent.location='<?php echo url::base() .'updates/delete/'. $id .'/'; ?>'" value="Delete">
         </li>
 <?php } ?>
     </ul>
@@ -99,7 +97,7 @@ if (isset($last)) {
 </div>
 <?php } ?>
 
-<?php if ($display == false) { ?>
+<?php if ($display == FALSE) { ?>
 <div style="border: 2px solid #800; background-color: #FDD; margin: 10px; padding: 10px;">
 	This update contains no further detail. Don't worry, there's nothing wrong with that!
 </div>

@@ -227,7 +227,7 @@ class Updates_Controller extends Core_Controller {
             // If we are not embedding something...
             if ($update_view->display == FALSE) {
                 // ...but we ARE showing detailed description...
-                $update_view->display == TRUE;
+                $update_view->display = TRUE;
                 // ...then they don't get the "no more detail" message!
             }
         }
