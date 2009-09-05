@@ -103,7 +103,6 @@ if (isset($last)) {
 </div>
 <?php } ?>
 
-
 <?php
 // Is there an attached file we need to show?
 if (!empty($filename)) {
@@ -122,14 +121,14 @@ if (!empty($filename)) {
 	} elseif ($display == 'video') {
 ?>
 <div style="margin: 10px; text-align: center;">
-	<script type='text/javascript' src='/js/swfobject.js'></script>
+	<script type='text/javascript' src='<?php echo url::base(); ?>js/swfobject.js'></script>
 		<div id='mediaspace'>This div will be replaced</div>
 		<script type='text/javascript'>
-		var s1 = new SWFObject('/player-viral.swf','ply','470','320','9','#ffffff');
+		var s1 = new SWFObject('<?php echo url::base(); ?>player.swf','ply','470','320','9','#ffffff');
 		s1.addParam('allowfullscreen','true');
 		s1.addParam('allowscriptaccess','always');
 		s1.addParam('wmode','opaque');
-		s1.addParam('flashvars','file=<?php echo $flv; ?>');
+		s1.addParam('flashvars','file=<?php echo url::base(); ?>uploads/files/<?php echo $filename; ?>.<?php echo $ext;?>');
 		s1.write('mediaspace');
 	</script>
 </div>
@@ -137,14 +136,14 @@ if (!empty($filename)) {
 	} elseif ($display == 'sound') {
 ?>
 <div style="margin: 10px; text-align: center;">
-	<script type='text/javascript' src='/js/swfobject.js'></script>
+	<script type='text/javascript' src='<?php echo url::base(); ?>js/swfobject.js'></script>
 		<div id='mediaspace'>This div will be replaced</div>
 		<script type='text/javascript'>
-		var s1 = new SWFObject('/player-viral.swf','ply','470','20','9','#ffffff');
+		var s1 = new SWFObject('<?php echo url::base(); ?>player.swf','ply','470','20','9','#ffffff');
 		s1.addParam('allowfullscreen','true');
 		s1.addParam('allowscriptaccess','always');
 		s1.addParam('wmode','opaque');
-		s1.addParam('flashvars','file=<?php echo $sound; ?>');
+		s1.addParam('flashvars','file=<?php echo url::base(); ?>uploads/files/<?php echo $filename; ?>.<?php echo $ext;?>');
 		s1.write('mediaspace');
 	</script>
 </div>

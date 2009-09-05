@@ -186,6 +186,10 @@ class Updates_Controller extends Core_Controller {
 		{
 			$update_view->display = 'video';
 		}
+		elseif ($update_information['ext'] == 'mp3' || $update_information['ext'] == 'wav')
+		{
+			$update_view->display = 'sound';
+		}
 		else
 		{
 			$update_view->display = 'download';
