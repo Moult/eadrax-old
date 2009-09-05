@@ -108,12 +108,7 @@ class Feedback_Controller extends Core_Controller {
 		{
 			// Add the kudos!
 			$kudos_model->kudos($uid, $this->uid);
-
-			// Load success view.
-			$kudos_success_view = new View('kudos_success');
-
-			// Generate the content.
-			$this->template->content = array($kudos_success_view);
+			url::redirect('updates/view/'. $uid .'/');
 		}
 	}
 

@@ -9,7 +9,7 @@ Viewing update <?php echo $id; ?><br />
 	<?php if ($uid != 1) { ?>
 	Viewing Project: <em><?php if ($pid != 1) { ?><a href="<?php echo url::base(); ?>projects/view/<?php echo $pid; ?>"><?php echo $project_information['name']; ?></a><?php } else { ?>Uncategorised<?php } ?></em>
 	<?php } ?>
-	by <em><?php if ($uid != 1) { ?><a href="<?php echo url::base(); ?>profile/view/<?php echo $uid; ?>/"><?php echo $user_information['username']; ?></a><?php } else { ?>Guest<?php } ?></em>
+	by <em><?php if ($uid != 1) { ?><a href="<?php echo url::base(); ?>profile/view/<?php echo $uid; ?>/"><?php echo $user_information['username']; ?></a><?php } else { ?>Guest<?php } ?> with <?php echo $kudos; ?> kudos</em>
 </div>
 
 <div style="float: right; font-size: 18px; letter-spacing: -1px; color: #AAA; text-align: right; margin-bottom: 5px;"><?php echo $logtime; ?></div>
@@ -21,17 +21,16 @@ Viewing update <?php echo $id; ?><br />
 
     <ul style="margin-left: 0px; display: inline;">
         <li style="width: 70px; display: inline;">
-            <input style="width: 70px;" type="button" onClick="parent.location='lol'" value="Love It">
-        </li>
-        <li style="width: 70px; display: inline;">
-            <input style="width: 70px;" type="button" onClick="parent.location='lol'" value="Share It">
+			<input style="width: 70px;" type="button" onClick="parent.location='<?php echo url::base(); ?>feedback/kudos/<?php echo $id; ?>/'" value="Kudos">
         </li>
         <li style="width: 70px; display: inline;">
             <input style="width: 70px;" type="button" onClick="parent.location='lol'" value="Subscribe">
         </li>
+<?php if ($uid != 1) { ?>
         <li style="width: 70px; display: inline;">
-            <input style="width: 70px;" type="button" onClick="parent.location='lol'" value="Report">
+            <input style="width: 70px;" type="button" onClick="parent.location='lol'" value="Track">
         </li>
+<?php } ?>
 <?php
 if ($this->uid == $uid && $this->uid != 1) {
 ?>

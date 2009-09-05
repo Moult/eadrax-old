@@ -47,6 +47,7 @@ class Updates_Controller extends Core_Controller {
 		$update_model	= new Update_Model;
 		$user_model		= new User_Model;
 		$comment_model	= new Comment_Model;
+		$kudos_model	= new Kudos_Model;
 
 		// We have viewed the update, let's update the update statistics :D
 		$update_model->view($uid);
@@ -129,6 +130,9 @@ class Updates_Controller extends Core_Controller {
 		}
 
 		// Now let's start parsing information.
+
+		// Parse some data about the update itself. Let's start with kudos.
+		$update_view->kudos = $kudos_model->kudos($uid);
 
 		// Parse the user (creator of the update)
 		if ($update_information['uid'] != 1)

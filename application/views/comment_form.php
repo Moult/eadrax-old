@@ -15,6 +15,10 @@
 	</p>
 	<?php } ?>
 
+	<p>
+		If you don't have anything specific to say but you like this update nonetheless, you should <a href="<?php echo url::base(); ?>feedback/kudos/<?php echo $uid; ?>/">kudos</a> it.
+	</p>
+
 	<?php if ($comment_total == 0) { ?>
 	<p>
 		Uhoh! It seems as though there are <strong>no comments yet</strong> for this update. Why don't you leave one?
