@@ -23,12 +23,24 @@ Viewing update <?php echo $id; ?><br />
         <li style="width: 70px; display: inline;">
 			<input style="width: 70px;" type="button" onClick="parent.location='<?php echo url::base(); ?>feedback/kudos/<?php echo $id; ?>/'" value="Kudos">
         </li>
-        <li style="width: 70px; display: inline;">
-            <input style="width: 70px;" type="button" onClick="parent.location='lol'" value="Subscribe">
-        </li>
 <?php if ($uid != 1) { ?>
+	<?php if ($pid != 1) { ?>
         <li style="width: 70px; display: inline;">
-            <input style="width: 70px;" type="button" onClick="parent.location='lol'" value="Track">
+			<?php if ($subscribed == TRUE) { ?>
+            <input style="width: 70px;" type="button" onClick="parent.location='<?php echo url::base(); ?>feedback/unsubscribe/<?php echo $pid; ?>/'" value="Unscribe">
+			<?php } else { ?>
+			<?php if ($tracking == FALSE) { ?>
+			<input style="width: 70px;" type="button" onClick="parent.location='<?php echo url::base(); ?>feedback/subscribe/<?php echo $pid; ?>/'" value="Subscribe">
+			<?php } ?>
+			<?php } ?>
+        </li>
+	<?php } ?>
+        <li style="width: 70px; display: inline;">
+			<?php if ($tracking == TRUE) { ?>
+            <input style="width: 70px;" type="button" onClick="parent.location='<?php echo url::base(); ?>feedback/untrack/<?php echo $uid; ?>/'" value="Untrack">
+			<?php } else { ?>
+            <input style="width: 70px;" type="button" onClick="parent.location='<?php echo url::base(); ?>feedback/track/<?php echo $uid; ?>/'" value="Track">
+			<?php } ?>
         </li>
 <?php } ?>
 <?php

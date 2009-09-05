@@ -84,8 +84,8 @@ class Track_Model extends Model {
 
 			// Log for newsfeeds.
 			$newsfeed = $this->db->set(array(
-				'uid' => $data['uid'],
-				'tid' => $data['tuid']
+				'uid' => $uid,
+				'tid' => $tuid
 			))->insert('news');
 		}
 	}

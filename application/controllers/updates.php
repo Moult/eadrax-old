@@ -44,10 +44,12 @@ class Updates_Controller extends Core_Controller {
 	public function view($uid)
 	{
 		// Load necessary models.
-		$update_model	= new Update_Model;
-		$user_model		= new User_Model;
-		$comment_model	= new Comment_Model;
-		$kudos_model	= new Kudos_Model;
+		$update_model		= new Update_Model;
+		$user_model			= new User_Model;
+		$comment_model		= new Comment_Model;
+		$kudos_model		= new Kudos_Model;
+		$subscribe_model	= new Subscribe_Model;
+		$track_model		= new Track_Model;
 
 		// We have viewed the update, let's update the update statistics :D
 		$update_model->view($uid);
@@ -133,6 +135,12 @@ class Updates_Controller extends Core_Controller {
 
 		// Parse some data about the update itself. Let's start with kudos.
 		$update_view->kudos = $kudos_model->kudos($uid);
+
+		// Now subscribing...
+		$update_view->subscribed = $subscribe_model->check_project_subscriber($update_information['pid'], $this->uid);
+
+		// Now tracking...
+		$update_view->tracking = $track_model->check_track_owner($update_information['uid'], $this->uid);
 
 		// Parse the user (creator of the update)
 		if ($update_information['uid'] != 1)

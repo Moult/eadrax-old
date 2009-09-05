@@ -84,8 +84,8 @@ class Subscribe_Model extends Model {
 
 			// Log for newsfeeds.
 			$newsfeed = $this->db->set(array(
-				'uid' => $data['uid'],
-				'sid' => $data['pid']
+				'uid' => $uid,
+				'sid' => $pid
 			))->insert('news');
 		}
 	}
