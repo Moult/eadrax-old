@@ -50,6 +50,7 @@ class Updates_Controller extends Core_Controller {
 		$kudos_model		= new Kudos_Model;
 		$subscribe_model	= new Subscribe_Model;
 		$track_model		= new Track_Model;
+		$project_model		= new Project_Model;
 
 		// We have viewed the update, let's update the update statistics :D
 		$update_model->view($uid);
@@ -60,11 +61,75 @@ class Updates_Controller extends Core_Controller {
 		// Load the views.
 		$update_view = new View('update');
 		$comment_form_view = new View('comment_form');
+		$random_update_view = new View('random_update');
 
 		// All this information is very useful to the view, let's pass it on.
 		foreach ($update_information as $key => $value)
 		{
 			$update_view->$key = $value;
+		}
+		$update_view->filename_icon = $this->_file_icon($update_information['filename'], $update_information['ext']);
+
+		// Find out generic information such as size, format, etc.
+		$update_view->file_size = filesize(DOCROOT .'uploads/files/'. $update_information['filename'] .'.'.  $update_information['ext']);
+
+		// What size to start off with?
+		$update_view->file_size_ext = 'bytes';
+
+		if ($update_view->file_size > 1024) {
+			$update_view->file_size     = $update_view->file_size / 1024;
+			$update_view->file_size_ext = 'kb';
+		}
+
+		if ($update_view->file_size > 1024) {
+			$update_view->file_size     = $update_view->file_size / 1024;
+			$update_view->file_size_ext = 'Mb';
+		}
+
+		// Now to clean up the value we get.
+		$update_view->file_size = ceil($update_view->file_size);
+
+
+		// Let's find out some random updates!
+		if ($update_model->update_number($update_information['uid']) > 0)
+		{
+			$display_random = TRUE;
+			$random_query = $update_model->update_number_random($update_information['uid']);
+			$n = 0;
+			$random_data = array();
+
+			foreach ($random_query->result() as $row)
+			{
+				$random_data[$n]['summary'] = $row->summary;
+				$random_data[$n]['id'] = $row->id;
+
+				// Let's parse the thumbnails.
+				$random_data[$n]['filename'] = $this->_file_icon($row->filename, $row->ext);
+
+                // Determind the sizes for offsetting.
+                $path = substr($random_data[$n]['filename'],strlen(url::base()));
+                $path = DOCROOT . $path;
+                $random_data[$n]['thumb_height'] = getimagesize($path);
+                $random_data[$n]['thumb_width']  = $random_data[$n]['thumb_height'][0];
+                $random_data[$n]['thumb_height'] = $random_data[$n]['thumb_height'][1];
+                $random_data[$n]['thumb_offset'] = $random_data[$n]['thumb_height']/2;
+
+                // Right, now find out the project name.
+                if ($row->pid == 0) {
+                    $random_data[$n]['project_name'] = 'Uncategorised';
+                    $random_data[$n]['pid'] = 0;
+                } else {
+                    $random_data[$n]['pid'] = $row->pid;
+					$random_data[$n]['project_name'] = $project_model->project_information($row->pid);
+					$random_data[$n]['project_name'] = $random_data[$n]['project_name']['name'];
+                }
+
+                $n++;
+			}
+
+			// Send all the data we collected to the view...
+			$random_update_view->random_data = $random_data;
+			$random_update_view->user = $user_model->user_information($update_information['uid']);
 		}
 
 		// Send the comment view some useful information.
@@ -153,9 +218,6 @@ class Updates_Controller extends Core_Controller {
 		{
 			// Since we have an associated project, let's find out information 
 			// about it.
-			// Load necessary models - we only need this if there is a project.
-			$project_model	= new Project_Model;
-
 			$update_view->project_information = $project_model->project_information($update_information['pid']);
 		}
 
@@ -237,14 +299,18 @@ class Updates_Controller extends Core_Controller {
         }
 
 		// Generate the content.
+		$content = array();
+		$content[] = $update_view;
 		if (isset($display_pastebin))
 		{
-			$this->template->content = array($update_view, $pastebin_view, $comment_form_view);
+			$content[] = $pastebin_view;
 		}
-		else
+		if (isset($display_random))
 		{
-			$this->template->content = array($update_view, $comment_form_view);
+			$content[] = $random_update_view;
 		}
+		$content[] = $comment_form_view;
+		$this->template->content = $content;
 	}
 
 	/**
@@ -689,6 +755,45 @@ class Updates_Controller extends Core_Controller {
 		if ($this->securimage->check($array[$field]) == FALSE)
 		{
 			$array->add_error($field, 'captcha');
+		}
+	}
+
+	/**
+	 * Returns the url of the icon to use for a filetype.
+	 *
+	 * @param string $ext The file extension
+	 *
+	 * @return string
+	 */
+	public function _file_icon($filename, $ext)
+	{
+		if ($ext == 'jpg' || $ext == 'png' || $ext == 'gif') {
+			return url::base() .'uploads/icons/'. $filename .'.jpg';
+		} elseif ($ext == 'avi' || $ext == 'mpg' || $ext == 'mov' || $ext == 'flv') {
+			// Thumbnails for videos!
+			return url::base() .'uploads/icons/'. $filename .'.jpg';
+		} elseif (empty($filename)) {
+			// If there is no filename, we give it a special icon.
+			return url::base() .'images/icons/newspaper_48.png';
+		} else {
+			// And icons for the rest!
+			if ($ext == 'zip' || $ext == 'rar' || $ext == 'gz' || $ext == 'bz') {
+				return url::base() .'images/icons/floppy_disk_48.png';
+			} elseif ($ext == 'svg' || $ext == 'tiff' || $ext == 'bmp' || $ext == 'exr') {
+				return url::base() .'images/icons/image_48.png';
+			} elseif ($ext == 'doc' || $ext == 'odt') {
+				return url::base() .'images/icons/paper_content_pencil_48.png';
+			} elseif ($ext == 'ppt' || $ext == 'odp' || $ext == 'odg') {
+				return url::base() .'images/icons/paper_content_chart.png';
+			} elseif ($ext == 'xls' || $ext == 'ods') {
+				return url::base() .'images/icons/table_48.png';
+			} elseif ($ext == 'pdf') {
+				return url::base() .'images/icons/paper_content_48.png';
+			} elseif ($ext == 'wav' || $ext == 'mp3') {
+				return url::base() .'images/icons/blue_speech_bubble_48.png';
+			} else {
+				return url::base() .'images/icons/box_download_48.png';
+			}
 		}
 	}
 }

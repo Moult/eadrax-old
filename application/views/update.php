@@ -147,5 +147,31 @@ if (!empty($filename)) {
 		s1.write('mediaspace');
 	</script>
 </div>
-<?php }
-} ?>
+<?php } ?>
+
+<?php if ($display == 'download' || $display == 'video' || $display == 'sound') { ?>
+<div style="border: 1px solid #AAA; width: 600px; margin-left: auto; margin-right: auto; margin-top: 10px; font-size: 18px; background-color: #FFF; padding: 10px;">
+		<div style="text-align: center;">
+			<img src="<?php echo $filename_icon; ?>" width="48" height="48" class="icon" alt="" />
+			<a href="<?php echo url::base(); ?>uploads/files/<?php echo $filename; ?>.<?php echo $ext; ?>"><strong>Download</strong><?php echo $filename; ?>.<?php echo $ext; ?></a>
+        </div>
+
+        <div style="width: 300px; float: left; margin-top: 10px;">
+            <p style="font-size: 18px; color: #555; padding-left: 20px; text-align: center;">
+                Filetype: <?php echo $ext; ?><br />
+                Size: <?php echo $file_size; ?> <?php echo $file_size_ext; ?>
+            </p>
+        </div>
+
+        <div style="width: 300px; float: left; margin-top: 10px;">
+            <p style="font-size: 18px; color: #555; padding-right: 20px; text-align: center;">
+                Date: <?php echo $logtime; ?><br />
+                By: <?php if ($uid != 1) { ?><a href="<?php echo url::base(); ?>profile/view/<?php echo $uid; ?>/"><?php echo $user_information['username']; ?></a><?php } else { ?>Guest<?php } ?>
+            </p>
+        </div>
+
+        <div style="clear: both; padding: 0; margin: 0;"></div>
+    </div>
+<?php } ?>
+
+<?php } ?>

@@ -413,13 +413,6 @@ em
 	margin-bottom: 10px;
 }
 
-#content_top h3, .section_top h3
-{
-	margin-bottom: 5px;
-	font-size: 15px;
-	font-weight: bold;
-}
-
 #content_top p, .section_top p
 {
     font-family: Arial;
@@ -712,6 +705,13 @@ NIFTYNESS
 	width: 555px;
 	width: 67%;
     padding: 0px;
+}
+
+.left h3
+{
+	margin-bottom: 5px;
+	font-size: 15px;
+	font-weight: bold;
 }
 
 .right

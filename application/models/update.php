@@ -193,6 +193,34 @@ class Update_Model extends Model {
 	}
 
 	/**
+	 * Returns the total number of updates by a user.
+	 *
+	 * @param int $uid The user ID.
+	 *
+	 * @return int
+	 */
+	public function update_number($uid)
+	{
+		$db = $this->db;
+		$count = $db->from('updates')->where(array('uid' => $uid))->get()->count();
+		return $count;
+	}
+
+	/**
+	 * Returns a random number of updates by a user.
+	 *
+	 * @param int $uid The user ID.
+	 *
+	 * @return int
+	 */
+	public function update_number_random($uid)
+	{
+		$db = $this->db;
+		$get = $db->from('updates')->where(array('uid' => $uid))->orderby(NULL, 'RAND()')->limit(5)->get();
+		return $get;
+	}
+
+	/**
 	 * Returns the number of updates by a user within two dates.
 	 *
 	 * @param int $uid The user ID.
