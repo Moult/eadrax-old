@@ -269,11 +269,7 @@ class Updates_Controller extends Core_Controller {
 			$geshi->enable_line_numbers(GESHI_FANCY_LINE_NUMBERS);
 			$geshi->enable_classes();
 
-			// This is HORRIBLE. I feel evil even typing this.
-			echo '<style type="text/css"><!--';
-			echo $geshi->get_stylesheet();
-			echo '--></style>';
-
+			$pastebin_view->css = $geshi->get_stylesheet();
 			$pastebin_view->pastebin = $geshi->parse_code();
 			$pastebin_view->vanilla = $update_information['pastebin'];
 			$pastebin_view->syntax = $update_information['syntax'];
