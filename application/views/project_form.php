@@ -1,48 +1,142 @@
-<?php
-if (isset($errors))
-{
-	foreach ($errors as $error)
-	{
-		echo $error .'<br />';
-	}
-}
-if (isset($pid))
-{
-	echo form::open_multipart('projects/add/'. $pid .'/');
-}
-else
-{
-	echo form::open_multipart('projects/add/');
-}
-echo form::open_fieldset();
-if (isset($pid))
-{
-	echo form::legend('Edit Project');
-}
-else
-{
-	echo form::legend('Add a Project');
-}
-echo form::label('name', 'Project Name:');
-echo form::input('name', $form['name']) .'<br />';
-echo form::label('cid', 'Category:');
-echo form::dropdown('cid', $categories, Kohana::config('projects.default_cid')) .'<br />';
-echo form::label('website', 'Website:');
-echo form::input('website', $form['website']) .'<br />';
-echo form::label('contributors', 'Contributors (separate with comma):');
-echo form::input('contributors', $form['contributors']) .'<br />';
-echo form::label('description', 'Description:');
-echo form::textarea('description', $form['description']) .'<br />';
-echo form::label('icon', 'Project Icon:');
-echo form::upload(array('name'=>'icon')) .'<br />';
-if (isset($pid))
-{
-	echo form::submit('submit', 'edit project');
-}
-else
-{
-	echo form::submit('submit', 'add project');
-}
-echo form::close_fieldset();
-echo form::close();
-?>
+<div class="left">
+	<h2>
+		<img src="<?php echo url::base(); ?>images/icons/circle_green.png" width="48" height="48" class="icon" alt="" />
+		<?php if (isset($pid)) { ?>
+		Edit Project Information
+		<?php } else { ?>
+		Add a project
+		<?php } ?>
+	</h2>
+
+	<p>
+		Projects are a great way to categorise your works-in-progress. However if you are working on nothing in general, common with artists who do quick sketches or random personal work once in a while, you shouldn't create a project but simply put your updates in the "Uncategorised" category.
+	</p>
+
+	<p>
+		Again, <strong>we're flexible</strong>. Only fill up what you need, and you can edit this anytime later.
+	</p>
+
+	<div class="form">
+		<?php
+		if (isset($pid))
+		{
+			echo '<form action="'. url::base() .'projects/add/'. $pid .'" method="post" enctype="multipart/form-data">';
+		}
+		else
+		{
+			echo '<form action="'. url::base() .'projects/add/" method="post" enctype="multipart/form-data">';
+		}
+		?>
+			<fieldset>
+				<legend>
+					<img src="<?php echo url::base(); ?>images/icons/form.png" alt="" width="16" height="16" class="icon" />
+					<?php if (isset($pid)) { ?>
+					Edit Project Information
+					<?php } else { ?>
+					Add a new project
+					<?php } ?>
+				</legend>
+				<div class="elements">
+					<p>
+						<label for="name">Name:</label>
+						<input type="text" name="name" value="<?php echo $form['name']; ?>" <?php if (isset($errors['name'])) { echo 'class="error"'; } ?> />
+					</p>
+
+					<p>
+						<label for"cid">Category:</label>
+						<select name="cid">
+						<?php foreach ($categories as $cid => $c_name) { ?>
+						<option value="<?php echo $cid; ?>" <?php if (Kohana::config('projects.default_cid') == $cid) { echo 'selected="selected"'; } ?>><?php echo $c_name; ?></option>
+						<?php } ?>
+						</select>
+					</p>
+
+					<p>
+						<label for="website">Website:</label>
+						<input type="text" name="website" value="<?php echo $form['website']; ?>" <?php if (isset($errors['website'])) { echo 'class="error"'; } ?> />
+					</p>
+
+					<p>
+						<label for="contributors">Contributors:</label>
+						<input type="text" name="contributors" value="<?php echo $form['contributors']; ?>" <?php if (isset($errors['contributors'])) { echo 'class="error"'; } ?> />
+					</p>
+
+					<p>
+						<label for="description">Description:</label>
+						<textarea name="description" <?php if (isset($errors['description'])) { echo 'class="error"'; } ?>><?php echo $form['description']; ?></textarea>
+					</p>
+
+					<p>
+						<label for="icon">Icon:</label>
+						<input type="file" name="icon" />
+					</p>
+
+					<p class="submit">
+						<?php if (isset($pid)) { ?>
+						<input type="submit" name="submit" class="submit" value="Edit Project" />
+						<?php } else { ?>
+						<input type="submit" name="submit" class="submit" value="Add New Project" />
+						<?php } ?>
+					</p>
+				</div>
+			</fieldset>
+		</form>
+	</div>
+
+</div>
+
+<div class="right">
+
+	<?php
+	if (isset($errors)) {
+	?>
+	<div class="form">
+		<h3>
+			<img src="/images/icons/warning_16.png" alt="" width="16" height="16" class="icon" />
+			Errors Occured
+		</h3>
+		<div class="elements">
+			<ol class="errors">
+			<?php
+			foreach ($errors as $error) {
+				echo '<li>'. $error .'</li><br />';
+			}
+			?>
+			</ol>
+		</div>
+	</div>
+	<?php } ?>
+
+	<div class="form">
+		<h3>
+			<img src="/images/icons/cup.png" alt="" width="16" height="16" class="icon" />
+			Some tips
+		</h3>
+		<div class="elements">
+			<h4>
+				The Purpose of projects
+			</h4>
+			<p>
+				The project system is not designed for project <em>management</em>, it is not a substitute for version control or other collaborative solutions but instead a lightweight system to be used <em>alongside</em> these.
+			</p>
+			
+			<h4>
+				Contributors
+			</h4>
+			<p>
+				When you list contributors for your project, you can seperate names with commas and put username aliases in brackets. If either of these matches a username in our database we'll turn it into a link to their profile.
+			</p>
+
+			<h4>
+				Featured Projects
+			</h4>
+			<p>
+				We'll trawl the site for interesting projects and feature the ones we like every so often on the front page. If you don't want us to consider your project, just make a note in your project description.
+			</p>
+		</div>
+	</div>
+
+	<div id="picture">
+		<img src="<?php echo url::base(); ?>/images/icons/portfolio.png" alt="" />
+	</div>
+</div>

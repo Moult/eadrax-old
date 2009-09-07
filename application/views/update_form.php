@@ -88,12 +88,18 @@
 					<?php } ?>
 
 					<p class="submit">
+						<?php if (isset($uid)) { ?>
+						<input type="submit" name="submit" class="submit" value="Edit status update" />
+						<?php } else { ?>
 						<input type="submit" name="submit" class="submit" value="Add status update" />
+						<?php } ?>
 					</p>
 
+					<?php if (!isset($uid)) { ?>
 					<p>
 						By using this site, you agree to our <a href="<?php echo url::base() .'site/legal/'; ?>">legal and licensing information</a>.
 					</p>
+					<?php } ?>
 				</div>
 			</fieldset>
 		</form>
