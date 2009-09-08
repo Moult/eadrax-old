@@ -427,4 +427,25 @@ class Update_Model extends Model {
 			return NULL;
 		}
 	}
+
+	/**
+	 * Returns all the updates in a project by a user.
+	 *
+	 * @param int $uid The ID of the user who owns the updates.
+	 *
+	 * @return array
+	 */
+	public function updates($uid, $pid)
+	{
+		$updates = $this->db->from('updates')->where(array('uid' => $uid, 'pid' => $pid))->get();
+
+		$update_list = array();
+
+		foreach ($updates as $update)
+		{
+			$update_list[$update->id] = $update->summary;
+		}
+
+		return $update_list;
+	}
 }

@@ -19,6 +19,7 @@
     <head>
         <!-- Hacks and dirty IE Fixes for PNG Transparency -->
         <script type="text/javascript" src="<?php echo url::base(); ?>js/clear.js"></script>
+        <script type="text/javascript" src="<?php echo url::base(); ?>js/login.js"></script>
         <!--[if lt IE 7]>
         <script defer type="text/javascript" src="<?php echo url::base(); ?>js/pngfix.js"></script>
         <![endif]-->
@@ -58,9 +59,8 @@
             </h1>
 
             <ul id="navigation">
-				We need an original iconset
 				<li><a href="<?php echo url::base(); ?>dashboard/"><img src="<?php echo url::base(); ?>images/Dashboard.png" width="48" height="48" alt="Dashboard" title="Dashboard" /></a></li>
-                <li><a href="<?php echo url::base(); ?>profile/"><img src="<?php echo url::base(); ?>images/Profile.png" width="48" height="48" alt="Profile" title="Profile" /></a></li>
+                <li><a href="<?php echo url::base(); ?>profiles/"><img src="<?php echo url::base(); ?>images/Profile.png" width="48" height="48" alt="Profile" title="Profile" /></a></li>
                 <li><a href="<?php echo url::base(); ?>updates/add/"><img src="<?php echo url::base(); ?>images/Update.png" width="48" height="48" alt="Update" title="Update" /></a></li>
                 <li><img src="<?php echo url::base(); ?>images/Search.png" width="48" height="48"
                 alt="Search" title="Search" /></li>
@@ -72,9 +72,9 @@
                     alt="Why get an account?" />
                     <div id="help_icon"></div>
 
-                    <form action="" method="post">
+                    <form action="" name="quickup" method="post">
                         <div id="upload_description">
-                            <input type="text" name="username" />
+                            <input type="text" name="upload_description" value="The QuickUp doesn't work at the moment. Sorry!" onFocus="quickup_summary()" style="color: #AAAAAA;" />
                         </div>
 
                         <div id="upload_file">
@@ -91,15 +91,15 @@
                     <div id="login_form_title">
 						Log in or <a href="<?php echo url::base(); ?>users/register/">Register</a>
                     </div>
-                    <?php echo form::open('users/login'); ?>
+					<form action="<?php echo url::base(); ?>users/login/" name="login_form" method="post">
                         <div id="username_field">
-							<?php echo form::input('openid_identifier'); ?>
+							<input type="text" id="openid_identifier" name="openid_identifier" value="Username" onFocus="login_username()" style="color: #AAAAAA;" />
                         </div>
                         <div id="terms">
-                            (<a href="#">terms of use</a>)
+							(<a href="<?php echo url::base(); ?>site/legal/">terms of use</a>)
                         </div>
                         <div id="password_field">
-							<?php echo form::password('password'); ?>
+							<input type="password" id="password" name="password" value="Password" onFocus="login_password()" style="color: #AAAAAA;" />
                         </div>
                         <div id="signin">
                             <input type="image" style="border: 0;" src="<?php echo url::base(); ?>images/signin.png" />
@@ -111,7 +111,7 @@
 
         <div id="bar">
             <div class="bar_text">
-                <a href="#">Learn more about WIPUP</a> &#8226; Last updated __. Still UNDER CONSTRUCTION
+                <a href="#">Learn more about WIPUP</a> &#8226; Last updated 9th September. Still UNDER CONSTRUCTION
             </div>
 
             <form action="" method="post">

@@ -15,15 +15,15 @@
                     <li><a href="#">3D Modeling</a></li>
                     <li><a href="#">Application Programming</a></li>
                     <li><a href="#">Digital Paintings</a></li>
-                    <li><a href="#">Documents & Articles</a></li>
+                    <li><a href="#">Documents &amp; Articles</a></li>
                     <li><a href="#">Games</a></li>
                     <li><a href="#">Homework</a></li>
                     <li><a href="#">Interface Design</a></li>
-                    <li><a href="#">Literature & Fiction</a></li>
+                    <li><a href="#">Literature &amp; Fiction</a></li>
                 </ol>
 
                 <ol id="categories_2">
-                    <li><a href="#">Magazines & Newsletters</a></li>
+                    <li><a href="#">Magazines &amp; Newsletters</a></li>
                     <li><a href="#">Miscellaneous</a></li>
                     <li><a href="#">Music</a></li>
                     <li><a href="#">Posters</a></li>

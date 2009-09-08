@@ -14,3 +14,8 @@
 	<strong>30th August</strong><br />
 	Initial release of the website released online. Many things are not yet working. However the databases are all there and you are free to register an account as well as login. I would recommend not trying to use the other features yet until things are made a bit more user friendly.
 </p>
+
+<p>
+	<strong>9th September</strong><br />
+	Most of the main functions of the site are there (functions such as adding and editing projects and updates) but the main features such as Dashboard and Profile is still under construction. However now is a very nice time to create an account and try out what's already running. Some polish added on from the previous update.
+</p>

@@ -35,24 +35,38 @@
  */
 class Profiles_Controller extends Openid_Controller {
 	
-	public function __construct()
-	{
-		parent::__construct();
-		if(!$this->authlite->logged_in()){
-			url::redirect('');
-			exit;
-		}
-	}
-	
 	public function index()
 	{
+		$this->restrict_access();
+
+		// Load necessary models.
+		$project_model	= new Project_Model;
+		$update_model	= new Update_Model;
+
+		// Load the view.
 		$content = new View('profiles/index');
 		$content->user = Authlite::factory()->get_user();
+
+		$content->projects = $project_model->projects($this->uid);
+
+		$project_updates = array();
+		foreach ($content->projects as $pid => $p_name)
+		{
+			$project_updates_array = $update_model->updates($this->uid, $pid);
+			foreach ($project_updates_array as $upid => $summary)
+			{
+				$project_updates[$pid][$upid] = $summary;
+			}
+		}
+
+		$content->project_updates = $project_updates;
+
 		$this->template->content = array($content);
 	}
 	
 	public function update($id = NULL)
 	{
+		$this->restrict_access();
 		$user = ORM::factory('user', $id);
 		
 		$form = Formo::factory()
@@ -92,7 +106,9 @@ class Profiles_Controller extends Openid_Controller {
 		$this->template->content = array($content);
 	}
 	
-	public function change_password($id = NILL) {
+	public function change_password($id = NULL)
+	{
+		$this->restrict_access();
 		$user = ORM::factory('user', $id);
 		
 		$form = Formo::factory()
