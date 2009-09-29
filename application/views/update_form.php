@@ -42,6 +42,7 @@
 						<option value="<?php echo $pid; ?>"><?php echo $p_name; ?></option>
 						<?php } ?>
 						</select>
+						<a href="<?php echo url::base(); ?>projects/add/">Add</a>
 					</p>
 					<?php } ?>
 
