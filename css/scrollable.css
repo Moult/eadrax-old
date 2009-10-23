@@ -1,0 +1,138 @@
+/* this makes it possible to add next button beside scrollable */
+div.scrollableWrapper {
+    width: 720px;
+    border: 0px solid #CCC;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+div.scrollable {
+	float:left;		
+}
+
+/* prev, next, prevPage and nextPage buttons */
+a.prev, a.next, a.prevPage, a.nextPage {
+	display:block;
+	width:18px;
+	height:18px;
+	background:url(/images/icons/left.png) no-repeat;
+	float:left;
+	margin:43px 10px;
+	cursor:pointer;
+}
+
+/* mouseover state */
+a.prev:hover, a.next:hover, a.prevPage:hover, a.nextPage:hover {
+	background-position:0px -18px;		
+}
+
+/* disabled navigational button */
+a.disabled {
+	visibility:hidden !important;		
+}
+
+/* next button uses another background image */
+a.next, a.nextPage {
+	background-image:url(/images/icons/right.png);
+	clear:right;	
+}
+
+
+
+/*********** navigator ***********/
+
+
+/* position and dimensions of the navigator */
+div.navi {
+	margin-left:328px;
+	width:200px;
+	height:20px;
+}
+
+
+/* items inside navigator */
+div.navi a {
+	width:8px;
+	height:8px;
+	float:left;
+	margin:3px;
+	background:url(/images/navigator.png) 0 0 no-repeat;     
+	cursor:pointer;	
+}
+
+/* mouseover state */
+div.navi a:hover {
+	background-position:0 -8px;      
+}
+
+/* active state (current page state) */
+div.navi a.active {
+	background-position:0 -16px;     
+} 	
+
+
+/* root element for the whole scrollable setup */
+div.scrollable {  
+	position:relative;
+	overflow:hidden;
+	width: 641px;	 
+	height:150px;	
+}
+
+/* 
+	root element for scrollable items. It is 
+	absolutely positioned with large width. 
+*/
+#thumbs {	
+	position:absolute;
+	width:20000em;	
+	clear:both;
+}
+
+/* custom positioning for navigational links */
+a.prev, a.next {
+	margin-top:58px;	
+}
+
+
+
+/* single item */
+#thumbs div {
+	float:left;
+	width:214px;
+	height:150px;
+	color:#000;
+	cursor:pointer;
+    text-align: center;
+}
+
+/* style when mouse is over the item */
+#thumbs div.hover {
+    background-image: url('/images/thumb_bg.png');
+}
+
+/* style when element is active (clicked) */
+#thumbs div.active {
+    background-image: url('/images/thumb_selected_bg.png');
+	cursor:default;
+}
+
+#thumbs span {
+    color: #999;
+    font-size: 9px;
+}
+
+#thumbs p {
+    margin-top: 4px;
+    height: 65px;
+    line-height: 65px;
+
+}
+#thumbs h3 {
+    margin-left: auto;
+    margin-right: auto;
+    width: 190px;
+    height: 45px;
+	font-size:12px;
+	color:#000;	
+}

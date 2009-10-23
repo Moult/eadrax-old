@@ -43,25 +43,37 @@ class Profiles_Controller extends Openid_Controller {
 		$project_model	= new Project_Model;
 		$update_model	= new Update_Model;
 
-		// Load the view.
-		$content = new View('profiles/index');
-		$content->user = Authlite::factory()->get_user();
+		// Load the main profile view.
+		$profile_view = new View('profiles/index');
+		$profile_view->user = Authlite::factory()->get_user();
 
-		$content->projects = $project_model->projects($this->uid);
+		$profile_view->projects = $project_model->projects($this->uid);
 
 		$project_updates = array();
-		foreach ($content->projects as $pid => $p_name)
+		$timelines = array();
+		foreach ($profile_view->projects as $pid => $p_name)
 		{
-			$project_updates_array = $update_model->updates($this->uid, $pid);
-			foreach ($project_updates_array as $upid => $summary)
+			// Generate a list of updates for management purposes - temporary.
+			$project_updates_information = $update_model->updates($this->uid, $pid);
+			foreach ($project_updates_information as $information)
 			{
-				$project_updates[$pid][$upid] = $summary;
+				$project_updates[$pid][$information->id] = $information->summary;
 			}
+
+			// Start timeline generation.
+			$timelines[$pid] = Projects_Controller::_generate_project_timeline($pid);
 		}
 
-		$content->project_updates = $project_updates;
+		$profile_view->project_updates = $project_updates;
 
-		$this->template->content = array($content);
+		// Load the projects view.
+		$projects_view = new View('projects');
+
+		// Pass all our previously generated timelines to the view.
+		$projects_view->timelines = $timelines;
+		$projects_view->projects = $project_model->projects($this->uid);
+
+		$this->template->content = array($profile_view, $projects_view);
 	}
 	
 	public function update($id = NULL)

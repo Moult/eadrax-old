@@ -282,4 +282,32 @@ class Projects_Controller extends Core_Controller {
 		$this->template->content = array($project_delete_view);
 	}
 
+	/**
+	 * Generates the markup required for displaying a project timeline.
+	 *
+	 * @param int $pid The project ID
+	 *
+	 * @return string
+	 */
+	public function _generate_project_timeline($pid)
+	{
+		// Load necessary models.
+		$update_model = new Update_Model;
+
+		$query = $update_model->updates(NULL, $pid);
+        $markup = '';
+
+        if (count($query) > 0) {
+            foreach ($query as $row) {
+				$icon = Updates_Controller::_file_icon($row->filename, $row->ext);
+                // Build the markup.
+                $markup = $markup .'<div>';
+                $markup = $markup .'<p><img style="vertical-align: middle;" src="'. $icon .'" /></p>';
+                $markup = $markup .'<h3>'. $row->summary .'</h3><span>'. $row->logtime .'</span>';
+                $markup = $markup .'</div>';
+            }
+        }
+        return $markup;
+	}
+
 }
