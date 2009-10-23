@@ -435,17 +435,17 @@ class Update_Model extends Model {
 	 *
 	 * @return array
 	 */
-	public function updates($uid, $pid)
+	public function updates($uid = NULL, $pid)
 	{
-		$updates = $this->db->from('updates')->where(array('uid' => $uid, 'pid' => $pid))->get();
-
-		$update_list = array();
-
-		foreach ($updates as $update)
+		if ($uid == NULL)
 		{
-			$update_list[$update->id] = $update->summary;
+			$updates = $this->db->from('updates')->where('pid', $pid)->get();
+		}
+		else
+		{
+			$updates = $this->db->from('updates')->where(array('uid' => $uid, 'pid' => $pid))->get();
 		}
 
-		return $update_list;
+		return $updates;
 	}
 }
