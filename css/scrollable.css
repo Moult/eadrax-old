@@ -1,6 +1,6 @@
 /* this makes it possible to add next button beside scrollable */
 div.scrollableWrapper {
-    width: 720px;
+    width: 830px;
     border: 0px solid #CCC;
     margin-left: auto;
     margin-right: auto;
@@ -17,7 +17,7 @@ a.prev, a.next, a.prevPage, a.nextPage {
 	height:18px;
 	background:url(/images/icons/left.png) no-repeat;
 	float:left;
-	margin:43px 10px;
+	margin:43px 0px;
 	cursor:pointer;
 }
 
@@ -44,9 +44,10 @@ a.next, a.nextPage {
 
 /* position and dimensions of the navigator */
 div.navi {
-	margin-left:328px;
-	width:200px;
-	height:20px;
+	/*margin-left:328px;*/
+	width:500px;
+	height:15px;
+	overflow: hidden;
 }
 
 
@@ -75,7 +76,7 @@ div.navi a.active {
 div.scrollable {  
 	position:relative;
 	overflow:hidden;
-	width: 641px;	 
+	width: 790px;	 
 	height:150px;	
 }
 
@@ -99,7 +100,7 @@ a.prev, a.next {
 /* single item */
 #thumbs div {
 	float:left;
-	width:214px;
+	width:131px;
 	height:150px;
 	color:#000;
 	cursor:pointer;
@@ -131,7 +132,7 @@ a.prev, a.next {
 #thumbs h3 {
     margin-left: auto;
     margin-right: auto;
-    width: 190px;
+    width: 131px;
     height: 45px;
 	font-size:12px;
 	color:#000;	

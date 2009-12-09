@@ -35,7 +35,6 @@
         <script type="text/javascript" src="/js/scriptaculous.js?load=effects,builder"></script>
         <script type="text/javascript" src="/js/lightbox.js"></script>
         <link rel="stylesheet" href="/css/lightbox.css" type="text/css" media="screen" />
-<?php  ?>
 <?php
 // If we are viewing a project timeline, we again need more fancy stuff.
 ?>
@@ -45,7 +44,6 @@
         <script src="<?php echo url::base(); ?>js/jquery.scrollable-1.0.2.min.js"></script>
         <!-- Scrollable styles -->
         <link rel="stylesheet" href="<?php echo url::base(); ?>css/scrollable.css" type="text/css" media="screen" />
-<?php ?>
         <!-- Favicon -->
         <link rel="icon" type="image/png" href="<?php echo url::base(); ?>images/favicon.png" />
         <title>WIPUP</title>

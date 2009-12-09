@@ -3,7 +3,7 @@ $(function() {
          
     // initialize scrollable  
     $("div.scrollable").scrollable({ 
-        size: 3, 
+        size: 6, 
         items: '#thumbs',   
         hoverClass: 'hover' 
     });     
