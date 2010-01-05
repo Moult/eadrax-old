@@ -279,12 +279,12 @@ class Dashboard_Controller extends Core_Controller {
 		$Cache->GetFromCache('view_activity_'. $uid, $DataSet->GetData());
 
 		// Initialise the graph
-		$Test = new pChart(700,230);
+		$Test = new pChart(410,200);
 		$Test->setFontProperties(DOCROOT.'application/vendor/pchart/Fonts/tahoma.ttf',8);
-		$Test->setGraphArea(60,30,680,200);
-		$Test->drawFilledRoundedRectangle(7,7,693,223,5,240,240,240);
-		$Test->drawRoundedRectangle(5,5,695,225,5,230,230,230);
-		$Test->drawGraphArea(255,255,255);
+		$Test->setGraphArea(60,30,390,170);
+		$Test->drawFilledRoundedRectangle(7,7,403,193,5,240,240,240);
+		$Test->drawRoundedRectangle(5,5,405,195,5,200,200,200);
+		$Test->drawGraphArea(240,240,240);
 		$Test->drawScale($DataSet->GetData(),$DataSet->GetDataDescription(),SCALE_NORMAL,150,150,150,TRUE,0,2);
 		$Test->drawGrid(4,220,220,220);
 
@@ -384,12 +384,12 @@ class Dashboard_Controller extends Core_Controller {
 		$Cache->GetFromCache('comment_activity_'. $uid, $DataSet->GetData());
 
 		// Initialise the graph
-		$Test = new pChart(700,230);
+		$Test = new pChart(410,200);
 		$Test->setFontProperties(DOCROOT.'application/vendor/pchart/Fonts/tahoma.ttf',8);
-		$Test->setGraphArea(60,30,680,200);
-		$Test->drawFilledRoundedRectangle(7,7,693,223,5,240,240,240);
-		$Test->drawRoundedRectangle(5,5,695,225,5,230,230,230);
-		$Test->drawGraphArea(255,255,255);
+		$Test->setGraphArea(60,30,390,170);
+		$Test->drawFilledRoundedRectangle(7,7,403,193,5,240,240,240);
+		$Test->drawRoundedRectangle(5,5,405,195,5,200,200,200);
+		$Test->drawGraphArea(240,240,240);
 		$Test->drawScale($DataSet->GetData(),$DataSet->GetDataDescription(),SCALE_NORMAL,150,150,150,TRUE,0,2);
 		$Test->drawGrid(4,220,220,220);
 
@@ -476,12 +476,12 @@ class Dashboard_Controller extends Core_Controller {
 		$Cache->GetFromCache('update_activity_'. $uid, $DataSet->GetData());
 
 		// Initialise the graph
-		$Test = new pChart(700,230);
+		$Test = new pChart(410,200);
 		$Test->setFontProperties(DOCROOT.'application/vendor/pchart/Fonts/tahoma.ttf',8);
-		$Test->setGraphArea(60,30,680,200);
-		$Test->drawFilledRoundedRectangle(7,7,693,223,5,240,240,240);
-		$Test->drawRoundedRectangle(5,5,695,225,5,230,230,230);
-		$Test->drawGraphArea(255,255,255);
+		$Test->setGraphArea(60,30,390,170);
+		$Test->drawFilledRoundedRectangle(7,7,403,193,5,240,240,240);
+		$Test->drawRoundedRectangle(5,5,405,195,5,200,200,200);
+		$Test->drawGraphArea(240,240,240);
 		$Test->drawScale($DataSet->GetData(),$DataSet->GetDataDescription(),SCALE_NORMAL,150,150,150,TRUE,0,2);
 		$Test->drawGrid(4,220,220,220);
 
@@ -551,14 +551,14 @@ class Dashboard_Controller extends Core_Controller {
 		$Cache->GetFromCache('projects_activity_'. $uid, $DataSet->GetData());
 
 		// Initialise the graph
-		$Test = new pChart(440,200);  
-		$Test->drawFilledRoundedRectangle(7,7,433,193,5,240,240,240);  
-		$Test->drawRoundedRectangle(5,5,435,195,5,230,230,230); 
+		$Test = new pChart(410,200);  
+		$Test->drawFilledRoundedRectangle(7,7,403,193,5,240,240,240);  
+		$Test->drawRoundedRectangle(5,5,405,195,5,230,230,230); 
 
 		// Draw the pie chart
 		$Test->setFontProperties(DOCROOT.'application/vendor/pchart/Fonts/tahoma.ttf',8);
-		$Test->drawPieGraph($DataSet->GetData(),$DataSet->GetDataDescription(),160,90,110,PIE_PERCENTAGE,TRUE,50,20,5);  
-		$Test->drawPieLegend(310,15,$DataSet->GetData(),$DataSet->GetDataDescription(),250,250,250); 
+		$Test->drawPieGraph($DataSet->GetData(),$DataSet->GetDataDescription(),130,90,100,PIE_PERCENTAGE,TRUE,50,20,5);  
+		$Test->drawPieLegend(265,15,$DataSet->GetData(),$DataSet->GetDataDescription(),250,250,250); 
 
 		$Cache->WriteToCache('projects_activity_'. $uid, $DataSet->GetData(), $Test);
 		$Test->Stroke();
@@ -608,14 +608,14 @@ class Dashboard_Controller extends Core_Controller {
 		$Cache->GetFromCache('popular_project_kudos_'. $uid, $DataSet->GetData());
 
 		// Initialise the graph
-		$Test = new pChart(440,200);  
-		$Test->drawFilledRoundedRectangle(7,7,433,193,5,240,240,240);  
-		$Test->drawRoundedRectangle(5,5,435,195,5,230,230,230); 
+		$Test = new pChart(410,200);  
+		$Test->drawFilledRoundedRectangle(7,7,403,193,5,240,240,240);  
+		$Test->drawRoundedRectangle(5,5,405,195,5,230,230,230); 
 
 		// Draw the pie chart
 		$Test->setFontProperties(DOCROOT.'application/vendor/pchart/Fonts/tahoma.ttf',8);
-		$Test->drawPieGraph($DataSet->GetData(),$DataSet->GetDataDescription(),160,90,110,PIE_PERCENTAGE,TRUE,50,20,5);  
-		$Test->drawPieLegend(310,15,$DataSet->GetData(),$DataSet->GetDataDescription(),250,250,250); 
+		$Test->drawPieGraph($DataSet->GetData(),$DataSet->GetDataDescription(),130,90,100,PIE_PERCENTAGE,TRUE,50,20,5);  
+		$Test->drawPieLegend(265,15,$DataSet->GetData(),$DataSet->GetDataDescription(),250,250,250); 
 
 		$Cache->WriteToCache('popular_project_kudos_'. $uid, $DataSet->GetData(), $Test);
 		$Test->Stroke();
@@ -689,14 +689,14 @@ class Dashboard_Controller extends Core_Controller {
 		$Cache->GetFromCache('popular_project_subscribers_'. $uid, $DataSet->GetData());
 
 		// Initialise the graph
-		$Test = new pChart(440,200);  
-		$Test->drawFilledRoundedRectangle(7,7,433,193,5,240,240,240);  
-		$Test->drawRoundedRectangle(5,5,435,195,5,230,230,230); 
+		$Test = new pChart(410,200);  
+		$Test->drawFilledRoundedRectangle(7,7,403,193,5,240,240,240);  
+		$Test->drawRoundedRectangle(5,5,405,195,5,230,230,230); 
 
 		// Draw the pie chart
 		$Test->setFontProperties(DOCROOT.'application/vendor/pchart/Fonts/tahoma.ttf',8);
-		$Test->drawPieGraph($DataSet->GetData(),$DataSet->GetDataDescription(),160,90,110,PIE_PERCENTAGE,TRUE,50,20,5);  
-		$Test->drawPieLegend(310,15,$DataSet->GetData(),$DataSet->GetDataDescription(),250,250,250); 
+		$Test->drawPieGraph($DataSet->GetData(),$DataSet->GetDataDescription(),130,90,100,PIE_PERCENTAGE,TRUE,50,20,5);  
+		$Test->drawPieLegend(265,15,$DataSet->GetData(),$DataSet->GetDataDescription(),250,250,250); 
 
 		$Cache->WriteToCache('popular_project_subscribers_'. $uid, $DataSet->GetData(), $Test);
 		$Test->Stroke();
