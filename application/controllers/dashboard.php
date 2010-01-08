@@ -109,8 +109,7 @@ class Dashboard_Controller extends Core_Controller {
 		$dashboard_subscribed_view->project_subscribe_list = $project_subscribe_list;
 		$dashboard_subscribed_view->total = $subscribed_total;
 
-		// Create the "kudos" widget.
-		$dashboard_kudos_view = new View('dashboard_kudos');
+		// Calculate total number of kudos.
 		$kudos_total = 0;
 
 		foreach ($projects as $pid => $p_name)
@@ -121,33 +120,24 @@ class Dashboard_Controller extends Core_Controller {
 			$kudos_total = $kudos_total + $kudos_number;
 		}
 
-		// Set all the information we gathered...
-		$dashboard_kudos_view->total = $kudos_total;
-
-		// Create the "popular_projects" widget.
-		$dashboard_popular_projects_view = new View('dashboard_popular_projects');
 		list($width, $height, $type, $attr) = getimagesize(url::site('dashboard/popular_project_subscribers/'. $this->uid));
 		if ($width == 1)
 		{
-			$dashboard_popular_projects_view->error = TRUE;
+			$dashboard_update_activity_view->popular_error = TRUE;
 		}
 
 		// Create the "projects_activity" widget.
-		$dashboard_projects_activity_view = new View('dashboard_projects_activity');
 		list($width, $height, $type, $attr) = getimagesize(url::site('dashboard/projects_activity/'. $this->uid));
 		if ($width == 1)
 		{
-			$dashboard_projects_activity_view->error = TRUE;
+			$dashboard_update_activity_view->activity_error = TRUE;
 		}
 
 		// Create the "update_activity" widget.
 		$dashboard_update_activity_view = new View('dashboard_update_activity');
 
-		// Create the "view_activity" widget.
-		$dashboard_view_activity_view = new View('dashboard_view_activity');
-
-		// Create the "comment_activity" widget.
-		$dashboard_comment_activity_view = new View('dashboard_comment_activity');
+		// Set the number of kudos
+		$dashboard_update_activity_view->total = $kudos_total;
 
 		// Create news "newsfeed" widget.
 		$dashboard_newsfeed_view = new View('dashboard_newsfeed');
@@ -208,7 +198,7 @@ class Dashboard_Controller extends Core_Controller {
 		$dashboard_newsfeed_view->newsfeed = $news_view;
 
 		// Generate the content.
-		$this->template->content = array($dashboard_view, $dashboard_newsfeed_view, $dashboard_update_activity_view, $dashboard_comment_activity_view, $dashboard_view_activity_view, $dashboard_tracking_view, $dashboard_subscribed_view, $dashboard_popular_projects_view, $dashboard_kudos_view, $dashboard_projects_activity_view);
+		$this->template->content = array($dashboard_view, $dashboard_newsfeed_view, $dashboard_update_activity_view, $dashboard_tracking_view, $dashboard_subscribed_view);
 	}
 
 	/**
@@ -283,7 +273,7 @@ class Dashboard_Controller extends Core_Controller {
 		$Test->setFontProperties(DOCROOT.'application/vendor/pchart/Fonts/tahoma.ttf',8);
 		$Test->setGraphArea(60,30,390,170);
 		$Test->drawFilledRoundedRectangle(7,7,403,193,5,240,240,240);
-		$Test->drawRoundedRectangle(5,5,405,195,5,200,200,200);
+		$Test->drawRoundedRectangle(5,5,405,195,5,180,180,180);
 		$Test->drawGraphArea(240,240,240);
 		$Test->drawScale($DataSet->GetData(),$DataSet->GetDataDescription(),SCALE_NORMAL,150,150,150,TRUE,0,2);
 		$Test->drawGrid(4,220,220,220);
@@ -388,7 +378,7 @@ class Dashboard_Controller extends Core_Controller {
 		$Test->setFontProperties(DOCROOT.'application/vendor/pchart/Fonts/tahoma.ttf',8);
 		$Test->setGraphArea(60,30,390,170);
 		$Test->drawFilledRoundedRectangle(7,7,403,193,5,240,240,240);
-		$Test->drawRoundedRectangle(5,5,405,195,5,200,200,200);
+		$Test->drawRoundedRectangle(5,5,405,195,5,180,180,180);
 		$Test->drawGraphArea(240,240,240);
 		$Test->drawScale($DataSet->GetData(),$DataSet->GetDataDescription(),SCALE_NORMAL,150,150,150,TRUE,0,2);
 		$Test->drawGrid(4,220,220,220);
@@ -480,7 +470,7 @@ class Dashboard_Controller extends Core_Controller {
 		$Test->setFontProperties(DOCROOT.'application/vendor/pchart/Fonts/tahoma.ttf',8);
 		$Test->setGraphArea(60,30,390,170);
 		$Test->drawFilledRoundedRectangle(7,7,403,193,5,240,240,240);
-		$Test->drawRoundedRectangle(5,5,405,195,5,200,200,200);
+		$Test->drawRoundedRectangle(5,5,405,195,5,180,180,180);
 		$Test->drawGraphArea(240,240,240);
 		$Test->drawScale($DataSet->GetData(),$DataSet->GetDataDescription(),SCALE_NORMAL,150,150,150,TRUE,0,2);
 		$Test->drawGrid(4,220,220,220);
@@ -553,7 +543,7 @@ class Dashboard_Controller extends Core_Controller {
 		// Initialise the graph
 		$Test = new pChart(410,200);  
 		$Test->drawFilledRoundedRectangle(7,7,403,193,5,240,240,240);  
-		$Test->drawRoundedRectangle(5,5,405,195,5,230,230,230); 
+		$Test->drawRoundedRectangle(5,5,405,195,5,180,180,180); 
 
 		// Draw the pie chart
 		$Test->setFontProperties(DOCROOT.'application/vendor/pchart/Fonts/tahoma.ttf',8);
@@ -610,7 +600,7 @@ class Dashboard_Controller extends Core_Controller {
 		// Initialise the graph
 		$Test = new pChart(410,200);  
 		$Test->drawFilledRoundedRectangle(7,7,403,193,5,240,240,240);  
-		$Test->drawRoundedRectangle(5,5,405,195,5,230,230,230); 
+		$Test->drawRoundedRectangle(5,5,405,195,5,180,180,180); 
 
 		// Draw the pie chart
 		$Test->setFontProperties(DOCROOT.'application/vendor/pchart/Fonts/tahoma.ttf',8);
@@ -691,7 +681,7 @@ class Dashboard_Controller extends Core_Controller {
 		// Initialise the graph
 		$Test = new pChart(410,200);  
 		$Test->drawFilledRoundedRectangle(7,7,403,193,5,240,240,240);  
-		$Test->drawRoundedRectangle(5,5,405,195,5,230,230,230); 
+		$Test->drawRoundedRectangle(5,5,405,195,5,180,180,180); 
 
 		// Draw the pie chart
 		$Test->setFontProperties(DOCROOT.'application/vendor/pchart/Fonts/tahoma.ttf',8);
