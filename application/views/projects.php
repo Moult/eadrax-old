@@ -1,12 +1,11 @@
 <script src="<?php echo url::base(); ?>js/scrollable.js"></script>
-<?php foreach ($projects as $pid => $p_name) { ?>
 <h2>
 	<!-- this is statically linked and should not be -->
 	<img src="/images/icons/coffee_mug.png" width="48" height="48" class="icon" alt="" />
-	<?php echo $p_name; ?>'s Timeline
+	<?php echo $project['name']; ?>'s Timeline
 </h2>
 
-<?php if (empty($timelines[$pid])) { ?>
+<?php if (empty($timeline)) { ?>
 
 <p>
 	Nothing to see here!
@@ -24,7 +23,7 @@
 	<!-- root element for scrollable -->
 	<div class="scrollable">
 		<div id="thumbs">
-			<?php echo $timelines[$pid]; ?>
+			<?php echo $timeline; ?>
 		</div>
 	</div>
 	<!-- next link -->
@@ -32,4 +31,4 @@
 	<!-- let rest of the page float normally -->
 	<br clear="all" />
 </div>
-<?php } } ?>
+<?php } ?>

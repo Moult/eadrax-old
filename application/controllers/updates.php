@@ -560,6 +560,11 @@ class Updates_Controller extends Core_Controller {
 						'pastebin' => $pastebin,
 						'syntax' => $syntax
 					));
+
+					// Bump up the project.
+					$project_model->manage_project(array(
+						'logtime' => new Database_Expression('NOW()')
+					), $pid);
 				}
 				else
 				{

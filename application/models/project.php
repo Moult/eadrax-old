@@ -163,7 +163,7 @@ class Project_Model extends Model {
 	public function projects($uid)
 	{
 		$projects = $this->db;
-		$projects = $projects->from('projects')->where('uid', $uid)->get();
+		$projects = $projects->from('projects')->where('uid', $uid)->orderby('logtime', 'DESC')->get();
 
 		$project_list = array();
 
