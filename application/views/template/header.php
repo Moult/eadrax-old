@@ -1,25 +1,19 @@
 <!DOCTYPE html PUBLIC
 "-//W3C//DTD XHTML 1.0 Strict//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-
 <!--
-
 /*
- *
  * WIPUP is a website that allows you to show others what you are currently 
  * working on.
  *
  * Copyright 2009 (c)
- *
  */
-
 -->
-
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
     <head>
         <!-- Hacks and dirty IE Fixes for PNG Transparency -->
         <script type="text/javascript" src="<?php echo url::base(); ?>js/clear.js"></script>
-        <script type="text/javascript" src="<?php echo url::base(); ?>js/login.js"></script>
+        <!--<script type="text/javascript" src="<?php echo url::base(); ?>js/login.js"></script>-->
         <!--[if lt IE 7]>
         <script defer type="text/javascript" src="<?php echo url::base(); ?>js/pngfix.js"></script>
         <![endif]-->
@@ -52,76 +46,27 @@
 	<body>
 
         <div id="container">
-            <h1 id="title">
-				Title and logo to be redone.<br /><a href="<?php echo url::base(); ?>">Go to homepage</a>
-                <!--<img src="<?php echo url::base(); ?>images/wipup.png" width="203" height="50" alt="WIPUP" />-->
+            <h1>
+                <a href="<?php echo url::base(); ?>"><img src="<?php echo url::base(); ?>images/wipup.png" width="220" height="80" alt="WIPUP" /></a>
             </h1>
 
-            <ul id="navigation">
-				<li><a href="<?php echo url::base(); ?>dashboard/"><img src="<?php echo url::base(); ?>images/Dashboard.png" width="48" height="48" alt="Dashboard" title="Dashboard" /></a></li>
-                <li><a href="<?php echo url::base(); ?>profiles/"><img src="<?php echo url::base(); ?>images/Profile.png" width="48" height="48" alt="Profile" title="Profile" /></a></li>
-                <li><a href="<?php echo url::base(); ?>updates/add/"><img src="<?php echo url::base(); ?>images/Update.png" width="48" height="48" alt="Update" title="Update" /></a></li>
-                <li><img src="<?php echo url::base(); ?>images/Search.png" width="48" height="48"
-                alt="Search" title="Search" /></li>
+			<ul id="icon-navigation">
+				<li><a href="<?php echo url::base(); ?>profiles/"><img src="<?php echo url::base(); ?>images/profile.png" width="39" height="40" alt="Profile" title="Profile" /></a></li>
+                <li><a href="<?php echo url::base(); ?>updates/add/"><img src="<?php echo url::base(); ?>images/update.png" width="39" height="40" alt="Update" title="Update" /></a></li>
+				<li><img src="<?php echo url::base(); ?>images/random.png" width="39" height="40" alt="Random" title="Random" /></li>
+			</ul>
+
+            <ul id="text-navigation">
+				<li>What is WIPUP?</li>
+				<li><?php if ($this->logged_in == TRUE) {?>Hey <?php echo $this->username; ?> (<a href="<?php echo url::base(); ?>dashboard/">Dashboard</a> | <a href="<?php echo url::base(); ?>users/logout/">Logout</a>)<?} else {?><a href="<?php echo url::base(); ?>users/login/">Login/Register</a><? } ?></li>
+				<li>Search</li>
             </ul>
 
-            <div id="upload_box">
-                <div id="upload_form">
-                    <img src="<?php echo url::base(); ?>images/why.png" width="180" height="19" id="why_message"
-                    alt="Why get an account?" />
-                    <div id="help_icon"></div>
-
-                    <form action="" name="quickup" method="post">
-                        <div id="upload_description">
-                            <input type="text" name="upload_description" value="The QuickUp doesn't work at the moment. Sorry!" onFocus="quickup_summary()" style="color: #AAAAAA;" />
-                        </div>
-
-                        <div id="upload_file">
-                            <input type="file" name="upload" size="30" />
-                        </div>
-
-                        <div id="upload">
-                            <input type="image" style="border: 0;" src="<?php echo url::base(); ?>images/upload.png" alt="Upload" />
-                        </div>
-                    </form>
-                </div>
-
-                <div id="login_form">
-                    <div id="login_form_title">
-						Log in or <a href="<?php echo url::base(); ?>users/register/">Register</a>
-                    </div>
-					<form action="<?php echo url::base(); ?>users/login/" name="login_form" method="post">
-                        <div id="username_field">
-							<input type="text" id="openid_identifier" name="openid_identifier" value="Username" onFocus="login_username()" style="color: #AAAAAA;" />
-                        </div>
-                        <div id="terms">
-							(<a href="<?php echo url::base(); ?>site/legal/">terms of use</a>)
-                        </div>
-                        <div id="password_field">
-							<input type="password" id="password" name="password" value="Password" onFocus="login_password()" style="color: #AAAAAA;" />
-                        </div>
-                        <div id="signin">
-                            <input type="image" style="border: 0;" src="<?php echo url::base(); ?>images/signin.png" />
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <div id="bar">
-            <div class="bar_text">
-                <a href="#">Learn more about WIPUP</a> &#8226; Last updated 9th September. Still UNDER CONSTRUCTION
-            </div>
-
-            <form action="" method="post">
-                <div id="search_button">
-                    <input type="image" style="border: 0;" src="<?php echo url::base(); ?>images/search_go.png" />
-                </div>
-                <div id="search_field">
-                    <input type="text" name="search" />
-                </div>
-            </form>
-        </div>
+		<div id="content-top">
+			<div id="content-left"></div>
+			<div id="global-message">Version 137a 14.01.10</div>
+			<div id="content-right"></div>
+		</div>
 
         <div id="content">
             <div id="content_container">

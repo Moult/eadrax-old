@@ -44,10 +44,7 @@ class Site_Controller extends Core_Controller {
 		// Introduction Page.
 		$introduction_view = new View('introduction');
 
-		// Let's get our login form!
-		$changelog_view = new View('changelog');
-
-		$this->template->content = array($introduction_view, $changelog_view);
+		$this->template->content = array($introduction_view);
 	}
 
 	/**

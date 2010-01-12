@@ -66,7 +66,7 @@
         <div id="copyright">
             The Eadrax Team &copy; 2009
             <br /><br />
-            Sponsor - Credits - Back to top
+			<a href="http://github.com/Moult/Eadrax">Source</a> - Sponsor - Development - Back to top
         </div>
         <!-- </FOOTER> -->
 	</body>
