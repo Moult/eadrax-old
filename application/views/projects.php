@@ -5,6 +5,16 @@
 	<?php echo $project['name']; ?>'s Timeline
 </h2>
 
+<div style="float: left;font-size: 18px; letter-spacing: -1px; color: #AAA; text-align: right; margin-bottom: 5px;">
+	Category: <em><?php echo $categories[$project['cid']]; ?></em>
+</div>
+
+<div style="float: right; font-size: 18px; letter-spacing: -1px; color: #AAA; text-align: right; margin-bottom: 5px;"><?php echo $project['logtime']; ?></div>
+
+<div style="clear: both; background-color: #FFF; border: 1px solid #777; padding: 0px; margin: 0px;">
+<p style="margin: 10px; padding: 0px;"><?php echo $project['description']; ?></p>
+</div>
+
 <?php if (empty($timeline)) { ?>
 
 <p>
@@ -13,7 +23,7 @@
 
 <?php } else { ?>
 
-<div class="scrollableWrapper" style="margin-left: auto; margin-right: auto;">
+<div class="scrollableWrapper" style="margin-top: 10px; margin-left: auto; margin-right: auto;">
 
 	<div class="navi"></div>
 

@@ -301,10 +301,10 @@ class Projects_Controller extends Core_Controller {
             foreach ($query as $row) {
 				$icon = Updates_Controller::_file_icon($row->filename, $row->ext);
                 // Build the markup.
-                $markup = $markup .'<div>';
-                $markup = $markup .'<p><img style="vertical-align: middle;" src="'. $icon .'" /></p>';
-                $markup = $markup .'<h3>'. $row->summary .'</h3><span>'. $row->logtime .'</span>';
-                $markup = $markup .'</div>';
+                $markup = '</div>'. $markup;
+                $markup = '<h3>'. $row->summary .'</h3><span>'. $row->logtime .'</span>'. $markup;
+                $markup = '<p><img style="vertical-align: middle;" src="'. $icon .'" /></p>'. $markup;
+                $markup = '<div>'. $markup;
             }
         }
         return $markup;

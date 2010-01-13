@@ -44,12 +44,11 @@ a.next, a.nextPage {
 
 /* position and dimensions of the navigator */
 div.navi {
-	/*margin-left:328px;*/
-	width:500px;
+	clear: both;
 	height:15px;
 	overflow: hidden;
+	margin-left: auto;;
 }
-
 
 /* items inside navigator */
 div.navi a {
@@ -109,12 +108,12 @@ a.prev, a.next {
 
 /* style when mouse is over the item */
 #thumbs div.hover {
-    background-image: url('/images/thumb_bg.png');
+    background-image: url('../images/thumb_bg.png');
 }
 
 /* style when element is active (clicked) */
 #thumbs div.active {
-    background-image: url('/images/thumb_selected_bg.png');
+    background-image: url('../images/thumb_selected_bg.png');
 	cursor:default;
 }
 
