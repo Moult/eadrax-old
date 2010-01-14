@@ -302,7 +302,7 @@ class Projects_Controller extends Core_Controller {
 				$icon = Updates_Controller::_file_icon($row->filename, $row->ext);
                 // Build the markup.
                 $markup = '</div>'. $markup;
-                $markup = '<h3>'. $row->summary .'</h3><span>'. $row->logtime .'</span>'. $markup;
+                $markup = '<h3><a href="'. url::base() .'/updates/view/'. $row->id .'/">'. $row->summary .'</a></h3><span>'. $row->logtime .'</span>'. $markup;
                 $markup = '<p><img style="vertical-align: middle;" src="'. $icon .'" /></p>'. $markup;
                 $markup = '<div>'. $markup;
             }

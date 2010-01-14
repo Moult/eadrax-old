@@ -35,22 +35,27 @@
  */
 class Profiles_Controller extends Openid_Controller {
 	
-	public function index()
+	public function index($uid = FALSE)
 	{
-		$this->restrict_access();
+		if ($uid == FALSE) {
+			$this->restrict_access();
+			$uid = $this->uid;
+		}
 
 		// Load necessary models.
 		$project_model	= new Project_Model;
 		$update_model	= new Update_Model;
+		$user_model		= new User_Model;
 
 		// Load the main profile view.
 		$profile_view = new View('profiles/index');
-		$profile_view->user = Authlite::factory()->get_user();
+		$profile_view->user = $user_model->user_information($uid);
+		//$profile_view->user = Authlite::factory()->get_user();
 
 		$project_updates = array();
 		$timelines = array();
 		$template_array = array();
-		foreach ($project_model->projects($this->uid) as $pid => $p_name)
+		foreach ($project_model->projects($uid) as $pid => $p_name)
 		{
 			// Create each view on the fly!
 			$project_view = 'project_view_'. $pid;
