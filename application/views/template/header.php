@@ -23,14 +23,16 @@
         <link rel="stylesheet" type="text/css" href="<?php echo url::base(); ?>css/stylesheet.css" />
 <?php
 // If we are viewing an update, we need a couple more fancy stuff.
+if ($this->uri->segment(1) == 'updates' && $this->uri->segment(2) == 'view') {
 ?>
         <!-- Lightbox support -->
-        <script type="text/javascript" src="/js/prototype.js"></script>
-        <script type="text/javascript" src="/js/scriptaculous.js?load=effects,builder"></script>
-        <script type="text/javascript" src="/js/lightbox.js"></script>
-        <link rel="stylesheet" href="/css/lightbox.css" type="text/css" media="screen" />
-<?php
+        <script type="text/javascript" src="<?php echo url::base(); ?>js/prototype.js"></script>
+        <script type="text/javascript" src="<?php echo url::base(); ?>js/scriptaculous.js?load=effects,builder"></script>
+        <script type="text/javascript" src="<?php echo url::base(); ?>js/lightbox.js"></script>
+        <link rel="stylesheet" href="<?php echo url::base(); ?>css/lightbox.css" type="text/css" media="screen" />
+<?php }
 // If we are viewing a project timeline, we again need more fancy stuff.
+if ($this->uri->segment(1) == 'profiles') {
 ?>
         <!-- Scrollable support -->
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
@@ -38,6 +40,7 @@
         <script src="<?php echo url::base(); ?>js/jquery.scrollable-1.0.2.min.js"></script>
         <!-- Scrollable styles -->
         <link rel="stylesheet" href="<?php echo url::base(); ?>css/scrollable.css" type="text/css" media="screen" />
+<?php } ?>
         <!-- Favicon -->
         <link rel="icon" type="image/png" href="<?php echo url::base(); ?>images/favicon.png" />
         <title>WIPUP</title>

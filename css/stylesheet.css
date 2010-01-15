@@ -432,6 +432,7 @@ h1
 
 #content
 {
+	clear: both;
     width: 860px;
     margin-left: auto;
     margin-right: auto;
