@@ -1,12 +1,15 @@
 <script src="<?php echo url::base(); ?>js/scrollable.js"></script>
 <h2>
-	<!-- this is statically linked and should not be -->
-	<img src="/images/icons/coffee_mug.png" width="48" height="48" class="icon" alt="" />
+	<?php if (!empty($project['icon'])) { ?>
+	<img src="<?php echo url::base(); ?>uploads/icons/<?php echo $project['icon']; ?>" class="icon" />
+	<?php } else { ?>
+	<img src="<?php echo url::base(); ?>images/icons/coffee_mug.png" width="48" height="48" class="icon" alt="" />
+	<?php } ?>
 	<?php echo $project['name']; ?>'s Timeline
 </h2>
 
 <div style="float: left;font-size: 18px; letter-spacing: -1px; color: #AAA; text-align: right; margin-bottom: 5px;">
-	Category: <em><?php echo $categories[$project['cid']]; ?></em>
+Category: <em><?php echo $categories[$project['cid']]; ?></em> <?php if (!empty($project['website'])) { echo ' (<a href="'. $project['website'] .'">www</a>)'; } ?>
 </div>
 
 <div style="float: right; font-size: 18px; letter-spacing: -1px; color: #AAA; text-align: right; margin-bottom: 5px;"><?php echo $project['logtime']; ?></div>
@@ -17,9 +20,9 @@
 
 <?php if (empty($timeline)) { ?>
 
-<p>
-	Nothing to see here!
-</p>
+<div style="border: 2px solid #800; background-color: #FDD; margin: 10px; padding: 10px;">
+	Oh no! There's no updates in this project just yet. You should add something, you know.
+</div>
 
 <?php } else { ?>
 

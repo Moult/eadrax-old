@@ -131,7 +131,7 @@ class Projects_Controller extends Core_Controller {
 					{
 						// Upload and resize the image.
 						$filename = upload::save('icon');
-						Image::factory($filename)->resize(80, 80, Image::WIDTH)->save(DOCROOT .'uploads/icons/'. basename($filename));
+						Image::factory($filename)->resize(50, 50, Image::WIDTH)->save(DOCROOT .'uploads/icons/'. basename($filename));
 						unlink($filename);
 						$icon_filename = basename($filename);
 					}
