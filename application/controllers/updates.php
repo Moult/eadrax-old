@@ -279,9 +279,33 @@ class Updates_Controller extends Core_Controller {
 
         // Parse the description
         if (!empty($update_information['detail'])) {
+			$detail = htmlentities($update_information['detail']);
             // This parsing properly puts the detail in paragraph blocks.
+
+			$simple_search = array(
+				'/\[b\](.*?)\[\/b\]/is',
+				'/\[i\](.*?)\[\/i\]/is',
+				'/\[u\](.*?)\[\/u\]/is',
+				'/\[url\=(.*?)\](.*?)\[\/url\]/is',
+				'/\[url\](.*?)\[\/url\]/is',
+				'/\[list\](.*?)\[\/list\]/is',
+				'/\[\*\](.*?)\[\/\*\]/is'
+			);
+			 
+			$simple_replace = array(
+				'<strong>$1</strong>',
+				'<em>$1</em>',
+				'<u>$1</u>',
+				'<a href="$1" target="_blank">$2</a>',
+				'<a href="$1" target="_blank">$1</a>',
+				'<ul style="margin-left: 30px; font-size: 16px;">$1</ul>',
+				'<li>$1</li>'
+			);
+			 
+			$detail = preg_replace($simple_search, $simple_replace, $detail);
+
             $format = 'style="font-size:16px; margin-bottom: 10px;"';
-            $detail = '<p '. $format .'>'. $update_information['detail'] .'</p>';
+            $detail = '<p '. $format .'>'. $detail .'</p>';
             $detail = preg_replace("/(?:\r?\n)+/", '</p><p '. $format .'>', $detail);
 
             $update_view->detail = $detail;

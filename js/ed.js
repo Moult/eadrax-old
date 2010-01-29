@@ -17,7 +17,6 @@ function edToolbar(obj) {
     document.write("<img class=\"button\" src=\"http://localhost/eadrax/images/icons/text_italic.png\" name=\"btnItalic\" title=\"Italic\" onClick=\"doAddTags('[i]','[/i]','" + obj + "')\">");
 	document.write("<img class=\"button\" src=\"http://localhost/eadrax/images/icons/text_underline.png\" name=\"btnUnderline\" title=\"Underline\" onClick=\"doAddTags('[u]','[/u]','" + obj + "')\">");
 	document.write("<img class=\"button\" src=\"http://localhost/eadrax/images/icons/link.png\" name=\"btnLink\" title=\"Insert URL Link\" onClick=\"doURL('" + obj + "')\">");
-	document.write("<img class=\"button\" src=\"http://localhost/eadrax/images/icons/text_list_numbers.png\" name=\"btnList\" title=\"Ordered List\" onClick=\"doList('[LIST=1]','[/LIST]','" + obj + "')\">");
 	document.write("<img class=\"button\" src=\"http://localhost/eadrax/images/icons/text_list_bullets.png\" name=\"btnList\" title=\"Unordered List\" onClick=\"doList('[LIST]','[/LIST]','" + obj + "')\">");
 				}
 
@@ -114,7 +113,7 @@ textarea = document.getElementById(obj);
 		
 				for(i=0;i<list.length;i++) 
 				{
-				list[i] = '[*]' + list[i];
+				list[i] = '[*]' + list[i] + '[/*]';
 				}
 				//alert(list.join("\n"));
 				sel.text = tag1 + '\n' + list.join("\n") + '\n' + tag2;
@@ -138,7 +137,7 @@ textarea = document.getElementById(obj);
 		
 		for(i=0;i<list.length;i++) 
 		{
-		list[i] = '[*]' + list[i];
+		list[i] = '[*]' + list[i] + '[/*]';
 		}
 		//alert(list.join("<br>"));
         
