@@ -35,11 +35,44 @@ if ($this->uri->segment(1) == 'updates' && $this->uri->segment(2) == 'view') {
 if ($this->uri->segment(1) == 'profiles') {
 ?>
         <!-- Scrollable support -->
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
-        <script src="<?php echo url::base(); ?>js/jquery.mousewheel.js"></script>
-        <script src="<?php echo url::base(); ?>js/jquery.scrollable-1.0.2.min.js"></script>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+        <script type="text/javascript" src="<?php echo url::base(); ?>js/jquery.mousewheel.js"></script>
+        <script type="text/javascript" src="<?php echo url::base(); ?>js/jquery.scrollable-1.0.2.min.js"></script>
         <!-- Scrollable styles -->
         <link rel="stylesheet" href="<?php echo url::base(); ?>css/scrollable.css" type="text/css" media="screen" />
+<?php }
+// Certain forms need some BBCode fun!
+if ($this->uri->segment(1) == 'updates') {
+?>
+		<!-- BBCode support -->
+        <script type="text/javascript" src="<?php echo url::base(); ?>js/ed.js"></script>
+		<!-- Resizing textarea -->
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+        <script type="text/javascript" src="<?php echo url::base(); ?>js/jquery.textarearesizer.compressed.js"></script>
+
+		<style type="text/css">
+		div.grippie {
+			background: #EEEEEE;
+			border-color: #DDDDDD;
+			border-style: solid;
+			border-width: 0pt 1px 1px;
+			cursor: s-resize;
+			height: 5px;
+			overflow: hidden;
+			margin-left: 100px;
+		}
+		.resizable-textarea textarea {
+			display:block;
+			margin-bottom:0pt;
+		}
+		</style>
+
+		<script type="text/javascript">
+		/* jQuery textarea resizer plugin usage */
+		$(document).ready(function() {
+		$('textarea.resizable:not(.processed)').TextAreaResizer();
+		});
+		</script>
 <?php } ?>
         <!-- Favicon -->
         <link rel="icon" type="image/png" href="<?php echo url::base(); ?>images/favicon.png" />
@@ -67,7 +100,7 @@ if ($this->uri->segment(1) == 'profiles') {
 
 		<div id="content-top">
 			<div id="content-left"></div>
-			<div id="global-message">Version 137a 14.01.10</div>
+			<div id="global-message">Version xx.02.10a</div>
 			<div id="content-right"></div>
 		</div>
 

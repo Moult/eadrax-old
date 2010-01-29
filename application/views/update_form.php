@@ -42,7 +42,7 @@
 						<option value="<?php echo $pid; ?>"><?php echo $p_name; ?></option>
 						<?php } ?>
 						</select>
-						<a href="<?php echo url::base(); ?>projects/add/">Add</a>
+						<a href="<?php echo url::base(); ?>projects/add/"><img src="<?php echo url::base(); ?>images/icons/add.png" alt="Add" /></a>
 					</p>
 					<?php } ?>
 
@@ -52,8 +52,9 @@
 					</p>
 
 					<p>
-						<label for="detail">Detail:</label>
-						<textarea name="detail" <?php if (isset($errors['detail'])) { echo 'class="error"'; } ?>><?php echo $form['detail']; ?></textarea>
+						<label for="detail" style="height: 20px;">Detail:</label>
+						<script>edToolbar('detail'); </script>
+						<textarea name="detail" id="detail" class="resizable" <?php if (isset($errors['detail'])) { echo 'class="error"'; } ?>><?php echo $form['detail']; ?></textarea>
 					</p>
 
 					<p>
