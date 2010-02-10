@@ -131,7 +131,7 @@ class Projects_Controller extends Core_Controller {
 					{
 						// Upload and resize the image.
 						$filename = upload::save('icon');
-						Image::factory($filename)->resize(50, 50, Image::WIDTH)->save(DOCROOT .'uploads/icons/'. basename($filename));
+						Image::factory($filename)->resize(50, 50, Image::AUTO)->save(DOCROOT .'uploads/icons/'. basename($filename));
 						unlink($filename);
 						$icon_filename = basename($filename);
 					}
@@ -303,7 +303,7 @@ class Projects_Controller extends Core_Controller {
                 // Build the markup.
                 $markup = '</div>'. $markup;
                 $markup = '<h3><a href="'. url::base() .'/updates/view/'. $row->id .'/">'. $row->summary .'</a></h3><span>'. $row->logtime .'</span>'. $markup;
-                $markup = '<p><img style="vertical-align: middle;" src="'. $icon .'" /></p>'. $markup;
+                $markup = '<p><a href="'. url::base() .'/updates/view/'. $row->id .'/"><img style="vertical-align: middle;" src="'. $icon .'" /></a></p>'. $markup;
                 $markup = '<div>'. $markup;
             }
         }

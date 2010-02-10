@@ -460,7 +460,7 @@ class Updates_Controller extends Core_Controller {
 								Image::factory($filename)->resize(Kohana::config('updates.fit_width'), Kohana::config('updates.fit_height'), Image::WIDTH)->save(DOCROOT .'uploads/files/'. substr(basename($filename), 0, -4) .'_fit.jpg');
 							}
 
-							Image::factory($filename)->resize(80, 80, Image::WIDTH)->save(DOCROOT .'uploads/icons/'. substr(basename($filename), 0, -3) .'jpg');
+							Image::factory($filename)->resize(80, 80, Image::AUTO)->save(DOCROOT .'uploads/icons/'. substr(basename($filename), 0, -3) .'jpg');
 						}
 
 						// If it is a video, we need to encode it.
@@ -557,7 +557,7 @@ class Updates_Controller extends Core_Controller {
 									exec($ffmpeg_path ." -i ". escapeshellarg($dest_file) ." -an -ss ". $duration_h .":". $duration_m .":". $duration_s ." -t 00:00:01 -r 1 -y ". escapeshellarg($dest_img));
 
 									// Let's turn the image into a thumbnail.
-									Image::factory($dest_img)->resize(80, 80, Image::WIDTH)->save($dest_img);
+									Image::factory($dest_img)->resize(80, 80, Image::AUTO)->save($dest_img);
 
 									// We're done here.
 									break;
