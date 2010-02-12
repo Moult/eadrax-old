@@ -48,7 +48,7 @@
 
 					<p>
 						<label for="summary">Summary:</label>
-						<input type="text" name="summary" value="<?php echo $form['summary']; ?>" <?php if (isset($errors['summary'])) { echo 'class="error"'; } ?> />
+						<input type="text" name="summary" style="height: 25px; width: 400px; font-size: 15px;" value="<?php echo $form['summary']; ?>" <?php if (isset($errors['summary'])) { echo 'class="error"'; } ?> />
 					</p>
 
 					<p>
@@ -60,6 +60,13 @@
 					<p>
 						<label for="attachment">Attach:</label>
 						<input type="file" name="attachment" />
+						<?php if ($this->logged_in) { ?>
+						<span style="margin-left: 70px;">
+							<a href="javascript:addInput()"><img src="<?php echo url::base(); ?>images/icons/add.png" alt="Add" id="add" /></a>
+							<a href="javascript:deleteInput()"><img src="<?php echo url::base(); ?>images/icons/delete.png" alt="Delete" id="delete" style="display: none;" /></a>
+						</span>
+						<p id="more_files"></p>
+						<?php } ?>
 					</p>
 
 					<p>

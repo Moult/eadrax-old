@@ -832,6 +832,13 @@ NIFTYNESS
 	line-height: 15px;
 }
 
+#more_files
+{
+	margin-left: 100px;
+	line-height: 28px;
+	margin-right: 100px;
+}
+
 .form input
 {
 	float: left;

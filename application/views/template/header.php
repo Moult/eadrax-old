@@ -50,6 +50,8 @@ if ($this->uri->segment(1) == 'updates' && $this->uri->segment(2) == 'add') {
 		<!-- Resizing textarea -->
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
         <script type="text/javascript" src="<?php echo url::base(); ?>js/jquery.textarearesizer.compressed.js"></script>
+		<!-- More file fields -->
+        <script type="text/javascript" src="<?php echo url::base(); ?>js/browse.js"></script>
 
 		<style type="text/css">
 		div.grippie {
