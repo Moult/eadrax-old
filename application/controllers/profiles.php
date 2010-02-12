@@ -103,6 +103,19 @@ class Profiles_Controller extends Openid_Controller {
 
 		$this->template->content = $template_array;
 	}
+
+	public function view($uid = FALSE)
+	{
+		// This is purely for SEO and convenience reasons.
+		// Load necessary models.
+		$user_model	= new User_Model;
+
+		// If they provide a username and not a UID we want to support that too!
+		if ($uid != FALSE && $user_model->uid($uid) != FALSE) {
+			$uid = $user_model->uid($uid);
+		}
+		$this->index($uid);
+	}
 	
 	public function update($id = NULL)
 	{

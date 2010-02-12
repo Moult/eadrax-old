@@ -60,8 +60,7 @@ class User_Model extends ORM {
 	 */
 	public function unique_user_name($post)
 	{
-		$db = $this->db;
-		$count = $db->from('users')->where('username', $post['openid_identifier'])->get()->count();
+		$count = $this->db->from('users')->where('username', $post['openid_identifier'])->get()->count();
 		if ($count >= 1)
 		{
 			$post->add_error('openid_identifier', 'unique');
@@ -82,8 +81,7 @@ class User_Model extends ORM {
 	 */
 	public function check_user_exists($uid)
 	{
-		$db = $this->db;
-		$check_exists = $db->from('users')->where(array('id' => $uid))->get()->count();
+		$check_exists = $this->db->from('users')->where(array('id' => $uid))->get()->count();
 
 		if ($check_exists >= 1)
 		{
@@ -111,5 +109,23 @@ class User_Model extends ORM {
 		$user_information = $user_information->current();
 
 		return $user_information;
+	}
+
+	/**
+	 * Returns uid based on username.
+	 *
+	 * @param string $username
+	 *
+	 * @return mixed
+	 */
+	public function uid($username)
+	{
+		$find_uid = $this->db->from('users')->where('username', $username)->get();
+		if ($find_uid->count() == 0) {
+			return FALSE;
+		} else {
+			$find_uid = $find_uid->current();
+			return $find_uid->id;
+		}
 	}
 }
