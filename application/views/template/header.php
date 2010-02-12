@@ -43,15 +43,17 @@ if ($this->uri->segment(1) == 'profiles') {
         <link rel="stylesheet" href="<?php echo url::base(); ?>css/scrollable.css" type="text/css" media="screen" />
 <?php }
 // Certain forms need some BBCode fun!
-if ($this->uri->segment(1) == 'updates' && $this->uri->segment(2) == 'add') {
+if (($this->uri->segment(1) == 'updates' && $this->uri->segment(2) == 'add') || ($this->uri->segment(1) == 'projects' && $this->uri->segment(2) == 'add')) {
 ?>
 		<!-- BBCode support -->
         <script type="text/javascript" src="<?php echo url::base(); ?>js/ed.js"></script>
 		<!-- Resizing textarea -->
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
         <script type="text/javascript" src="<?php echo url::base(); ?>js/jquery.textarearesizer.compressed.js"></script>
+<?php if ($this->uri->segment(1) == 'updates' && $this->uri->segment(2) == 'add') { ?>
 		<!-- More file fields -->
         <script type="text/javascript" src="<?php echo url::base(); ?>js/browse.js"></script>
+<?php } ?>
 
 		<style type="text/css">
 		div.grippie {

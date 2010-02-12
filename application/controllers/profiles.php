@@ -61,6 +61,38 @@ class Profiles_Controller extends Openid_Controller {
 			$project_view = 'project_view_'. $pid;
 			$$project_view = new View('projects');
 			$$project_view->project = $project_model->project_information($pid);
+
+			// Parse the description
+			$description = $$project_view->project['description'];
+
+			$simple_search = array(
+				'/\[b\](.*?)\[\/b\]/is',
+				'/\[i\](.*?)\[\/i\]/is',
+				'/\[u\](.*?)\[\/u\]/is',
+				'/\[url\=(.*?)\](.*?)\[\/url\]/is',
+				'/\[url\](.*?)\[\/url\]/is',
+				'/\[list\](.*?)\[\/list\]/is',
+				'/\[\*\](.*?)\[\/\*\]/is'
+			);
+			 
+			$simple_replace = array(
+				'<strong>$1</strong>',
+				'<em>$1</em>',
+				'<u>$1</u>',
+				'<a href="$1" target="_blank">$2</a>',
+				'<a href="$1" target="_blank">$1</a>',
+				'<ul style="margin-left: 30px; font-size: 16px;">$1</ul>',
+				'<li>$1</li>'
+			);
+			 
+			$description = preg_replace($simple_search, $simple_replace, $description);
+
+            $format = 'style="margin-bottom: 10px;"';
+            $description = '<p '. $format .'>'. $description .'</p>';
+            $description = preg_replace("/(?:\r?\n)+/", '</p><p '. $format .'>', $description);
+
+			$$project_view->description = $description;
+
 			$$project_view->timeline = Projects_Controller::_generate_project_timeline($pid);
 			$$project_view->categories = $project_model->categories();
 			array_push($template_array, $$project_view);
