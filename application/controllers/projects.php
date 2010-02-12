@@ -289,12 +289,12 @@ class Projects_Controller extends Core_Controller {
 	 *
 	 * @return string
 	 */
-	public function _generate_project_timeline($pid)
+	public function _generate_project_timeline($uid, $pid)
 	{
 		// Load necessary models.
 		$update_model = new Update_Model;
 
-		$query = $update_model->updates(NULL, $pid);
+		$query = $update_model->updates($uid, $pid);
         $markup = '';
 
         if (count($query) > 0) {

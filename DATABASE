@@ -101,7 +101,7 @@ CREATE TABLE IF NOT EXISTS `projects` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
 INSERT INTO `projects` (`uid`, `cid`, `name`, `description`) VALUES
-(1, 12, 'Uncategorised', 'Every update that is not part of any user-defined project is put into this section. This includes updates submitted by guest users.');
+(1, 12, 'Uncategorised', 'Every update that is not part of any user-defined project is put into this section.');
 
 CREATE TABLE IF NOT EXISTS `subscribe` (
   `id` int(11) NOT NULL auto_increment,

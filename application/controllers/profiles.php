@@ -93,7 +93,7 @@ class Profiles_Controller extends Openid_Controller {
 
 			$$project_view->description = $description;
 
-			$$project_view->timeline = Projects_Controller::_generate_project_timeline($pid);
+			$$project_view->timeline = Projects_Controller::_generate_project_timeline($uid, $pid);
 			$$project_view->categories = $project_model->categories();
 			array_push($template_array, $$project_view);
 		}
