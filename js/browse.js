@@ -29,7 +29,7 @@ function saveValue(intId,strValue) {
 }  
 
 function createInput(id,value) {
-  return "<input type='file' name='attachment"+ id +"' onChange='javascript:saveValue("+ id +",this.value)' value='"+ value +"'><br>";
+  return "<input type='file' name='attachment"+ id +"' style='height: 23px;' onChange='javascript:saveValue("+ id +",this.value)' value='"+ value +"'><br>";
 }
 
 function deleteInput() {

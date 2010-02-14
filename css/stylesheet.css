@@ -90,101 +90,6 @@ h1
 }
 
 /*
- * START OF QUICKUPLOAD
- */
-
-#upload_box
-{
-    background-image: url('../images/upload_bg.png');
-    background-position: bottom;
-    background-repeat: no-repeat;
-    height: 153px !important;
-    height: 153px;
-    width: 850px;
-    clear: both;
-}
-
-#upload_form
-{
-    float: left;
-    display: inline;
-    margin-left: 22px;
-    margin-right: 12px;
-    width: 501px !important;
-    width: 501px;
-}
-
-#why_message
-{
-    float: right;
-    display: inline;
-    margin-right: 7px;
-    margin-top: 20px;
-    height: 19px !important;
-    height: 19px;
-    width: 180px !important;
-    width: 180px;
-}
-
-#help_icon
-{
-    float: right;
-    background-image: url('../images/help.png');
-    background-position: bottom;
-    background-repeat: no-repeat;
-    width: 16px !important;
-    width: 16px;
-    height: 37px !important;
-    height: 37px;
-    margin-right: 5px;
-}
-
-#upload_description
-{
-    height: 44px !important;
-    height: 44px;
-    width: 494px;
-    clear: both;
-    background-image: url('../images/upload_field.png');
-    background-position: bottom;
-    background-repeat: no-repeat;
-}
-
-#upload_description input
-{
-	width: 485px;
-	height: 20px;
-	background: none;
-	color: #000;
-	margin-top: 20px;
-	margin-left: 5px;
-	margin-right: 5px;
-	font-family: arial;
-	font-size: 15px;
-	border: 0px;
-}
-
-#upload_file
-{
-    margin-top: 5px;
-    float: left;
-    line-height: 41px;
-    width: 200px;
-    height: 41px;
-}
-
-#upload
-{
-    margin-top: 9px;
-    float: right;
-    margin-right: 1px;
-}
-
-/*
- * END OF QUICKUPLOAD
- */
-
-/*
  * START OF LOGIN
  */
 
@@ -835,7 +740,7 @@ NIFTYNESS
 #more_files
 {
 	margin-left: 100px;
-	line-height: 28px;
+	line-height: 34px;
 	margin-right: 100px;
 }
 
