@@ -59,7 +59,7 @@
 
 					<p>
 						<label for="attachment">Attach:</label>
-						<input type="file" name="attachment" style="height: 23px;" />
+						<input type="file" name="attachment0" style="height: 23px;" />
 						<?php if ($this->logged_in) { ?>
 						<span style="margin-left: 70px;">
 							<a href="javascript:addInput()"><img src="<?php echo url::base(); ?>images/icons/add.png" alt="Add" id="add" /></a>

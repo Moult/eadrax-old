@@ -105,17 +105,17 @@ if (isset($last)) {
 
 <?php
 // Is there an attached file we need to show?
-if (!empty($filename)) {
+if (!empty($filename0)) {
 	// Is it an image?
 	if ($display == 'image') {
 		echo '<div style="text-align: center;">';
-		if (file_exists(DOCROOT .'uploads/files/'. $filename .'_fit.jpg'))
+		if (file_exists(DOCROOT .'uploads/files/'. $filename0 .'_fit.jpg'))
 		{
-			echo '<a href="'. url::base() .'uploads/files/'. $filename .'.'. $ext .'" rel="lightbox" title="'. $summary .'"><img src="'. url::base() .'uploads/files/'. $filename .'_fit.jpg"></a>';
+			echo '<a href="'. url::base() .'uploads/files/'. $filename0 .'.'. $ext0 .'" rel="lightbox" title="'. $summary .'"><img src="'. url::base() .'uploads/files/'. $filename0 .'_fit.jpg"></a>';
 		}
 		else
 		{
-			echo '<a href="'. url::base() .'uploads/files/'. $filename .'.'. $ext .'" rel="lightbox" title="'. $summary .'"><img src="'. url::base() .'uploads/files/'. $filename .'.'. $ext .'"></a>';
+			echo '<a href="'. url::base() .'uploads/files/'. $filename0 .'.'. $ext0 .'" rel="lightbox" title="'. $summary .'"><img src="'. url::base() .'uploads/files/'. $filename0 .'.'. $ext0 .'"></a>';
 		}
 		echo '</div>';
 	} elseif ($display == 'video') {
@@ -128,7 +128,7 @@ if (!empty($filename)) {
 		s1.addParam('allowfullscreen','true');
 		s1.addParam('allowscriptaccess','always');
 		s1.addParam('wmode','opaque');
-		s1.addParam('flashvars','file=<?php echo url::base(); ?>uploads/files/<?php echo $filename; ?>.<?php echo $ext;?>');
+		s1.addParam('flashvars','file=<?php echo url::base(); ?>uploads/files/<?php echo $filename0; ?>.<?php echo $ext0;?>');
 		s1.write('mediaspace');
 	</script>
 </div>
@@ -143,7 +143,7 @@ if (!empty($filename)) {
 		s1.addParam('allowfullscreen','true');
 		s1.addParam('allowscriptaccess','always');
 		s1.addParam('wmode','opaque');
-		s1.addParam('flashvars','file=<?php echo url::base(); ?>uploads/files/<?php echo $filename; ?>.<?php echo $ext;?>');
+		s1.addParam('flashvars','file=<?php echo url::base(); ?>uploads/files/<?php echo $filename0; ?>.<?php echo $ext0;?>');
 		s1.write('mediaspace');
 	</script>
 </div>
@@ -154,7 +154,7 @@ if (!empty($filename)) {
 		<div style="float: left; width: 61%;">
 			<p style="font-size: 21px; margin-bottom: 0px; line-height: 63px;">
 				<img src="<?php echo $filename_icon; ?>" class="icon" alt="" />
-				<a href="<?php echo url::base(); ?>uploads/files/<?php echo $filename; ?>.<?php echo $ext; ?>"><strong>Download</strong> <?php echo $ext; ?> file</a>
+				<a href="<?php echo url::base(); ?>uploads/files/<?php echo $filename0; ?>.<?php echo $ext0; ?>"><strong>Download</strong> <?php echo $ext0; ?> file</a>
 			</p>
         </div>
 

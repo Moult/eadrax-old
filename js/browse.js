@@ -9,8 +9,8 @@ function addInput() {
 
 function display() {
   document.getElementById('more_files').innerHTML="";
-  for (intI=0;intI<arrInput.length;intI++) {
-	if(intI<3) {
+  for (intI=1;intI<arrInput.length;intI++) {
+	if(intI<4) {
 	  document.getElementById('delete').style.display = 'inline';
 	  document.getElementById('add').style.display = 'inline';
 	} else {
@@ -19,7 +19,7 @@ function display() {
 	  document.getElementById('more_files').innerHTML+=createInput(arrInput[intI], arrInputValue[intI]);
   }
 
-  if (intI == 0) {
+  if (intI == 1) {
 	document.getElementById('delete').style.display = 'none';
   }
 }

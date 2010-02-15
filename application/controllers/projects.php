@@ -299,7 +299,7 @@ class Projects_Controller extends Core_Controller {
 
         if (count($query) > 0) {
             foreach ($query as $row) {
-				$icon = Updates_Controller::_file_icon($row->filename, $row->ext);
+				$icon = Updates_Controller::_file_icon($row->filename0, $row->ext0);
                 // Build the markup.
                 $markup = '</div>'. $markup;
                 $markup = '<h3><a href="'. url::base() .'/updates/view/'. $row->id .'/">'. $row->summary .'</a></h3><span>'. $row->logtime .'</span>'. $markup;

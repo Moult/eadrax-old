@@ -68,10 +68,10 @@ class Updates_Controller extends Core_Controller {
 		{
 			$update_view->$key = $value;
 		}
-		$update_view->filename_icon = $this->_file_icon($update_information['filename'], $update_information['ext']);
+		$update_view->filename_icon = $this->_file_icon($update_information['filename0'], $update_information['ext0']);
 
 		// Find out generic information such as size, format, etc.
-		$update_view->file_size = filesize(DOCROOT .'uploads/files/'. $update_information['filename'] .'.'.  $update_information['ext']);
+		$update_view->file_size = filesize(DOCROOT .'uploads/files/'. $update_information['filename0'] .'.'.  $update_information['ext0']);
 
 		// What size to start off with?
 		$update_view->file_size_ext = 'bytes';
@@ -104,10 +104,10 @@ class Updates_Controller extends Core_Controller {
 				$random_data[$n]['id'] = $row->id;
 
 				// Let's parse the thumbnails.
-				$random_data[$n]['filename'] = $this->_file_icon($row->filename, $row->ext);
+				$random_data[$n]['filename0'] = $this->_file_icon($row->filename0, $row->ext0);
 
                 // Determind the sizes for offsetting.
-                $path = substr($random_data[$n]['filename'],strlen(url::base()));
+                $path = substr($random_data[$n]['filename0'],strlen(url::base()));
                 $path = DOCROOT . $path;
                 $random_data[$n]['thumb_height'] = getimagesize($path);
                 $random_data[$n]['thumb_width']  = $random_data[$n]['thumb_height'][0];
@@ -236,19 +236,19 @@ class Updates_Controller extends Core_Controller {
 		}
 
 		// How should we display the attachment?
-		if (empty($update_information['filename']))
+		if (empty($update_information['filename0']))
 		{
 			$update_view->display = FALSE;
 		}
-		elseif ($update_information['ext'] == 'jpg' || $update_information['ext'] == 'png' || $update_information['ext'] == 'gif')
+		elseif ($update_information['ext0'] == 'jpg' || $update_information['ext0'] == 'png' || $update_information['ext0'] == 'gif')
 		{
 			$update_view->display = 'image';
 		}
-		elseif ($update_information['ext'] == 'avi' || $update_information['ext'] == 'mpg' || $update_information['ext'] == 'mov' || $update_information['ext'] == 'flv' || $update_information['ext'] == 'ogg' || $update_information['ext'] == 'wmv')
+		elseif ($update_information['ext0'] == 'avi' || $update_information['ext0'] == 'mpg' || $update_information['ext0'] == 'mov' || $update_information['ext0'] == 'flv' || $update_information['ext0'] == 'ogg' || $update_information['ext0'] == 'wmv')
 		{
 			$update_view->display = 'video';
 		}
-		elseif ($update_information['ext'] == 'mp3' || $update_information['ext'] == 'wav')
+		elseif ($update_information['ext0'] == 'mp3' || $update_information['ext0'] == 'wav')
 		{
 			$update_view->display = 'sound';
 		}
@@ -376,15 +376,21 @@ class Updates_Controller extends Core_Controller {
 			if ($uid == FALSE)
 			{
 				// Let's first assume there is no file being uploaded.
-				$attachment_filename = '';
-				$extension = '';
+				for ($i = 0; $i < 5; $i++)
+				{
+					${'attachment_filename'. $i} = '';
+					${'extension'. $i} = '';
+				}
 			}
 			else
 			{
 				$attachment_filename = $update_model->update_information($uid);
-				$attachment_filename = $attachment_filename['filename'];
 				$extension = $update_model->update_information($uid);
-				$extension = $extension['ext'];
+				for ($i = 0; $i < 5; $i++)
+				{
+					${'attachment_filename'. $i} = $attachment_filename['filename'. $i];
+					${'extension'. $i} = $extension['ext'. $i];
+				}
 			}
 
 			// Begin to validate the information.
@@ -408,166 +414,177 @@ class Updates_Controller extends Core_Controller {
 
 			if ($validate->validate())
 			{
-				// Check whether or not we even have a file to validate.
-				if (!empty($_FILES) && !empty($_FILES['attachment']['name']))
+				// Do we even have a single file to validate?
+				if (!empty($_FILES))
 				{
-					// If there is an existing file...
-					if (!empty($attachment_filename))
+					// Loop through each file to validate.
+					for ($i = 0; $i < 5; $i++)
 					{
-						// ... Delete it!
-						unlink(DOCROOT .'uploads/files/'. $attachment_filename .'.'. $extension);
-						unlink(DOCROOT .'uploads/icons/'. $attachment_filename .'.jpg');
-
-						if (file_exists(DOCROOT .'uploads/files/'. $filename .'_fit.jpg'))
+						// Check whether or not we even have a file to validate.
+						if (!empty($_FILES['attachment'. $i]['name']))
 						{
-							unlink(DOCROOT .'uploads/files/'. $filename .'_fit.jpg');
-						}
-					}
-
-					// The upload size limit will be different for guests and normal users.
-					if ($this->logged_in == TRUE)
-					{
-						$size_limit = Kohana::config('updates.user_upload_limit');
-					}
-					else
-					{
-						$size_limit = Kohana::config('updates.guest_upload_limit');
-					}
-
-					// Do not forget we need to validate the file.
-					$files = new Validation($_FILES);
-					$files = $files->add_rules('attachment', 'upload::valid', 'upload::type['. Kohana::config('updates.filetypes') .']', 'upload::size['. $size_limit .']');
-
-					if ($files->validate())
-					{
-						// Upload the file as normal.
-						$filename = upload::save('attachment', time() . strtolower($_FILES['attachment']['name']), DOCROOT .'uploads/files/');
-
-						// Let's determine what extension this file is.
-						$extension = strtolower(substr(strrchr($_FILES['attachment']['name'], '.'), 1));
-
-						// Now determine the file name.
-						$attachment_filename = substr(basename($filename), 0, -strlen($extension)-1);
-
-						// If it is an image, we need to thumbnail it.
-						if ($extension == 'gif' || $extension == 'jpg' || $extension == 'png')
-						{
-							// If the width is greater than the layout width...
-							list($width, $height, $type, $attr) = getimagesize($filename);
-							if ($width > Kohana::config('updates.fit_width'))
+							// If there is an existing file...
+							if (!empty(${'attachment_filename'. $i}))
 							{
-								// ... we need to resize it.
-								Image::factory($filename)->resize(Kohana::config('updates.fit_width'), Kohana::config('updates.fit_height'), Image::WIDTH)->save(DOCROOT .'uploads/files/'. substr(basename($filename), 0, -4) .'_fit.jpg');
-							}
+								// ... Delete it!
+								unlink(DOCROOT .'uploads/files/'. ${'attachment_filename'. $i} .'.'. ${'extension'. $i});
+								unlink(DOCROOT .'uploads/icons/'. ${'attachment_filename'. $i} .'.jpg');
 
-							Image::factory($filename)->resize(80, 80, Image::AUTO)->save(DOCROOT .'uploads/icons/'. substr(basename($filename), 0, -3) .'jpg');
-						}
-
-						// If it is a video, we need to encode it.
-						// HTML 5 is not out yet, so support goes through 
-						// the FLV format. Oh well :)
-						if ($extension == 'avi' || $extension == 'mpg' || $extension == 'mov' || $extension == 'flv' || $extension == 'ogg' || $extension == 'wmv')
-						{
-							// Define files.
-							$src_file  = DOCROOT .'uploads/files/'. basename($filename);
-							$dest_file = DOCROOT .'uploads/files/'. substr(basename($filename), 0, -3) .'flv';
-							$dest_img  = DOCROOT .'uploads/icons/'. substr(basename($filename), 0, -3) .'jpg';
-
-							// Define ffmpeg application path.
-							$ffmpeg_path = Kohana::config('updates.ffmpeg_path');
-
-							// If it is not already an FLV we need to encode it.
-							if ($extension != 'flv') {
-								$ffmpeg_obj = new ffmpeg_movie($src_file);
-
-								// Needed function for next section.
-								function make_multiple_two ($value)
+								if (file_exists(DOCROOT .'uploads/files/'. ${'attachment_filename'. $i} .'_fit.jpg'))
 								{
-									$s_type = gettype($value/2); 
-
-									if($s_type == "integer")
-									{
-										return $value;
-									}
-									else
-									{
-										return ($value-1);
-									}
-								}
-
-								// Save needed variables for conversion.
-								$src_width = make_multiple_two($ffmpeg_obj->getFrameWidth());
-								$src_height = make_multiple_two($ffmpeg_obj->getFrameHeight());
-								$src_fps = $ffmpeg_obj->getFrameRate();
-								$src_ab = intval($ffmpeg_obj->getAudioBitRate()/1000);
-								// Dion Moult: This is because flv only 
-								// supports certain audio sample rates - or 
-								// to the best of my knowledge they do.
-								// $src_ar = $ffmpeg_obj->getAudioSampleRate();
-								$src_ar = 44100;
-
-								// Do the encoding!
-								exec($ffmpeg_path ." -i ". escapeshellarg($src_file) ." -ar ". $src_ar ." -ab ". $src_ab ." -f flv -s ". $src_width ."x". $src_height ." ". escapeshellarg($dest_file));
-
-								// Now our filetype extension has changed!
-								$extension = 'flv';
-
-								// We will delete the original !.flv file 
-								// to save space on the server. If they want 
-								// to distribute a !.flv file let them host 
-								// it elsewhere.
-								unlink($src_file);
-							}
-
-							// Before snapshotting the video to make a 
-							// thumbnail image, let's find out the length of 
-							// the video.
-							$ffmpeg_output = array();
-							exec($ffmpeg_path ." -i ". escapeshellarg($dest_file) ." 2>&1", $ffmpeg_output);
-
-							// Search each line in the $ffmpeg_output.
-							foreach ($ffmpeg_output as $key => $value)
-							{
-								if (preg_match('/Duration: [0-9]{2}:[0-9]{2}:[0-9]{2}/', $value, $matches))
-								{
-									// Now we are sure we have found the 
-									// duration, get the value we need.
-									$duration = substr($matches[0], 10);
-
-									// Calculate the half-time.
-									$duration_h = floor(substr($duration, 0, 2)/2);
-									if ($duration_h%2 == 1)
-									{
-										$duration_m = floor((substr($duration, 3, 2)+60)/2);
-									}
-									else
-									{
-										$duration_m = floor(substr($duration, 3, 2)/2);
-									}
-									if ($duration_m%2 == 1)
-									{
-										$duration_s = floor((substr($duration, 6, 2)+60)/2);
-									}
-									else
-									{
-										$duration_s = floor(substr($duration, 6, 2)/2);
-									}
-
-									// Let's create the image.
-									exec($ffmpeg_path ." -i ". escapeshellarg($dest_file) ." -an -ss ". $duration_h .":". $duration_m .":". $duration_s ." -t 00:00:01 -r 1 -y ". escapeshellarg($dest_img));
-
-									// Let's turn the image into a thumbnail.
-									Image::factory($dest_img)->resize(80, 80, Image::AUTO)->save($dest_img);
-
-									// We're done here.
-									break;
+									unlink(DOCROOT .'uploads/files/'. ${'attachment_filename'. $i} .'_fit.jpg');
 								}
 							}
+
+							// The upload size limit will be different for guests and normal users.
+							if ($this->logged_in == TRUE)
+							{
+								$size_limit = Kohana::config('updates.user_upload_limit');
+							}
+							else
+							{
+								$size_limit = Kohana::config('updates.guest_upload_limit');
+							}
+
+							// Do not forget we need to validate the file.
+							$files = new Validation($_FILES);
+							$files = $files->add_rules('attachment'. $i, 'upload::valid', 'upload::type['. Kohana::config('updates.filetypes') .']', 'upload::size['. $size_limit .']');
+
+							if ($files->validate())
+							{
+								// Upload the file as normal.
+								$filename = upload::save('attachment'. $i, time() . strtolower($_FILES['attachment'. $i]['name']), DOCROOT .'uploads/files/');
+
+								// Let's determine what extension this file is.
+								$extension = strtolower(substr(strrchr($_FILES['attachment'. $i]['name'], '.'), 1));
+
+								// Now determine the file name.
+								$attachment_filename = substr(basename($filename), 0, -strlen($extension)-1);
+
+								// If it is an image, we need to thumbnail it.
+								if ($extension == 'gif' || $extension == 'jpg' || $extension == 'png')
+								{
+									// If the width is greater than the layout width...
+									list($width, $height, $type, $attr) = getimagesize($filename);
+									if ($width > Kohana::config('updates.fit_width'))
+									{
+										// ... we need to resize it.
+										Image::factory($filename)->resize(Kohana::config('updates.fit_width'), Kohana::config('updates.fit_height'), Image::WIDTH)->save(DOCROOT .'uploads/files/'. substr(basename($filename), 0, -4) .'_fit.jpg');
+									}
+
+									Image::factory($filename)->resize(80, 80, Image::AUTO)->save(DOCROOT .'uploads/icons/'. substr(basename($filename), 0, -3) .'jpg');
+								}
+
+								// If it is a video, we need to encode it.
+								// HTML 5 is not out yet, so support goes through 
+								// the FLV format. Oh well :)
+								if ($extension == 'avi' || $extension == 'mpg' || $extension == 'mov' || $extension == 'flv' || $extension == 'ogg' || $extension == 'wmv')
+								{
+									// Define files.
+									$src_file  = DOCROOT .'uploads/files/'. basename($filename);
+									$dest_file = DOCROOT .'uploads/files/'. substr(basename($filename), 0, -3) .'flv';
+									$dest_img  = DOCROOT .'uploads/icons/'. substr(basename($filename), 0, -3) .'jpg';
+
+									// Define ffmpeg application path.
+									$ffmpeg_path = Kohana::config('updates.ffmpeg_path');
+
+									// If it is not already an FLV we need to encode it.
+									if ($extension != 'flv') {
+										$ffmpeg_obj = new ffmpeg_movie($src_file);
+
+										// Needed function for next section.
+										function make_multiple_two ($value)
+										{
+											$s_type = gettype($value/2); 
+
+											if($s_type == "integer")
+											{
+												return $value;
+											}
+											else
+											{
+												return ($value-1);
+											}
+										}
+
+										// Save needed variables for conversion.
+										$src_width = make_multiple_two($ffmpeg_obj->getFrameWidth());
+										$src_height = make_multiple_two($ffmpeg_obj->getFrameHeight());
+										$src_fps = $ffmpeg_obj->getFrameRate();
+										$src_ab = intval($ffmpeg_obj->getAudioBitRate()/1000);
+										// Dion Moult: This is because flv only 
+										// supports certain audio sample rates - or 
+										// to the best of my knowledge they do.
+										// $src_ar = $ffmpeg_obj->getAudioSampleRate();
+										$src_ar = 44100;
+
+										// Do the encoding!
+										exec($ffmpeg_path ." -i ". escapeshellarg($src_file) ." -ar ". $src_ar ." -ab ". $src_ab ." -f flv -s ". $src_width ."x". $src_height ." ". escapeshellarg($dest_file));
+
+										// Now our filetype extension has changed!
+										$extension = 'flv';
+
+										// We will delete the original !.flv file 
+										// to save space on the server. If they want 
+										// to distribute a !.flv file let them host 
+										// it elsewhere.
+										unlink($src_file);
+									}
+
+									// Before snapshotting the video to make a 
+									// thumbnail image, let's find out the length of 
+									// the video.
+									$ffmpeg_output = array();
+									exec($ffmpeg_path ." -i ". escapeshellarg($dest_file) ." 2>&1", $ffmpeg_output);
+
+									// Search each line in the $ffmpeg_output.
+									foreach ($ffmpeg_output as $key => $value)
+									{
+										if (preg_match('/Duration: [0-9]{2}:[0-9]{2}:[0-9]{2}/', $value, $matches))
+										{
+											// Now we are sure we have found the 
+											// duration, get the value we need.
+											$duration = substr($matches[0], 10);
+
+											// Calculate the half-time.
+											$duration_h = floor(substr($duration, 0, 2)/2);
+											if ($duration_h%2 == 1)
+											{
+												$duration_m = floor((substr($duration, 3, 2)+60)/2);
+											}
+											else
+											{
+												$duration_m = floor(substr($duration, 3, 2)/2);
+											}
+											if ($duration_m%2 == 1)
+											{
+												$duration_s = floor((substr($duration, 6, 2)+60)/2);
+											}
+											else
+											{
+												$duration_s = floor(substr($duration, 6, 2)/2);
+											}
+
+											// Let's create the image.
+											exec($ffmpeg_path ." -i ". escapeshellarg($dest_file) ." -an -ss ". $duration_h .":". $duration_m .":". $duration_s ." -t 00:00:01 -r 1 -y ". escapeshellarg($dest_img));
+
+											// Let's turn the image into a thumbnail.
+											Image::factory($dest_img)->resize(80, 80, Image::AUTO)->save($dest_img);
+
+											// We're done here.
+											break;
+										}
+									}
+								}
+								// Reset the variables from generic to specific
+								${'attachment_filename'. $i} = $attachment_filename;
+								${'extension'. $i} = $extension;
+							}
+							else
+							{
+								die('Your upload has failed.'); # TODO dying is never good.
+							}
 						}
-					}
-					else
-					{
-						die('Your upload has failed.'); # TODO dying is never good.
 					}
 				}
 
@@ -579,8 +596,16 @@ class Updates_Controller extends Core_Controller {
 						'summary' => $summary,
 						'detail' => $detail,
 						'pid' => $pid,
-						'filename' => $attachment_filename,
-						'ext' => $extension,
+						'filename0' => $attachment_filename0,
+						'filename1' => $attachment_filename1,
+						'filename2' => $attachment_filename2,
+						'filename3' => $attachment_filename3,
+						'filename4' => $attachment_filename4,
+						'ext0' => $extension0,
+						'ext1' => $extension1,
+						'ext2' => $extension2,
+						'ext3' => $extension3,
+						'ext4' => $extension4,
 						'pastebin' => $pastebin,
 						'syntax' => $syntax
 					));
@@ -598,8 +623,16 @@ class Updates_Controller extends Core_Controller {
 						'summary' => $summary,
 						'detail' => $detail,
 						'pid' => $pid,
-						'filename' => $attachment_filename,
-						'ext' => $extension,
+						'filename0' => $attachment_filename0,
+						'filename1' => $attachment_filename1,
+						'filename2' => $attachment_filename2,
+						'filename3' => $attachment_filename3,
+						'filename4' => $attachment_filename4,
+						'ext0' => $extension0,
+						'ext1' => $extension1,
+						'ext2' => $extension2,
+						'ext3' => $extension3,
+						'ext4' => $extension4,
 						'pastebin' => $pastebin,
 						'syntax' => $syntax
 					), $uid);
