@@ -90,211 +90,6 @@ h1
 }
 
 /*
- * START OF LOGIN
- */
-
-#login_form_title
-{
-    margin-top: 20px;
-    font-size: 15px;
-    font-weight: 800;
-    height: 20px;
-    color: #264560;
-}
-
-#login_form_title a
-{
-    color: #264560;
-	text-decoration: none;
-	border-bottom: 1px dotted #264560;
-}
-
-#login_form_title a:hover
-{
-	color: #2645B0;
-	border-bottom: 0px;
-}
-
-#login_form
-{
-    float: left;
-    display: inline;
-    margin-left: 17px;
-    margin-right: 11px;
-    width: 282px !important;
-    width: 282px;
-}
-
-#username_field
-{
-    float: left;
-    margin-top: 14px;
-    background-image: url('../images/username_field.png');
-    background-position: bottom;
-    background-repeat: no-repeat;
-    width: 173px;
-    height: 29px !important;
-    height: 29px;
-}
-
-#username_field input
-{
- 	width: 163px;
-	height: 20px;
-	background: none;
-	border: 0;
-	color: #000;
-	margin-top: 5px;
-	margin-left: 5px;
-	margin-right: 5px;
-	font-family: arial;
-	font-size: 15px;
-}
-
-#terms
-{
-    float: left;
-    margin-left: 13px;
-    margin-top: 14px;
-    text-align: center;
-    font-family: Arial;
-    font-size: 10px;
-    width: 86px !important;
-    width: 86px;
-    height: 29px !important;
-    height: 29px;
-    line-height: 29px;
-}
-
-#terms a
-{
-    color: #333;
-}
-
-#terms a:hover
-{
-    color: #999;
-}
-
-#password_field
-{
-    clear: both;
-    float: left;
-    display: inline;
-    margin-top: 14px;
-    background-image: url('../images/password_field.png');
-    background-position: bottom;
-    background-repeat: no-repeat;
-    width: 173px;
-    height: 29px !important;
-    height: 29px;
-}
-
-#password_field input
-{
- 	width: 163px;
-	height: 20px;
-	background: none;
-	border: 0;
-	color: #000;
-	margin-top: 5px;
-	margin-left: 5px;
-	margin-right: 5px;
-	font-family: arial;
-	font-size: 15px;
-}
-
-#signin
-{
-    float: left;
-    margin-left: 13px;
-    margin-top: 9px;
-    width: 91px !important;
-    width: 91px;
-    height: 39px !important;
-    height: 39px;
-}
-
-/*
- * END OF LOGIN
- */
-
-/*
- * START OF BAR
- */
-
-#bar
-{
-    width: 860px !important;
-    width: 860px;
-    height: 45px;
-    background-image: url('../images/bar_bg.png');
-    margin-left: auto;
-    margin-right: auto;
-    color: #FFFFFF;
-    font-weight: bold;
-    font-family: Arial;
-    font-size: 12px;
-}
-
-.bar_text
-{
-    float: left;
-    line-height: 40px;
-    padding-left: 40px;
-}
-
-.bar_text a
-{
-	text-decoration: none;
-	color: #FFFFFF;
-}
-
-.bar_text a:hover
-{
-	text-decoration: underline;
-}
-
-#search_field
-{
-    float: right;
-    width: 188px;
-    height: 25px;
-    background-image: url('../images/search_bg.png');
-    background-position: right;
-    background-repeat: no-repeat;
-    margin-top: 7px;
-}
-
-#search_field input
-{
- 	width: 120px;
-	height: 15px;
-	background: none;
-	color: #FFF;
-    vertical-align: top;
-    margin-top: 5px;
-	margin-left: 35px;
-	margin-right: 20px;
-	font-family: arial;
-    font-weight: bold;
-	font-size: 12px;
-	border: 0px;
-}
-
-#search_button
-{
-    float: right;
-    display: inline;
-    margin-top: 7px;
-    margin-right: 40px;
-}
-
-/*
- * END OF BAR
- */
-
-/*
  * START OF CONTENT
  */
 
@@ -806,4 +601,43 @@ NIFTYNESS
 {
     list-style: decimal;
     margin-left: 40px;
+}
+
+#file-wrap
+{
+	width: 700px;
+	margin: 25px auto;
+}
+
+.ui-tabs .ui-tabs-nav
+{
+	margin-bottom: 20px;
+}
+
+.ui-tabs .ui-tabs-nav li
+{
+	display: inline;
+}
+
+.ui-tabs .ui-tabs-nav li a 
+{
+	padding: 5px;
+}
+
+.ui-tabs .ui-tabs-nav li.ui-tabs-selected
+{
+	border: 2px solid #000;
+}
+
+.ui-tabs .ui-tabs-panel
+{
+	padding: 0px;
+	display: block;
+	border-width: 0;
+	background: none;
+}
+
+.ui-tabs .ui-tabs-hide
+{
+	display: none !important;
 }

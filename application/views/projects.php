@@ -25,23 +25,15 @@ Category: <em><?php echo $categories[$project['cid']]; ?></em> <?php if (!empty(
 </div>
 
 <?php } else { ?>
-
 <div class="scrollableWrapper" style="margin-top: 10px; margin-left: auto; margin-right: auto;">
-
 	<div class="navi"></div>
-
-	<!-- navigator -->
-	<!-- prev link -->
 	<a class="prev"></a>
-	<!-- root element for scrollable -->
 	<div class="scrollable">
 		<div id="thumbs">
 			<?php echo $timeline; ?>
 		</div>
 	</div>
-	<!-- next link -->
 	<a class="next"></a>
-	<!-- let rest of the page float normally -->
 	<br clear="all" />
 </div>
 <?php } ?>

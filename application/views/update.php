@@ -103,6 +103,39 @@ if (isset($last)) {
 </div>
 <?php } ?>
 
+<img src="<?php echo $filename_icon; ?>">
+<div id="file-wrap">
+	<div id="tabs">
+		<ul>
+			<li><a href="#fragment-1">1</a></li>
+			<li><a href="#fragment-2">2</a></li>
+			<li><a href="#fragment-3">3</a></li>
+			<li><a href="#fragment-4">4</a></li>
+			<li><a href="#fragment-5">5</a></li>
+		</ul>
+
+		<div id="fragment-1" class="ui-tabs-panel">
+			<p>Hey all</p>
+		</div>
+
+		<div id="fragment-2" class="ui-tabs-panel ui-tabs-hide">
+			<p>asdpofajiwpeofijHey all</p>
+		</div>
+
+		<div id="fragment-3" class="ui-tabs-panel ui-tabs-hide">
+			<p>!asdpofajiwpeofijHey all</p>
+		</div>
+
+		<div id="fragment-4" class="ui-tabs-panel ui-tabs-hide">
+			<p>@!asdpofajiwpeofijHey all</p>
+		</div>
+
+		<div id="fragment-5" class="ui-tabs-panel ui-tabs-hide">
+			<p>aoij@!asdpofajiwpeofijHey all</p>
+		</div>
+	</div>
+</div>
+
 <?php
 // Is there an attached file we need to show?
 if (!empty($filename0)) {
@@ -111,11 +144,11 @@ if (!empty($filename0)) {
 		echo '<div style="text-align: center;">';
 		if (file_exists(DOCROOT .'uploads/files/'. $filename0 .'_fit.jpg'))
 		{
-			echo '<a href="'. url::base() .'uploads/files/'. $filename0 .'.'. $ext0 .'" rel="lightbox" title="'. $summary .'"><img src="'. url::base() .'uploads/files/'. $filename0 .'_fit.jpg"></a>';
+			echo '<a id="single_image" href="'. url::base() .'uploads/files/'. $filename0 .'.'. $ext0 .'" title="'. $summary .'"><img src="'. url::base() .'uploads/files/'. $filename0 .'_fit.jpg"></a>';
 		}
 		else
 		{
-			echo '<a href="'. url::base() .'uploads/files/'. $filename0 .'.'. $ext0 .'" rel="lightbox" title="'. $summary .'"><img src="'. url::base() .'uploads/files/'. $filename0 .'.'. $ext0 .'"></a>';
+			echo '<a id="single_image" href="'. url::base() .'uploads/files/'. $filename0 .'.'. $ext0 .'" title="'. $summary .'"><img src="'. url::base() .'uploads/files/'. $filename0 .'.'. $ext0 .'"></a>';
 		}
 		echo '</div>';
 	} elseif ($display == 'video') {

@@ -25,12 +25,29 @@
 // If we are viewing an update, we need a couple more fancy stuff.
 if ($this->uri->segment(1) == 'updates' && $this->uri->segment(2) == 'view') {
 ?>
-        <!-- Lightbox support -->
+        <!-- Fancybox support -->
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
-        <script type="text/javascript" src="<?php echo url::base(); ?>js/prototype.js"></script>
-        <script type="text/javascript" src="<?php echo url::base(); ?>js/scriptaculous.js?load=effects,builder"></script>
-        <script type="text/javascript" src="<?php echo url::base(); ?>js/lightbox.js"></script>
-        <link rel="stylesheet" href="<?php echo url::base(); ?>css/lightbox.css" type="text/css" media="screen" />
+		<script type="text/javascript" src="<?php echo url::base(); ?>js/jquery.fancybox-1.3.0.pack.js"></script>
+		<link rel="stylesheet" href="<?php echo url::base(); ?>css/jquery.fancybox-1.3.0.css" type="text/css" media="screen">
+
+		<script type="text/javascript">
+		$(document).ready(function() {
+			/* This is basic - uses default settings */
+			$("a#single_image").fancybox({
+				'transitionIn'	: 'elastic',
+				'easingIn'		: 'swing',
+				'autoScale'		: false
+			});
+		});
+		</script>
+
+        <!-- Multiple file view support -->
+        <script type="text/javascript" src="<?php echo url::base(); ?>js/jquery-ui-1.7.custom.min.js"></script>
+        <script type="text/javascript">
+            $(function() {
+                var $tabs = $('#tabs').tabs();
+            });
+        </script>
 <?php }
 // If we are viewing a project timeline, we again need more fancy stuff.
 if ($this->uri->segment(1) == 'profiles') {
