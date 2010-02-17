@@ -97,61 +97,44 @@ if (isset($last)) {
 </div>
 <?php } ?>
 
-<?php if ($display == FALSE) { ?>
+<?php if ($no_of_files == 0 && (empty($detail))) { ?>
 <div style="border: 2px solid #800; background-color: #FDD; margin: 10px; padding: 10px;">
 	This update contains no further detail. Don't worry, there's nothing wrong with that!
 </div>
-<?php } ?>
-
-<img src="<?php echo $filename_icon; ?>">
+<?php } elseif ($no_of_files > 1) { ?>
 <div id="file-wrap">
 	<div id="tabs">
 		<ul>
-			<li><a href="#fragment-1">1</a></li>
-			<li><a href="#fragment-2">2</a></li>
-			<li><a href="#fragment-3">3</a></li>
-			<li><a href="#fragment-4">4</a></li>
-			<li><a href="#fragment-5">5</a></li>
+<?php for ($i=0; $i<5; $i++) { if(!empty(${'filename'. $i})) { ?>
+			<li><a href="#fragment-<?php echo $i; ?>"><img src="<?php echo ${'filename_icon'. $i}; ?>" <?php if (${'display'. $i} == 'image' || ${'display'. $i} == 'video') { ?>style="border: 1px solid #888; padding: 2px;" <?php } ?>alt="attachment<?php echo $i; ?>" /></a></li>
+<?php } } ?>
 		</ul>
-
-		<div id="fragment-1" class="ui-tabs-panel">
-			<p>Hey all</p>
-		</div>
-
-		<div id="fragment-2" class="ui-tabs-panel ui-tabs-hide">
-			<p>asdpofajiwpeofijHey all</p>
-		</div>
-
-		<div id="fragment-3" class="ui-tabs-panel ui-tabs-hide">
-			<p>!asdpofajiwpeofijHey all</p>
-		</div>
-
-		<div id="fragment-4" class="ui-tabs-panel ui-tabs-hide">
-			<p>@!asdpofajiwpeofijHey all</p>
-		</div>
-
-		<div id="fragment-5" class="ui-tabs-panel ui-tabs-hide">
-			<p>aoij@!asdpofajiwpeofijHey all</p>
-		</div>
-	</div>
-</div>
+<?php } ?>
 
 <?php
 // Is there an attached file we need to show?
-if (!empty($filename0)) {
-	// Is it an image?
-	if ($display == 'image') {
-		echo '<div style="text-align: center;">';
-		if (file_exists(DOCROOT .'uploads/files/'. $filename0 .'_fit.jpg'))
-		{
-			echo '<a id="single_image" href="'. url::base() .'uploads/files/'. $filename0 .'.'. $ext0 .'" title="'. $summary .'"><img src="'. url::base() .'uploads/files/'. $filename0 .'_fit.jpg"></a>';
-		}
-		else
-		{
-			echo '<a id="single_image" href="'. url::base() .'uploads/files/'. $filename0 .'.'. $ext0 .'" title="'. $summary .'"><img src="'. url::base() .'uploads/files/'. $filename0 .'.'. $ext0 .'"></a>';
-		}
-		echo '</div>';
-	} elseif ($display == 'video') {
+for ($i=0; $i<5; $i++)
+{
+	if ($no_of_files > 1 && $i == 0) { ?>
+		<div id="fragment-<?php echo $i; ?>" class="ui-tabs-panel">
+<?php } elseif ($no_of_files > 1) { ?>
+		<div id="fragment-<?php echo $i; ?>" class="ui-tabs-panel ui-tabs-hide">
+<?php }
+
+	if (!empty(${'filename'. $i})) {
+		// Is it an image?
+		if (${'display'. $i} == 'image') {
+			echo '<div style="text-align: center;">';
+			if (file_exists(DOCROOT .'uploads/files/'. ${'filename'. $i} .'_fit.jpg'))
+			{
+				echo '<a id="single_image" href="'. url::base() .'uploads/files/'. ${'filename'. $i} .'.'. ${'ext'. $i} .'" title="'. $summary .'"><img src="'. url::base() .'uploads/files/'. ${'filename'. $i} .'_fit.jpg"></a>';
+			}
+			else
+			{
+				echo '<a id="single_image" href="'. url::base() .'uploads/files/'. ${'filename'. $i} .'.'. ${'ext'. $i} .'" title="'. $summary .'"><img src="'. url::base() .'uploads/files/'. ${'filename'. $i} .'.'. ${'ext'. $i} .'"></a>';
+			}
+			echo '</div>';
+		} elseif (${'display'. $i} == 'video') {
 ?>
 <div style="margin: 10px; text-align: center;">
 	<script type='text/javascript' src='<?php echo url::base(); ?>js/swfobject.js'></script>
@@ -161,12 +144,12 @@ if (!empty($filename0)) {
 		s1.addParam('allowfullscreen','true');
 		s1.addParam('allowscriptaccess','always');
 		s1.addParam('wmode','opaque');
-		s1.addParam('flashvars','file=<?php echo url::base(); ?>uploads/files/<?php echo $filename0; ?>.<?php echo $ext0;?>');
+		s1.addParam('flashvars','file=<?php echo url::base(); ?>uploads/files/<?php echo ${'filename'. $i}; ?>.<?php echo ${'ext'. $i};?>');
 		s1.write('mediaspace');
 	</script>
 </div>
 <?php
-	} elseif ($display == 'sound') {
+	} elseif (${'display'. $i} == 'sound') {
 ?>
 <div style="margin: 10px; text-align: center;">
 	<script type='text/javascript' src='<?php echo url::base(); ?>js/swfobject.js'></script>
@@ -176,24 +159,24 @@ if (!empty($filename0)) {
 		s1.addParam('allowfullscreen','true');
 		s1.addParam('allowscriptaccess','always');
 		s1.addParam('wmode','opaque');
-		s1.addParam('flashvars','file=<?php echo url::base(); ?>uploads/files/<?php echo $filename0; ?>.<?php echo $ext0;?>');
+		s1.addParam('flashvars','file=<?php echo url::base(); ?>uploads/files/<?php echo ${'filename'. $i}; ?>.<?php echo ${'ext'. $i};?>');
 		s1.write('mediaspace');
 	</script>
 </div>
 <?php } ?>
 
-<?php if ($display == 'download' || $display == 'video' || $display == 'sound') { ?>
+<?php if (${'display'. $i} == 'download' || ${'display'. $i} == 'video' || ${'display'. $i} == 'sound') { ?>
 <div style="border: 2px solid #88AAFF; margin-left: auto; margin-right: auto; margin-top: 10px; font-size: 18px; background-color: #DDEEFF; padding: 10px;">
 		<div style="float: left; width: 61%;">
-			<p style="font-size: 21px; margin-bottom: 0px; line-height: 63px;">
-				<img src="<?php echo $filename_icon; ?>" class="icon" alt="" />
-				<a href="<?php echo url::base(); ?>uploads/files/<?php echo $filename0; ?>.<?php echo $ext0; ?>"><strong>Download</strong> <?php echo $ext0; ?> file</a>
+			<p style="font-size: 18px; margin-bottom: 0px; line-height: 63px;">
+				<img src="<?php echo ${'filename_icon'. $i}; ?>" class="icon" alt="" />
+				<a href="<?php echo url::base(); ?>uploads/files/<?php echo ${'filename'. $i}; ?>.<?php echo ${'ext'. $i}; ?>"><strong>Download</strong> <?php echo substr(${'filename'. $i}, 10) .'.'. ${'ext'. $i}; ?></a>
 			</p>
         </div>
 
         <div style="width: 300px; float: right; height: 63px;">
             <p style="font-size: 18px; color: #555; margin-bottom: 0;">
-                Size: <?php echo $file_size; ?> <?php echo $file_size_ext; ?><br />
+                Size: <?php echo ${'file_size'. $i}; ?> <?php echo ${'file_size_ext'. $i}; ?><br />
                 Date: <?php echo $logtime; ?><br />
                 By: <?php if ($uid != 1) { ?><a href="<?php echo url::base(); ?>profile/view/<?php echo $uid; ?>/"><?php echo $user_information['username']; ?></a><?php } else { ?>Guest<?php } ?>
             </p>
@@ -202,4 +185,11 @@ if (!empty($filename0)) {
     </div>
 <?php } ?>
 
+<?php }
+	if ($no_of_files > 1) { ?>
+	</div>
+<?php } } ?>
+
+<?php if ($no_of_files > 1) { ?>
+</div></div>
 <?php } ?>

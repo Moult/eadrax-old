@@ -68,27 +68,70 @@ class Updates_Controller extends Core_Controller {
 		{
 			$update_view->$key = $value;
 		}
-		$update_view->filename_icon = $this->_file_icon($update_information['filename0'], $update_information['ext0']);
 
-		// Find out generic information such as size, format, etc.
-		$update_view->file_size = filesize(DOCROOT .'uploads/files/'. $update_information['filename0'] .'.'.  $update_information['ext0']);
-
-		// What size to start off with?
-		$update_view->file_size_ext = 'bytes';
-
-		if ($update_view->file_size > 1024) {
-			$update_view->file_size     = $update_view->file_size / 1024;
-			$update_view->file_size_ext = 'kb';
+		// Do we have more than one file to deal with?
+		$no_of_files = 0;
+		for ($i=0; $i<5; $i++)
+		{
+			if (!empty($update_information['filename'. $i])) {
+				$no_of_files++;
+			}
 		}
 
-		if ($update_view->file_size > 1024) {
-			$update_view->file_size     = $update_view->file_size / 1024;
-			$update_view->file_size_ext = 'Mb';
+		$update_view->no_of_files = $no_of_files;
+
+		// If we have files to deal with, let's get cracking!
+		if ($no_of_files > 0)
+		{
+			for ($i=0; $i<5; $i++)
+			{
+				$update_view->{'filename_icon'. $i} = $this->_file_icon($update_information['filename'. $i], $update_information['ext'. $i]);
+
+				// Find out generic information such as size, format, etc.
+				$update_view->{'file_size'. $i} = filesize(DOCROOT .'uploads/files/'. $update_information['filename'. $i] .'.'.  $update_information['ext'. $i]);
+
+				// What size to start off with?
+				$update_view->{'file_size_ext'. $i} = 'bytes';
+
+				if ($update_view->{'file_size'. $i} > 1024) {
+					$update_view->{'file_size'. $i}     = $update_view->{'file_size'. $i} / 1024;
+					$update_view->{'file_size_ext'. $i} = 'kb';
+				}
+
+				if ($update_view->{'file_size'. $i} > 1024) {
+					$update_view->{'file_size'. $i}     = $update_view->{'file_size'. $i} / 1024;
+					$update_view->{'file_size_ext'. $i} = 'Mb';
+				}
+
+				// Now to clean up the value we get.
+				$update_view->{'file_size'. $i} = ceil($update_view->{'file_size'. $i});
+
+				// How should we display the attachment?
+				if (empty($update_information['filename'. $i]))
+				{
+					$update_view->{'display'. $i} = FALSE;
+				}
+				elseif ($update_information['ext'. $i] == 'jpg' || $update_information['ext'. $i] == 'png' || $update_information['ext'. $i] == 'gif')
+				{
+					$update_view->{'display'. $i} = 'image';
+				}
+				elseif ($update_information['ext'. $i] == 'avi' || $update_information['ext'. $i] == 'mpg' || $update_information['ext'. $i] == 'mov' || $update_information['ext'. $i] == 'flv' || $update_information['ext'. $i] == 'ogg' || $update_information['ext'. $i] == 'wmv')
+				{
+					$update_view->{'display'. $i} = 'video';
+				}
+				elseif ($update_information['ext'. $i] == 'mp3' || $update_information['ext'. $i] == 'wav')
+				{
+					$update_view->{'display'. $i} = 'sound';
+				}
+				else
+				{
+					$update_view->{'display'. $i} = 'download';
+				}
+			}
 		}
 
-		// Now to clean up the value we get.
-		$update_view->file_size = ceil($update_view->file_size);
-
+		// XXX XXX XXX XXX XXX wait a minute...why are we jumping to 
+		// random updates...?
 
 		// Let's find out some random updates!
 		if ($update_model->update_number($update_information['uid']) > 0)
@@ -235,28 +278,6 @@ class Updates_Controller extends Core_Controller {
 			$update_view->last = $check_next['last'];
 		}
 
-		// How should we display the attachment?
-		if (empty($update_information['filename0']))
-		{
-			$update_view->display = FALSE;
-		}
-		elseif ($update_information['ext0'] == 'jpg' || $update_information['ext0'] == 'png' || $update_information['ext0'] == 'gif')
-		{
-			$update_view->display = 'image';
-		}
-		elseif ($update_information['ext0'] == 'avi' || $update_information['ext0'] == 'mpg' || $update_information['ext0'] == 'mov' || $update_information['ext0'] == 'flv' || $update_information['ext0'] == 'ogg' || $update_information['ext0'] == 'wmv')
-		{
-			$update_view->display = 'video';
-		}
-		elseif ($update_information['ext0'] == 'mp3' || $update_information['ext0'] == 'wav')
-		{
-			$update_view->display = 'sound';
-		}
-		else
-		{
-			$update_view->display = 'download';
-		}
-
 		// Parse the pastebin.
 		if (!empty($update_information['pastebin']))
 		{
@@ -309,13 +330,6 @@ class Updates_Controller extends Core_Controller {
             $detail = preg_replace("/(?:\r?\n)+/", '</p><p '. $format .'>', $detail);
 
             $update_view->detail = $detail;
-
-            // If we are not embedding something...
-            if ($update_view->display == FALSE) {
-                // ...but we ARE showing detailed description...
-                $update_view->display = TRUE;
-                // ...then they don't get the "no more detail" message!
-            }
         }
 
 		// Generate the content.
