@@ -135,7 +135,7 @@ class Feedback_Controller extends Core_Controller {
 
 		// We cannot subscribe to somebody we are tracking.
 		// First check if they have already subscribed themselves...
-		if ($subscribe_model->check_project_subscriber($pid, $this->uid) || !$project_model->check_project_exists($pid) || $track_model->check_track_owner($project_uid, $this->uid))
+		if ($subscribe_model->check_project_subscriber($pid, $this->uid) || !$project_model->check_project_exists($pid) || $track_model->check_track_owner($project_uid, $this->uid) || $project_uid == $this->uid)
 		{
 			// Load error view.
 			$subscribe_error_view = new View('subscribe_error');
@@ -209,7 +209,7 @@ class Feedback_Controller extends Core_Controller {
 		$subscribe_model = new Subscribe_Model;
 
 		// First check if they are already tracking the user...
-		if ($track_model->check_track_owner($uid, $this->uid) || !$user_model->check_user_exists($uid))
+		if ($track_model->check_track_owner($uid, $this->uid) || !$user_model->check_user_exists($uid) || $uid == $this->uid)
 		{
 			// Load error view.
 			$track_error_view = new View('track_error');

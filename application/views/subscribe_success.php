@@ -3,6 +3,7 @@
 	You're now subscribed to the project.
 </h2>
 
-<p>
-	Subscribing to a project means that you'll receive a notification whenever a new update is added to the project. This notification will appear in your dashboard newsreel, and you can configure optional additional notifications such as via email.
+<p style="text-align: center; font-size: 20px; color: #555; line-height: 50px;">
+	You'll now receive a notification whenever a new update is added to the project.<br />
+	It's like, you know, signing up for free spam.
 </p>

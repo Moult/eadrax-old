@@ -3,6 +3,7 @@
 	You've already kudos'd it!
 </h2>
 
-<p>
-	You've already added your kudos to that update. You can't remove your kudos once you've added it - that'll be quite mean to the person owning the update. However feel free to add more comments on the update.
+<p style="text-align: center; font-size: 20px; color: #555; line-height: 50px;">
+	You've already sent your kudos and you can't take it back! (it's just mean)<br />
+However feel free to add more comments on the update.
 </p>

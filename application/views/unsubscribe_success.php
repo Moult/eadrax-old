@@ -3,6 +3,7 @@
 	You've been unsubscribed.
 </h2>
 
-<p>
-	What a pity, we'll be sad to see you go.
+<p style="text-align: center; font-size: 20px; color: #555; line-height: 50px;">
+	Finally came to your senses, eh?<br />
+	Plenty other lonely projects wanting your attention you know.
 </p>

@@ -3,6 +3,8 @@
 	Whoah, you're already subscribed.
 </h2>
 
-<p>
-	Now now there, don't try to subscribe twice. It's like asking somebody to repeat a sentence to you after they've said it. It's like asking somebody to repeat a sentence to you after they've said it.
+<p style="text-align: center; font-size: 20px; color: #555; line-height: 50px;">
+	Now now there, don't try to subscribe twice.<br />
+	It's like asking somebody to repeat a sentence to you after they've said it.<br />
+	It's like asking somebody to repeat a sentence to you after they've said it.
 </p>

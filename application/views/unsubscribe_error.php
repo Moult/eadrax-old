@@ -3,6 +3,7 @@
 	You were never subscribed in the first place.
 </h2>
 
-<p>
-	You can't unsubscribe from something you've never subscribed to. Common sense. Sheesh.
+<p style="text-align: center; font-size: 20px; color: #555; line-height: 50px;">
+	You can't unsubscribe from something you've never subscribed to.<br />
+	Common sense. Sheesh.
 </p>
