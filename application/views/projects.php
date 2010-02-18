@@ -26,7 +26,6 @@ Category: <em><?php echo $categories[$project['cid']]; ?></em> <?php if (!empty(
 
 <?php } else { ?>
 <div class="scrollableWrapper" style="margin-top: 10px; margin-left: auto; margin-right: auto;">
-	<div class="navi"></div>
 	<a class="prev"></a>
 	<div class="scrollable">
 		<div id="thumbs">
