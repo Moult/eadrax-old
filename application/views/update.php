@@ -129,11 +129,12 @@ for ($i=0; $i<5; $i++)
 			echo '<div style="text-align: center;">';
 			if (file_exists(DOCROOT .'uploads/files/'. ${'filename'. $i} .'_fit.jpg'))
 			{
-				echo '<a id="single_image" href="'. url::base() .'uploads/files/'. ${'filename'. $i} .'.'. ${'ext'. $i} .'" title="'. $summary .'"><img src="'. url::base() .'uploads/files/'. ${'filename'. $i} .'_fit.jpg"></a>';
+				echo '<a id="single_image" href="'. url::base() .'uploads/files/'. ${'filename'. $i} .'.'. ${'ext'. $i} .'" title="'. $summary .'"><img src="'. url::base() .'uploads/files/'. ${'filename'. $i} .'_fit.jpg" style="border: 2px solid #DDD; position: relative; left: -2px;"></a>';
+				echo '<cite style="background: #000000; -moz-opacity:.55; filter:alpha(opacity=55); opacity: .55; color: #FFF; position: relative; display: block; margin-left: auto; margin-right: auto; top: -42px; height: 15px; width: 810px; padding: 10px; border-top: 2px solid #FFF; font-weight: bold;">This image is scaled down, click to view image full size.</cite>';
 			}
 			else
 			{
-				echo '<a id="single_image" href="'. url::base() .'uploads/files/'. ${'filename'. $i} .'.'. ${'ext'. $i} .'" title="'. $summary .'"><img src="'. url::base() .'uploads/files/'. ${'filename'. $i} .'.'. ${'ext'. $i} .'"></a>';
+				echo '<a id="single_image" href="'. url::base() .'uploads/files/'. ${'filename'. $i} .'.'. ${'ext'. $i} .'" title="'. $summary .'"><img src="'. url::base() .'uploads/files/'. ${'filename'. $i} .'.'. ${'ext'. $i} .'" style="background: url(http://localhost/eadrax/images/shadow-1000x1000.gif) no-repeat right bottom; padding: 5px 10px 10px 5px;"></a>';
 			}
 			echo '</div>';
 		} elseif (${'display'. $i} == 'video') {

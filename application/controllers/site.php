@@ -57,4 +57,10 @@ class Site_Controller extends Core_Controller {
 		$legal_view = new View('legal');
 		$this->template->content = array($legal_view);
 	}
+
+	public function version()
+	{
+		$version_view = new View('version');
+		$this->template->content = array($version_view);
+	}
 }
