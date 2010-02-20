@@ -1,7 +1,6 @@
-<script src="<?php echo url::base(); ?>js/scrollable.js"></script>
 <h2>
 	<?php if (!empty($project['icon'])) { ?>
-	<img src="<?php echo url::base(); ?>uploads/icons/<?php echo $project['icon']; ?>" class="icon" />
+	<img src="<?php echo url::base(); ?>uploads/icons/<?php echo $project['icon']; ?>" class="icon" alt="" />
 	<?php } else { ?>
 	<img src="<?php echo url::base(); ?>images/icons/coffee_mug.png" width="48" height="48" class="icon" alt="" />
 	<?php } ?>
@@ -28,11 +27,10 @@ Category: <em><?php echo $categories[$project['cid']]; ?></em> <?php if (!empty(
 <div class="scrollableWrapper" style="margin-top: 10px; margin-left: auto; margin-right: auto;">
 	<a class="prev"></a>
 	<div class="scrollable">
-		<div id="thumbs">
+		<div class="thumbs">
 			<?php echo $timeline; ?>
 		</div>
 	</div>
 	<a class="next"></a>
-	<br clear="all" />
 </div>
 <?php } ?>

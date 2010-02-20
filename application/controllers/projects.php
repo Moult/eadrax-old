@@ -304,7 +304,7 @@ class Projects_Controller extends Core_Controller {
                 $markup = '</div>'. $markup;
                 $markup = '<h3><a href="'. url::base() .'/updates/view/'. $row->id .'/">'. $row->summary .'</a></h3><span>'. $row->logtime .'</span>'. $markup;
 				if (!strpos($icon, 'images/icons')) { $markup_add = 'border: 1px solid #999; padding: 1px;'; } else { $markup_add = ''; }
-				$markup = '<p><a href="'. url::base() .'/updates/view/'. $row->id .'/"><img style="vertical-align: middle; '. $markup_add .'" src="'. $icon .'" /></a></p>'. $markup;
+				$markup = '<p><a href="'. url::base() .'/updates/view/'. $row->id .'/"><img style="vertical-align: middle; '. $markup_add .'" src="'. $icon .'" alt="update icon" /></a></p>'. $markup;
                 $markup = '<div>'. $markup;
             }
         }

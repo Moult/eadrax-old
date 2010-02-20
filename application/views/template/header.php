@@ -28,12 +28,12 @@ if ($this->uri->segment(1) == 'updates' && $this->uri->segment(2) == 'view') {
         <!-- Fancybox support -->
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 		<script type="text/javascript" src="<?php echo url::base(); ?>js/jquery.fancybox-1.3.0.pack.js"></script>
-		<link rel="stylesheet" href="<?php echo url::base(); ?>css/jquery.fancybox-1.3.0.css" type="text/css" media="screen">
+		<link rel="stylesheet" href="<?php echo url::base(); ?>css/jquery.fancybox-1.3.0.css" type="text/css" media="screen" />
 
 		<script type="text/javascript">
 		$(document).ready(function() {
 			/* This is basic - uses default settings */
-			$("a#single_image").fancybox({
+			$("a.single_image").fancybox({
 				'transitionIn'	: 'elastic',
 				'easingIn'		: 'swing',
 				'autoScale'		: false
@@ -56,6 +56,7 @@ if ($this->uri->segment(1) == 'profiles') {
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
         <script type="text/javascript" src="<?php echo url::base(); ?>js/jquery.mousewheel.js"></script>
         <script type="text/javascript" src="<?php echo url::base(); ?>js/jquery.scrollable-1.0.2.min.js"></script>
+		<script type="text/javascript" src="<?php echo url::base(); ?>js/scrollable.js"></script>
         <!-- Scrollable styles -->
         <link rel="stylesheet" href="<?php echo url::base(); ?>css/scrollable.css" type="text/css" media="screen" />
 <?php }
@@ -119,6 +120,7 @@ if (($this->uri->segment(1) == 'updates' && $this->uri->segment(2) == 'add') || 
 				<li><?php if ($this->logged_in == TRUE) {?>Hey <?php echo $this->username; ?> (<a href="<?php echo url::base(); ?>dashboard/">Dashboard</a> | <a href="<?php echo url::base(); ?>users/logout/">Logout</a>)<?} else {?><a href="<?php echo url::base(); ?>users/login/">Login/Register</a><? } ?></li>
 				<li>Search</li>
             </ul>
+		</div>
 
 		<div id="content-top">
 			<div id="content-left"></div>

@@ -39,12 +39,12 @@
 				<div class="elements">
 					<p>
 						<label for="name">Name:</label>
-						<input type="text" name="name" value="<?php echo $form['name']; ?>" <?php if (isset($errors['name'])) { echo 'class="error"'; } ?> />
+						<input type="text" id="name" name="name" value="<?php echo $form['name']; ?>" <?php if (isset($errors['name'])) { echo 'class="error"'; } ?> />
 					</p>
 
 					<p>
-						<label for"cid">Category:</label>
-						<select name="cid">
+						<label for="cid">Category:</label>
+						<select name="cid" id="cid">
 						<?php foreach ($categories as $cid => $c_name) { ?>
 						<option value="<?php echo $cid; ?>" <?php if (Kohana::config('projects.default_cid') == $cid) { echo 'selected="selected"'; } ?>><?php echo $c_name; ?></option>
 						<?php } ?>
@@ -53,23 +53,23 @@
 
 					<p>
 						<label for="website">Website:</label>
-						<input type="text" name="website" value="<?php echo $form['website']; ?>" <?php if (isset($errors['website'])) { echo 'class="error"'; } ?> />
+						<input type="text" id="website" name="website" value="<?php echo $form['website']; ?>" <?php if (isset($errors['website'])) { echo 'class="error"'; } ?> />
 					</p>
 
 					<p>
 						<label for="contributors">Contributors:</label>
-						<input type="text" name="contributors" value="<?php echo $form['contributors']; ?>" <?php if (isset($errors['contributors'])) { echo 'class="error"'; } ?> />
+						<input type="text" id="contributors" name="contributors" value="<?php echo $form['contributors']; ?>" <?php if (isset($errors['contributors'])) { echo 'class="error"'; } ?> />
 					</p>
 
 					<p>
 						<label for="description" style="height: 20px;">Description:</label>
-						<script>edToolbar('detail'); </script>
+						<script type="text/javascript">edToolbar('detail'); </script>
 						<textarea name="description" id="detail" class="resizable" <?php if (isset($errors['description'])) { echo 'class="error"'; } ?>><?php echo $form['description']; ?></textarea>
 					</p>
 
 					<p>
 						<label for="icon">Icon:</label>
-						<input type="file" name="icon" />
+						<input type="file" id="icon" name="icon" />
 					</p>
 
 					<p class="submit">

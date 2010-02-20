@@ -18,12 +18,12 @@
 				<div class="elements">
 					<p>
 						<label for="openid_identifier">Username:</label>
-						<input type="text" name="openid_identifier" value="<?php //echo $form['openid_identifier']; ?>" <?php if (isset($errors['openid_identifier'])) { echo 'class="error"'; } ?> />
+						<input type="text" id="openid_identifier" name="openid_identifier" value="<?php //echo $form['openid_identifier']; ?>" <?php if (isset($errors['openid_identifier'])) { echo 'class="error"'; } ?> />
 					</p>
 
 					<p>
 						<label for="password">Password:</label>
-						<input type="password" name="password" />
+						<input type="password" id="password" name="password" />
 					</p>
 
 					<p class="submit">

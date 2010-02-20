@@ -35,7 +35,7 @@
 				<div class="elements">
 					<p>
 						<label for="comment">Comment:</label>
-						<textarea name="comment" <?php if (isset($errors['comment'])) { echo 'class="error"'; } ?>><?php echo $form['comment']; ?></textarea>
+						<textarea name="comment" id="comment" cols="40" rows="6" <?php if (isset($errors['comment'])) { echo 'class="error"'; } ?>><?php echo $form['comment']; ?></textarea>
 					</p>
 
 					<?php if (!$this->logged_in) { ?>
@@ -44,7 +44,7 @@
 					</p>
 					<p>
 						<label for="captcha">Eye test:</label>
-						<input type="text" name="captcha" <?php if (isset($errors['captcha'])) { echo 'class="error"'; } ?> /><br /><br />
+						<input type="text" id="captcha" name="captcha" <?php if (isset($errors['captcha'])) { echo 'class="error"'; } ?> /><br /><br />
 					</p>
 					<p>
 						<img src="<?php echo url::base(); ?>image/securimage/" alt="captcha" />

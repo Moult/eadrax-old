@@ -37,7 +37,7 @@
 					<?php if ($this->logged_in) { ?>
 					<p>
 						<label for"pid">Project:</label>
-						<select name="pid">
+						<select name="pid" id="pid">
 						<?php foreach ($projects as $pid => $p_name) { ?>
 						<option value="<?php echo $pid; ?>"><?php echo $p_name; ?></option>
 						<?php } ?>
@@ -48,18 +48,18 @@
 
 					<p>
 						<label for="summary">Summary:</label>
-						<input type="text" name="summary" style="height: 25px; width: 400px; font-size: 15px;" value="<?php echo $form['summary']; ?>" <?php if (isset($errors['summary'])) { echo 'class="error"'; } ?> />
+						<input type="text" id="summary" name="summary" style="height: 25px; width: 400px; font-size: 15px;" value="<?php echo $form['summary']; ?>" <?php if (isset($errors['summary'])) { echo 'class="error"'; } ?> />
 					</p>
 
 					<p>
 						<label for="detail" style="height: 20px;">Detail:</label>
-						<script>edToolbar('detail'); </script>
-						<textarea name="detail" id="detail" class="resizable" <?php if (isset($errors['detail'])) { echo 'class="error"'; } ?>><?php echo $form['detail']; ?></textarea>
+						<script type="text/javascript">edToolbar('detail'); </script>
+						<textarea name="detail" id="detail" cols="40" rows="6" class="resizable" <?php if (isset($errors['detail'])) { echo 'class="error"'; } ?>><?php echo $form['detail']; ?></textarea>
 					</p>
 
 					<p>
 						<label for="attachment">Attach:</label>
-						<input type="file" name="attachment0" style="height: 23px;" />
+						<input type="file" id="attachment" name="attachment0" style="height: 23px;" />
 						<?php if ($this->logged_in) { ?>
 						<span style="margin-left: 70px;">
 							<a href="javascript:addInput()"><img src="<?php echo url::base(); ?>images/icons/add.png" alt="Add" id="add" /></a>
@@ -70,8 +70,8 @@
 					</p>
 
 					<p>
-						<label for"syntax">Syntax:</label>
-						<select name="syntax">
+						<label for="syntax">Syntax:</label>
+						<select id="syntax" name="syntax">
 						<?php foreach ($languages as $lid => $l_name) { ?>
 						<option value="<?php echo $lid; ?>"><?php echo $l_name; ?></option>
 						<?php } ?>
@@ -80,7 +80,7 @@
 
 					<p>
 						<label for="pastebin">Pastebin:</label>
-						<textarea name="pastebin" <?php if (isset($errors['pastebin'])) { echo 'class="error"'; } ?>><?php echo $form['pastebin']; ?></textarea>
+						<textarea name="pastebin" id="pastebin" rows="6" cols="40" <?php if (isset($errors['pastebin'])) { echo 'class="error"'; } ?>><?php echo $form['pastebin']; ?></textarea>
 					</p>
 
 					<?php if (!$this->logged_in) { ?>
@@ -89,7 +89,7 @@
 					</p>
 					<p>
 						<label for="captcha">Eye test:</label>
-						<input type="text" name="captcha" <?php if (isset($errors['captcha'])) { echo 'class="error"'; } ?> /><br /><br />
+						<input type="text" id="captcha" name="captcha" <?php if (isset($errors['captcha'])) { echo 'class="error"'; } ?> /><br /><br />
 					</p>
 					<p>
 						<img src="<?php echo url::base(); ?>image/securimage/" alt="captcha" />

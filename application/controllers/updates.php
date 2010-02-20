@@ -313,9 +313,9 @@ class Updates_Controller extends Core_Controller {
 			$simple_replace = array(
 				'<strong>$1</strong>',
 				'<em>$1</em>',
-				'<u>$1</u>',
-				'<a href="$1" target="_blank">$2</a>',
-				'<a href="$1" target="_blank">$1</a>',
+				'<span style="text-decoration: underline;">$1</span>',
+				'<a href="$1">$2</a>',
+				'<a href="$1">$1</a>',
 				'<ul style="margin-left: 30px; font-size: 16px;">$1</ul>',
 				'<li>$1</li>'
 			);
@@ -325,6 +325,9 @@ class Updates_Controller extends Core_Controller {
             $format = 'style="font-size:16px; margin-bottom: 10px;"';
             $detail = '<p '. $format .'>'. $detail .'</p>';
             $detail = preg_replace("/(?:\r?\n)+/", '</p><p '. $format .'>', $detail);
+
+			// Let's do some really nasty fixing to maintain HTML validity.
+			$detail = preg_replace(array('/<p '. $format .'><ul style="margin-left: 30px; font-size: 16px;"><\/p>/', '/<p '. $format .'><\/ul><\/p>/', '/<p '. $format .'><li>(.*?)<\/li><\/p>/'), array('<ul style="margin-left: 30px; font-size: 16px;">', '</ul>', '<li>$1</li>'), $detail);
 
             $update_view->detail = $detail;
         }

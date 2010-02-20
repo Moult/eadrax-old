@@ -4,7 +4,7 @@ $(function() {
     // initialize scrollable  
     $("div.scrollable").scrollable({ 
         size: 6, 
-        items: '#thumbs',   
+        items: '.thumbs',   
         hoverClass: 'hover' 
     });     
      

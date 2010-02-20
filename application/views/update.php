@@ -20,26 +20,26 @@
     <ul style="margin-left: 0px; display: inline;">
 <?php if ($uid != 1 && $uid != $this->uid) { ?>
         <li style="width: 70px; display: inline;">
-			<input style="width: 70px;" type="button" onClick="parent.location='<?php echo url::base(); ?>feedback/kudos/<?php echo $id; ?>/'" value="Kudos">
+			<input style="width: 70px;" type="button" onclick="parent.location='<?php echo url::base(); ?>feedback/kudos/<?php echo $id; ?>/'" value="Kudos" />
         </li>
 <?php } ?>
 <?php if ($uid != 1) { ?>
 	<?php if ($pid != 1) { ?>
         <li style="width: 70px; display: inline;">
 			<?php if ($subscribed == TRUE) { ?>
-            <input style="width: 70px;" type="button" onClick="parent.location='<?php echo url::base(); ?>feedback/unsubscribe/<?php echo $pid; ?>/'" value="Unscribe">
+            <input style="width: 70px;" type="button" onclick="parent.location='<?php echo url::base(); ?>feedback/unsubscribe/<?php echo $pid; ?>/'" value="Unscribe" />
 			<?php } else { ?>
 			<?php if ($tracking == FALSE && $uid != $this->uid) { ?>
-			<input style="width: 70px;" type="button" onClick="parent.location='<?php echo url::base(); ?>feedback/subscribe/<?php echo $pid; ?>/'" value="Subscribe">
+			<input style="width: 70px;" type="button" onclick="parent.location='<?php echo url::base(); ?>feedback/subscribe/<?php echo $pid; ?>/'" value="Subscribe" />
 			<?php } ?>
 			<?php } ?>
         </li>
 	<?php } ?>
         <li style="width: 70px; display: inline;">
 			<?php if ($tracking == TRUE) { ?>
-            <input style="width: 70px;" type="button" onClick="parent.location='<?php echo url::base(); ?>feedback/untrack/<?php echo $uid; ?>/'" value="Untrack">
+            <input style="width: 70px;" type="button" onclick="parent.location='<?php echo url::base(); ?>feedback/untrack/<?php echo $uid; ?>/'" value="Untrack" />
 			<?php } elseif ($tracking == FALSE && $uid != $this->uid) { ?>
-            <input style="width: 70px;" type="button" onClick="parent.location='<?php echo url::base(); ?>feedback/track/<?php echo $uid; ?>/'" value="Track">
+            <input style="width: 70px;" type="button" onclick="parent.location='<?php echo url::base(); ?>feedback/track/<?php echo $uid; ?>/'" value="Track" />
 			<?php } ?>
         </li>
 <?php } ?>
@@ -47,10 +47,10 @@
 if ($this->uid == $uid && $this->uid != 1) {
 ?>
         <li style="width: 70px; display: inline;">
-            <input style="width: 70px;" type="button" onClick="parent.location='<?php echo url::base() .'updates/add/'. $id .'/'; ?>'" value="Edit">
+            <input style="width: 70px;" type="button" onclick="parent.location='<?php echo url::base() .'updates/add/'. $id .'/'; ?>'" value="Edit" />
         </li>
         <li style="width: 70px; display: inline;">
-            <input style="width: 70px;" type="button" onClick="parent.location='<?php echo url::base() .'updates/delete/'. $id .'/'; ?>'" value="Delete">
+            <input style="width: 70px;" type="button" onclick="parent.location='<?php echo url::base() .'updates/delete/'. $id .'/'; ?>'" value="Delete" />
         </li>
 <?php } ?>
     </ul>
@@ -64,28 +64,28 @@ if ($this->uid == $uid && $this->uid != 1) {
 if (isset($first)) {
 ?>
         <li style="width: 50px; display: inline;">
-            <input style="width: 50px;" type="button" onClick="parent.location='<?php echo url::base() .'updates/view/'. $first .'/'; ?>'" value="<<">
+            <input style="width: 50px;" type="button" onclick="parent.location='<?php echo url::base() .'updates/view/'. $first .'/'; ?>'" value="&lt;&lt;" />
         </li>
 <? } ?>
 <?php
 if (isset($previous)) {
 ?>
         <li style="width: 50px; display: inline;">
-            <input style="width: 50px;" type="button" onClick="parent.location='<?php echo url::base() .'updates/view/'. $previous .'/'; ?>'" value="<">
+            <input style="width: 50px;" type="button" onclick="parent.location='<?php echo url::base() .'updates/view/'. $previous .'/'; ?>'" value="&lt;" />
         </li>
 <? } ?>
 <?php
 if (isset($next)) {
 ?>
         <li style="width: 50px; display: inline;">
-            <input style="width: 50px;" type="button" onClick="parent.location='<?php echo url::base() .'updates/view/'. $next .'/'; ?>'" value=">">
+            <input style="width: 50px;" type="button" onclick="parent.location='<?php echo url::base() .'updates/view/'. $next .'/'; ?>'" value="&gt;" />
         </li>
 <? } ?>
 <?php
 if (isset($last)) {
 ?>
         <li style="width: 50px; display: inline;">
-            <input style="width: 50px;" type="button" onClick="parent.location='<?php echo url::base() .'updates/view/'. $last .'/'; ?>'" value=">>">
+            <input style="width: 50px;" type="button" onclick="parent.location='<?php echo url::base() .'updates/view/'. $last .'/'; ?>'" value="&gt;&gt;" />
         </li>
 <? } ?>
     </ul>
@@ -129,12 +129,12 @@ for ($i=0; $i<5; $i++)
 			echo '<div style="text-align: center;">';
 			if (file_exists(DOCROOT .'uploads/files/'. ${'filename'. $i} .'_fit.jpg'))
 			{
-				echo '<a id="single_image" href="'. url::base() .'uploads/files/'. ${'filename'. $i} .'.'. ${'ext'. $i} .'" title="'. $summary .'"><img src="'. url::base() .'uploads/files/'. ${'filename'. $i} .'_fit.jpg" style="border: 2px solid #DDD; position: relative; left: -2px;"></a>';
+				echo '<a class="single_image" href="'. url::base() .'uploads/files/'. ${'filename'. $i} .'.'. ${'ext'. $i} .'" title="'. $summary .'"><img src="'. url::base() .'uploads/files/'. ${'filename'. $i} .'_fit.jpg" style="border: 2px solid #DDD; position: relative; left: -2px;" alt="attachment'. $i .'" /></a>';
 				echo '<cite style="background: #000000; -moz-opacity:.55; filter:alpha(opacity=55); opacity: .55; color: #FFF; position: relative; display: block; margin-left: auto; margin-right: auto; top: -42px; height: 15px; width: 810px; padding: 10px; border-top: 2px solid #FFF; font-weight: bold;">This image is scaled down, click to view image full size.</cite>';
 			}
 			else
 			{
-				echo '<a id="single_image" href="'. url::base() .'uploads/files/'. ${'filename'. $i} .'.'. ${'ext'. $i} .'" title="'. $summary .'"><img src="'. url::base() .'uploads/files/'. ${'filename'. $i} .'.'. ${'ext'. $i} .'" style="background: url(http://localhost/eadrax/images/shadow-1000x1000.gif) no-repeat right bottom; padding: 5px 10px 10px 5px;"></a>';
+				echo '<a class="single_image" href="'. url::base() .'uploads/files/'. ${'filename'. $i} .'.'. ${'ext'. $i} .'" title="'. $summary .'"><img src="'. url::base() .'uploads/files/'. ${'filename'. $i} .'.'. ${'ext'. $i} .'" style="background: url(http://localhost/eadrax/images/shadow-1000x1000.gif) no-repeat right bottom; padding: 5px 10px 10px 5px;" alt="attachment'. $i .'" /></a>';
 			}
 			echo '</div>';
 		} elseif (${'display'. $i} == 'video') {

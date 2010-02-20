@@ -49,7 +49,7 @@ div.scrollable {
 	root element for scrollable items. It is 
 	absolutely positioned with large width. 
 */
-#thumbs {	
+.thumbs {	
 	position:absolute;
 	width:20000em;	
 	clear:both;
@@ -63,7 +63,7 @@ a.prev, a.next {
 
 
 /* single item */
-#thumbs div {
+.thumbs div {
 	float:left;
 	width:131px;
 	border-right: 1px solid #EEE;
@@ -74,30 +74,30 @@ a.prev, a.next {
 }
 
 /* style when mouse is over the item */
-#thumbs div.hover {
+.thumbs div.hover {
     background-image: url('../images/thumb_bg.png');
 	background-repeat: no-repeat;
 }
 
 /* style when element is active (clicked) */
-#thumbs div.active {
+.thumbs div.active {
     background-image: url('../images/thumb_selected_bg.png');
 	background-repeat: no-repeat;
 	cursor:default;
 }
 
-#thumbs span {
+.thumbs span {
     color: #999;
     font-size: 9px;
 }
 
-#thumbs p {
+.thumbs p {
     margin-top: 4px;
     height: 70px;
     line-height: 70px;
 }
 
-#thumbs h3 {
+.thumbs h3 {
     margin-left: auto;
     margin-right: auto;
     width: 121px;
@@ -108,6 +108,6 @@ a.prev, a.next {
 	word-wrap: break-word;
 }
 
-#thumbs h3 a {
+.thumbs h3 a {
 	text-decoration: none;
 }
