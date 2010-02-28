@@ -2,18 +2,21 @@ http://www.wipup.org
 
 ABOUT EADRAX
 ------------
-{please enter appropriate information about Eadrax project here}
+Providing an easy way for people to show what they're working on.
+
 
 IMPORTANT INFORMATION
 --------------------------------
 Eadrax (Wipup) has been tested with following server environments:
 	Apache with PHP 5.1.2 and MySQL 5.1.30
 
+
 System requirements
 -------------------
-* A webserver like Apache
+* A webserver, eg: Apache
 * PHP 5.x 
 * MySQL 5.1.x
+
 
 DOWNLOADING AND SETTING UP EADRAX (WIPUP).
 ---------------------------------------
@@ -48,9 +51,12 @@ your server's documentation to set this up.
 
 2.	Make sure the following directories are writable by your webserver
 (and thusly by PHP):
-		a] application/cache
-		b] application/logs
-		c] application/tmp
+		a] application/cache/
+		b] application/logs/
+		c] application/tmp/
+		d] uploads/
+		e] uploads/*/ (ie. any directories containd in uploads)
+
 
 3.	Setting up DATABASE
 
@@ -70,7 +76,7 @@ Please get  the manuals here: http://dev.mysql.com/doc/index.html
 ---------
 
 To create database 'eadrax' from mysql prompt, you probably need to
-sign in as root (or if you can't do that, ask your system administrator
+log in as root (or if you can't do that, ask your system administrator
 to create these for you). Assuming you have root privileges on your
 mysql server:
 
@@ -84,6 +90,10 @@ mysql> GRANT ALL ON eadrax.* TO 'eadrax'@'localhost';
 # http://dev.mysql.com/doc/refman/5.1/en/grant.html
 # This line assumes that you have your mysql server on localhost. 
 # If not we hope you already know what you are doing.
+
+
+NOTE: You may alternatively use tools like PHPMyAdmin to complete the
+above steps if you are more comfortable working with GUI based tools.
 
 
 Import the database schema into your newly created database.
@@ -178,8 +188,8 @@ Replace localhost with your domain name or IP in case you are working
 with a remote server.
 
 [*1] The recommended way to learn more about GIT is to grab a copy of
-the excellent book ProGIT authored by Scott Chacon. 
-( http://progit.org/ )
+the excellent book ProGIT from here http://progit.org/ .
+
 
 
 
