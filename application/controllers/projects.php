@@ -53,7 +53,27 @@ class Projects_Controller extends Core_Controller {
 		// Let's update the project view statistics
 		$project_model->view($pid);
 
-		// TODO
+		$project_view = new View('project');
+
+		$query = $update_model->updates(NULL, $pid);
+        $markup = '';
+
+        if (count($query) > 0) {
+            foreach ($query as $row) {
+				$icon = Updates_Controller::_file_icon($row->filename0, $row->ext0, TRUE);
+                // Build the markup.
+                $markup = $markup .'<div style="float: left; width: 260px; margin: 7px; height: 200px; border: 0px solid #F00;">';
+				$markup = $markup .'<p><a href="'. url::base() .'/updates/view/'. $row->id .'/"><img style="vertical-align: middle; border: 1px solid #999; padding: 1px;" src="'. $icon .'" alt="update icon" /></a></p>';
+                //$markup = $markup .'<h3><a href="'. url::base() .'/updates/view/'. $row->id .'/">'. $row->summary .'</a></h3><span>'. $row->logtime .'</span>';
+                $markup = $markup. '</div>';
+            }
+        }
+
+		$project_view->project = $project_model->project_information($pid);
+		$project_view->markup = $markup;
+
+		$this->template->content = array($project_view);
+
 	}
 
 	/**

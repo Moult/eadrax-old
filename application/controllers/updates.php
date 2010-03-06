@@ -445,7 +445,16 @@ class Updates_Controller extends Core_Controller {
 								{
 									// ... Delete it!
 									unlink(DOCROOT .'uploads/files/'. ${'attachment_filename'. $i} .'.'. ${'extension'. $i});
-									unlink(DOCROOT .'uploads/icons/'. ${'attachment_filename'. $i} .'.jpg');
+
+									if (file_exists(DOCROOT .'uploads/icons/'. ${'attachment_filename'. $i} .'.jpg'))
+									{
+										unlink(DOCROOT .'uploads/icons/'. ${'attachment_filename'. $i} .'.jpg');
+									}
+
+									if (file_exists(DOCROOT .'uploads/icons/'. ${'attachment_filename'. $i} .'_crop.jpg'))
+									{
+										unlink(DOCROOT .'uploads/icons/'. ${'attachment_filename'. $i} .'_crop.jpg');
+									}
 
 									if (file_exists(DOCROOT .'uploads/files/'. ${'attachment_filename'. $i} .'_fit.jpg'))
 									{
@@ -490,6 +499,33 @@ class Updates_Controller extends Core_Controller {
 										}
 
 										Image::factory($filename)->resize(80, 80, Image::AUTO)->save(DOCROOT .'uploads/icons/'. substr(basename($filename), 0, -3) .'jpg');
+
+										// Create a cropped thumbnail.
+										if ($extension == 'jpg') {
+											$myImage = imagecreatefromjpeg($filename);   
+										} elseif ($extension == 'gif') {
+											$myImage = imagecreatefromgif($filename);   
+										} elseif ($extension == 'png') {
+											$myImage = imagecreatefrompng($filename);   
+										}
+										  
+										if($width > $height)  {  
+											$cropWidth   = $height*1.3;   
+											$cropHeight  = $height;   
+											$c1 = array("x"=>($width-$cropWidth)/2, "y"=>0);  
+										} else {
+											$cropWidth   = $width;   
+											$cropHeight  = $width*.769;   
+											$c1 = array("x"=>0, "y"=>($height-$cropHeight)/8);  
+										}
+										   
+										// Creating the thumbnail  
+										$thumb = imagecreatetruecolor(260, 200);   
+										imagecopyresampled($thumb, $myImage, 0, 0, $c1['x'], $c1['y'], 260, 200, $cropWidth, $cropHeight);   
+										   
+										//final output    
+										imagejpeg($thumb, DOCROOT .'uploads/icons/'. substr(basename($filename), 0, -4) .'_crop.jpg', 100);
+										imagedestroy($thumb); 
 									}
 
 									// If it is a video, we need to encode it.
@@ -505,54 +541,11 @@ class Updates_Controller extends Core_Controller {
 										// Define ffmpeg application path.
 										$ffmpeg_path = Kohana::config('updates.ffmpeg_path');
 
-										// If it is not already an FLV we need to encode it.
-										if ($extension != 'flv') {
-											$ffmpeg_obj = new ffmpeg_movie($src_file);
-
-											// Needed function for next section.
-											function make_multiple_two ($value)
-											{
-												$s_type = gettype($value/2); 
-
-												if($s_type == "integer")
-												{
-													return $value;
-												}
-												else
-												{
-													return ($value-1);
-												}
-											}
-
-											// Save needed variables for conversion.
-											$src_width = make_multiple_two($ffmpeg_obj->getFrameWidth());
-											$src_height = make_multiple_two($ffmpeg_obj->getFrameHeight());
-											$src_fps = $ffmpeg_obj->getFrameRate();
-											$src_ab = intval($ffmpeg_obj->getAudioBitRate()/1000);
-											// Dion Moult: This is because flv only 
-											// supports certain audio sample rates - or 
-											// to the best of my knowledge they do.
-											// $src_ar = $ffmpeg_obj->getAudioSampleRate();
-											$src_ar = 44100;
-
-											// Do the encoding!
-											exec($ffmpeg_path ." -i ". escapeshellarg($src_file) ." -ar ". $src_ar ." -ab ". $src_ab ." -f flv -s ". $src_width ."x". $src_height ." ". escapeshellarg($dest_file));
-
-											// Now our filetype extension has changed!
-											$extension = 'flv';
-
-											// We will delete the original !.flv file 
-											// to save space on the server. If they want 
-											// to distribute a !.flv file let them host 
-											// it elsewhere.
-											unlink($src_file);
-										}
-
 										// Before snapshotting the video to make a 
 										// thumbnail image, let's find out the length of 
 										// the video.
 										$ffmpeg_output = array();
-										exec($ffmpeg_path ." -i ". escapeshellarg($dest_file) ." 2>&1", $ffmpeg_output);
+										exec($ffmpeg_path ." -i ". escapeshellarg($src_file) ." 2>&1", $ffmpeg_output);
 
 										// Search each line in the $ffmpeg_output.
 										foreach ($ffmpeg_output as $key => $value)
@@ -583,7 +576,29 @@ class Updates_Controller extends Core_Controller {
 												}
 
 												// Let's create the image.
-												exec($ffmpeg_path ." -i ". escapeshellarg($dest_file) ." -an -ss ". $duration_h .":". $duration_m .":". $duration_s ." -t 00:00:01 -r 1 -y ". escapeshellarg($dest_img));
+												exec($ffmpeg_path ." -i ". escapeshellarg($src_file) ." -an -ss ". $duration_h .":". $duration_m .":". $duration_s ." -t 00:00:01 -r 1 -y ". escapeshellarg($dest_img));
+
+												// Create a cropped thumbnail.
+												list($width, $height, $type, $attr) = getimagesize($dest_img);
+												$myImage = imagecreatefromjpeg($dest_img);   
+												  
+												if($width > $height)  {  
+													$cropWidth   = $height*1.3;   
+													$cropHeight  = $height;   
+													$c1 = array("x"=>($width-$cropWidth)/2, "y"=>0);  
+												} else {
+													$cropWidth   = $width;   
+													$cropHeight  = $width*.769;   
+													$c1 = array("x"=>0, "y"=>($height-$cropHeight)/8);  
+												}
+												   
+												// Creating the thumbnail  
+												$thumb = imagecreatetruecolor(260, 200);   
+												imagecopyresampled($thumb, $myImage, 0, 0, $c1['x'], $c1['y'], 260, 200, $cropWidth, $cropHeight);   
+												   
+												//final output    
+												imagejpeg($thumb, DOCROOT .'uploads/icons/'. substr(basename($filename), 0, -4) .'_crop.jpg', 100);
+												imagedestroy($thumb); 
 
 												// Let's turn the image into a thumbnail.
 												Image::factory($dest_img)->resize(80, 80, Image::AUTO)->save($dest_img);
@@ -592,6 +607,51 @@ class Updates_Controller extends Core_Controller {
 												break;
 											}
 										}
+
+										// If it is not already an FLV we need to encode it.
+										if ($extension != 'flv') {
+											$ffmpeg_obj = new ffmpeg_movie($src_file);
+
+											// Needed function for next section.
+											function make_multiple_two ($value)
+											{
+												$s_type = gettype($value/2); 
+
+												if($s_type == "integer")
+												{
+													return $value;
+												}
+												else
+												{
+													return ($value-1);
+												}
+											}
+
+											// Save needed variables for conversion.
+											$src_width = make_multiple_two($ffmpeg_obj->getFrameWidth());
+											$src_height = make_multiple_two($ffmpeg_obj->getFrameHeight());
+											$src_fps = $ffmpeg_obj->getFrameRate();
+											//$src_ab = intval($ffmpeg_obj->getAudioBitRate()/1000);
+											$src_ab = 56;
+											// Dion Moult: This is because flv only 
+											// supports certain audio sample rates - or 
+											// to the best of my knowledge they do.
+											// $src_ar = $ffmpeg_obj->getAudioSampleRate();
+											$src_ar = 44100;
+
+											// Do the encoding!
+											exec($ffmpeg_path ." -i ". escapeshellarg($src_file) ." -ar ". $src_ar ." -ab ". $src_ab ." -f flv -s ". $src_width ."x". $src_height ." ". escapeshellarg($dest_file));
+
+											// Now our filetype extension has changed!
+											$extension = 'flv';
+
+											// We will delete the original !.flv file 
+											// to save space on the server. If they want 
+											// to distribute a !.flv file let them host 
+											// it elsewhere.
+											unlink($src_file);
+										}
+
 									}
 									// Reset the variables from generic to specific
 									${'attachment_filename'. $i} = $attachment_filename;
@@ -818,6 +878,11 @@ class Updates_Controller extends Core_Controller {
 						unlink(DOCROOT .'uploads/icons/'. $fileinfo['filename'. $i] .'.jpg');
 					}
 
+					if (file_exists(DOCROOT .'uploads/icons/'. $fileinfo['filename'. $i] .'_crop.jpg'))
+					{
+						unlink(DOCROOT .'uploads/icons/'. $fileinfo['filename'. $i] .'_crop.jpg');
+					}
+
 					if (file_exists(DOCROOT .'uploads/files/'. $fileinfo['filename'. $i] .'_fit.jpg'))
 					{
 						unlink(DOCROOT .'uploads/files/'. $fileinfo['filename'. $i] .'_fit.jpg');
@@ -865,13 +930,14 @@ class Updates_Controller extends Core_Controller {
 	 *
 	 * @return string
 	 */
-	public function _file_icon($filename, $ext)
+	public function _file_icon($filename, $ext, $cropped = FALSE)
 	{
-		if ($ext == 'jpg' || $ext == 'png' || $ext == 'gif') {
-			return url::base() .'uploads/icons/'. $filename .'.jpg';
-		} elseif ($ext == 'avi' || $ext == 'mpg' || $ext == 'mov' || $ext == 'flv') {
-			// Thumbnails for videos!
-			return url::base() .'uploads/icons/'. $filename .'.jpg';
+		if ($ext == 'jpg' || $ext == 'png' || $ext == 'gif' || $ext == 'avi' || $ext == 'mpg' || $ext == 'mov' || $ext == 'flv') {
+			if ($cropped == TRUE) {
+				return url::base() .'uploads/icons/'. $filename .'_crop.jpg';
+			} else {
+				return url::base() .'uploads/icons/'. $filename .'.jpg';
+			}
 		} elseif (empty($filename)) {
 			// If there is no filename, we give it a special icon.
 			return url::base() .'images/icons/newspaper_48.png';
