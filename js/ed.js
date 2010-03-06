@@ -13,11 +13,11 @@ document.write("<link href=\"bbeditor/styles.css\" rel=\"stylesheet\" type=\"tex
 
 
 function edToolbar(obj) {
-	document.write("<img class=\"button\" src=\"http://localhost/eadrax/images/icons/text_bold.png\" name=\"btnBold\" title=\"Bold\" onClick=\"doAddTags('[b]','[/b]','" + obj + "')\">");
-    document.write("<img class=\"button\" src=\"http://localhost/eadrax/images/icons/text_italic.png\" name=\"btnItalic\" title=\"Italic\" onClick=\"doAddTags('[i]','[/i]','" + obj + "')\">");
-	document.write("<img class=\"button\" src=\"http://localhost/eadrax/images/icons/text_underline.png\" name=\"btnUnderline\" title=\"Underline\" onClick=\"doAddTags('[u]','[/u]','" + obj + "')\">");
-	document.write("<img class=\"button\" src=\"http://localhost/eadrax/images/icons/link.png\" name=\"btnLink\" title=\"Insert URL Link\" onClick=\"doURL('" + obj + "')\">");
-	document.write("<img class=\"button\" src=\"http://localhost/eadrax/images/icons/text_list_bullets.png\" name=\"btnList\" title=\"Unordered List\" onClick=\"doList('[LIST]','[/LIST]','" + obj + "')\">");
+	document.write("<img class=\"button\" src=\"http://wipup.org/images/icons/text_bold.png\" name=\"btnBold\" title=\"Bold\" onClick=\"doAddTags('[b]','[/b]','" + obj + "')\">");
+    document.write("<img class=\"button\" src=\"http://wipup.org/images/icons/text_italic.png\" name=\"btnItalic\" title=\"Italic\" onClick=\"doAddTags('[i]','[/i]','" + obj + "')\">");
+	document.write("<img class=\"button\" src=\"http://wipup.org/images/icons/text_underline.png\" name=\"btnUnderline\" title=\"Underline\" onClick=\"doAddTags('[u]','[/u]','" + obj + "')\">");
+	document.write("<img class=\"button\" src=\"http://wipup.org/images/icons/link.png\" name=\"btnLink\" title=\"Insert URL Link\" onClick=\"doURL('" + obj + "')\">");
+	document.write("<img class=\"button\" src=\"http://wipup.org/images/icons/text_list_bullets.png\" name=\"btnList\" title=\"Unordered List\" onClick=\"doList('[LIST]','[/LIST]','" + obj + "')\">");
 				}
 
 function doURL(obj)

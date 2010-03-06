@@ -184,7 +184,7 @@ class Updates_Controller extends Core_Controller {
 			// Validate the comment.
 			$validate = new Validation($this->input->post());
 			$validate->pre_filter('trim');
-			$validate->add_rules('comment', 'required', 'length[2, 400]');
+			$validate->add_rules('comment', 'required', 'length[2, 1500]');
 
 			if ($this->logged_in == FALSE)
 			{
@@ -805,21 +805,23 @@ class Updates_Controller extends Core_Controller {
 		if (!empty($uid) && $update_model->check_update_owner($uid, $this->uid))
 		{
 			// Determine the value of the updates's attached file.
-			$filename	= $update_model->update_information($uid);
-			$filename	= $filename['filename'];
-			$extension	= $update_model->update_information($uid);
-			$extension	= $extension['ext'];
-
-			// Is there an existing attachment?
-			if (!empty($filename))
+			$fileinfo	= $update_model->update_information($uid);
+			for ($i = 0; $i < 5; $i++)
 			{
-				// Delete the file.
-				unlink(DOCROOT .'uploads/files/'. $filename .'.'. $extension);
-				unlink(DOCROOT .'uploads/icons/'. $filename .'.jpg');
-
-				if (file_exists(DOCROOT .'uploads/files/'. $filename .'_fit.jpg'))
+				// Is there an existing attachment?
+				if (!empty($fileinfo['filename'. $i]))
 				{
-					unlink(DOCROOT .'uploads/files/'. $filename .'_fit.jpg');
+					// Delete the file.
+					unlink(DOCROOT .'uploads/files/'. $fileinfo['filename'. $i] .'.'. $fileinfo['ext'. $i]);
+					if (file_exists(DOCROOT .'uploads/icons/'. $fileinfo['filename'. $i] .'.jpg'))
+					{
+						unlink(DOCROOT .'uploads/icons/'. $fileinfo['filename'. $i] .'.jpg');
+					}
+
+					if (file_exists(DOCROOT .'uploads/files/'. $fileinfo['filename'. $i] .'_fit.jpg'))
+					{
+						unlink(DOCROOT .'uploads/files/'. $fileinfo['filename'. $i] .'_fit.jpg');
+					}
 				}
 			}
 
@@ -882,7 +884,7 @@ class Updates_Controller extends Core_Controller {
 			} elseif ($ext == 'doc' || $ext == 'odt') {
 				return url::base() .'images/icons/paper_content_pencil_48.png';
 			} elseif ($ext == 'ppt' || $ext == 'odp' || $ext == 'odg') {
-				return url::base() .'images/icons/paper_content_chart.png';
+				return url::base() .'images/icons/paper_content_chart_48.png';
 			} elseif ($ext == 'xls' || $ext == 'ods') {
 				return url::base() .'images/icons/table_48.png';
 			} elseif ($ext == 'pdf') {

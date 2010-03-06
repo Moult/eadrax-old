@@ -1,84 +1,85 @@
-http://www.wipup.org
+Eadrax is available live at: http://www.wipup.org
 
+------------
 ABOUT EADRAX
 ------------
 Providing an easy way for people to show what they're working on.
 
-
+---------------------
 IMPORTANT INFORMATION
---------------------------------
-Eadrax (Wipup) has been tested with following server environments:
-	Apache with PHP 5.1.2 and MySQL 5.1.30
+---------------------
+Eadrax (WIPUP) has been tested with following server environments:
+	Apache 2.2 with PHP 5.1.2 and MySQL 5.1.30
+The most recent packages are recommended.
 
-
-System requirements
+-------------------
+SYSTEM REQUIREMENTS
 -------------------
 * A webserver, eg: Apache
 * PHP 5.x 
 * MySQL 5.1.x
 
-
-DOWNLOADING AND SETTING UP EADRAX (WIPUP).
----------------------------------------
+------------------
+DOWNLOADING EADRAX
+------------------
 
 You can grab the latest copy of Eadrax project from 
-http://github.com/Moult/Eadrax .
+http://github.com/Moult/Eadrax
 
-To simply download the sourcecode from the page, click on the link
-that says "Download Source". In case you want to work on Eadrax
-you need to know at least the basics of GIT[*1] version control system.
+To download the sourcecode from the page, click on the link that says "Download
+Source". In case you want to work on Eadrax you need to know at least the basics
+of GIT[*1] version control system.
 
-To check out the source from the repository on github.com , do the 
-following on the command line for Unix based systems:
+To check out the source from the repository on github.com , do the following on
+the command line for Unix based systems:
 
 	$ git clone git://github.com/Moult/Eadrax.git
 
-If all went well, you will find a folder named "Eadrax" in the 
-directory where you executed the above command.
+If all went well, you will find a folder named "Eadrax" in the directory where
+you executed the above command.
 
-[For Windows and MAC systems, please adapt the above guide to your
-respective systems for GIT.]
+[For Windows and MAC systems, please adapt the above guide to your respective
+systems for GIT.]
 
-Setting up Eadrax.
+------------------
+CONFIGURING EADRAX
 ------------------
 
-1.	Make sure you have the copy of Eadrax in a dir which is accessible 
-through your web-server. Something like http://localhost/Eadrax should
-point to it. The folder where you should copy Eadrax source is most 
-likely named wwwroot or something similar. You may have to look into 
-your server's documentation to set this up.
+1. Make sure you have the copy of Eadrax in a dir which is accessible through
+your web-server. Something like http://localhost/Eadrax should point to it. The
+folder where you should copy Eadrax source is most likely named wwwroot or
+something similar. You may have to look into your server's documentation to set
+this up.
 
-
-2.	Make sure the following directories are writable by your webserver
+2. Make sure the following directories are writable by your webserver
 (and thusly by PHP):
-		a] application/cache/
-		b] application/logs/
-		c] application/tmp/
-		d] uploads/
-		e] uploads/*/ (ie. any directories containd in uploads)
+		application/cache/
+		application/logs/
+		application/tmp/
+		application/vendor/pchart/Cache/*
+		uploads/
+		uploads/*/ (ie. any subdirectory within uploads)
 
+3. Setting up DATABASE
 
-3.	Setting up DATABASE
+You need to create a Database named `eadrax` (or anything of your liking in case
+you know what you are doing), a user `eadrax` who has all necessary privileges
+for the database `eadrax`.
 
-You need to create a Database named `eadrax` (or anything of your liking
-in case you know what you are doing), a user `eadrax` who has all 
-necessary privileges for the database `eadrax`.
-
-The following commands for mysql should get you through the database
-setup pretty smoothly.
+The following commands for mysql should get you through the database setup
+pretty smoothly.
 
 ---------
-NOTE: the following mysql commands are only to guide you through the
-process of setting it up quick and easy are not necessarily the most
-secure way of setting  up your database. Please read MySQL documentation
-if you are doing this setup in a sensitive or production environment.
-Please get  the manuals here: http://dev.mysql.com/doc/index.html
+NOTE: the following mysql commands are only to guide you through the process of
+setting it up quick and easy are not necessarily the most secure way of setting
+up your database. Please read MySQL documentation if you are doing this setup in
+a sensitive or production environment.  Please get  the manuals here:
+http://dev.mysql.com/doc/index.html
 ---------
 
-To create database 'eadrax' from mysql prompt, you probably need to
-log in as root (or if you can't do that, ask your system administrator
-to create these for you). Assuming you have root privileges on your
-mysql server:
+To create database 'eadrax' from mysql prompt, you probably need to log in as
+root (or if you can't do that, ask your system administrator to create these for
+you). Assuming you have root privileges on your mysql server:
 
 mysql> CREATE DATABASE IF NOT EXISTS eadrax;
 # http://dev.mysql.com/doc/refman/5.1/en/create-database.html
@@ -91,14 +92,10 @@ mysql> GRANT ALL ON eadrax.* TO 'eadrax'@'localhost';
 # This line assumes that you have your mysql server on localhost. 
 # If not we hope you already know what you are doing.
 
-
 NOTE: You may alternatively use tools like PHPMyAdmin to complete the
 above steps if you are more comfortable working with GUI based tools.
 
-
-Import the database schema into your newly created database.
-------------------------------------------------------------
-The schema is in the Eadrax package in an sql file named DATABASE.
+Import the database schema in DATABASE into your newly created database.
 
 Change to the directory where Eadrax is copied or checked out (git clone'd), 
 typically named 'Eadrax', unless you changed it, and type the following 
@@ -110,19 +107,11 @@ and create/delete/update tables in the database 'eadrax')
 
 	$ mysql -u eadrax -p eadrax < DATABASE
 
-hit enter after above command and enter password for user eadrax.
+Hit enter after above command and enter password for user eadrax.
 
 The above command is in the format
+
 	$ mysql -u username -p database_name < input_sql_file
-
-Alternatively, you may use following format at your own risk:
-
-$ mysql -u username -pYOURPaSSwOrDHeRe database_name < input_sql_file
-
-	#you would not be required to enter password again after this command, 
-	#however your password is clearly readable in this command. So make
-	#sure no one's peaking over the shoulder! 
-
 
 4. Configuration files.
 
@@ -130,28 +119,8 @@ Files to edit:
 	application/config/config.php
 	application/config/database.php
 
-Note to devs
-------------
-Before you edit these files, you might want to add them to .gitignore
-so that you don't accidentally commit your local system's settings to
-the GIT repository.
-============
-Following is a suggested .gitignore file you may want to place in the
-folder Eadrax/
+Editing config.php:
 
-# contents of file .gitignore follow
-.gitignore
-.htaccess
-uploads/files/*
-uploads/icons/*
-application/logs/*
-application/vendor/pchart/Cache/*
-application/config/*
-# ============
-
-
-Editing config.php
-------------------
 The file is extensively documented and self explanatory.
 Typically you would not need to make any changes to this file if
 you set up Eadrax to be accessible through a URL like 
@@ -169,8 +138,8 @@ to
 	 $config['site_domain'] = $_SERVER['SERVER_NAME']."/path/to/Eadrax";
 
 
-Editing database.php
---------------------
+Editing database.php:
+
 Again, massively documented file. If you followed the above procedure
 you would only need to change line 34 in this file from
 
@@ -181,16 +150,54 @@ to
 
 Note the comma in the end of that line!
 
+-------------
+ENJOY EADRAX!
+-------------
+
 That's about it. If you did everything right, you should see the page
 load at the URL http://localhost/Eadrax
 
 Replace localhost with your domain name or IP in case you are working
 with a remote server.
 
-[*1] The recommended way to learn more about GIT is to grab a copy of
-the excellent book ProGIT from here http://progit.org/ .
+------------------------------
+DEVELOPER-SPECIFIC INFORMATION
+------------------------------
 
+Before you commit, you might want to add them to .gitignore so that you don't
+accidentally commit your local system's settings to the GIT repository.
 
+# example contents of file .gitignore
+.gitignore
+.htaccess
+uploads/files/*
+uploads/icons/*
+application/logs/*
+application/vendor/pchart/Cache/*
+application/config/*
+# end of example
 
+ * Eadrax runs on the Kohana 2.x PHP MVC framework, and has no intention on
+   migrating to Kohana 3 anytime soon (it has no need to)
+ * Don't refer to the site as Eadrax in the code, its name is WIPUP.
+ * Documentation is inline and follows the PHPDoc conventions.
+ * We don't use camelCase, we name variables exactly what they are and use
+ * underscores. Usage of $i is good for iterators.
+ * At the moment our conventions follow this structure for large code blocks:
 
+// Example coding convention style
+$foo				= 'bar';		# same-line comment using hash
+$baz				= 'not double';	# notice alignment
+$another_variable	= 'foobar';
 
+if ($x == '1')
+{
+	// A large block of code. Notice the { is on a new line.
+	if ($y == TRUE) {
+		// Small block of code, notice the capital TRUE above and how the { is
+		// on the same line as the if statement.
+		echo 'Use single quotes, '. $baz;
+	}
+}
+
+[*1] You can learn more about git by reading http://progit.org/

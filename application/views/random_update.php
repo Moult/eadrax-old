@@ -13,7 +13,7 @@
 
 		<div style="height: 100px; margin-bottom: 5px; position: relative; text-align: center;">
 			<div style="width: 140px; position: absolute; top: 50px; height: <?php echo $wip['thumb_height']; ?>px; margin-top: -<?php echo $wip['thumb_offset']; ?>px; text-align: center;">
-				<a href="<?php echo url::base() .'updates/view/'. $wip['id']; ?>"><img src="<?php echo $wip['filename0']; ?>" title="<?php echo $wip['summary']; ?>" alt="update icon" /></a>
+				<a href="<?php echo url::base() .'updates/view/'. $wip['id']; ?>"><img src="<?php echo $wip['filename0']; ?>" title="<?php echo $wip['summary']; ?>" alt="update icon" <?php if (!strpos($wip['filename0'], 'images/icons')) { echo 'style="border: 1px solid #999; padding: 1px;"'; } ?> /></a>
 			</div>
 		</div>
 
