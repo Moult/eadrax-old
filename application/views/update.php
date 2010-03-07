@@ -172,7 +172,7 @@ for ($i=0; $i<5; $i++)
 <div style="border: 2px solid #88AAFF; margin-left: auto; margin-right: auto; margin-top: 10px; font-size: 18px; background-color: #DDEEFF; padding: 10px;">
 		<div style="float: left; width: 61%;">
 			<p style="font-size: 18px; margin-bottom: 0px; line-height: 63px;">
-				<img src="<?php echo ${'filename_icon'. $i}; ?>" class="icon" alt="" />
+				<img src="<?php echo ${'filename_icon'. $i}; ?>" class="icon" alt="" <?php if (!strpos(${'filename_icon'. $i}, 'images/icons')) { echo 'style="border: 1px solid #999; padding: 1px;"'; } ?> />
 				<a href="<?php echo url::base(); ?>uploads/files/<?php echo ${'filename'. $i}; ?>.<?php echo ${'ext'. $i}; ?>"><strong>Download</strong> <?php echo substr(${'filename'. $i}, 10) .'.'. ${'ext'. $i}; ?></a>
 			</p>
         </div>

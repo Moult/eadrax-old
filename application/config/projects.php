@@ -27,3 +27,6 @@ $config['default_cid'] = '12';
 
 // The maximum ID of the category list.
 $config['max_cid'] = '19';
+
+// The number of updates to be shown per project page.
+$config['updates_page'] = '30';

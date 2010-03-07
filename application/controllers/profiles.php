@@ -91,6 +91,9 @@ class Profiles_Controller extends Openid_Controller {
             $description = '<p '. $format .'>'. $description .'</p>';
             $description = preg_replace("/(?:\r?\n)+/", '</p><p '. $format .'>', $description);
 
+			// Let's do some really nasty fixing to maintain HTML validity.
+			$description = preg_replace(array('/<p '. $format .'><ul style="margin-left: 30px; font-size: 16px;"><\/p>/', '/<p '. $format .'><\/ul><\/p>/', '/<p '. $format .'><li>(.*?)<\/li><\/p>/'), array('<ul style="margin-left: 30px; font-size: 16px;">', '</ul>', '<li>$1</li>'), $description);
+
 			$$project_view->description = $description;
 
 			$$project_view->timeline = Projects_Controller::_generate_project_timeline($uid, $pid);

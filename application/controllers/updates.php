@@ -509,7 +509,11 @@ class Updates_Controller extends Core_Controller {
 											$myImage = imagecreatefrompng($filename);   
 										}
 										  
-										if($width > $height)  {  
+										if ($width < $height*1.3) {  
+											$cropWidth   = $width;   
+											$cropHeight  = $width*.769;   
+											$c1 = array("x"=>0, "y"=>($height-$cropHeight)/8);  
+										} elseif ($width > $height) {  
 											$cropWidth   = $height*1.3;   
 											$cropHeight  = $height;   
 											$c1 = array("x"=>($width-$cropWidth)/2, "y"=>0);  
@@ -518,7 +522,7 @@ class Updates_Controller extends Core_Controller {
 											$cropHeight  = $width*.769;   
 											$c1 = array("x"=>0, "y"=>($height-$cropHeight)/8);  
 										}
-										   
+
 										// Creating the thumbnail  
 										$thumb = imagecreatetruecolor(260, 200);   
 										imagecopyresampled($thumb, $myImage, 0, 0, $c1['x'], $c1['y'], 260, 200, $cropWidth, $cropHeight);   

@@ -44,18 +44,60 @@ class Projects_Controller extends Core_Controller {
 	 *
 	 * @return null
 	 */
-	public function view($pid)
+	public function view($pid, $page = 1)
 	{
 		// Load necessary models.
 		$update_model	= new Update_Model;
 		$project_model	= new Project_Model;
+		$kudos_model	= new Kudos_Model;
+		$comment_model	= new Comment_Model;
 
 		// Let's update the project view statistics
 		$project_model->view($pid);
 
 		$project_view = new View('project');
 
-		$query = $update_model->updates(NULL, $pid);
+		// Parse the project itself first.
+		$project_information = $project_model->project_information($pid);
+		$project_view->project = $project_information;
+		$project_view->categories = $project_model->categories();
+
+		// Parse the description
+		$description = $project_information['description'];
+
+		$simple_search = array(
+			'/\[b\](.*?)\[\/b\]/is',
+			'/\[i\](.*?)\[\/i\]/is',
+			'/\[u\](.*?)\[\/u\]/is',
+			'/\[url\=(.*?)\](.*?)\[\/url\]/is',
+			'/\[url\](.*?)\[\/url\]/is',
+			'/\[list\](.*?)\[\/list\]/is',
+			'/\[\*\](.*?)\[\/\*\]/is'
+		);
+		 
+		$simple_replace = array(
+			'<strong>$1</strong>',
+			'<em>$1</em>',
+			'<u>$1</u>',
+			'<a href="$1" target="_blank">$2</a>',
+			'<a href="$1" target="_blank">$1</a>',
+			'<ul style="margin-left: 30px; font-size: 16px;">$1</ul>',
+			'<li>$1</li>'
+		);
+		 
+		$description = preg_replace($simple_search, $simple_replace, $description);
+
+		$format = 'style="margin-bottom: 10px;"';
+		$description = '<p '. $format .'>'. $description .'</p>';
+		$description = preg_replace("/(?:\r?\n)+/", '</p><p '. $format .'>', $description);
+
+		// Let's do some really nasty fixing to maintain HTML validity.
+		$description = preg_replace(array('/<p '. $format .'><ul style="margin-left: 30px; font-size: 16px;"><\/p>/', '/<p '. $format .'><\/ul><\/p>/', '/<p '. $format .'><li>(.*?)<\/li><\/p>/'), array('<ul style="margin-left: 30px; font-size: 16px;">', '</ul>', '<li>$1</li>'), $description);
+
+		$project_view->description = $description;
+
+		// Let's parse individual updates.
+		$query = $update_model->updates(NULL, $pid, 'DESC', Kohana::config('projects.updates_page'), ($page-1)*Kohana::config('projects.updates_page'));
         $markup = '';
 
         if (count($query) > 0) {
@@ -63,14 +105,17 @@ class Projects_Controller extends Core_Controller {
 				$icon = Updates_Controller::_file_icon($row->filename0, $row->ext0, TRUE);
                 // Build the markup.
                 $markup = $markup .'<div style="float: left; width: 260px; margin: 7px; height: 200px; border: 0px solid #F00;">';
-				$markup = $markup .'<p><a href="'. url::base() .'/updates/view/'. $row->id .'/"><img style="vertical-align: middle; border: 1px solid #999; padding: 1px;" src="'. $icon .'" alt="update icon" /></a></p>';
-                //$markup = $markup .'<h3><a href="'. url::base() .'/updates/view/'. $row->id .'/">'. $row->summary .'</a></h3><span>'. $row->logtime .'</span>';
-                $markup = $markup. '</div>';
+				$markup = $markup .'<p><a href="'. url::base() .'/updates/view/'. $row->id .'/"><img style="vertical-align: middle; border: 1px solid #999; padding: 1px; background: url('. $icon .'); background-repeat: no-repeat; background-position: 1px 1px;" src="'. url::base() .'images/crop_overlay.png" alt="update icon" /></a></p>';
+				$markup = $markup .'<cite style="background: #000000; -moz-opacity:.55; filter:alpha(opacity=55); opacity: .55; color: #FFF; position: relative; display: block; margin-left: auto; margin-right: auto; left: 2px; top: -64px; height: 30px; width: 240px; padding: 10px; border-top: 1px solid #888; font-weight: bold; word-wrap: break-word;"><span style="float: left; border: 0px solid #F00; height: 30px; width: 210px;">'. $row->summary .'</span><span style="font-weight: 100; font-size: 9px; float: right; position: relative; top: -2px; text-align: right;">'. $row->views .'V<br />'. $kudos_model->kudos($row->id) .'K<br />'. $comment_model->comment_update_number($row->id) .'C</span></cite>';
+                $markup = $markup .'</div>';
             }
         }
 
-		$project_view->project = $project_model->project_information($pid);
 		$project_view->markup = $markup;
+
+		// Pagination work.
+		$project_view->pages = ceil(count($update_model->updates(NULL, $pid)) / Kohana::config('projects.updates_page'));
+		$project_view->page = $page;
 
 		$this->template->content = array($project_view);
 

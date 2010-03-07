@@ -435,16 +435,20 @@ class Update_Model extends Model {
 	 *
 	 * @return array
 	 */
-	public function updates($uid = NULL, $pid)
+	public function updates($uid = NULL, $pid, $order = 'ASC', $limit = FALSE, $offset = FALSE)
 	{
-		if ($uid == NULL)
-		{
-			$updates = $this->db->from('updates')->where('pid', $pid)->get();
+		if ($uid == NULL) {
+			$updates = $this->db->from('updates')->where('pid', $pid)->orderby('id', $order);
+		} else {
+			$updates = $this->db->from('updates')->where(array('uid' => $uid, 'pid' => $pid))->orderby('id', $order);
 		}
-		else
-		{
-			$updates = $this->db->from('updates')->where(array('uid' => $uid, 'pid' => $pid))->get();
+
+		if ($limit != FALSE && $offset != FALSE) {
+			$updates = $updates->limit($limit, $offset);
+		} elseif ($limit != FALSE) {
+			$updates = $updates->limit($limit);
 		}
+		$updates = $updates->get();
 
 		return $updates;
 	}
