@@ -161,7 +161,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `website` varchar(50) NOT NULL,
   `location` varchar(50) NOT NULL,
   `dob` varchar(8) NOT NULL,
-  `gender` enum('Unknown','Male','Female') NOT NULL default 'Unknown',
+  `gender` enum('Confused','Male','Female','Dog') NOT NULL default 'Confused',
   `avatar` varchar(255) NOT NULL,
   `logtime` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
   `level` enum('Normal','Special','Staff','Admin') NOT NULL default 'Normal',

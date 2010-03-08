@@ -180,44 +180,113 @@ class Profiles_Controller extends Openid_Controller {
 	
 	public function update($id = NULL)
 	{
+		// Restrict any guests.
 		$this->restrict_access();
-		$user = ORM::factory('user', $id);
-		
-		$form = Formo::factory()
-			->add('description', array('value'=>$user->description, 'required'=>FALSE))
-			->add('email', array('value'=>$user->email, 'required'=>FALSE))
-			->add('msn', array('value'=>$user->msn, 'required'=>FALSE))
-			->add('gtalk', array('value'=>$user->gtalk, 'required'=>FALSE))
-			->add('yahoo', array('value'=>$user->yahoo, 'required'=>FALSE))
-			->add('skype', array('value'=>$user->skype, 'required'=>FALSE))
-			->add('website', array('value'=>$user->website))
-			->add('location', array('value'=>$user->location))
-			->add('dob', array('value'=> $user->dob,'required'=>FALSE))
-			->add_select('gender', Kohana::config('profiles.gender'), array('value'=>$user->gender))
-			->add('submit');
-		
-		if($form->validate()) {
-			$user->description = $form->description->value;
-			$user->email = $form->email->value;
-			$user->msn = $form->msn->value;
-			$user->gtalk = $form->gtalk->value;
-			$user->yahoo = $form->yahoo->value;
-			$user->skype = $form->skype->value;
-			$user->website = $form->website->value;
-			$user->location = $form->location->value;
-			$user->dob = $form->dob->value;
-			$user->gender = $form->gender->value;
-			
-			if($user->save()){
-                // Setting message for user
-                url::redirect('profiles');
-            }
+
+		// Load necessary models.
+		$user_model	= new User_Model;
+
+		if ($this->uid != $id) {
+			die('You can only update your own profile');
 		}
 		
-		$content = new View('profiles/update', $form->get(TRUE));
-		$content->user = $user;
-		
-		$this->template->content = array($content);
+		if ($this->input->post())
+		{
+			$gender = $this->input->post('gender');
+			$email = $this->input->post('email');
+			$description = $this->input->post('description');
+			$dd = $this->input->post('dd');
+			$mm = $this->input->post('mm');
+			$yyyy = $this->input->post('yyyy');
+			$msn = $this->input->post('msn');
+			$gtalk = $this->input->post('gtalk');
+			$yahoo = $this->input->post('yahoo');
+			$skype = $this->input->post('skype');
+			$website = $this->input->post('website');
+			$location = $this->input->post('location');
+
+			// No support for avatars just yet. TODO
+
+			// Begin to validate the information.
+			$validate = new Validation($this->input->post());
+			$validate->pre_filter('trim');
+			$validate->add_rules('email', 'email');
+			$validate->add_rules('dd', 'digit', 'length[1,2]');
+			$validate->add_rules('mm', 'digit', 'length[1,2]');
+			$validate->add_rules('yyyy', 'digit', 'length[4]');
+			$validate->add_rules('msn', 'email');
+			$validate->add_rules('gtalk', 'email');
+			$validate->add_rules('website', 'url');
+			$validate->add_rules('location', 'length[2, 15]');
+			$validate->add_callbacks('gender', array($this, '_validate_gender'));
+			$validate->add_callbacks('dd', array($this, '_validate_dob'));
+
+			if ($validate->validate())
+			{
+				$dob = $dd .'/'. $mm .'/'. $yyyy;
+
+				// Everything went great! Let's add the update.
+				$uid = $user_model->manage_user(array(
+					'gender' => $gender,
+					'email' => $email,
+					'description' => $description,
+					'dob' => $dob,
+					'msn' => $msn,
+					'gtalk' => $gtalk,
+					'yahoo' => $yahoo,
+					'skype' => $skype,
+					'website' => $website,
+					'location' => $location
+				), $this->uid);
+
+				// Then load our success view.
+				$update_profile_success_view = new View('update_profile_success');
+
+				// Generate content.
+				$this->template->content = array($update_profile_success_view);
+			}
+			else
+			{
+				// Errors have occured. Fill in the form and set errors.
+				$update_profile_view = new View('update_profile');
+				$update_profile_view->form = arr::overwrite(array(
+					'email' => '',
+					'description' => '',
+					'msn' => '',
+					'gtalk' => '',
+					'yahoo' => '',
+					'skype' => '',
+					'website' => '',
+					'location' => ''
+				), $validate->as_array());
+				$update_profile_view->errors = $validate->errors('profile_errors');
+
+				// Generate the content.
+				$this->template->content = array($update_profile_view);
+			}
+
+		}
+		else
+		{
+			// Load the necessary view.
+			$update_profile_view = new View('update_profile');
+
+			// If we didn't press submit, we want a blank form.
+			$update_profile_view->form = array(
+				'email' => '',
+				'description' => '',
+				'msn' => '',
+				'gtalk' => '',
+				'yahoo' => '',
+				'skype' => '',
+				'website' => '',
+				'location' => ''
+			);
+
+			$update_profile_view->form = $user_model->user_information($this->uid);
+
+			$this->template->content = array($update_profile_view);
+		}
 	}
 	
 	public function change_password($id = NULL)
@@ -244,5 +313,36 @@ class Profiles_Controller extends Openid_Controller {
 		$content = new View('profiles/password', $form->get(TRUE));
 		
 		$this->template->content = array($content);
+	}
+
+	/**
+	 * Validates the gender.
+	 *
+	 * @param Validation $array The array containing validation information.
+	 * @param $field The key for the value.
+	 *
+	 * @return null
+	 */
+	public function _validate_gender(Validation $array, $field)
+	{
+		if ($array[$field] != 'Male' && $array[$field] != 'Female' && $array[$field] != 'Confused' && $array[$field] != 'Dog')
+		{
+			$array->add_error($field, 'gender');
+		}
+	}
+
+	/**
+	 * Validates the DOB.
+	 *
+	 * @param Validation $array The array containing validation information.
+	 * @param $field The key for the value.
+	 *
+	 * @return null
+	 */
+	public function _validate_dob(Validation $array, $field)
+	{
+		if ($array['yyyy'] > 2003 || $array['yyyy'] < 1933 || $array['mm'] > 12 || $array['mm'] < 1 || $array['dd'] < 1 || $array['dd'] > 31) {
+			$array->add_error($field, 'dob');
+		}
 	}
 }

@@ -4,7 +4,7 @@
 	<?php } else { ?>
 	<img src="<?php echo url::base(); ?>images/icons/coffee_mug.png" width="48" height="48" class="icon" alt="" />
 	<?php } ?>
-	<a href="<?php echo url::base(); ?>projects/view/<?php echo $uid; ?>/<?php echo $project['id']; ?>/" style="color: #FF7600; text-decoration: none;"><?php echo $project['name']; ?>'s Timeline</a> <?php if ($project['uid'] == $this->uid && $project['uid'] != 1) { ?><a href="<?php echo url::base(); ?>projects/add/<?php echo $project['id']; ?>/"><img src="<?php echo url::base(); ?>images/icons/pencil.png" class="icon" alt="Edit" /></a><?php } ?>
+	<a href="<?php echo url::base(); ?>projects/view/<?php echo $uid; ?>/<?php echo $project['id']; ?>/" style="color: #FF7600; text-decoration: none;"><?php echo $project['name']; ?></a> <?php if ($project['uid'] == $this->uid && $project['uid'] != 1) { ?><a href="<?php echo url::base(); ?>projects/add/<?php echo $project['id']; ?>/"><img src="<?php echo url::base(); ?>images/icons/pencil.png" class="icon" alt="Edit" /></a><?php } ?>
     <ul style="float: right; margin-top: 5px;">
         <li style="width: 70px; display: inline;">
 			<input id="expand<?php echo $project['id']; ?>" style="width: 70px;" type="button" value="Preview" />

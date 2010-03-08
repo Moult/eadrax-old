@@ -14,16 +14,15 @@ div.scrollable {
 a.prev, a.next, a.prevPage, a.nextPage {
 	display:block;
 	width:18px;
-	height:18px;
-	background:url(/images/icons/left.png) no-repeat;
+	height:170px;
+	background:url(../images/icons/left.png) no-repeat;
 	float:left;
-	margin:43px 0px;
 	cursor:pointer;
 }
 
 /* mouseover state */
 a.prev:hover, a.next:hover, a.prevPage:hover, a.nextPage:hover {
-	background-position:0px -18px;		
+	background-position:0px -170px;		
 }
 
 /* disabled navigational button */
@@ -33,7 +32,7 @@ a.disabled {
 
 /* next button uses another background image */
 a.next, a.nextPage {
-	background-image:url(/images/icons/right.png);
+	background-image:url(../images/icons/right.png);
 	clear:right;	
 }
 
@@ -54,13 +53,6 @@ div.scrollable {
 	width:20000em;	
 	clear:both;
 }
-
-/* custom positioning for navigational links */
-a.prev, a.next {
-	margin-top:58px;	
-}
-
-
 
 /* single item */
 .thumbs div {

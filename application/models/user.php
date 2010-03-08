@@ -128,4 +128,26 @@ class User_Model extends ORM {
 			return $find_uid->id;
 		}
 	}
+
+	/**
+	 * Edits a user with the data specified in $data.
+	 *
+	 * @param array $data An array with field_name=>content for data to add.
+	 * @param int   $uid  The uid to edit.
+	 *
+	 * @return int
+	 */
+	public function manage_user($data, $uid)
+	{
+		$manage_user = $this->db;
+		foreach ($data as $key => $value)
+		{
+			$manage_user->set($key, $value);
+		}
+
+		$manage_user->where('id', $uid);
+		$manage_user->update('users');
+
+		return $uid;
+	}
 }
