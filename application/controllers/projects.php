@@ -44,7 +44,7 @@ class Projects_Controller extends Core_Controller {
 	 *
 	 * @return null
 	 */
-	public function view($pid, $page = 1)
+	public function view($uid, $pid, $page = 1)
 	{
 		// Load necessary models.
 		$update_model	= new Update_Model;
@@ -97,24 +97,31 @@ class Projects_Controller extends Core_Controller {
 		$project_view->description = $description;
 
 		// Let's parse individual updates.
-		$query = $update_model->updates(NULL, $pid, 'DESC', Kohana::config('projects.updates_page'), ($page-1)*Kohana::config('projects.updates_page'));
+		$query = $update_model->updates($uid, $pid, 'DESC', Kohana::config('projects.updates_page'), ($page-1)*Kohana::config('projects.updates_page'));
         $markup = '';
 
         if (count($query) > 0) {
             foreach ($query as $row) {
 				$icon = Updates_Controller::_file_icon($row->filename0, $row->ext0, TRUE);
+				$file_icon = '';
+				if (strpos($icon, 'images/icons')) {
+					$file_icon = $icon;
+					$icon = url::base() .'images/noicon.png';
+				}
                 // Build the markup.
                 $markup = $markup .'<div style="float: left; width: 260px; margin: 7px; height: 200px; border: 0px solid #F00;">';
 				$markup = $markup .'<p><a href="'. url::base() .'/updates/view/'. $row->id .'/"><img style="vertical-align: middle; border: 1px solid #999; padding: 1px; background: url('. $icon .'); background-repeat: no-repeat; background-position: 1px 1px;" src="'. url::base() .'images/crop_overlay.png" alt="update icon" /></a></p>';
 				$markup = $markup .'<cite style="background: #000000; -moz-opacity:.55; filter:alpha(opacity=55); opacity: .55; color: #FFF; position: relative; display: block; margin-left: auto; margin-right: auto; left: 2px; top: -64px; height: 30px; width: 240px; padding: 10px; border-top: 1px solid #888; font-weight: bold; word-wrap: break-word;"><span style="float: left; border: 0px solid #F00; height: 30px; width: 210px;">'. $row->summary .'</span><span style="font-weight: 100; font-size: 9px; float: right; position: relative; top: -2px; text-align: right;">'. $row->views .'V<br />'. $kudos_model->kudos($row->id) .'K<br />'. $comment_model->comment_update_number($row->id) .'C</span></cite>';
+				$markup = $markup .'<img src="'. $file_icon .'" style="position: relative; top: -170px; left: 205px;" />';
                 $markup = $markup .'</div>';
             }
         }
 
 		$project_view->markup = $markup;
+		$project_view->uid = $uid;
 
 		// Pagination work.
-		$project_view->pages = ceil(count($update_model->updates(NULL, $pid)) / Kohana::config('projects.updates_page'));
+		$project_view->pages = ceil(count($update_model->updates($uid, $pid)) / Kohana::config('projects.updates_page'));
 		$project_view->page = $page;
 
 		$this->template->content = array($project_view);

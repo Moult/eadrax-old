@@ -142,6 +142,7 @@ class Updates_Controller extends Core_Controller {
 			{
 				$random_data[$n]['summary'] = $row->summary;
 				$random_data[$n]['id'] = $row->id;
+				$random_data[$n]['uid'] = $row->uid;
 
 				// Let's parse the thumbnails.
 				$random_data[$n]['filename0'] = $this->_file_icon($row->filename0, $row->ext0);

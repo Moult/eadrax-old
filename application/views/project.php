@@ -32,10 +32,10 @@ Category: <em><?php echo $categories[$project['cid']]; ?></em> <?php if (!empty(
 if ($pages != 1 && $page > 1) {
 ?>
         <li style="width: 50px; display: inline;">
-            <input style="width: 50px;" type="button" onclick="parent.location='<?php echo url::base() .'projects/view/'. $project['id'] .'/1/'; ?>'" value="&lt;&lt;" />
+            <input style="width: 50px;" type="button" onclick="parent.location='<?php echo url::base() .'projects/view/'. $uid .'/'. $project['id'] .'/1/'; ?>'" value="&lt;&lt;" />
         </li>
         <li style="width: 50px; display: inline;">
-            <input style="width: 50px;" type="button" onclick="parent.location='<?php echo url::base() .'projects/view/'. $project['id'] .'/'. ($page-1) .'/'; ?>'" value="&lt;" />
+            <input style="width: 50px;" type="button" onclick="parent.location='<?php echo url::base() .'projects/view/'. $uid .'/'. $project['id'] .'/'. ($page-1) .'/'; ?>'" value="&lt;" />
         </li>
 <? } else { ?>
         <li style="width: 50px; display: inline;">
@@ -52,17 +52,17 @@ for ($i = 1; $i <= $pages; $i++) {
 	} else {
 		$style = '';
 	}
-	echo '<li style="display: inline; padding: 8px; margin: 2px; margin-top: 0px; background: url('. url::base() .'images/formbg.gif); border: 1px solid #CCC; height: 25px; font-size: 10px;"><a href="'. url::base() .'projects/view/'. $project['id'] .'/'. $i .'/" style="'. $style .' text-decoration: none;">'. $i .'</a></li>';
+	echo '<li style="display: inline; padding: 8px; margin: 2px; margin-top: 0px; background: url('. url::base() .'images/formbg.gif); border: 1px solid #CCC; height: 25px; font-size: 10px;"><a href="'. url::base() .'projects/view/'. $uid .'/'. $project['id'] .'/'. $i .'/" style="'. $style .' text-decoration: none;">'. $i .'</a></li>';
 }
 ?>
 <?php
 if ($pages != 1 && $page < $pages) {
 ?>
         <li style="width: 50px; display: inline;">
-			<input style="width: 50px;" type="button" onclick="parent.location='<?php echo url::base() .'projects/view/'. $project['id'] .'/'. ($page+1) .'/'; ?>'" value="&gt;" />
+			<input style="width: 50px;" type="button" onclick="parent.location='<?php echo url::base() .'projects/view/'. $uid .'/'. $project['id'] .'/'. ($page+1) .'/'; ?>'" value="&gt;" />
         </li>
         <li style="width: 50px; display: inline;">
-            <input style="width: 50px;" type="button" onclick="parent.location='<?php echo url::base() .'projects/view/'. $project['id'] .'/'. $pages .'/'; ?>'" value="&gt;&gt;" />
+            <input style="width: 50px;" type="button" onclick="parent.location='<?php echo url::base() .'projects/view/'. $uid .'/'. $project['id'] .'/'. $pages .'/'; ?>'" value="&gt;&gt;" />
         </li>
 <? } else { ?>
         <li style="width: 50px; display: inline;">

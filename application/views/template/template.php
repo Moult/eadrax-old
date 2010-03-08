@@ -14,14 +14,54 @@ if (!empty($content))
 			echo '<div id="content_top_right"></div>';
 			$i++;
 		}
-		elseif ($i == 1)
+		elseif ($i > 0)
 		{
-			echo '<div class="section_divider"></div>';
-			echo '<div class="section_top_left"></div>';
-			echo '<div class="section_top">';
-			echo $block;
-			echo '</div>';
-			echo '<div class="section_top_right"></div>';
+			if (!empty($pids)) 
+			{
+				if ($i == 1) {
+					$divider_id = '';
+					$section_id = $pids[$i-1];
+				} else {
+					$divider_id = $pids[$i-2];
+					if (!empty($pids[$i-1])) {
+						$section_id = $pids[$i-1];
+					} else {
+						$section_id = '';
+					}
+				}
+				if ($section_id != '') {
+					// We need specific styles to be added to the defaults.
+					$side_style = ' style="height: 100px;"';
+					$top_style = ' style="min-height: 90px;"';
+				} else {
+					$side_style = '';
+					$top_style = '';
+				}
+
+				if ($divider_id != '') {
+					$divider_style = ' style="background-color: #E3F8FF"';
+				} else {
+					$divider_style = '';
+				}
+
+
+				echo '<div class="section_divider" id="section_divider'. $divider_id .'"'. $divider_style .'></div>';
+				echo '<div class="section_top_left" id="section_top_left'. $section_id .'"'. $side_style .'></div>';
+				echo '<div class="section_top" id="section_top'. $section_id .'"'. $top_style .'>';
+				echo $block;
+				echo '</div>';
+				echo '<div class="section_top_right" id="section_top_right'. $section_id .'"'. $side_style .'></div>';
+				$i++;
+			}
+			else
+			{
+				echo '<div class="section_divider"></div>';
+				echo '<div class="section_top_left"></div>';
+				echo '<div class="section_top">';
+				echo $block;
+				echo '</div>';
+				echo '<div class="section_top_right"></div>';
+			}
 		}
 	}
 }

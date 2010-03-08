@@ -52,9 +52,12 @@ class Profiles_Controller extends Openid_Controller {
 		$profile_view->user = $user_model->user_information($uid);
 		//$profile_view->user = Authlite::factory()->get_user();
 
+		// Initialise all the arrays required in the loop.
 		$project_updates = array();
 		$timelines = array();
 		$template_array = array();
+		$pid_array = array();
+
 		foreach ($project_model->projects($uid) as $pid => $p_name)
 		{
 			// Create each view on the fly!
@@ -98,13 +101,68 @@ class Profiles_Controller extends Openid_Controller {
 
 			$$project_view->timeline = Projects_Controller::_generate_project_timeline($uid, $pid);
 			$$project_view->categories = $project_model->categories();
+			$$project_view->uid = $uid;
 			array_push($template_array, $$project_view);
+
+			// We need to build an array of PIDs to send to the view so that 
+			// jquery effects can be done on specific div ids.
+			$pid_array[] = $pid;
 		}
 
 		// Let's sneak the profile view into the beginning of the page.
 		array_unshift($template_array, $profile_view);
 
+		// Then finally add the footer.
+		$random_update_view = new View('random_update');
+
+		// Let's find out some random updates!
+		if ($update_model->update_number($uid) > 0)
+		{
+			$display_random = TRUE;
+			$random_query = $update_model->update_number_random($uid);
+			$n = 0;
+			$random_data = array();
+
+			foreach ($random_query->result() as $row)
+			{
+				$random_data[$n]['summary'] = $row->summary;
+				$random_data[$n]['id'] = $row->id;
+				$random_data[$n]['uid'] = $row->uid;
+
+				// Let's parse the thumbnails.
+				$random_data[$n]['filename0'] = Updates_Controller::_file_icon($row->filename0, $row->ext0);
+
+                // Determind the sizes for offsetting.
+                $path = substr($random_data[$n]['filename0'],strlen(url::base()));
+                $path = DOCROOT . $path;
+                $random_data[$n]['thumb_height'] = getimagesize($path);
+                $random_data[$n]['thumb_width']  = $random_data[$n]['thumb_height'][0];
+                $random_data[$n]['thumb_height'] = $random_data[$n]['thumb_height'][1];
+                $random_data[$n]['thumb_offset'] = $random_data[$n]['thumb_height']/2;
+
+                // Right, now find out the project name.
+                if ($row->pid == 0) {
+                    $random_data[$n]['project_name'] = 'Uncategorised';
+                    $random_data[$n]['pid'] = 0;
+                } else {
+                    $random_data[$n]['pid'] = $row->pid;
+					$random_data[$n]['project_name'] = $project_model->project_information($row->pid);
+					$random_data[$n]['project_name'] = $random_data[$n]['project_name']['name'];
+                }
+
+                $n++;
+			}
+
+			// Send all the data we collected to the view...
+			$random_update_view->random_data = $random_data;
+			$random_update_view->user = $user_model->user_information($uid);
+		}
+
+		$template_array[] = $random_update_view;
+
 		$this->template->content = $template_array;
+		//print_r($template_array);
+		$this->template->pids = $pid_array;
 	}
 
 	public function view($uid = FALSE)

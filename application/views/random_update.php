@@ -1,14 +1,27 @@
 <h2>
 	<img src="<?php echo url::base(); ?>images/icons/folder_48.png" width="48" height="48" class="icon" alt="" />
-	<?php echo $user['username']; ?>'s other WIPs
+	<?php if(!empty($user)) { ?>
+	<?php echo $user['username']; ?>'s Random WIPs
+	<?php } else { ?>
+	Lights are on but nobody's home
+	<?php } ?>
 </h2>
+
+<?php if(empty($user)) { ?>
+
+<p style="text-align: center; font-size: 20px; color: #555; line-height: 50px;">
+	It looks as though no updates have been added yet.<br />
+	<a href="<?php echo url::base(); ?>updates/add/">Adding some</a> would probably be a good thing to do :)
+</p>
+
+<?php } else { ?>
 
 <div style="text-align: center; border: 0px solid #F00; overflow: hidden; width: 820px; margin-left: auto; margin-right: auto;">
 
 <?php $i = 0; foreach ($random_data as $wip) { $i++; ?>
 <div style="float: left; width: 150px; height: 180px; text-align: center; margin-left: 6px; margin-right: 7px;<?php if ($i != 5) { ?> border-right: 1px solid #EDEDED;<?php } ?>">
-		<p style="font-size: 10px; color: #777;">
-			<?php if ($wip['pid'] != 1) { ?><a href="<?php echo url::base() .'projects/'. $wip['pid'] .'/'; ?>"><?php } ?><strong><?php echo $wip['project_name']; ?></strong><?php if ($wip['pid'] != 1) { ?></a><?php } ?>
+		<p style="font-size: 10px; color: #777; margin-right: 15px;">
+			<?php if ($wip['pid'] != 1) { ?><a href="<?php echo url::base() .'projects/view/'. $wip['uid'] .'/'. $wip['pid'] .'/'; ?>"><?php } ?><strong><?php echo $wip['project_name']; ?></strong><?php if ($wip['pid'] != 1) { ?></a><?php } ?>
 		</p>
 
 		<div style="height: 100px; margin-bottom: 5px; position: relative; text-align: center;">
@@ -25,3 +38,5 @@
 <?php } ?>
 
 </div>
+
+<?php } ?>
