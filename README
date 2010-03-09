@@ -18,6 +18,7 @@ SYSTEM REQUIREMENTS
 * A webserver, eg: Apache
 * PHP 5.x 
 * MySQL 5.1.x
+* ffmpeg (optional)
 
 ------------------
 DOWNLOADING EADRAX

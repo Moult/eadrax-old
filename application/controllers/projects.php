@@ -366,7 +366,7 @@ class Projects_Controller extends Core_Controller {
 		// Load necessary models.
 		$update_model = new Update_Model;
 
-		$query = $update_model->updates($uid, $pid);
+		$query = $update_model->updates($uid, $pid, 'ASC', 18);
         $markup = '';
 
         if (count($query) > 0) {

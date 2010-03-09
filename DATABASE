@@ -160,7 +160,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `skype` varchar(50) NOT NULL,
   `website` varchar(50) NOT NULL,
   `location` varchar(50) NOT NULL,
-  `dob` varchar(8) NOT NULL,
+  `dob` varchar(10) NOT NULL,
   `gender` enum('Confused','Male','Female','Dog') NOT NULL default 'Confused',
   `avatar` varchar(255) NOT NULL,
   `logtime` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,

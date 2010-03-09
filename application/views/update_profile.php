@@ -9,7 +9,7 @@
 	</p>
 
 	<div class="form">
-	<form action="<?php echo url::base(); ?>profiles/update/<?php echo $this->uid; ?>" method="post">
+	<form action="<?php echo url::base(); ?>profiles/update/<?php echo $this->uid; ?>" method="post" enctype="multipart/form-data">
 			<fieldset>
 				<legend>
 					<img src="<?php echo url::base(); ?>images/icons/form.png" alt="" width="16" height="16" class="icon" />
@@ -87,6 +87,11 @@
 					<p>
 						<label for="location">Location:</label>
 						<input type="text" id="location" name="location" value="<?php echo $form['location']; ?>" <?php if (isset($errors['email'])) { echo 'class="error"'; } ?> />
+					</p>
+
+					<p>
+						<label for="avatar">Avatar:</label>
+						<input type="file" id="avatar" name="avatar" />
 					</p>
 
 					<p class="submit">

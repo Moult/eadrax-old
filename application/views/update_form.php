@@ -36,7 +36,7 @@
 				<div class="elements">
 					<?php if ($this->logged_in) { ?>
 					<p>
-						<label for"pid">Project:</label>
+						<label for="pid">Project:</label>
 						<select name="pid" id="pid">
 						<?php foreach ($projects as $pid => $p_name) { ?>
 						<option value="<?php echo $pid; ?>"><?php echo $p_name; ?></option>

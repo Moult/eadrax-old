@@ -46,11 +46,77 @@ class Profiles_Controller extends Openid_Controller {
 		$project_model	= new Project_Model;
 		$update_model	= new Update_Model;
 		$user_model		= new User_Model;
+		$kudos_model	= new Kudos_Model;
+		$comment_model	= new Comment_Model;
 
 		// Load the main profile view.
-		$profile_view = new View('profiles/index');
-		$profile_view->user = $user_model->user_information($uid);
-		//$profile_view->user = Authlite::factory()->get_user();
+		$profile_view = new View('profile');
+		$user_information = $user_model->user_information($uid);
+		$profile_view->user = $user_information;
+
+		// Calculate age from date of birth.
+		if(!empty($user_information['dob']))
+		{
+			list($dd, $mm, $yyyy) = explode('/', $user_information['dob']);
+			$age = date('Y') - $yyyy;
+
+			if(date('m') < $mm || (date('m') == $mm && date('d') < $dd)) {
+				$age--;
+			}
+		}
+		else
+		{
+			$age = '';
+		}
+
+		$profile_view->age = $age;
+
+		// Let's parse latest updates.
+		$query = $update_model->updates($uid, NULL, 'DESC', 3);
+        $markup = '';
+
+        if (count($query) > 0) {
+            foreach ($query as $row) {
+				$icon = Updates_Controller::_file_icon($row->filename0, $row->ext0, TRUE);
+				$file_icon = '';
+				if (strpos($icon, 'images/icons')) {
+					$file_icon = $icon;
+					$icon = url::base() .'images/noicon.png';
+				}
+				$project_name = $project_model->project_information($row->pid);
+				$project_name = $project_name['name'];
+
+				if (strlen($row->summary) > 40) {
+					$dots = '...';
+				} else {
+					$dots = '';
+				}
+
+                // Build the markup.
+                $markup = $markup .'<div style="float: left; width: 260px; margin: 7px; height: 200px; border: 0px solid #F00;">';
+				$markup = $markup .'<p><a href="'. url::base() .'/updates/view/'. $row->id .'/"><img style="vertical-align: middle; border: 1px solid #999; padding: 1px; background: url('. $icon .'); background-repeat: no-repeat; background-position: 1px 1px;" src="'. url::base() .'images/crop_overlay.png" alt="update icon" /></a></p>';
+				$markup = $markup .'<cite style="background: #000000; -moz-opacity:.55; filter:alpha(opacity=55); opacity: .55; color: #FFF; position: relative; display: block; margin-left: auto; margin-right: auto; left: 2px; top: -64px; height: 30px; width: 240px; padding: 10px; border-top: 1px solid #888; font-weight: bold; word-wrap: break-word;"><span style="float: left; border: 0px solid #F00; height: 30px; width: 210px;">'. $project_name .'<br /><span style="font-size: 9px;">'. substr($row->summary, 0, 40) . $dots .'</span></span><span style="font-weight: 100; font-size: 9px; float: right; position: relative; top: -2px; text-align: right;">'. $row->views .'V<br />'. $kudos_model->kudos($row->id) .'K<br />'. $comment_model->comment_update_number($row->id) .'C</span></cite>';
+				$markup = $markup .'<img src="'. $file_icon .'" style="position: relative; top: -170px; left: 205px;" />';
+                $markup = $markup .'</div>';
+            }
+        }
+
+		if (count($query) < 3) {
+			for ($i=3;$i>count($query);$i--) {
+                $markup = $markup .'<div style="float: left; width: 260px; margin: 7px; height: 200px; border: 0px solid #F00;">';
+				$markup = $markup .'<p><img style="vertical-align: middle; border: 1px solid #999; padding: 1px; background: url('. url::base() .'images/noshow.png); background-repeat: no-repeat; background-position: 1px 1px;" src="'. url::base() .'images/crop_overlay.png" alt="no update to show" /></p>';
+                $markup = $markup .'</div>';
+			}
+		}
+
+		$profile_view->markup = $markup;
+		$profile_view->uid = $uid;
+
+		foreach ($project_model->projects($uid) as $pid => $p_name) {
+			$pid_array[] = $pid;
+		}
+
+		$profile_view->pid_array = $pid_array;
 
 		// Initialise all the arrays required in the loop.
 		$project_updates = array();
@@ -205,7 +271,9 @@ class Profiles_Controller extends Openid_Controller {
 			$website = $this->input->post('website');
 			$location = $this->input->post('location');
 
-			// No support for avatars just yet. TODO
+			// Let's check for existing avatars
+			$user_information = $user_model->user_information($this->uid);
+			$avatar_filename = $user_information['avatar'];
 
 			// Begin to validate the information.
 			$validate = new Validation($this->input->post());
@@ -223,6 +291,65 @@ class Profiles_Controller extends Openid_Controller {
 
 			if ($validate->validate())
 			{
+				if (!empty($_FILES['avatar']['name']))
+				{
+					$files = new Validation($_FILES);
+					$files = $files->add_rules('avatar', 'upload::valid', 'upload::type['. Kohana::config('profiles.filetypes') .']', 'upload::size['. Kohana::config('profiles.avatar_upload_limit') .']');
+
+					if ($files->validate())
+					{
+						// If there is an existing avatar in place.
+						if (!empty($avatar_filename))
+						{
+							// ... delete it!
+							unlink(DOCROOT .'uploads/avatars/'. $avatar_filename .'.jpg');
+						}
+
+						// Upload the file as normal.
+						$filename = upload::save('avatar', time() . strtolower($_FILES['avatar']['name']), DOCROOT .'uploads/avatars/');
+
+						// Determine the file name.
+						$extension = strtolower(substr(strrchr($_FILES['avatar']['name'], '.'), 1));
+						$avatar_filename = substr(basename($filename), 0, -strlen($extension)-1);
+
+						list($width, $height, $type, $attr) = getimagesize($filename);
+
+						// Create a cropped thumbnail.
+						if ($extension == 'jpg') {
+							$myImage = imagecreatefromjpeg($filename);   
+						} elseif ($extension == 'gif') {
+							$myImage = imagecreatefromgif($filename);   
+						} elseif ($extension == 'png') {
+							$myImage = imagecreatefrompng($filename);   
+						}
+
+						// We no longer need the original image.
+						unlink(DOCROOT .'uploads/avatars/'. $avatar_filename .'.'. $extension);
+						  
+						if ($width > $height) {  
+							$cropWidth   = $height;   
+							$cropHeight  = $height;   
+							$c1 = array("x"=>($width-$cropWidth)/2, "y"=>0);  
+						} else {
+							$cropWidth   = $width;   
+							$cropHeight  = $width;   
+							$c1 = array("x"=>0, "y"=>($height-$cropHeight)/8);  
+						}
+
+						// Creating the thumbnail  
+						$thumb = imagecreatetruecolor(80, 80);   
+						imagecopyresampled($thumb, $myImage, 0, 0, $c1['x'], $c1['y'], 80, 80, $cropWidth, $cropHeight);   
+						   
+						//final output    
+						imagejpeg($thumb, DOCROOT .'uploads/avatars/'. substr(basename($filename), 0, -4) .'.jpg', 80);
+						imagedestroy($thumb);
+					}
+					else
+					{
+						die ('Your upload has failed, please check your file extension.');
+					}
+				}
+
 				$dob = $dd .'/'. $mm .'/'. $yyyy;
 
 				// Everything went great! Let's add the update.
@@ -236,7 +363,8 @@ class Profiles_Controller extends Openid_Controller {
 					'yahoo' => $yahoo,
 					'skype' => $skype,
 					'website' => $website,
-					'location' => $location
+					'location' => $location,
+					'avatar' => $avatar_filename
 				), $this->uid);
 
 				// Then load our success view.

@@ -435,13 +435,17 @@ class Update_Model extends Model {
 	 *
 	 * @return array
 	 */
-	public function updates($uid = NULL, $pid, $order = 'ASC', $limit = FALSE, $offset = FALSE)
+	public function updates($uid = NULL, $pid = NULL, $order = 'ASC', $limit = FALSE, $offset = FALSE)
 	{
-		if ($uid == NULL) {
-			$updates = $this->db->from('updates')->where('pid', $pid)->orderby('id', $order);
-		} else {
-			$updates = $this->db->from('updates')->where(array('uid' => $uid, 'pid' => $pid))->orderby('id', $order);
+		$search_array = array();
+		if ($uid != NULL) {
+			$search_array['uid'] = $uid;
 		}
+		if ($pid != NULL) {
+			$search_array['pid'] = $pid;
+		}
+
+		$updates = $this->db->from('updates')->where($search_array)->orderby('id', $order);
 
 		if ($limit != FALSE && $offset != FALSE) {
 			$updates = $updates->limit($limit, $offset);

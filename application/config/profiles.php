@@ -22,5 +22,8 @@
  * @copyright	Copyright (C) 2009 Eadrax Team
  */
 
-// Set the genders
-$config['gender'] = array('Unknown' => 'Please select your gender', 'Female' => 'Female', 'Male' => 'Male');
+// Avatar upload size limit
+$config['avatar_upload_limit'] = '1M';
+
+// The allowed filetypes for avatars on the website.
+$config['filetypes'] = 'gif,jpg,png';
