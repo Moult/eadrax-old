@@ -89,6 +89,7 @@ CREATE TABLE IF NOT EXISTS `projects` (
   `uid` int(11) NOT NULL,
   `cid` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
+  `summary` varchar(80) NOT NULL,
   `website` varchar(255) NOT NULL,
   `contributors` varchar(255) NOT NULL,
   `icon` varchar(255) NOT NULL,
@@ -100,8 +101,8 @@ CREATE TABLE IF NOT EXISTS `projects` (
   KEY `cid` (`cid`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
-INSERT INTO `projects` (`uid`, `cid`, `name`, `description`) VALUES
-(1, 12, 'Uncategorised', 'Every update that is not part of any user-defined project is put into this section.');
+INSERT INTO `projects` (`uid`, `cid`, `name`, `summary`, `description`) VALUES
+(1, 12, 'Uncategorised', 'Miscellaneous updates that don''t deserve a project of their own.', 'Every update that is not part of any user-defined project is put into this section.');
 
 CREATE TABLE IF NOT EXISTS `subscribe` (
   `id` int(11) NOT NULL auto_increment,

@@ -4,9 +4,9 @@
 <img src="<?php echo url::base(); ?>images/noavatar.png" class="icon" alt="" style="border: 1px solid #999; padding: 1px; float: left;" />
 <?php } ?>
 
-<h2 style="margin-left: 90px;">
-	<span style="float: left;"><?php echo $user['username']; ?>'s projects and latest updates</span> <span style="float: right; font-size: 18px; color: #AAA; letter-spacing: -1px; line-height: 30px;">Last active: <?php echo $user['lastactive']; ?></span><br />
-	<span style="font-size: 15px; letter-spacing: -1px; color: #888;">
+<h2 style="margin-left: 5px; float: left; height: 82px; width: 590px;">
+	<div style="height: 30px;"><?php echo $user['username']; ?>'s projects and latest updates</div>
+	<div style="height: 30px; line-height: 30px; font-size: 15px; letter-spacing: -1px; color: #888;">
 <?php if (!empty($age)) { ?>
 <?php echo $age; ?> year old
 <?php if ($user['gender'] != 'Confused') { ?>
@@ -20,8 +20,8 @@ living in <?php echo $user['location']; ?>
 <?php } else { ?>
 A sociopath who hasn't yet updated his profile information
 <?php } ?>
-<?php if ($this->uid == $user['id']) { ?> <a href="<?php echo url::base(); ?>profiles/update/<?php echo $user['id']; ?>/"><img src="<?php echo url::base(); ?>images/icons/pencil.png" alt="" /></a><?php } ?></span><br />
-	<span style="font-size: 12px; letter-spacing: -1px; color: #888;">
+<?php if ($this->uid == $user['id']) { ?> <a href="<?php echo url::base(); ?>profiles/update/<?php echo $user['id']; ?>/"><img src="<?php echo url::base(); ?>images/icons/pencil.png" alt="" /></a><?php } ?></div>
+	<div style="height: 25px; line-height: 25px; font-size: 12px; letter-spacing: -1px; color: #888;">
 <?php if(!empty($user['email'])) { ?><a href="mailto:<?php echo $user['email']; ?>"><img src="<?php echo url::base(); ?>images/icons/email.png" /></a>&nbsp;<?php } ?>
 <?php if(!empty($user['website'])) { ?><a href="<?php echo $user['website']; ?>"><img src="<?php echo url::base(); ?>images/icons/world_link.png" /></a>&nbsp;<?php } ?>
 <?php if(!empty($user['msn'])) { ?><img src="<?php echo url::base(); ?>images/icons/msn.png" title="<?php echo $user['msn']; ?>" alt="MSN" />&nbsp;<?php } ?>
@@ -29,12 +29,10 @@ A sociopath who hasn't yet updated his profile information
 <?php if(!empty($user['yahoo'])) { ?><img src="<?php echo url::base(); ?>images/icons/yahoo.png" title="<?php echo $user['yahoo']; ?>" alt="yahoo" />&nbsp;<?php } ?>
 <?php if(!empty($user['skype'])) { ?><img src="<?php echo url::base(); ?>images/icons/skype.png" title="<?php echo $user['skype']; ?>" alt="skype" />&nbsp;<?php } ?>
 <?php if(empty($user['email']) && empty($user['website']) && empty($user['msn']) && empty($user['gtalk']) && empty($user['yahoo']) && empty($user['skype'])) { ?><img src="<?php echo url::base(); ?>images/icons/status_online.png" alt="" /> No contact information is available<?php } ?>
-	</span>
+	</div>
 </h2>
 
-<!--<ul>
-	<li><a href="<?php echo url::site('profiles/change_password/' . $user['id']); ?>">Change Password</a></li>
-</ul>-->
+<div style="width: 150px; text-align: right; float: right; font-size: 14px; color: #AAA; letter-spacing: -1px; line-height: 40px;">Last active: <?php echo date('jS F', $user['lastactive']); ?></div>
 
 <?php if (!empty($user['description'])) { ?>
 <div style="clear: both; background-color: #FFF; border: 1px solid #888; padding: 10px; margin-bottom: 10px;">
@@ -51,6 +49,8 @@ $(document).ready(function() {
 	$("#expand").click(function(){
 <?php foreach ($pid_array as $pid) { ?>
 		$("#slider<?php echo $pid; ?>").slideToggle("slow");
+		$("#summary<?php echo $pid; ?>").slideToggle("slow");
+		$("#information<?php echo $pid; ?>").slideToggle("slow");
 		if ($("#section_top_left<?php echo $pid; ?>").hasClass('tall')) {
 			$("#section_divider<?php echo $pid; ?>").css("background-color", "#E3F8FF");
 			$("#section_top_right<?php echo $pid; ?>").animate({height: '100'});

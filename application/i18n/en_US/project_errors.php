@@ -29,6 +29,12 @@ $lang = array(
 		'standard_text'	=> 'There are illegal characters in the project name.'
 	),
 
+	'summary' => array(
+		'required'		=> 'The summary (one-line description of project) cannot be blank.',
+		'length'		=> 'Summary must be between 1-80 characters.',
+		'standard_text'	=> 'There are illegal characters in the summary.'
+	),
+
 	'website' => array(
 		'url' => 'This is not a valid website URL.'
 	),

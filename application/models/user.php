@@ -150,4 +150,14 @@ class User_Model extends ORM {
 
 		return $uid;
 	}
+
+	/**
+	 * Updates a user's lastactive time.
+	 *
+	 * @param int   $uid  The uid to change.
+	 */
+	public function log_user($uid)
+	{
+		$this->db->set('lastactive', time())->where('id', $uid)->update('users');
+	}
 }

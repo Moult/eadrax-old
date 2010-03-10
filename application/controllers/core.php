@@ -62,6 +62,9 @@ abstract class Core_Controller extends Template_Controller {
 			$this->username		= $this->authlite->get_user()->username;
 			$this->uid			= $this->authlite->get_user()->id;
 			$this->logged_in	= TRUE;
+
+			$log_user = new User_Model;
+			$log_user->log_user($this->uid);
 		}
 		elseif ($this->authlite->logged_in() == FALSE)
 		{

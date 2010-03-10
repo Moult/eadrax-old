@@ -62,6 +62,11 @@
 					</p>
 
 					<p>
+						<label for="summary">Summary:</label>
+						<input type="text" id="summary" style="width: 400px;" name="summary" value="<?php echo $form['summary']; ?>" <?php if (isset($errors['summary'])) { echo 'class="error"'; } ?> />
+					</p>
+
+					<p>
 						<label for="description" style="height: 20px;">Description:</label>
 						<script type="text/javascript">edToolbar('detail'); </script>
 						<textarea name="description" id="detail" class="resizable" <?php if (isset($errors['description'])) { echo 'class="error"'; } ?>><?php echo $form['description']; ?></textarea>

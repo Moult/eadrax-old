@@ -112,7 +112,9 @@ class Projects_Controller extends Core_Controller {
                 $markup = $markup .'<div style="float: left; width: 260px; margin: 7px; height: 200px; border: 0px solid #F00;">';
 				$markup = $markup .'<p><a href="'. url::base() .'/updates/view/'. $row->id .'/"><img style="vertical-align: middle; border: 1px solid #999; padding: 1px; background: url('. $icon .'); background-repeat: no-repeat; background-position: 1px 1px;" src="'. url::base() .'images/crop_overlay.png" alt="update icon" /></a></p>';
 				$markup = $markup .'<cite style="background: #000000; -moz-opacity:.55; filter:alpha(opacity=55); opacity: .55; color: #FFF; position: relative; display: block; margin-left: auto; margin-right: auto; left: 2px; top: -64px; height: 30px; width: 240px; padding: 10px; border-top: 1px solid #888; font-weight: bold; word-wrap: break-word;"><span style="float: left; border: 0px solid #F00; height: 30px; width: 210px;">'. $row->summary .'</span><span style="font-weight: 100; font-size: 9px; float: right; position: relative; top: -2px; text-align: right;">'. $row->views .'V<br />'. $kudos_model->kudos($row->id) .'K<br />'. $comment_model->comment_update_number($row->id) .'C</span></cite>';
-				$markup = $markup .'<img src="'. $file_icon .'" style="position: relative; top: -170px; left: 205px;" />';
+				if (!empty($file_icon)) {
+					$markup = $markup .'<img src="'. $file_icon .'" style="position: relative; top: -170px; left: 205px;" />';
+				}
                 $markup = $markup .'</div>';
             }
         }
@@ -159,6 +161,7 @@ class Projects_Controller extends Core_Controller {
 		{
 			$name			= $this->input->post('name');
 			$website		= $this->input->post('website');
+			$summary		= $this->input->post('summary');
 			$contributors	= $this->input->post('contributors');
 			$description	= $this->input->post('description');
 			$cid			= $this->input->post('cid');
@@ -179,6 +182,7 @@ class Projects_Controller extends Core_Controller {
 			$validate->pre_filter('trim');
 			$validate->add_rules('name', 'required', 'length[1, 25]', 'standard_text');
 			$validate->add_rules('website', 'url');
+			$validate->add_rules('summary', 'required', 'length[1,80]', 'standard_text');
 			$validate->add_rules('contributors', 'standard_text');
 			$validate->add_rules('description', 'required');
 			$validate->add_rules('cid', 'required', 'between[1, '. Kohana::config('projects.max_cid') .']');
@@ -221,6 +225,7 @@ class Projects_Controller extends Core_Controller {
 						'cid'			=> $cid,
 						'name'			=> $name,
 						'website'		=> $website,
+						'summary'		=> $summary,
 						'contributors'	=> $contributors,
 						'description'	=> $description,
 						'icon'			=> $icon_filename
@@ -234,6 +239,7 @@ class Projects_Controller extends Core_Controller {
 						'cid'			=> $cid,
 						'name'			=> $name,
 						'website'		=> $website,
+						'summary'		=> $summary,
 						'contributors'	=> $contributors,
 						'description'	=> $description,
 						'icon'			=> $icon_filename
@@ -261,6 +267,7 @@ class Projects_Controller extends Core_Controller {
 				$project_form_view->form = arr::overwrite(array(
 					'name' => '',
 					'website' => '',
+					'summary' => '',
 					'contributors' => '',
 					'description' => ''
 					), $validate->as_array());
@@ -289,6 +296,7 @@ class Projects_Controller extends Core_Controller {
 				$project_form_view->form = array(
 					'name' => '',
 					'website' => '',
+					'summary' => '',
 					'contributors' => '',
 					'description' => ''
 				);

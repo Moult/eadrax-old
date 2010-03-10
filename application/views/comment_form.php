@@ -5,14 +5,31 @@
 	</h2>
 
 	<?php foreach ($comments as $row) { ?>
-	<h3 style="border-top: 1px dotted #BBB; padding-top: 5px; background-color: #FFF; margin-bottom: 0px; padding-bottom: 10px; padding-left: 5px; border-left: 1px solid #EEE; border-right: 1px solid #EEE;">
-		<?php $comment_var_name = 'comment'. $row->uid;
-		$comment_user_info = $$comment_var_name;
-		if ($row->uid == 1) { echo $comment_user_info['username']; } else { echo '<a href="'. url::base() .'profiles/view/'. $row->uid .'/">'. $comment_user_info['username'] .'</a>'; } ?> says: <?php if ($this->uid == $row->uid && $this->uid != 1 || $this->uid == $update_uid && $this->uid != 1) { echo '<span style="float: right; margin-right: 5px;"><a href="'. url::base() .'feedback/delete/'. $row->id .'/"><img src="'. url::base() .'images/icons/delete.png" alt="Delete" class="icon" /></a></span>'; } ?>
-	</h3>
-	<p style="background-image: url('<?php echo url::base(); ?>images/comment_divide.png'); background-position: bottom; background-repeat: repeat-x; padding-bottom: 10px; background-color: #FFF; padding-left: 5px; border-left: 1px solid #EEE; border-right: 1px solid #EEE;">
-		<?php echo nl2br($row->comment);  ?>
-	</p>
+<?php
+$comment_var_name = 'comment'. $row->uid;
+$comment_user_info = $$comment_var_name;
+?>
+
+	<div style="background-image: url('<?php echo url::base(); ?>images/comment_divide.png'); background-position: bottom; background-repeat: repeat-x; border-top: 1px dotted #BBB; padding-top: 5px; background-color: #FFF; margin-bottom: 10px; padding-bottom: 10px; padding-left: 5px; border-left: 1px solid #EEE; border-right: 1px solid #EEE; overflow: hidden;">
+
+		<div style="float: left;">
+			<?php if (!empty($comment_user_info['avatar'])) { ?>
+			<img src="<?php echo url::base(); ?>uploads/avatars/<?php echo $comment_user_info['avatar']; ?>_small.jpg" class="icon" alt="" style="border: 1px solid #999; padding: 1px; float: left;" />
+			<?php } else { ?>
+			<img src="<?php echo url::base(); ?>images/noprojecticon.png" class="icon" alt="" style="border: 1px solid #999; padding: 1px; float: left;" />
+			<?php } ?>
+		</div>
+
+		<div style="margin-left: 5px; float: left; width: 485px;">
+			<h3 style="height: 20px;">
+				<?php if ($row->uid == 1) { echo $comment_user_info['username']; } else { echo '<a href="'. url::base() .'profiles/view/'. $row->uid .'/" style="text-decoration: none;">'. $comment_user_info['username'] .'</a>'; } ?> says:
+		<?php if ($this->uid == $row->uid && $this->uid != 1 || $this->uid == $update_uid && $this->uid != 1) { echo '<div style="float: right; margin-right: 5px;"><a href="'. url::base() .'feedback/delete/'. $row->id .'/"><img src="'. url::base() .'images/icons/delete.png" alt="Delete" class="icon" /></a></div>'; } ?>
+			</h3>
+			<p>
+				<?php echo nl2br($row->comment);  ?>
+			</p>
+		</div>
+	</div>
 	<?php } ?>
 
 	<p>

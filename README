@@ -173,6 +173,7 @@ accidentally commit your local system's settings to the GIT repository.
 .htaccess
 uploads/files/*
 uploads/icons/*
+uploads/avatars/*
 application/logs/*
 application/vendor/pchart/Cache/*
 application/config/*
