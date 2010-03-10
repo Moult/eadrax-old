@@ -71,6 +71,11 @@ if (($this->uri->segment(1) == 'updates' && $this->uri->segment(2) == 'add') || 
 <?php if ($this->uri->segment(1) == 'updates' && $this->uri->segment(2) == 'add') { ?>
 		<!-- More file fields -->
         <script type="text/javascript" src="<?php echo url::base(); ?>js/browse.js"></script>
+		<script type="text/javascript">
+			function doOverlay() {
+				document.getElementById('overlay').style.display = "table";
+			}
+		</script>
 <?php } ?>
 
 		<style type="text/css">

@@ -374,18 +374,18 @@ class Projects_Controller extends Core_Controller {
 		// Load necessary models.
 		$update_model = new Update_Model;
 
-		$query = $update_model->updates($uid, $pid, 'ASC', 18);
+		$query = $update_model->updates($uid, $pid, 'DESC', 18);
         $markup = '';
 
         if (count($query) > 0) {
             foreach ($query as $row) {
 				$icon = Updates_Controller::_file_icon($row->filename0, $row->ext0);
                 // Build the markup.
-                $markup = '</div>'. $markup;
-                $markup = '<h3><a href="'. url::base() .'/updates/view/'. $row->id .'/">'. $row->summary .'</a></h3><span>'. $row->logtime .'</span>'. $markup;
+                $markup = $markup .'<div>';
 				if (!strpos($icon, 'images/icons')) { $markup_add = 'border: 1px solid #999; padding: 1px;'; } else { $markup_add = ''; }
-				$markup = '<p><a href="'. url::base() .'/updates/view/'. $row->id .'/"><img style="vertical-align: middle; '. $markup_add .'" src="'. $icon .'" alt="update icon" /></a></p>'. $markup;
-                $markup = '<div>'. $markup;
+				$markup = $markup .'<p><a href="'. url::base() .'/updates/view/'. $row->id .'/"><img style="vertical-align: middle; '. $markup_add .'" src="'. $icon .'" alt="update icon" /></a></p>';
+                $markup = $markup .'<h3><a href="'. url::base() .'/updates/view/'. $row->id .'/">'. $row->summary .'</a></h3><span>'. date('jS F Y', strtotime($row->logtime)) .'</span>';
+                $markup = $markup .'</div>';
             }
         }
         return $markup;

@@ -96,11 +96,19 @@
 					</p>
 					<?php } ?>
 
+					<div id="overlay" style="display: none; position: absolute; text-align: center; top: 0; left: 0; width: 100%; height: 170%; background-color: #000; -moz-opacity: 0.8; opacity: .80; filter: alpha(opacity=80);">
+						<div style="display: table-cell; vertical-align: middle; color: #FFF;">
+							<img src="<?php echo url::base(); ?>images/loading.gif" alt="Loading" /><br />
+							Please be patient as your update is submitted.<br />
+							Uploading files will take a longer time to complete. Try to resist closing your browser window.
+						</div>
+					</div>
+
 					<p class="submit">
 						<?php if (isset($uid)) { ?>
-						<input type="submit" name="submit" class="submit" value="Edit status update" />
+						<input type="submit" name="submit" class="submit" onclick="doOverlay();" value="Edit update" />
 						<?php } else { ?>
-						<input type="submit" name="submit" class="submit" value="Add status update" />
+						<input type="submit" name="submit" class="submit" onclick="doOverlay();" value="Add update" />
 						<?php } ?>
 					</p>
 
