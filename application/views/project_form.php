@@ -84,6 +84,12 @@
 						<input type="submit" name="submit" class="submit" value="Add New Project" />
 						<?php } ?>
 					</p>
+
+					<?php if (isset($pid)) { ?>
+					<p>
+						If you no longer work on this project you may wish to <a href="<?php echo url::base(); ?>projects/delete/<?php echo $pid; ?>/">delete this project</a>.
+					</p>
+					<?php } ?>
 				</div>
 			</fieldset>
 		</form>

@@ -109,13 +109,23 @@ class Project_Model extends Model {
 	 *
 	 * @return null
 	 */
-	public function delete_project($pid)
+	public function delete_project($pid, $new_pid = FALSE)
 	{
-		$delete_project = $this->db;
-		$delete_project = $delete_project->where('id', $pid)->delete('projects');
+		if ($new_pid != FALSE) {
+			// Move all the project updates.
+			$move_updates = $this->db->set('pid', $new_pid)->where('pid', $pid)->update('updates');
+			
+			// Update news feeds.
+			$update_news = $this->db->set('pid', $new_pid)->where(array('upid !=' => 0, 'pid' => $pid))->update('news');
+		} else {
+			// Delete them all.
+			$delete_updates = $this->db->where('pid', $pid)->delete('updates');
+		}
 
 		// Log for newsfeeds.
 		$newsfeed = $this->db->where('pid', $pid)->delete('news');
+
+		$delete_project = $this->db->where('id', $pid)->delete('projects');
 	}
 
 	/**

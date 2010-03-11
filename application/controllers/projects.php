@@ -333,33 +333,87 @@ class Projects_Controller extends Core_Controller {
 		// Load necessary models.
 		$project_model = new Project_Model;
 
-		// First check if you own the project.
-		if (!empty($pid) && $project_model->check_project_owner($pid, $this->uid))
+		if ($this->input->post())
 		{
-			// Determine the value of the project's icon.
-			$icon_filename	= $project_model->project_information($pid);
-			$icon_filename	= $icon_filename['icon'];
+			$new_pid = $this->input->post('new_pid');
 
-			// Is there an existing image?
-			if (!empty($icon_filename))
+			// First check if you own the project.
+			if (!empty($pid) && $project_model->check_project_owner($pid, $this->uid))
 			{
-				// Delete the file.
-				unlink(DOCROOT .'uploads/icons/'. $icon_filename);
-			}
+				// Load necessary models.
+				$update_model = new Update_Model;
 
-			// Delete the project.
-			$project_model->delete_project($pid);
+				// Determine the value of the project's icon.
+				$icon_filename	= $project_model->project_information($pid);
+				$icon_filename	= $icon_filename['icon'];
+
+				// Is there an existing image?
+				if (!empty($icon_filename))
+				{
+					// Delete the file.
+					unlink(DOCROOT .'uploads/icons/'. $icon_filename);
+				}
+
+				// Before the project database details are deleted, let's grab 
+				// all the update information it contains. We can delete 
+				// orphaned files later, but orphaned database entries are bad.
+				$update_files = $update_model->updates($this->uid, $pid);
+
+				// Delete the project.
+				if ($new_pid == 0) {
+					$new_pid == FALSE;
+				}
+
+				$project_model->delete_project($pid, $new_pid);
+
+				if ($new_pid == FALSE)
+				{
+					// Now let's delete the files.
+					foreach ($update_files as $row) {
+						for ($i = 0; $i < 5; $i++)
+						{
+							if (!empty($row->{'filename'. $i}))
+							{
+								// Delete the file.
+								unlink(DOCROOT .'uploads/files/'. $row->{'filename'. $i} .'.'. $row->{'ext'. $i});
+								if (file_exists(DOCROOT .'uploads/icons/'. $row->{'filename'. $i} .'.jpg'))
+								{
+									unlink(DOCROOT .'uploads/icons/'. $row->{'filename'. $i} .'.jpg');
+								}
+
+								if (file_exists(DOCROOT .'uploads/icons/'. $row->{'filename'. $i} .'_crop.jpg'))
+								{
+									unlink(DOCROOT .'uploads/icons/'. $row->{'filename'. $i} .'_crop.jpg');
+								}
+
+								if (file_exists(DOCROOT .'uploads/files/'. $row->{'filename'. $i} .'_fit.jpg'))
+								{
+									unlink(DOCROOT .'uploads/files/'. $row->{'filename'. $i} .'_fit.jpg');
+								}
+							}
+						}
+					}
+				}
+
+				$project_delete_success_view = new View('project_delete_success');
+
+				$this->template->content = array($project_delete_success_view);
+			}
+			else
+			{
+				die('Please ensure an ID is specified and you own the project.'); # TODO dying isn't good.
+			}
 		}
 		else
 		{
-			die('Please ensure an ID is specified and you own the project.'); # TODO dying isn't good.
+			// Load the necessary view.
+			$project_delete_view = new View('project_delete');
+
+			$project_delete_view->projects = $project_model->projects($this->uid);
+			$project_delete_view->pid = $pid;
+
+			$this->template->content = array($project_delete_view);
 		}
-
-		// Load views.
-		$project_delete_view = new View('project_delete');
-
-		// Generate the content.
-		$this->template->content = array($project_delete_view);
 	}
 
 	/**
