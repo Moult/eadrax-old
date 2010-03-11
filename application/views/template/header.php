@@ -74,6 +74,8 @@ if (($this->uri->segment(1) == 'updates' && $this->uri->segment(2) == 'add') || 
 		<script type="text/javascript">
 			function doOverlay() {
 				document.getElementById('overlay').style.display = "table";
+				document.getElementById('submit').value = "Submitting ... please wait.";
+				document.getElementById('overlay').disabled = true;
 			}
 		</script>
 <?php } ?>

@@ -167,6 +167,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `logtime` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
   `level` enum('Normal','Special','Staff','Admin') NOT NULL default 'Normal',
   `lastactive` int(11) NOT NULL,
+  `session` varchar(255) NOT NULL,
   PRIMARY KEY  (`id`),
   UNIQUE KEY `username` (`username`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;

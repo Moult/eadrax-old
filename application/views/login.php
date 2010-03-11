@@ -26,6 +26,11 @@
 						<input type="password" id="password" name="password" />
 					</p>
 
+					<p>
+						<label for="remember">Remember:</label>
+						<input type="checkbox" id="remember" name="remember" />
+					</p>
+
 					<p class="submit">
 						<input type="submit" name="submit" class="submit" value="Log me in" />
 					</p>

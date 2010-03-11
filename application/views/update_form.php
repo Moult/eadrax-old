@@ -106,9 +106,9 @@
 
 					<p class="submit">
 						<?php if (isset($uid)) { ?>
-						<input type="submit" name="submit" class="submit" onclick="doOverlay();" value="Edit update" />
+						<input type="submit" id="submit" name="submit" class="submit" onclick="doOverlay();" value="Edit update" />
 						<?php } else { ?>
-						<input type="submit" name="submit" class="submit" onclick="doOverlay();" value="Add update" />
+						<input type="submit" id="submit" name="submit" class="submit" onclick="doOverlay();" value="Add update" />
 						<?php } ?>
 					</p>
 

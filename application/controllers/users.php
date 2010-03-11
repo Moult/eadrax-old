@@ -74,6 +74,9 @@ class Users_Controller extends Openid_Controller {
 				// Everything went great! Let's register.
 				$user_model->add_user($username, $password);
 
+				// Log them in automatically.
+				$this->_login_user($username, $password, FALSE, FALSE);
+
 				// Then load our success view.
 				$register_success_view = new View('register_success');
 				$register_introduction_view = new View('register_introduction');
@@ -122,9 +125,11 @@ class Users_Controller extends Openid_Controller {
 		{
 			$username = $this->input->post('openid_identifier');
 			$password = $this->input->post('password');
+			$remember = $this->input->post('remember');
 
-			if (empty($remember))
-			{
+			if ($remember == 'on') {
+				$remember = TRUE;
+			} else {
 				$remember = FALSE;
 			}
 
@@ -135,7 +140,6 @@ class Users_Controller extends Openid_Controller {
 
 			// Do normal login.
 			$this->_login_user($username, $password, $remember, FALSE);
-
 		}
 		else
 		{
@@ -166,6 +170,11 @@ class Users_Controller extends Openid_Controller {
 			$authlite = new Authlite();
 			if ($authlite->force_login($username))
 			{
+				// Set login variables manually.
+				$this->username		= $this->authlite->get_user()->username;
+				$this->uid			= $this->authlite->get_user()->id;
+				$this->logged_in	= TRUE;
+
 				// Load the view.
 				$login_view = new View('login_success');
 
@@ -178,6 +187,11 @@ class Users_Controller extends Openid_Controller {
 			$authlite = new Authlite();
 			if ($authlite->login($username, $password, $remember))
 			{
+				// Set login variables manually.
+				$this->username		= $this->authlite->get_user()->username;
+				$this->uid			= $this->authlite->get_user()->id;
+				$this->logged_in	= TRUE;
+
 				// Load the view.
 				$login_success_view = new View('login_success');
 
