@@ -37,26 +37,29 @@
 
             <div id="latest_wips">
                 <h3>
-                    Latest WIPs
+					Latest WIPs
                 </h3>
-                <div class="latest_wip">
-                    <div class="latest_wippic"></div>
-                    <a href="#" class="latest_wip_title">WIP Title</a><br />
-                    <a href="#">By Moult</a><br />
-                    (Interface Design)
-                </div>
-                <div class="latest_wip">
-                    <div class="latest_wippic"></div>
-                    <a href="#" class="latest_wip_title">WIP Title</a><br />
-                    <a href="#">By Moult</a><br />
-                    (Interface Design)
-                </div>
-                <div class="latest_wip">
-                    <div class="latest_wippic"></div>
-                    <a href="#" class="latest_wip_title">WIP Title</a><br />
-                    <a href="#">By Moult</a><br />
-                    (Interface Design)
-                </div>
+
+					<?php foreach ($latest_data as $wip) { ?>
+					<div class="latest_wip" style="float: left; height: 180px; text-align: center;">
+
+							<div style="display: table-cell; height: 100px; margin-bottom: 5px; text-align: center;">
+								<div style="border: 0px solid #F00; width: 110px; position: relative; top: 50px; height: <?php echo $wip['thumb_height']; ?>px; margin-top: -<?php echo $wip['thumb_offset']; ?>px; text-align: center;">
+									<a href="<?php echo url::base() .'updates/view/'. $wip['id']; ?>"><img src="<?php echo $wip['filename0']; ?>" title="<?php echo $wip['summary']; ?>" alt="update icon" <?php if (!strpos($wip['filename0'], 'images/icons')) { echo 'style="border: 1px solid #999; padding: 1px;"'; } ?> /></a>
+								</div>
+							</div>
+
+							<p>
+								<?php if ($wip['pid'] != 1) { ?><a href="<?php echo url::base() .'projects/view/'. $wip['uid'] .'/'. $wip['pid'] .'/'; ?>"><?php } ?><?php echo $wip['project_name']; ?><?php if ($wip['pid'] != 1) { ?></a><?php } ?>
+							</p>
+
+							<p style="font-size: 10px;">
+								By <?php if ($wip['uid'] != 1) { ?><a href="<?php echo url::base() .'profiles/view/'. $wip['user_information']['username'] .'/';?>"><?php } ?><?php echo $wip['user_information']['username']; ?><?php if ($wip['uid'] != 1) { ?></a><?php } ?>
+							</p>
+
+						</div>
+					<?php } ?>
+
                 <div id="browse_more">
                     <a href="#"><img src="<?php echo url::base(); ?>images/browse_more.png" alt="Browse More" /></a>
                 </div>
@@ -64,7 +67,7 @@
         </div>
 
         <div id="copyright">
-            The Eadrax Team &copy; 2009
+            The Eadrax Team &copy; 2010
             <br /><br />
 			<a href="http://github.com/Moult/Eadrax">Source</a> - Sponsor - Development - Back to top
         </div>

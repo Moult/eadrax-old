@@ -7,7 +7,7 @@
 	<?php if ($uid != 1) { ?>
 	Viewing Project: <em><?php if ($pid != 1) { ?><a href="<?php echo url::base(); ?>projects/view/<?php echo $uid; ?>/<?php echo $pid; ?>"><?php echo $project_information['name']; ?></a><?php } else { ?>Uncategorised<?php } ?></em>
 	<?php } ?>
-	by <em><?php if ($uid != 1) { ?><a href="<?php echo url::base(); ?>profiles/view/<?php echo $uid; ?>/"><?php echo $user_information['username']; ?></a><?php } else { ?>Guest<?php } ?></em> with <?php echo $kudos; ?> kudos
+	by <em><?php if ($uid != 1) { ?><a href="<?php echo url::base(); ?>profiles/view/<?php echo $user_information['username']; ?>/"><?php echo $user_information['username']; ?></a><?php } else { ?>Guest<?php } ?></em> with <?php echo $kudos; ?> kudos
 </div>
 
 <div style="float: right; font-size: 18px; letter-spacing: -1px; color: #AAA; text-align: right; margin-bottom: 5px;"><?php echo date('jS F Y', strtotime($logtime)); ?></div>

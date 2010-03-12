@@ -51,6 +51,7 @@ class Projects_Controller extends Core_Controller {
 		$project_model	= new Project_Model;
 		$kudos_model	= new Kudos_Model;
 		$comment_model	= new Comment_Model;
+		$user_model		= new User_Model;
 
 		// Let's update the project view statistics
 		$project_model->view($pid);
@@ -121,6 +122,8 @@ class Projects_Controller extends Core_Controller {
 
 		$project_view->markup = $markup;
 		$project_view->uid = $uid;
+		$u_name = $user_model->user_information($uid);
+		$project_view->u_name = $u_name['username'];
 
 		// Pagination work.
 		$project_view->pages = ceil(count($update_model->updates($uid, $pid)) / Kohana::config('projects.updates_page'));

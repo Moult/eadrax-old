@@ -72,6 +72,51 @@ abstract class Core_Controller extends Template_Controller {
 			$this->uid			= 1;
 			$this->logged_in	= FALSE;
 		}
+
+		$update_model = new Update_Model;
+		$project_model = new Project_Model;
+		$user_model = new User_Model;
+
+		// Let's find out some latest updates!
+		$latest_query = $update_model->updates(NULL, NULL, 'DESC', 3);
+		$n = 0;
+		$latest_data = array();
+
+		foreach ($latest_query->result() as $row)
+		{
+			$latest_data[$n]['summary'] = $row->summary;
+			$latest_data[$n]['id'] = $row->id;
+			$latest_data[$n]['uid'] = $row->uid;
+
+			// Let's parse the thumbnails.
+			$latest_data[$n]['filename0'] = Updates_Controller::_file_icon($row->filename0, $row->ext0);
+
+			// Determine the sizes for offsetting.
+			$path = substr($latest_data[$n]['filename0'],strlen(url::base()));
+			$path = DOCROOT . $path;
+			$latest_data[$n]['thumb_height'] = getimagesize($path);
+			$latest_data[$n]['thumb_width']  = $latest_data[$n]['thumb_height'][0];
+			$latest_data[$n]['thumb_height'] = $latest_data[$n]['thumb_height'][1];
+			$latest_data[$n]['thumb_offset'] = $latest_data[$n]['thumb_height']/2;
+
+			// Right, now find out the project name.
+			if ($row->pid == 0) {
+				$latest_data[$n]['project_name'] = 'Uncategorised';
+				$latest_data[$n]['pid'] = 0;
+			} else {
+				$latest_data[$n]['pid'] = $row->pid;
+				$latest_data[$n]['project_name'] = $project_model->project_information($row->pid);
+				$latest_data[$n]['project_name'] = $latest_data[$n]['project_name']['name'];
+			}
+
+			// Find out the user name.
+			$latest_data[$n]['user_information'] = $user_model->user_information($row->uid);
+
+			$n++;
+		}
+
+		// Send all the data we collected to the template...
+		$this->template->latest_data = $latest_data;
 		
 		// Loading Libraries
 		$this->session = Session::instance();
