@@ -44,7 +44,7 @@ class Projects_Controller extends Core_Controller {
 	 *
 	 * @return null
 	 */
-	public function view($uid, $pid, $page = 1)
+	public function view($uid = NULL, $pid = NULL, $page = 1)
 	{
 		// Load necessary models.
 		$update_model	= new Update_Model;
@@ -52,6 +52,14 @@ class Projects_Controller extends Core_Controller {
 		$kudos_model	= new Kudos_Model;
 		$comment_model	= new Comment_Model;
 		$user_model		= new User_Model;
+
+		// Reset variables if a 0 has been given.
+		if ($uid == 0) {
+			$uid = NULL;
+		}
+		if ($pid == 0) {
+			$pid = NULL;
+		}
 
 		// Let's update the project view statistics
 		$project_model->view($pid);

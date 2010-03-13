@@ -61,7 +61,7 @@
 					<?php } ?>
 
                 <div id="browse_more">
-                    <a href="#"><img src="<?php echo url::base(); ?>images/browse_more.png" alt="Browse More" /></a>
+					<a href="<?php echo url::base(); ?>projects/view/"><img src="<?php echo url::base(); ?>images/browse_more.png" alt="Browse More" /></a>
                 </div>
             </div>
         </div>

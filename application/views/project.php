@@ -4,9 +4,14 @@
 	<?php } else { ?>
 	<img src="<?php echo url::base(); ?>images/noprojecticon.png" class="icon" alt="" style="border: 1px solid #999; padding: 1px;" />
 	<?php } ?>
-	<?php echo $project['name']; ?>'s Updates <?php if ($project['uid'] == $this->uid && $project['uid'] != 1) { ?><a href="<?php echo url::base(); ?>projects/add/<?php echo $project['id']; ?>/"><img src="<?php echo url::base(); ?>images/icons/pencil.png" class="icon" alt="Edit" /></a><?php } ?>
+	<?php if (!empty($uid)) { ?>
+		<?php echo $project['name']; ?>'s Updates <?php if ($project['uid'] == $this->uid && $project['uid'] != 1) { ?><a href="<?php echo url::base(); ?>projects/add/<?php echo $project['id']; ?>/"><img src="<?php echo url::base(); ?>images/icons/pencil.png" class="icon" alt="Edit" /></a><?php } ?>
+	<?php } else { ?>
+		Latest WIP Updates
+	<?php } ?>
 </h2>
 
+<?php if (!empty($uid)) { ?>
 <div style="float: left;font-size: 18px; letter-spacing: -1px; color: #AAA; text-align: right; margin-bottom: 5px;">
 By <a href="<?php echo url::base(); ?>profiles/view/<?php echo $u_name; ?>/"><?php echo $u_name; ?></a> in <em><?php echo $categories[$project['cid']]; ?></em> <?php if (!empty($project['website'])) { echo ' (<a href="'. $project['website'] .'">www</a>)'; } ?>
 </div>
@@ -16,6 +21,7 @@ By <a href="<?php echo url::base(); ?>profiles/view/<?php echo $u_name; ?>/"><?p
 <div style="clear: both; background-color: #FFF; border: 1px solid #888; padding: 10px; margin-bottom: 10px; padding-bottom: 0px;">
 <?php echo $description; ?>
 </div>
+<?php } ?>
 
 <?php if (empty($markup)) { ?>
 
@@ -23,9 +29,14 @@ By <a href="<?php echo url::base(); ?>profiles/view/<?php echo $u_name; ?>/"><?p
 	Oh no! There's no updates in this project just yet. You should add something, you know.
 </div>
 
-<?php } else { echo $markup; } ?>
+<?php } else { ?>
+<div style="clear: both; overflow: hidden; background: #EEE; border: 1px solid #AAA; padding-bottom: 5px;">
+<?php echo $markup; ?>
+</div>
+<?php } ?>
 
 <?php if ($pages > 1) { ?>
+<?php if (empty($uid)) { $uid = 0; $project['id'] = 0; } ?>
 <div style="padding: 20px; margin-left: auto; margin-right: auto; clear: both; text-align: center;">
     <ul style="display: inline;">
 <?php
@@ -52,7 +63,7 @@ for ($i = 1; $i <= $pages; $i++) {
 	} else {
 		$style = '';
 	}
-	echo '<li style="display: inline; padding: 8px; margin: 2px; margin-top: 0px; background: url('. url::base() .'images/formbg.gif); border: 1px solid #CCC; height: 25px; font-size: 10px;"><a href="'. url::base() .'projects/view/'. $uid .'/'. $project['id'] .'/'. $i .'/" style="'. $style .' text-decoration: none;">'. $i .'</a></li>';
+	echo '<li style="display: inline;"><a href="'. url::base() .'projects/view/'. $uid .'/'. $project['id'] .'/'. $i .'/" style="'. $style .' text-decoration: none; padding: 8px; margin: 2px; margin-top: 0px; background: url('. url::base() .'images/formbg.gif); border: 1px solid #CCC; height: 25px; font-size: 10px;">'. $i .'</a></li>';
 }
 ?>
 <?php
