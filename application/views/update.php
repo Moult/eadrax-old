@@ -18,6 +18,11 @@
 <div style="float: left; margin-bottom: 10px;">
 
     <ul style="margin-left: 0px; display: inline;">
+<?php if (isset($feature)) { ?>
+        <li style="width: 70px; display: inline;">
+			<input style="width: 70px;" type="button" onclick="parent.location='<?php echo url::base(); ?>updates/feature/<?php echo $id; ?>/'" value="Feature" />
+        </li>
+<?php } ?>
 <?php if ($uid != 1 && $uid != $this->uid) { ?>
         <li style="width: 70px; display: inline;">
 			<input style="width: 70px;" type="button" onclick="parent.location='<?php echo url::base(); ?>feedback/kudos/<?php echo $id; ?>/'" value="Kudos" />

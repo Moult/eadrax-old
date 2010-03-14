@@ -40,8 +40,30 @@ A sociopath who hasn't yet updated his profile information
 </div>
 <?php } ?>
 
-<div style="clear: both; overflow: hidden; background: #EEE; border: 1px solid #AAA; padding-bottom: 5px;">
-<?php echo $markup; ?>
+
+<?php if (!empty($featured_filename)) { ?>
+<div style="border: 1px solid #999; border-left: 0px; border-right: 0px; background-image: url(<?php echo url::base(); ?>images/formbg.gif); background-position: top; background-repeat: repeat-x; background-color: #DDD; padding: 8px; padding-top: 2px; padding-bottom: 4px; margin-bottom: 10px; text-align: center;">
+<p style="height: 30px; line-height: 30px; padding: 0px; margin: 0px;">
+<strong>Featuring <?php echo $featured_project_information['name']; ?></strong> - <?php echo $featured_project_information['summary']; ?>
+</p>
+
+<div style="height: 250px; width: 808px; margin-left: 1px; background-color: #FFF; padding: 1px; border: 1px solid #999; margin-bottom: 5px;">
+<a href="<?php echo url::base(); ?>projects/view/<?php echo $user['id']; ?>/<?php echo $featured_project_information['id']; ?>/"><img style="background-image: url(<?php echo url::base(); ?>uploads/files/<?php echo $featured_filename; ?>); background-position: 0px -<?php echo $featured_height; ?>px;" src="<?php echo url::base(); ?>images/featured_overlay.png" alt="">
+</a>
+</div>
+
+</div>
+<?php } ?>
+
+<div style="clear: both; overflow: hidden; background: #EEE; border: 1px dotted #AAA; padding-bottom: 5px; background-image: url(<?php echo url::base(); ?>images/formbg.gif); background-position: top; background-repeat: repeat-x; background-color: #DDD; border-left: 0px; border-right: 0px;">
+<?php if (substr_count($markup, 'images/noshow.png') == 3) { ?>
+	<p style="text-align: center; height: 30px; line-height: 30px; padding-top: 0px; margin: 0px; position: relative; top: 5px;">
+		<strong>There are no latest works-in-progresses to show</strong>
+	</p>
+<?php } ?>
+	<div style="margin-right: auto; margin-left: auto; padding-right: 4px; width: 822px;">
+		<?php echo $markup; ?>
+	</div>
 </div>
 
 <script type="text/javascript">

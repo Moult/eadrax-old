@@ -155,9 +155,24 @@ class User_Model extends ORM {
 	 * Updates a user's lastactive time.
 	 *
 	 * @param int   $uid  The uid to change.
+	 *
+	 * @return null
 	 */
 	public function log_user($uid)
 	{
 		$this->db->set('lastactive', time())->where('id', $uid)->update('users');
+	}
+
+	/**
+	 * Features an update for a user.
+	 *
+	 * @param int $uid The user id.
+	 * @param int $upid The update id.
+	 *
+	 * @return null
+	 */
+	public function feature($uid, $upid)
+	{
+		$this->db->set('featured', $upid)->where('id', $uid)->update('users');
 	}
 }

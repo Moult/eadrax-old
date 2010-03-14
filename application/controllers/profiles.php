@@ -71,6 +71,29 @@ class Profiles_Controller extends Openid_Controller {
 
 		$profile_view->age = $age;
 
+		// Parse featured update.
+		if ($user_information['featured'] != 0)
+		{
+			$featured_information = $update_model->update_information($user_information['featured']);
+			list($width, $height, $type, $attr) = getimagesize(DOCROOT .'uploads/files/'. $featured_information['filename0'] .'.'. $featured_information['ext0']);
+
+			if ($width > 850) {
+				$featured_filename = $featured_information['filename0'] .'_fit.jpg';
+			} else {
+				$featured_filename = $featured_information['filename0'] .'.'. $featured_information['ext0'];
+			}
+
+			if ($height > 250) {
+				$featured_height = $height/15;
+			} else {
+				$featured_height = 0;
+			}
+
+			$profile_view->featured_filename = $featured_filename;
+			$profile_view->featured_height = $featured_height;
+			$profile_view->featured_project_information = $project_model->project_information($featured_information['pid']);
+		}
+
 		// Let's parse latest updates.
 		$query = $update_model->updates($uid, NULL, 'DESC', 3);
         $markup = '';

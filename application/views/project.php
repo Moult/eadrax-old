@@ -30,8 +30,10 @@ By <a href="<?php echo url::base(); ?>profiles/view/<?php echo $u_name; ?>/"><?p
 </div>
 
 <?php } else { ?>
-<div style="clear: both; overflow: hidden; background: #EEE; border: 1px solid #AAA; padding-bottom: 5px;">
-<?php echo $markup; ?>
+<div style="clear: both; overflow: hidden; background: #EEE; border: 1px dotted #AAA; padding-bottom: 5px; background-image: url(<?php echo url::base(); ?>images/formbg.gif); background-position: top; background-repeat: repeat-x; background-color: #DDD; border-left: 0px; border-right: 0px;">
+	<div style="margin-right: auto; margin-left: auto; padding-right: 4px; width: 822px;">
+		<?php echo $markup; ?>
+	</div>
 </div>
 <?php } ?>
 

@@ -130,6 +130,16 @@ class Updates_Controller extends Core_Controller {
 			}
 		}
 
+		// Check if we can feature this update's project.
+		if ($this->uid == $update_information['uid'] && $update_information['uid'] != 1) {
+			if ($update_view->display0 == 'image') {
+				list($width, $height, $type, $attr) = getimagesize(DOCROOT .'uploads/files/'. $update_information['filename0'] .'.'. $update_information['ext0']);
+				if ($width >= 808) {
+					$update_view->feature = TRUE;
+				}
+			}
+		}
+
 		// Let's find out some random updates!
 		if ($update_model->update_number($update_information['uid']) > 0)
 		{
@@ -346,6 +356,36 @@ class Updates_Controller extends Core_Controller {
 		}
 		$content[] = $comment_form_view;
 		$this->template->content = $content;
+	}
+
+	/**
+	 * Features an update.
+	 *
+	 * @param int $uid The uid to feature.
+	 *
+	 * @return null
+	 */
+	public function feature($uid)
+	{
+		$this->restrict_access();
+
+		// Load necessary models.
+		$update_model = new Update_Model;
+		$user_model = new User_Model;
+
+		// Check if we can feature this update's project.
+		$update_information = $update_model->update_information($uid);
+		if ($this->uid == $update_information['uid'] && $update_information['uid'] != 1) {
+			if ($update_information['ext0'] == 'jpg' || $update_information['ext0'] == 'png' || $update_information['ext0'] == 'gif') {
+				list($width, $height, $type, $attr) = getimagesize(DOCROOT .'uploads/files/'. $update_information['filename0'] .'.'. $update_information['ext0']);
+				if ($width >= 808) {
+					// Yep, we can feature it!
+					$user_model->feature($update_information['uid'], $update_information['id']);
+					$feature_view = new View('feature');
+					$this->template->content = array($feature_view);
+				}
+			}
+		}
 	}
 
 	/**
