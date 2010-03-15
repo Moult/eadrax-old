@@ -430,6 +430,7 @@ class Projects_Controller extends Core_Controller {
 	/**
 	 * Generates the markup required for displaying a project timeline.
 	 *
+	 * @param int $uid The user ID owning the project
 	 * @param int $pid The project ID
 	 *
 	 * @return string

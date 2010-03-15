@@ -75,10 +75,12 @@ $(document).ready(function() {
 		$("#information<?php echo $pid; ?>").slideToggle("slow");
 		if ($("#section_top_left<?php echo $pid; ?>").hasClass('tall')) {
 			$("#section_divider<?php echo $pid; ?>").css("background-color", "#E3F8FF");
+			$("#section_divider<?php echo $pid; ?>").animate({height: '18'});
 			$("#section_top_right<?php echo $pid; ?>").animate({height: '100'});
 			$("#section_top_left<?php echo $pid; ?>").animate({height: '100'}).removeClass('tall');
 		} else {
 			$("#section_divider<?php echo $pid; ?>").css("background-color", "white");
+			$("#section_divider<?php echo $pid; ?>").animate({height: '24'});
 			$("#section_top_right<?php echo $pid; ?>").animate({height: '230'});
 			$("#section_top_left<?php echo $pid; ?>").animate({height: '230'}).addClass('tall');
 		}

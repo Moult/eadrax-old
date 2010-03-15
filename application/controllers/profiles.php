@@ -193,6 +193,22 @@ class Profiles_Controller extends Openid_Controller {
 			$$project_view->timeline = Projects_Controller::_generate_project_timeline($uid, $pid);
 			$$project_view->categories = $project_model->categories();
 			$$project_view->uid = $uid;
+
+			// Generate the mini preview.
+			$mini = $update_model->updates($uid, $pid, 'DESC', 5);
+			$mini_markup = '';
+
+			$mini_opacity = 90;
+			foreach ($mini as $row) {
+				$icon = Updates_Controller::_file_icon($row->filename0, $row->ext0);
+				$mini_markup = $mini_markup .'<div style="float: left; margin-left: 5px; -moz-opacity:.'. $mini_opacity .'; filter:alpha(opacity='. $mini_opacity .'); opacity: .'. $mini_opacity .'; background-image: url('. url::base() .'images/mini_icon.png); background-position: 2px; 2px; background-repeat: no-repeat;">';
+				$mini_markup = $mini_markup .'<div style="padding: 1px; border: 1px solid #CCC;"><a href="'. url::base() .'/updates/view/'. $row->id .'/"><img style="vertical-align: middle; background-image: url('. $icon .');" src="'. url::base() .'images/mini_overlay.png" alt="update icon" /></a></div>';
+                $mini_markup = $mini_markup .'</div>';
+				$mini_opacity = $mini_opacity - 20;
+			}
+
+			$$project_view->mini_markup = $mini_markup;
+
 			array_push($template_array, $$project_view);
 
 			// We need to build an array of PIDs to send to the view so that 

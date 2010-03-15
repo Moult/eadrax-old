@@ -39,7 +39,7 @@ if (!empty($content))
 				}
 
 				if ($divider_id != '') {
-					$divider_style = ' style="background-color: #E3F8FF"';
+					$divider_style = ' style="background-color: #E3F8FF; height: 18px;"';
 				} else {
 					$divider_style = '';
 				}
