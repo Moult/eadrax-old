@@ -201,8 +201,7 @@ class Update_Model extends Model {
 	 */
 	public function update_number($uid)
 	{
-		$db = $this->db;
-		$count = $db->from('updates')->where(array('uid' => $uid))->get()->count();
+		$count = $this->db->from('updates')->where(array('uid' => $uid))->get()->count();
 		return $count;
 	}
 
@@ -210,13 +209,17 @@ class Update_Model extends Model {
 	 * Returns a random number of updates by a user.
 	 *
 	 * @param int $uid The user ID.
+	 * @param int $no The number of random updates to pull.
 	 *
 	 * @return int
 	 */
-	public function update_number_random($uid)
+	public function update_number_random($uid = FALSE, $no = 5)
 	{
-		$db = $this->db;
-		$get = $db->from('updates')->where(array('uid' => $uid))->orderby(NULL, 'RAND()')->limit(5)->get();
+		$get = $this->db->from('updates');
+		if ($uid) {
+			$get = $get->where(array('uid' => $uid));
+		}
+		$get = $get->orderby(NULL, 'RAND()')->limit($no)->get();
 		return $get;
 	}
 

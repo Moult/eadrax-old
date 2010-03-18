@@ -132,7 +132,7 @@ class Updates_Controller extends Core_Controller {
 
 		// Check if we can feature this update's project.
 		if ($this->uid == $update_information['uid'] && $update_information['uid'] != 1) {
-			if ($update_view->display0 == 'image') {
+			if (isset($update_view->display0) && $update_view->display0 == 'image') {
 				list($width, $height, $type, $attr) = getimagesize(DOCROOT .'uploads/files/'. $update_information['filename0'] .'.'. $update_information['ext0']);
 				if ($width >= 808) {
 					$update_view->feature = TRUE;
@@ -386,6 +386,24 @@ class Updates_Controller extends Core_Controller {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Views a random update.
+	 *
+	 * @return null
+	 */
+	public function random()
+	{
+		$update_model = new Update_Model;
+
+		$random_update = $update_model->update_number_random(FALSE, 1);
+		foreach ($random_update as $row) {
+			$upid = $row->id;
+		}
+
+		// Load that update!
+		$this->view($upid);
 	}
 
 	/**
