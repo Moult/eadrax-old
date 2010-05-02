@@ -245,20 +245,33 @@ class Update_Model extends Model {
 	 * @param int $uid The user ID.
 	 * @param int $start The start date.
 	 * @param int $end The end date.
+	 * @param int $pid Optionally within a project id.
 	 *
 	 * @return int
 	 */
-	public function view_number_time($uid, $start, $end)
+	public function view_number_time($uid, $start, $end, $pid = NULL)
 	{
 		$count = 0;
 		$db = $this->db;
-		$updates = $db
-			->from('updates')
-			->where(array(
-				'uid' => $uid,
-				'logtime <' => $end,
-				'logtime >=' => $start
-			))->get();
+		if (!empty($pid)) {
+			$updates = $db
+				->from('updates')
+				->where(array(
+					'uid' => $uid,
+					'pid' => $pid,
+					'logtime <' => $end,
+					'logtime >=' => $start
+				))->get();
+		} else {
+			$updates = $db
+				->from('updates')
+				->where(array(
+					'uid' => $uid,
+					'logtime <' => $end,
+					'logtime >=' => $start
+				))->get();
+		}
+
 		foreach($updates as $row)
 		{
 			$count = $count + $row->views;

@@ -105,6 +105,21 @@ class Projects_Controller extends Core_Controller {
 
 		$project_view->description = $description;
 
+		if ($pid != 0) {
+			// Calculate average view per updates and average kudos per update.
+			$project_updates = $update_model->project_updates($pid, $uid);
+			$total_views = $update_model->view_number_time($uid, 0, "2020-01-01 01:01:01", $pid);
+			$total_kudos = $kudos_model->kudos_project($pid, $uid);
+
+			if ($project_updates == 0) {
+				$average_views = 0;
+				$average_kudos = 0;
+			} else {
+				$average_views = $total_views / $project_updates;
+				$average_kudos = $total_kudos / $project_updates;
+			}
+		}
+
 		// Let's parse individual updates.
 		$query = $update_model->updates($uid, $pid, 'DESC', Kohana::config('projects.updates_page'), ($page-1)*Kohana::config('projects.updates_page'));
         $markup = '';
@@ -117,14 +132,53 @@ class Projects_Controller extends Core_Controller {
 					$file_icon = $icon;
 					$icon = url::base() .'images/noicon.png';
 				}
+
+				$project_name = $project_model->project_information($row->pid);
+				$project_name = $project_name['name'];
+				$star_width = 0;
+
+				if ($pid != 0) {
+					$project_name = '';
+
+					// Calculate star width
+					if ($average_kudos == 0) {
+						$star_width_kudos = $kudos_model->kudos($row->id) * 13;
+					} else {
+						$star_width_kudos = (($kudos_model->kudos($row->id) / $average_kudos) - 1) * 130;
+					}
+
+					if ($star_width_kudos < 0) {
+						$star_width_kudos = 0;
+					}
+
+					if ($average_views == 0) {
+						$star_width_views = $row->views * 13;
+					} else {
+						$star_width_views = (($row->views / $average_views) - 1) * 130;
+					}
+
+					if ($star_width_views < 0) {
+						$star_width_views = 0;
+					}
+
+					$star_width = $star_width_kudos + $star_width_views;
+					if ($star_width > 130) {
+						$star_width = 130;
+					}
+				}
+
                 // Build the markup.
-                $markup = $markup .'<div style="float: left; width: 260px; margin: 7px; height: 200px; border: 0px solid #F00;">';
+                $markup = $markup .'<div style="float: left; width: 260px; height: 240px; border: 0px solid #F00; margin: 7px;">';
+				$markup = $markup .'<div style="height: 20px; width: 262px; margin-bottom: 5px; background-color: #1c1b19; background-repeat: repeat-x; background-image: url(\''. url::base() .'images/timebar.png\'); padding: 2px; font-size: 10px; font-family: Arial; color: #FFF; text-shadow: 0px 1px 0px #000; line-height: 20px; padding-left: 0px;"><span style="padding-left: 5px;"><div style="float: left; position: relative; top: 3px; left: 5px; background-image: url(\''. url::base() .'images/star.png\'); width: '. $star_width .'px; height: 12px;"></div><a href="'. url::base() .'projects/view/'. $row->uid .'/'. $row->pid .'/" style="text-decoration: none; color: #FFF;">'. $project_name .'</a></span><span style="float: right; padding-right: 5px;">'. date('jS F Y', strtotime($row->logtime)) .'</span></div>';
+                $markup = $markup .'<div style="width: 260px; margin: 0px; height: 200px; border: 0px solid #F00;">';
 				$markup = $markup .'<p><a href="'. url::base() .'/updates/view/'. $row->id .'/"><img style="vertical-align: middle; border: 1px solid #999; padding: 1px; background: url('. $icon .'); background-repeat: no-repeat; background-position: 1px 1px;" src="'. url::base() .'images/crop_overlay.png" alt="update icon" /></a></p>';
-				$markup = $markup .'<cite style="background: #000000; -moz-opacity:.55; filter:alpha(opacity=55); opacity: .55; color: #FFF; position: relative; display: block; margin-left: auto; margin-right: auto; left: 2px; top: -64px; height: 30px; width: 240px; padding: 10px; border-top: 1px solid #888; font-weight: bold; word-wrap: break-word;"><span style="float: left; border: 0px solid #F00; height: 30px; width: 210px;">'. $row->summary .'</span><span style="font-weight: 100; font-size: 9px; float: right; position: relative; top: -2px; text-align: right;">'. $row->views .'V<br />'. $kudos_model->kudos($row->id) .'K<br />'. $comment_model->comment_update_number($row->id) .'C</span></cite>';
+				$markup = $markup .'<cite style="background-color: #EEE; background-image: url(\''. url::base() .'/images/formbg.gif\'); background-repeat: repeat-x; -moz-opacity:.55; filter:alpha(opacity=55); opacity: .55; color: #000; position: relative; display: block; margin-left: auto; margin-right: auto; left: 2px; top: -63px; height: 30px; width: 240px; padding: 10px; border-top: 1px solid #888; font-weight: bold;"><span style="font-weight: 100; font-size: 9px; float: right; position: relative; top: -2px; text-align: right;">'. $row->views .'V<br />'. $kudos_model->kudos($row->id) .'K<br />'. $comment_model->comment_update_number($row->id) .'C</span></cite>';
+				$markup = $markup .'<span style="color: #000; font-weight: 600; float: left; border: 0px solid #F00; height: 30px; width: 210px; text-shadow: 0px 1px 0px #AAA; position: relative; top: -105px; left: 8px; word-wrap: break-word;">'. $row->summary .'</span>';
 				if (!empty($file_icon)) {
-					$markup = $markup .'<img src="'. $file_icon .'" style="position: relative; top: -170px; left: 205px;" />';
+					$markup = $markup .'<img src="'. $file_icon .'" style="position: relative; top: -170px; left: -5px;" />';
 				}
                 $markup = $markup .'</div>';
+				$markup = $markup .'</div>';
             }
         }
 
