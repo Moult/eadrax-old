@@ -179,7 +179,7 @@ class Auth_OpenID_ServiceEndpoint {
      */
     function fromXRDS($uri, $xrds_text)
     {
-        $xrds =& Auth_Yadis_XRDS::parseXRDS($xrds_text);
+        $xrds = Auth_Yadis_XRDS::parseXRDS($xrds_text);
 
         if ($xrds) {
             $yadis_services =
@@ -273,7 +273,7 @@ function Auth_OpenID_findOPLocalIdentifier($service, $type_uris)
     $service->parser->registerNamespace('xrd',
                                         Auth_Yadis_XMLNS_XRD_2_0);
 
-    $parser =& $service->parser;
+    $parser = $service->parser;
 
     $permitted_tags = array();
 

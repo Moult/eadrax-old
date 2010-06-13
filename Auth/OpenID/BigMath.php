@@ -376,10 +376,15 @@ function Auth_OpenID_detectMathLibrary($exts)
         // Try to load dynamic modules.
         if (!$loaded) {
             foreach ($extension['modules'] as $module) {
-                if (@dl($module . "." . PHP_SHLIB_SUFFIX)) {
+				// As of PHP 5.3 there is no way to load extensions on runtime.
+				// It has to be done via the extensions directive in php.ini
+				/*
+                if (dl($module . "." . PHP_SHLIB_SUFFIX)) {
                     $loaded = true;
                     break;
                 }
+				*/
+				$loaded = true;
             }
         }
 
@@ -416,7 +421,7 @@ function Auth_OpenID_detectMathLibrary($exts)
  *
  * @package OpenID
  */
-function &Auth_OpenID_getMathLib()
+function Auth_OpenID_getMathLib()
 {
     // The instance of Auth_OpenID_MathWrapper that we choose to
     // supply will be stored here, so that subseqent calls to this

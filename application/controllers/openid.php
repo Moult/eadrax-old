@@ -115,7 +115,7 @@ abstract class Openid_Controller extends Core_Controller {
 			 * earlier.
 			 */
 			$store = getStore();
-			$consumer =& new Auth_OpenID_Consumer($store);
+			$consumer = new Auth_OpenID_Consumer($store);
 			return $consumer;
 		}
 
