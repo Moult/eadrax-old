@@ -56,6 +56,7 @@ class Projects_Controller extends Core_Controller {
 		$user_model		= new User_Model;
 
 		$this->template->content = array();
+		$this->template->join = 1;
 
 		// Reset variables if a 0 has been given.
 		if ($uid == 0) {
@@ -87,30 +88,6 @@ class Projects_Controller extends Core_Controller {
 				}
 
 				$profile_view->age = $age;
-
-				// Parse featured update.
-				if ($user_information['featured'] != 0)
-				{
-					$featured_information = $update_model->update_information($user_information['featured']);
-					list($width, $height, $type, $attr) = getimagesize(DOCROOT .'uploads/files/'. $featured_information['filename0'] .'.'. $featured_information['ext0']);
-
-					if ($width > 850) {
-						$featured_filename = $featured_information['filename0'] .'_fit.jpg';
-					} else {
-						$featured_filename = $featured_information['filename0'] .'.'. $featured_information['ext0'];
-					}
-
-					if ($height > 250) {
-						$featured_height = $height/15;
-					} else {
-						$featured_height = 0;
-					}
-
-					$profile_view->featured_filename = $featured_filename;
-					$profile_view->featured_height = $featured_height;
-					$profile_view->featured_project_information = $project_model->project_information($featured_information['pid']);
-				}
-
 				$profile_view->uid = $uid;
 
 				$this->template->content[] = $profile_view;
@@ -125,6 +102,8 @@ class Projects_Controller extends Core_Controller {
 		$project_model->view($pid);
 
 		$project_view = new View('project');
+
+		$project_view->join = 1;
 
 		// Parse the project itself first.
 		$project_information = $project_model->project_information($pid);

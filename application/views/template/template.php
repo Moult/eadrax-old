@@ -10,8 +10,10 @@ if (!empty($content))
 			echo '<div id="content_top_left"></div>';
 			echo '<div id="content_top">';
 			echo $block;
-			echo '</div>';
-			echo '<div id="content_top_right"></div>';
+			if (!isset($join)) {
+				echo '</div>';
+				echo '<div id="content_top_right"></div>';
+			}
 			$i++;
 		}
 		elseif ($i > 0)
@@ -45,25 +47,37 @@ if (!empty($content))
 				}
 
 
-				echo '<div class="section_divider" id="section_divider'. $divider_id .'"'. $divider_style .'></div>';
-				echo '<div class="section_top_left" id="section_top_left'. $section_id .'"'. $side_style .'></div>';
-				echo '<div class="section_top" id="section_top'. $section_id .'"'. $top_style .'>';
-				echo $block;
-				echo '</div>';
-				echo '<div class="section_top_right" id="section_top_right'. $section_id .'"'. $side_style .'></div>';
+				if (!isset($join)) {
+					echo '<div class="section_divider" id="section_divider'. $divider_id .'"'. $divider_style .'></div>';
+					echo '<div class="section_top_left" id="section_top_left'. $section_id .'"'. $side_style .'></div>';
+					echo '<div class="section_top" id="section_top'. $section_id .'"'. $top_style .'>';
+					echo $block;
+					echo '</div>';
+					echo '<div class="section_top_right" id="section_top_right'. $section_id .'"'. $side_style .'></div>';
+				}
 				$i++;
 			}
 			else
 			{
-				echo '<div class="section_divider"></div>';
-				echo '<div class="section_top_left"></div>';
-				echo '<div class="section_top">';
+				if (!isset($join)) {
+					echo '<div class="section_divider"></div>';
+					echo '<div class="section_top_left"></div>';
+					echo '<div class="section_top">';
+				}
 				echo $block;
-				echo '</div>';
-				echo '<div class="section_top_right"></div>';
+				if (!isset($join)) {
+					echo '</div>';
+					echo '<div class="section_top_right"></div>';
+				}
 			}
 		}
 	}
+
+	if (isset($join)) {
+		echo '</div>';
+		echo '<div id="content_top_right"></div>';
+	}
+
 }
 require 'footer.php';
 ?>

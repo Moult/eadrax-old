@@ -1,3 +1,4 @@
+<?php if (!isset($join)) { ?>
 <?php if (empty($project)) { ?>
 <h2 style="float: left;">
 <?php } else { ?>
@@ -13,10 +14,8 @@
 	<?php } else { ?>
 		Latest WIP Updates
 	<?php } ?>
-
-
-
 </h2>
+<?php } ?>
 
 <?php if (!empty($project)) { ?>
 

@@ -55,9 +55,9 @@ class Profiles_Controller extends Openid_Controller {
 		$comment_model	= new Comment_Model;
 
 		// Load the main profile view.
-		$profile_view = new View('profile');
+		$project_top_view = new View('project_top');
 		$user_information = $user_model->user_information($uid);
-		$profile_view->user = $user_information;
+		$project_top_view->user = $user_information;
 
 		// Calculate age from date of birth.
 		if(!empty($user_information['dob']))
@@ -74,7 +74,7 @@ class Profiles_Controller extends Openid_Controller {
 			$age = '';
 		}
 
-		$profile_view->age = $age;
+		$project_top_view->age = $age;
 
 		// Parse featured update.
 		if ($user_information['featured'] != 0)
@@ -94,19 +94,19 @@ class Profiles_Controller extends Openid_Controller {
 				$featured_height = 0;
 			}
 
-			$profile_view->featured_filename = $featured_filename;
-			$profile_view->featured_height = $featured_height;
-			$profile_view->featured_project_information = $project_model->project_information($featured_information['pid']);
+			$project_top_view->featured_filename = $featured_filename;
+			$project_top_view->featured_height = $featured_height;
+			$project_top_view->featured_project_information = $project_model->project_information($featured_information['pid']);
 		}
 
-		$profile_view->uid = $uid;
-		$profile_view->browseby = $this->uri->segment(2);
+		$project_top_view->uid = $uid;
+		$project_top_view->browseby = $this->uri->segment(2);
 
 		foreach ($project_model->projects($uid) as $pid => $p_name) {
 			$pid_array[] = $pid;
 		}
 
-		$profile_view->pid_array = $pid_array;
+		$project_top_view->pid_array = $pid_array;
 
 		// Initialise all the arrays required in the loop.
 		$project_updates = array();
@@ -182,7 +182,7 @@ class Profiles_Controller extends Openid_Controller {
 		}
 
 		// Let's sneak the profile view into the beginning of the page.
-		array_unshift($template_array, $profile_view);
+		array_unshift($template_array, $project_top_view);
 
 		// Then finally add the footer.
 		$random_update_view = new View('random_update');
