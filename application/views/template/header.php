@@ -23,7 +23,7 @@
         <link rel="stylesheet" type="text/css" href="<?php echo url::base(); ?>css/stylesheet.css" />
 <?php
 // If we are viewing an update, we need a couple more fancy stuff.
-if ($this->uri->segment(1) == 'updates' && $this->uri->segment(2) == 'view') {
+if ($this->uri->segment(1) == 'updates' && ($this->uri->segment(2) == 'view' || $this->uri->segment(2) == 'random')) {
 ?>
         <!-- Fancybox support -->
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>

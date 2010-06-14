@@ -592,6 +592,40 @@ NIFTYNESS
 	height: 25px;
 }
 
+.mini
+{
+	float: left;
+	margin-left: 5px;
+}
+
+div.mini:hover {
+	-moz-opacity:1 !important;
+	filter:alpha(opacity=100) !important;
+	opacity: 1 !important;
+}
+
+.single_image {
+	position: relative;
+}
+
+.single_cite {
+	background: #000000;
+	-moz-opacity:.55;
+	filter:alpha(opacity=55);
+	opacity: .55;
+	color: #FFF;
+	position: absolute;
+	margin-left: auto;
+	margin-right: auto;
+	bottom: 5px;
+	height: 15px;
+	width: 810px;
+	padding: 10px;
+	border-top: 2px solid #FFF;
+	font-weight: bold;
+	display: none;
+}
+
 #picture
 {
     margin-left: auto;
