@@ -1,17 +1,25 @@
+<?php if (empty($project)) { ?>
+<h2 style="float: left;">
+<?php } else { ?>
 <h2>
+<?php } ?>
 	<?php if (!empty($project['icon'])) { ?>
 	<img src="<?php echo url::base(); ?>uploads/icons/<?php echo $project['icon']; ?>" class="icon" alt="" style="border: 1px solid #999; padding: 1px;" />
 	<?php } else { ?>
 	<img src="<?php echo url::base(); ?>images/noprojecticon.png" class="icon" alt="" style="border: 1px solid #999; padding: 1px;" />
 	<?php } ?>
 	<?php if (!empty($uid)) { ?>
-		<?php echo $project['name']; ?>'s Updates <?php if ($project['uid'] == $this->uid && $project['uid'] != 1) { ?><a href="<?php echo url::base(); ?>projects/add/<?php echo $project['id']; ?>/"><img src="<?php echo url::base(); ?>images/icons/pencil.png" class="icon" alt="Edit" /></a><?php } ?>
+		<?php if (empty($project)) { echo $u_name; } else { echo $project['name']; } ?>'s Updates <?php if ($project['uid'] == $this->uid && $project['uid'] != 1) { ?><a href="<?php echo url::base(); ?>projects/add/<?php echo $project['id']; ?>/"><img src="<?php echo url::base(); ?>images/icons/pencil.png" class="icon" alt="Edit" /></a><?php } ?>
 	<?php } else { ?>
 		Latest WIP Updates
 	<?php } ?>
+
+
+
 </h2>
 
-<?php if (!empty($uid)) { ?>
+<?php if (!empty($project)) { ?>
+
 <div style="float: left;font-size: 18px; letter-spacing: -1px; color: #AAA; text-align: right; margin-bottom: 5px;">
 By <a href="<?php echo url::base(); ?>profiles/view/<?php echo $u_name; ?>/"><?php echo $u_name; ?></a> in <em><?php echo $categories[$project['cid']]; ?></em> <?php if (!empty($project['website'])) { echo ' (<a href="'. $project['website'] .'">www</a>)'; } ?>
 </div>
@@ -25,8 +33,8 @@ By <a href="<?php echo url::base(); ?>profiles/view/<?php echo $u_name; ?>/"><?p
 
 <?php if (empty($markup)) { ?>
 
-<div style="border: 2px solid #800; background-color: #FDD; margin: 10px; padding: 10px;">
-	Oh no! There's no updates in this project just yet. You should add something, you know.
+<div style="clear: both; border: 2px solid #800; background-color: #FDD; margin: 10px; padding: 10px;">
+	Oh no! There's no updates just yet. You should add something, you know.
 </div>
 
 <?php } else { ?>
@@ -38,6 +46,7 @@ By <a href="<?php echo url::base(); ?>profiles/view/<?php echo $u_name; ?>/"><?p
 <?php } ?>
 
 <?php if ($pages > 1) { ?>
+<?php if (empty($project)) { $project['id'] = 0; } ?>
 <?php if (empty($uid)) { $uid = 0; $project['id'] = 0; } ?>
 <div style="padding: 20px; margin-left: auto; margin-right: auto; clear: both; text-align: center;">
     <ul style="display: inline;">

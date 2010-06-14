@@ -37,6 +37,11 @@ class Profiles_Controller extends Openid_Controller {
 	
 	public function index($uid = FALSE)
 	{
+		Projects_Controller::view($uid);
+	}
+
+	public function projects($uid = FALSE)
+	{
 		if ($uid == FALSE) {
 			$this->restrict_access();
 			$uid = $this->uid;
@@ -94,48 +99,8 @@ class Profiles_Controller extends Openid_Controller {
 			$profile_view->featured_project_information = $project_model->project_information($featured_information['pid']);
 		}
 
-		// Let's parse latest updates.
-		$query = $update_model->updates($uid, NULL, 'DESC', 3);
-        $markup = '';
-
-        if (count($query) > 0) {
-            foreach ($query as $row) {
-				$icon = Updates_Controller::_file_icon($row->filename0, $row->ext0, TRUE);
-				$file_icon = '';
-				if (strpos($icon, 'images/icons')) {
-					$file_icon = $icon;
-					$icon = url::base() .'images/noicon.png';
-				}
-				$project_name = $project_model->project_information($row->pid);
-				$project_name = $project_name['name'];
-
-				if (strlen($row->summary) > 40) {
-					$dots = '...';
-				} else {
-					$dots = '';
-				}
-
-                // Build the markup.
-                $markup = $markup .'<div style="float: left; width: 260px; margin: 7px; height: 200px; border: 0px solid #F00;">';
-				$markup = $markup .'<p><a href="'. url::base() .'/updates/view/'. $row->id .'/"><img style="vertical-align: middle; border: 1px solid #999; padding: 1px; background: url('. $icon .'); background-repeat: no-repeat; background-position: 1px 1px;" src="'. url::base() .'images/crop_overlay.png" alt="update icon" /></a></p>';
-				$markup = $markup .'<cite style="background: #000000; -moz-opacity:.55; filter:alpha(opacity=55); opacity: .55; color: #FFF; position: relative; display: block; margin-left: auto; margin-right: auto; left: 2px; top: -64px; height: 30px; width: 240px; padding: 10px; border-top: 1px solid #888; font-weight: bold; word-wrap: break-word;"><span style="float: left; border: 0px solid #F00; height: 30px; width: 210px;"><a href="'. url::base() .'projects/view/'. $uid .'/'. $row->pid .'/" style="text-decoration: none; color: #FFF;">'. $project_name .'</a><br /><span style="font-size: 9px;">'. substr($row->summary, 0, 40) . $dots .'</span></span><span style="font-weight: 100; font-size: 9px; float: right; position: relative; top: -2px; text-align: right;">'. $row->views .'V<br />'. $kudos_model->kudos($row->id) .'K<br />'. $comment_model->comment_update_number($row->id) .'C</span></cite>';
-				if (!empty($file_icon)) {
-					$markup = $markup .'<img src="'. $file_icon .'" style="position: relative; top: -170px; left: 205px;" />';
-				}
-                $markup = $markup .'</div>';
-            }
-        }
-
-		if (count($query) < 3) {
-			for ($i=3;$i>count($query);$i--) {
-                $markup = $markup .'<div style="float: left; width: 260px; margin: 7px; height: 200px; border: 0px solid #F00;">';
-				$markup = $markup .'<p><img style="vertical-align: middle; border: 1px solid #999; padding: 1px; background: url('. url::base() .'images/noshow.png); background-repeat: no-repeat; background-position: 1px 1px;" src="'. url::base() .'images/crop_overlay.png" alt="no update to show" /></p>';
-                $markup = $markup .'</div>';
-			}
-		}
-
-		$profile_view->markup = $markup;
 		$profile_view->uid = $uid;
+		$profile_view->browseby = $this->uri->segment(2);
 
 		foreach ($project_model->projects($uid) as $pid => $p_name) {
 			$pid_array[] = $pid;

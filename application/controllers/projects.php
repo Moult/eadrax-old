@@ -40,7 +40,9 @@ class Projects_Controller extends Core_Controller {
 	 * This will show the latest updates in a concise and paginated form 
 	 * together with a project overview.
 	 *
-	 * @param int $pid The project ID to view.
+	 * @param int $uid  The user ID to view.
+	 * @param int $pid  The project ID to view.
+	 * @param int $page Which page we are on.
 	 *
 	 * @return null
 	 */
@@ -53,13 +55,71 @@ class Projects_Controller extends Core_Controller {
 		$comment_model	= new Comment_Model;
 		$user_model		= new User_Model;
 
+		$this->template->content = array();
+
 		// Reset variables if a 0 has been given.
 		if ($uid == 0) {
 			$uid = NULL;
 		}
 		if ($pid == 0) {
+			// If there is a user given, but no project...
+			if ($uid != NULL) {
+				// Then we are viewing their profile.
+
+				// Load the main profile view.
+				$profile_view = new View('profile');
+				$user_information = $user_model->user_information($uid);
+				$profile_view->user = $user_information;
+
+				// Calculate age from date of birth.
+				if(!empty($user_information['dob']))
+				{
+					list($dd, $mm, $yyyy) = explode('/', $user_information['dob']);
+					$age = date('Y') - $yyyy;
+
+					if(date('m') < $mm || (date('m') == $mm && date('d') < $dd)) {
+						$age--;
+					}
+				}
+				else
+				{
+					$age = '';
+				}
+
+				$profile_view->age = $age;
+
+				// Parse featured update.
+				if ($user_information['featured'] != 0)
+				{
+					$featured_information = $update_model->update_information($user_information['featured']);
+					list($width, $height, $type, $attr) = getimagesize(DOCROOT .'uploads/files/'. $featured_information['filename0'] .'.'. $featured_information['ext0']);
+
+					if ($width > 850) {
+						$featured_filename = $featured_information['filename0'] .'_fit.jpg';
+					} else {
+						$featured_filename = $featured_information['filename0'] .'.'. $featured_information['ext0'];
+					}
+
+					if ($height > 250) {
+						$featured_height = $height/15;
+					} else {
+						$featured_height = 0;
+					}
+
+					$profile_view->featured_filename = $featured_filename;
+					$profile_view->featured_height = $featured_height;
+					$profile_view->featured_project_information = $project_model->project_information($featured_information['pid']);
+				}
+
+				$profile_view->uid = $uid;
+
+				$this->template->content[] = $profile_view;
+
+			}
+
 			$pid = NULL;
 		}
+
 
 		// Let's update the project view statistics
 		$project_model->view($pid);
@@ -191,7 +251,7 @@ class Projects_Controller extends Core_Controller {
 		$project_view->pages = ceil(count($update_model->updates($uid, $pid)) / Kohana::config('projects.updates_page'));
 		$project_view->page = $page;
 
-		$this->template->content = array($project_view);
+		$this->template->content[] = $project_view;
 
 	}
 

@@ -166,6 +166,7 @@ h1
     background-repeat: repeat-x;
 	padding-left: 10px;
 	padding-right: 10px;
+	position: relative;
 }
 
 #content_top h2, .section_top h2
