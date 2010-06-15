@@ -56,7 +56,6 @@ class Projects_Controller extends Core_Controller {
 		$user_model		= new User_Model;
 
 		$this->template->content = array();
-		$this->template->join = 1;
 
 		// Reset variables if a 0 has been given.
 		if ($uid == 0) {
@@ -103,7 +102,11 @@ class Projects_Controller extends Core_Controller {
 
 		$project_view = new View('project');
 
-		$project_view->join = 1;
+		// Join all segments together if viewing updates with a profile page.
+		if ($this->uri->segment(1) == 'profiles') {
+			$project_view->join = 1;
+			$this->template->join = 1;
+		}
 
 		// Parse the project itself first.
 		$project_information = $project_model->project_information($pid);
