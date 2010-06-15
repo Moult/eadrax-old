@@ -139,6 +139,105 @@ class Dashboard_Controller extends Core_Controller {
 		// Set the number of kudos
 		$dashboard_update_activity_view->total = $kudos_total;
 
+		// Let's format data to generate charts for update activity over time.
+		// Calculate the time ranges 5 weeks into the past.
+		$week8_end = date("Y-m-d", strtotime("last Monday"));
+		$week8_start = date("Y-m-d", strtotime("last Monday", strtotime($week8_end)));
+		$week7_start = date("Y-m-d", strtotime("last Monday", strtotime($week8_start)));
+		$week6_start = date("Y-m-d", strtotime("last Monday", strtotime($week7_start)));
+		$week5_start = date("Y-m-d", strtotime("last Monday", strtotime($week6_start)));
+		$week4_start = date("Y-m-d", strtotime("last Monday", strtotime($week5_start)));
+		$week3_start = date("Y-m-d", strtotime("last Monday", strtotime($week4_start)));
+		$week2_start = date("Y-m-d", strtotime("last Monday", strtotime($week3_start)));
+		$week1_start = date("Y-m-d", strtotime("last Monday", strtotime($week2_start)));
+
+		$activity_list = array();
+		$activity_list[] = $update_model->update_number_time($this->uid, $week1_start, $week2_start);
+		$activity_list[] = $update_model->update_number_time($this->uid, $week2_start, $week3_start);
+		$activity_list[] = $update_model->update_number_time($this->uid, $week3_start, $week4_start);
+		$activity_list[] = $update_model->update_number_time($this->uid, $week4_start, $week5_start);
+		$activity_list[] = $update_model->update_number_time($this->uid, $week5_start, $week6_start);
+		$activity_list[] = $update_model->update_number_time($this->uid, $week6_start, $week7_start);
+		$activity_list[] = $update_model->update_number_time($this->uid, $week7_start, $week8_start);
+		$activity_list[] = $update_model->update_number_time($this->uid, $week8_start, $week8_end);
+
+		$view_list = array();
+		$view_list[] = $update_model->view_number_time($this->uid, $week1_start, $week2_start) + $project_model->view_number_time($this->uid, $week1_start, $week2_start);
+		$view_list[] = $update_model->view_number_time($this->uid, $week2_start, $week3_start) + $project_model->view_number_time($this->uid, $week2_start, $week3_start);
+		$view_list[] = $update_model->view_number_time($this->uid, $week3_start, $week4_start) + $project_model->view_number_time($this->uid, $week3_start, $week4_start);
+		$view_list[] = $update_model->view_number_time($this->uid, $week4_start, $week5_start) + $project_model->view_number_time($this->uid, $week4_start, $week5_start);
+		$view_list[] = $update_model->view_number_time($this->uid, $week5_start, $week6_start) + $project_model->view_number_time($this->uid, $week5_start, $week6_start);
+		$view_list[] = $update_model->view_number_time($this->uid, $week6_start, $week7_start) + $project_model->view_number_time($this->uid, $week6_start, $week7_start);
+		$view_list[] = $update_model->view_number_time($this->uid, $week7_start, $week8_start) + $project_model->view_number_time($this->uid, $week7_start, $week8_start);
+		$view_list[] = $update_model->view_number_time($this->uid, $week8_start, $week8_end) + $project_model->view_number_time($this->uid, $week8_start, $week8_end);
+
+		// Reformat the dates to show in the graph nicely.
+		$date_array = array(
+			date("jS", strtotime($week2_start)),
+			date("jS", strtotime($week3_start)),
+			date("jS", strtotime($week4_start)),
+			date("jS", strtotime($week5_start)),
+			date("jS", strtotime($week6_start)),
+			date("jS", strtotime($week7_start)),
+			date("jS", strtotime($week8_start)),
+			date("jS", strtotime($week8_end))
+		);
+
+		$month_array = array(
+			date("M", strtotime($week2_start)),
+			date("M", strtotime($week3_start)),
+			date("M", strtotime($week4_start)),
+			date("M", strtotime($week5_start)),
+			date("M", strtotime($week6_start)),
+			date("M", strtotime($week7_start)),
+			date("M", strtotime($week8_start)),
+			date("M", strtotime($week8_end))
+		);
+
+		// We want to clear out consecutive months in our axis.
+		for ($i = 7; $i > 0; $i--) {
+			if ($month_array[$i] == $month_array[$i-1]) {
+				$month_array[$i] = '';
+			}
+		}
+
+		// We need to calculate the peak values to use.
+		$activity_peak = max($activity_list);
+		echo 'activity peak is '.$activity_peak;
+		$activity_peak = ceil(intval($activity_peak)/5)*5;
+		$view_peak = max($view_list);
+		$view_peak = ceil(intval($view_peak)/5)*5;
+
+		// Let's start creating our URL for the chart!
+		$chd = 't:';
+		foreach ($view_list as $value) {
+			$chd .= $value .',';
+		}
+		$chd = substr($chd, 0, -1) .'|';
+		foreach ($activity_list as $value) {
+			$chd .= $value .',';
+		}
+		$chd = substr($chd, 0, -1);
+
+		$chds = '0,'. $view_peak .',0,'. $activity_peak;
+		$chxr = '1,0,'. $activity_peak .'|2,0,'. $view_peak;
+
+		$chxl = '0:|';
+		foreach($date_array as $value) {
+			$chxl .= $value .'|';
+		}
+		$chxl .= '3:|';
+		foreach($month_array as $value) {
+			$chxl .= $value .'|';
+		}
+		$chxl = substr($chxl, 0, -1);
+
+		// Set all calculated chart variables.
+		$dashboard_update_activity_view->chd = $chd;
+		$dashboard_update_activity_view->chds = $chds;
+		$dashboard_update_activity_view->chxr = $chxr;
+		$dashboard_update_activity_view->chxl = $chxl;
+
 		// Create news "newsfeed" widget.
 		$dashboard_newsfeed_view = new View('dashboard_newsfeed');
 
