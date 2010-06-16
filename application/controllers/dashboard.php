@@ -53,59 +53,15 @@ class Dashboard_Controller extends Core_Controller {
 		$update_model = new Update_Model;
 		$comment_model = new Comment_Model;
 
-		// Create the "tracking" widget.
-		$dashboard_tracking_view = new View('dashboard_tracking');
-		$dashboard_tracking_view->total = $track_model->track($this->uid);
-		$track_uids = $track_model->track_list($this->uid);
-		$track_list = array();
 
-		// Track uids only contains uids, however usernames are useful for the 
-		// view too!
-		foreach ($track_uids as $uid)
-		{
-			$username = $user_model->user_information($uid);
-			$username = $username['username'];
-			$track_list[] = array($uid, $username);
-		}
 
-		$dashboard_tracking_view->track_list = $track_list;
-
-		// Create the "subscribed" widget.
-		$dashboard_subscribed_view = new View('dashboard_subscribed');
-		$subscribed_total = 0;
-		$projects = $project_model->projects($this->uid);
-
-		$project_subscribe_list = array();
-
-		foreach ($projects as $pid => $p_name)
-		{
-			if ($pid != 1)
-			{
-				$subscribe_uids = $subscribe_model->subscribe_list($pid);
-				$subscribe_list = array();
-
-				foreach ($subscribe_uids as $uid)
-				{
-					$username = $user_model->user_information($uid);
-					$username = $username['username'];
-					$subscribe_list[] = array($uid, $username);
-				}
-
-				$subscribed_number = $subscribe_model->subscribe($pid);
-				$project_subscribe_list[$pid] = array($p_name, $subscribed_number, $subscribe_list);
-
-				// Add up the number of subscribers
-				$subscribed_total = $subscribed_total + $subscribed_number;
-			}
-		}
-
-		// Set all the information we gathered...
-		$dashboard_subscribed_view->project_subscribe_list = $project_subscribe_list;
-		$dashboard_subscribed_view->total = $subscribed_total;
+		// Create the statistics widget.
+		$statistics_view = new View('statistics');
 
 		// Calculate total number of kudos.
 		$kudos_total = 0;
 
+		$projects = $project_model->projects($this->uid);
 		foreach ($projects as $pid => $p_name)
 		{
 			$kudos_number = $kudos_model->kudos_project($pid, $this->uid);
@@ -113,9 +69,6 @@ class Dashboard_Controller extends Core_Controller {
 			// Add up the number of kudos
 			$kudos_total = $kudos_total + $kudos_number;
 		}
-
-		// Create the "update_activity" widget.
-		$statistics_view = new View('statistics');
 
 		// Set the number of kudos
 		$statistics_view->total = $kudos_total;
@@ -181,6 +134,9 @@ class Dashboard_Controller extends Core_Controller {
 				$month_array[$i] = '';
 			}
 		}
+
+		// If there are insufficient data to show interesting charts ...
+		if (max($view_list) == 0) { $statistics_view->nostats = 1; }
 
 		// We need to calculate the peak values to use.
 		$activity_peak = max($activity_list);
@@ -470,7 +426,64 @@ class Dashboard_Controller extends Core_Controller {
 
 		$dashboard_newsfeed_view->newsfeed = $news_view;
 
+		// Start finding trackers information.
+		$track_uids = $track_model->track_list($this->uid);
+		$track_list = array();
+
+		// Track uids only contains uids, however usernames are useful for the 
+		// view too!
+		foreach ($track_uids as $uid)
+		{
+			$username = $user_model->user_information($uid);
+			if (!empty($username['avatar'])) {
+				$avatar = url::base() .'uploads/avatars/'. $track_user['avatar'] .'_small.jpg';
+			} else {
+				$avatar = url::base() .'images/noprojecticon.png';
+			}
+			$username = $username['username'];
+			$track_list[] = array($uid, $username, $avatar);
+		}
+
+		$dashboard_newsfeed_view->track_total = $track_model->track($this->uid);
+		$dashboard_newsfeed_view->track_list = $track_list;
+
+		// Start finding subscribers information.
+		$subscribed_total = 0;
+
+		$project_subscribe_list = array();
+
+		foreach ($projects as $pid => $p_name)
+		{
+			if ($pid != 1)
+			{
+				$subscribe_uids = $subscribe_model->subscribe_list($pid);
+				$subscribe_list = array();
+
+				foreach ($subscribe_uids as $uid)
+				{
+					$username = $user_model->user_information($uid);
+					if (!empty($username['avatar'])) {
+						$avatar = url::base() .'uploads/avatars/'. $track_user['avatar'] .'_small.jpg';
+					} else {
+						$avatar = url::base() .'images/noprojecticon.png';
+					}
+					$username = $username['username'];
+					$subscribe_list[] = array($uid, $username, $avatar);
+				}
+
+				$subscribed_number = $subscribe_model->subscribe($pid);
+				$project_subscribe_list[$pid] = array($p_name, $subscribed_number, $subscribe_list);
+
+				// Add up the number of subscribers
+				$subscribed_total = $subscribed_total + $subscribed_number;
+			}
+		}
+
+		// Set all the information we gathered...
+		$dashboard_newsfeed_view->project_subscribe_list = $project_subscribe_list;
+		$dashboard_newsfeed_view->subscribe_total = $subscribed_total;
+
 		// Generate the content.
-		$this->template->content = array($statistics_view, $dashboard_newsfeed_view, $dashboard_tracking_view, $dashboard_subscribed_view);
+		$this->template->content = array($statistics_view, $dashboard_newsfeed_view);
 	}
 }

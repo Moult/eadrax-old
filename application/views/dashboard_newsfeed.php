@@ -66,26 +66,59 @@
 	<div class="form">
 		<h3>
 			<img src="<?php echo url::base(); ?>images/icons/group_link.png" alt="" width="16" height="16" class="icon" />
-			Trackers (3)
+			Trackers (<?php echo $track_total; ?>)
 		</h3>
-		<div class="elements">
-			asdf
+		<div class="elements" style="overflow: hidden;">
+			<?php
+			$i = 0;
+			foreach ($track_list as $value) {
+				$i++;
+				if ($i != 4) {
+					$markup = 'margin-right: 8px;';
+				} else {
+					$markup = '';
+					$i = 0;
+				}
+			?>
+			<div style="float: left; <?php echo $markup; ?>">
+			<img src="<?php echo $value[2]; ?>" style="border: 1px solid #999; padding: 1px;" title="<?php echo $value[1]; ?>" alt="<?php echo $value[1]; ?>" />
+			</div>
+			<?php } ?>
+			<?php if ($track_total == 0) { ?>
+			Nobody's tracking you at the moment. Aww.
+			<?php } ?>
 		</div>
 	</div>
 
 	<div class="form">
 		<h3>
 			<img src="<?php echo url::base(); ?>images/icons/newspaper_link.png" alt="" width="16" height="16" class="icon" />
-			Subscribers (3)
+			Subscribers (<?php echo $subscribe_total; ?>)
 		</h3>
-		<div class="elements">
-			asdf
+		<div class="elements" style="overflow: hidden;">
+			<?php if ($subscribe_total == 0) { ?>
+			Nobody's subscribed to your stuff. :(
+			<?php } ?>
+			<?php foreach($project_subscribe_list as $pid => $p_array) { ?>
+			<h3 style="clear: both; margin-bottom: 10px;">
+			<?php echo $p_array[0]; ?> (<?php echo $p_array[1]; ?>)
+			</h3>
+			<?php
+			$i = 0;
+			foreach ($p_array[2] as $value) {
+				$i++;
+				if ($i != 4) {
+					$markup = 'margin-right: 8px;';
+				} else {
+					$markup = '';
+					$i = 0;
+				}
+			?>
+			<div style="float: left; margin-bottom: 10px; <?php echo $markup; ?>">
+			<img src="<?php echo $value[2]; ?>" style="border: 1px solid #999; padding: 1px;" title="<?php echo $value[1]; ?>" alt="<?php echo $value[1]; ?>" />
+			</div>
+			<?php } ?>
+			<?php } ?>
 		</div>
 	</div>
-
-<!--
-	<div id="picture">
-		<img src="<?php echo url::base(); ?>images/icons/user_picture.png" alt="" />
-	</div>
--->
 </div>

@@ -3,7 +3,22 @@
 	Stats at a glance.
 </h2>
 
-<div style="clear: both; line-height: 30px; font-size: 15px; letter-spacing: -1px; color: #888; border-top: 1px solid #999; border-left: 0px; border-right: 0px; background-image: url(<?php echo url::base(); ?>images/formbg.gif); background-position: top; background-repeat: repeat-x; background-color: #D8D8D8; padding: 8px; padding-top: 2px; padding-bottom: 8px; margin-bottom: 10px; text-shadow: 0px 1px 0px #FFF;">
+
+<?php if (isset($nostats)) { ?>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+	$(".single_image").mouseenter(function(){
+		$(".single_cite").slideToggle("fast");
+	});
+	$(".single_image").mouseleave(function(){
+		$(".single_cite").slideToggle("fast");
+	});
+});
+</script>
+<?php } ?>
+
+<div class="single_image" style="clear: both; line-height: 30px; font-size: 15px; letter-spacing: -1px; color: #888; border-top: 1px solid #999; border-left: 0px; border-right: 0px; background-image: url(<?php echo url::base(); ?>images/formbg.gif); background-position: top; background-repeat: repeat-x; background-color: #D8D8D8; padding: 8px; padding-top: 2px; padding-bottom: 8px; margin-bottom: 10px; text-shadow: 0px 1px 0px #FFF;">
 	<span style="float: left;">Update and View Activity</span>
 	<span style="float: right;">Project Statistics</span>
 	<div style="clear: both; background-color: #FFF; border-top: 1px solid #888; padding: 10px; margin-bottom: 10px; padding-bottom: 10px; background-image: url('<?php echo url::base(); ?>images/comment_divide.png'); background-repeat: repeat-x; background-position: bottom;">
@@ -15,6 +30,7 @@
 		</div>
 		<div style="clear: both;"></div>
 	</div>
+		<cite class="single_cite" style="width: 794px; text-shadow: none; bottom: 27px; padding-bottom: 15px; padding-top: 0px; font-size: 12px; letter-spacing: 0px; text-align: center;">Not seeing much? Try being a little bit more active.</cite>
 	<div style="width: 7px; height: 7px; background-color: #E0632D; float: left;"></div>
 	<span style="float: left; font-size: 11px; line-height: 8px; letter-spacing: 0px; margin-left: 5px; margin-right: 10px;">UPDATES</span>
 	<div style="width: 7px; height: 7px; background-color: #2E97E0; float: left;"></div>
