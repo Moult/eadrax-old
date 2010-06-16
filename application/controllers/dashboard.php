@@ -203,7 +203,6 @@ class Dashboard_Controller extends Core_Controller {
 
 		// We need to calculate the peak values to use.
 		$activity_peak = max($activity_list);
-		echo 'activity peak is '.$activity_peak;
 		$activity_peak = ceil(intval($activity_peak)/5)*5;
 		$view_peak = max($view_list);
 		$view_peak = ceil(intval($view_peak)/5)*5;
@@ -233,10 +232,125 @@ class Dashboard_Controller extends Core_Controller {
 		$chxl = substr($chxl, 0, -1);
 
 		// Set all calculated chart variables.
-		$dashboard_update_activity_view->chd = $chd;
-		$dashboard_update_activity_view->chds = $chds;
-		$dashboard_update_activity_view->chxr = $chxr;
-		$dashboard_update_activity_view->chxl = $chxl;
+		$dashboard_update_activity_view->line_chd = $chd;
+		$dashboard_update_activity_view->line_chds = $chds;
+		$dashboard_update_activity_view->line_chxr = $chxr;
+		$dashboard_update_activity_view->line_chxl = $chxl;
+
+		// Let's start calculating values for the stacked bar chart.
+		$project_kudos_list = array();
+		$project_name_list = array();
+		$total_updates = 0;
+
+		$project_subscribe_list = array();
+		$project_name_list = array();
+
+		foreach ($projects as $pid => $p_name)
+		{
+			$update_number = $update_model->project_updates($pid, $this->uid);
+			$project_update_list[] = $update_number;
+
+			$kudos_number = $kudos_model->kudos_project($pid, $this->uid);
+			$project_kudos_list[] = $kudos_number;
+
+			if ($pid == 1)
+			{
+				// Because you cannot subscribe to uncategorised projects, this 
+				// will instead show the number of people tracking you.
+				$tracked_number = $track_model->track($this->uid);
+				$project_subscribe_list[] = $tracked_number;
+			}
+			else
+			{
+				$subscribed_number = $subscribe_model->subscribe($pid);
+				$project_subscribe_list[] = $subscribed_number + $tracked_number;
+			}
+
+			$total_updates = $total_updates + $update_number;
+			$project_name_list[] = $p_name;
+		}
+
+		// Calculate the peak values...
+		$project_total_list = array();
+		foreach ($project_name_list as $key => $value) {
+			$project_total_list[] = $project_update_list[$key] + $project_kudos_list[$key] + $project_subscribe_list[$key];
+		}
+
+		// Sort into descending order:
+		$tmp = $project_total_list;
+		array_multisort($tmp, $project_update_list);
+		$tmp = $project_total_list;
+		array_multisort($tmp, $project_kudos_list);
+		$tmp = $project_total_list;
+		array_multisort($tmp, $project_subscribe_list);
+		$tmp = $project_total_list;
+		array_multisort($tmp, $project_name_list);
+
+		$project_update_list = array_reverse($project_update_list);
+		$project_kudos_list = array_reverse($project_kudos_list);
+		$project_subscribe_list = array_reverse($project_subscribe_list);
+		$project_name_list = array_reverse($project_name_list);
+
+
+		$project_total_peak = max($project_total_list);
+		$project_total_peak = ceil(intval($project_total_peak)/5)*5;
+
+		$chxr = '1,0,'. $project_total_peak;
+		$chds = '0,'. $project_total_peak;
+
+		// Calculate the width of each bar.
+		$project_number = count($project_name_list);
+		$bar_width = (360/$project_number)-10;
+		$chbh = $bar_width .',10,15';
+
+		// Set the values for the bar chart.
+		$chd = 't:';
+		foreach ($project_update_list as $value) {
+			$chd .= $value .',';
+		}
+		$chd = substr($chd, 0, -1) .'|';
+		foreach ($project_kudos_list as $value) {
+			$chd .= $value .',';
+		}
+		$chd = substr($chd, 0, -1) .'|';
+		foreach ($project_subscribe_list as $value) {
+			$chd .= $value .',';
+		}
+		$chd = substr($chd, 0, -1);
+
+		// How many characters will we allow before overflowing?
+		$max_chars = array(
+			1 => 47,
+			2 => 27,
+			3 => 22,
+			4 => 17,
+			5 => 13,
+			6 => 9,
+			7 => 7
+		);
+
+		// Set the values for the x-axis.
+		$chxl = '0:|';
+		$chxl2 = '2:|';
+		foreach ($project_name_list as $value) {
+			// ... if there isn't enough space to show the name ...
+			if (strlen($value) > $max_chars[$project_number]) {
+				// .. continue the name on the second x-axis (chxl2)
+				$chxl .= substr($value, 0, $max_chars[$project_number]) .'-|';
+				$chxl2 .= '-'. substr($value, $max_chars[$project_number]);
+			} else {
+				$chxl .= $value .'|';
+				$chxl2 .= '|';
+			}
+		}
+		$chxl = $chxl . $chxl2;
+		$chxl = substr($chxl, 0, -1);
+
+		$dashboard_update_activity_view->bar_chbh = $chbh;
+		$dashboard_update_activity_view->bar_chd = $chd;
+		$dashboard_update_activity_view->bar_chxl = $chxl;
+		$dashboard_update_activity_view->bar_chxr = $chxr;
+		$dashboard_update_activity_view->bar_chds = $chds;
 
 		// Create news "newsfeed" widget.
 		$dashboard_newsfeed_view = new View('dashboard_newsfeed');
@@ -298,96 +412,6 @@ class Dashboard_Controller extends Core_Controller {
 
 		// Generate the content.
 		$this->template->content = array($dashboard_view, $dashboard_newsfeed_view, $dashboard_update_activity_view, $dashboard_tracking_view, $dashboard_subscribed_view);
-	}
-
-	/**
-	 * Draws a line chart of viewing activity for user $uid
-	 *
-	 * This graph shows the number of times people have viewed content created 
-	 * by the user $uid.
-	 *
-	 * @param int $uid The uid to draw for.
-	 *
-	 * @return null
-	 */
-	public function view_activity($uid)
-	{
-		// Load necessary models.
-		$project_model = new Project_Model;
-		$update_model = new Update_Model;
-
-		// Calculate the time ranges 5 weeks into the past.
-		$week8_end = date("Y-m-d", strtotime("last Monday"));
-		$week8_start = date("Y-m-d", strtotime("last Monday", strtotime($week8_end)));
-		$week7_start = date("Y-m-d", strtotime("last Monday", strtotime($week8_start)));
-		$week6_start = date("Y-m-d", strtotime("last Monday", strtotime($week7_start)));
-		$week5_start = date("Y-m-d", strtotime("last Monday", strtotime($week6_start)));
-		$week4_start = date("Y-m-d", strtotime("last Monday", strtotime($week5_start)));
-		$week3_start = date("Y-m-d", strtotime("last Monday", strtotime($week4_start)));
-		$week2_start = date("Y-m-d", strtotime("last Monday", strtotime($week3_start)));
-		$week1_start = date("Y-m-d", strtotime("last Monday", strtotime($week2_start)));
-
-		$view_list = array();
-		$view_list[] = $update_model->view_number_time($uid, $week1_start, $week2_start) + $project_model->view_number_time($uid, $week1_start, $week2_start);
-		$view_list[] = $update_model->view_number_time($uid, $week2_start, $week3_start) + $project_model->view_number_time($uid, $week2_start, $week3_start);
-		$view_list[] = $update_model->view_number_time($uid, $week3_start, $week4_start) + $project_model->view_number_time($uid, $week3_start, $week4_start);
-		$view_list[] = $update_model->view_number_time($uid, $week4_start, $week5_start) + $project_model->view_number_time($uid, $week4_start, $week5_start);
-		$view_list[] = $update_model->view_number_time($uid, $week5_start, $week6_start) + $project_model->view_number_time($uid, $week5_start, $week6_start);
-		$view_list[] = $update_model->view_number_time($uid, $week6_start, $week7_start) + $project_model->view_number_time($uid, $week6_start, $week7_start);
-		$view_list[] = $update_model->view_number_time($uid, $week7_start, $week8_start) + $project_model->view_number_time($uid, $week7_start, $week8_start);
-		$view_list[] = $update_model->view_number_time($uid, $week8_start, $week8_end) + $project_model->view_number_time($uid, $week8_start, $week8_end);
-
-		// Reformat the dates to show in the graph nicely.
-		$date_array = array(
-			date("d/m", strtotime($week2_start)),
-			date("d/m", strtotime($week3_start)),
-			date("d/m", strtotime($week4_start)),
-			date("d/m", strtotime($week5_start)),
-			date("d/m", strtotime($week6_start)),
-			date("d/m", strtotime($week7_start)),
-			date("d/m", strtotime($week8_start)),
-			date("d/m", strtotime($week8_end))
-		);
-
-
-		// ... require needed files for graph generation.
-		require Kohana::find_file('vendor', 'pchart/pChart/pData', $required = TRUE, $ext = 'class');
-		require Kohana::find_file('vendor', 'pchart/pChart/pChart', $required = TRUE, $ext = 'class');
-		require Kohana::find_file('vendor', 'pchart/pChart/pCache', $required = TRUE, $ext = 'class');
-
-		// Dataset definition
-		$DataSet = new pData;
-		$DataSet->AddPoint($view_list,"Serie1");
-		$DataSet->AddSerie('Serie1');
-		$DataSet->AddPoint($date_array,"XLabel");
-		$DataSet->SetAbsciseLabelSerie("XLabel");
-		$DataSet->SetYAxisName("Views");
-
-		// Cache definition
-		$Cache = new pCache();
-		$Cache->GetFromCache('view_activity_'. $uid, $DataSet->GetData());
-
-		// Initialise the graph
-		$Test = new pChart(410,200);
-		$Test->setFontProperties(DOCROOT.'application/vendor/pchart/Fonts/tahoma.ttf',8);
-		$Test->setGraphArea(60,30,390,170);
-		$Test->drawFilledRoundedRectangle(7,7,403,193,5,240,240,240);
-		$Test->drawRoundedRectangle(5,5,405,195,5,180,180,180);
-		$Test->drawGraphArea(240,240,240);
-		$Test->drawScale($DataSet->GetData(),$DataSet->GetDataDescription(),SCALE_NORMAL,150,150,150,TRUE,0,2);
-		$Test->drawGrid(4,220,220,220);
-
-		// Draw the 0 line
-		$Test->setFontProperties(DOCROOT.'application/vendor/pchart/Fonts/tahoma.ttf',6);
-		$Test->drawTreshold(0,143,55,72,TRUE,TRUE);
-
-		// Draw the line graph
-		$Test->drawLineGraph($DataSet->GetData(),$DataSet->GetDataDescription());
-		$Test->drawPlotGraph($DataSet->GetData(),$DataSet->GetDataDescription(),3,2,255,255,255);
-
-		// Finish the graph
-		$Cache->WriteToCache('view_activity_'. $uid, $DataSet->GetData(), $Test);
-		$Test->Stroke();
 	}
 
 	/**
@@ -496,94 +520,6 @@ class Dashboard_Controller extends Core_Controller {
 		$Test->setFontProperties(DOCROOT.'application/vendor/pchart/Fonts/tahoma.ttf',10);
 
 		$Cache->WriteToCache('comment_activity_'. $uid, $DataSet->GetData(), $Test);
-		$Test->Stroke();
-	}
-
-	/**
-	 * Draws a line chart of update activity for user $uid
-	 *
-	 * @param int $uid The uid to draw for.
-	 *
-	 * @return null
-	 */
-	public function update_activity($uid)
-	{
-		// Load necessary models.
-		$project_model = new Project_Model;
-		$update_model = new Update_Model;
-
-		// Calculate the time ranges 5 weeks into the past.
-		$week8_end = date("Y-m-d", strtotime("last Monday"));
-		$week8_start = date("Y-m-d", strtotime("last Monday", strtotime($week8_end)));
-		$week7_start = date("Y-m-d", strtotime("last Monday", strtotime($week8_start)));
-		$week6_start = date("Y-m-d", strtotime("last Monday", strtotime($week7_start)));
-		$week5_start = date("Y-m-d", strtotime("last Monday", strtotime($week6_start)));
-		$week4_start = date("Y-m-d", strtotime("last Monday", strtotime($week5_start)));
-		$week3_start = date("Y-m-d", strtotime("last Monday", strtotime($week4_start)));
-		$week2_start = date("Y-m-d", strtotime("last Monday", strtotime($week3_start)));
-		$week1_start = date("Y-m-d", strtotime("last Monday", strtotime($week2_start)));
-
-		$activity_list = array();
-		$activity_list[] = $update_model->update_number_time($uid, $week1_start, $week2_start);
-		$activity_list[] = $update_model->update_number_time($uid, $week2_start, $week3_start);
-		$activity_list[] = $update_model->update_number_time($uid, $week3_start, $week4_start);
-		$activity_list[] = $update_model->update_number_time($uid, $week4_start, $week5_start);
-		$activity_list[] = $update_model->update_number_time($uid, $week5_start, $week6_start);
-		$activity_list[] = $update_model->update_number_time($uid, $week6_start, $week7_start);
-		$activity_list[] = $update_model->update_number_time($uid, $week7_start, $week8_start);
-		$activity_list[] = $update_model->update_number_time($uid, $week8_start, $week8_end);
-
-		// Reformat the dates to show in the graph nicely.
-		$date_array = array(
-			date("d/m", strtotime($week2_start)),
-			date("d/m", strtotime($week3_start)),
-			date("d/m", strtotime($week4_start)),
-			date("d/m", strtotime($week5_start)),
-			date("d/m", strtotime($week6_start)),
-			date("d/m", strtotime($week7_start)),
-			date("d/m", strtotime($week8_start)),
-			date("d/m", strtotime($week8_end))
-		);
-
-
-		// ... require needed files for graph generation.
-		require Kohana::find_file('vendor', 'pchart/pChart/pData', $required = TRUE, $ext = 'class');
-		require Kohana::find_file('vendor', 'pchart/pChart/pChart', $required = TRUE, $ext = 'class');
-		require Kohana::find_file('vendor', 'pchart/pChart/pCache', $required = TRUE, $ext = 'class');
-
-		// Dataset definition
-		$DataSet = new pData;
-		$DataSet->AddPoint($activity_list);
-		$DataSet->AddSerie();
-		$DataSet->AddPoint($date_array,"XLabel");
-		$DataSet->SetSerieName('Updates', 'Serie1');
-		$DataSet->SetAbsciseLabelSerie("XLabel");
-		$DataSet->SetYAxisName("Updates");
-
-		// Cache definition
-		$Cache = new pCache();
-		$Cache->GetFromCache('update_activity_'. $uid, $DataSet->GetData());
-
-		// Initialise the graph
-		$Test = new pChart(410,200);
-		$Test->setFontProperties(DOCROOT.'application/vendor/pchart/Fonts/tahoma.ttf',8);
-		$Test->setGraphArea(60,30,390,170);
-		$Test->drawFilledRoundedRectangle(7,7,403,193,5,240,240,240);
-		$Test->drawRoundedRectangle(5,5,405,195,5,180,180,180);
-		$Test->drawGraphArea(240,240,240);
-		$Test->drawScale($DataSet->GetData(),$DataSet->GetDataDescription(),SCALE_NORMAL,150,150,150,TRUE,0,2);
-		$Test->drawGrid(4,220,220,220);
-
-		// Draw the 0 line
-		$Test->setFontProperties(DOCROOT.'application/vendor/pchart/Fonts/tahoma.ttf',6);
-		$Test->drawTreshold(0,143,55,72,TRUE,TRUE);
-
-		// Draw the line graph
-		$Test->drawLineGraph($DataSet->GetData(),$DataSet->GetDataDescription());
-		$Test->drawPlotGraph($DataSet->GetData(),$DataSet->GetDataDescription(),3,2,255,255,255);
-
-		// Finish the graph
-		$Cache->WriteToCache('update_activity_'. $uid, $DataSet->GetData(), $Test);
 		$Test->Stroke();
 	}
 
