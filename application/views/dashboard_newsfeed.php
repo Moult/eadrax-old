@@ -25,14 +25,14 @@
 
 			<div style="float: left;">
 				<?php if (!empty($news['avatar'])) { ?>
-				<img src="<?php echo url::base(); ?>uploads/avatars/<?php echo $news['avatar']; ?>_small.jpg" class="icon" alt="" style="border: 1px solid #999; padding: 1px; float: left;" />
+				<a href="<?php echo url::base(); ?>profiles/view/<?php echo $news['user']; ?>/"><img src="<?php echo url::base(); ?>uploads/avatars/<?php echo $news['avatar']; ?>_small.jpg" class="icon" alt="" style="border: 1px solid #999; padding: 1px; float: left;" /></a>
 				<?php } else { ?>
-				<img src="<?php echo url::base(); ?>images/noprojecticon.png" class="icon" alt="" style="border: 1px solid #999; padding: 1px; float: left;" />
+				<a href="<?php echo url::base(); ?>profiles/view/<?php echo $news['user']; ?>/"><img src="<?php echo url::base(); ?>images/noprojecticon.png" class="icon" alt="" style="border: 1px solid #999; padding: 1px; float: left;" /></a>
 				<?php } ?>
 			</div>
 			<div style="float: left; margin-left: 5px; width: 480px;">
 				<p style="color: #555;">
-				<strong><a href="<?php echo url::base(); ?>profiles/view/<?php echo $news['uid']; ?>/" style="text-decoration: none;"><?php echo $news['user']; ?></a></strong> <?php echo $news['text']; ?>
+				<strong><a href="<?php echo url::base(); ?>profiles/view/<?php echo $news['user']; ?>/" style="text-decoration: none;"><?php echo $news['user']; ?></a></strong> <?php echo $news['text']; ?>
 				</p>
 	<?php
 		if (!strpos($news['picture'], 'images/icons') || strpos($news['picture'], 'images/noprojecticon.png')) { $style = 'border: 1px solid #999; padding: 1px;'; } else { $style = ''; }
@@ -81,7 +81,7 @@
 				}
 			?>
 			<div style="float: left; <?php echo $markup; ?>">
-			<img src="<?php echo $value[2]; ?>" style="border: 1px solid #999; padding: 1px;" title="<?php echo $value[1]; ?>" alt="<?php echo $value[1]; ?>" />
+			<a href="<?php echo url::base(); ?>profiles/view/<?php echo $value[1]; ?>/"><img src="<?php echo $value[2]; ?>" style="border: 1px solid #999; padding: 1px;" title="<?php echo $value[1]; ?>" alt="<?php echo $value[1]; ?>" /></a>
 			</div>
 			<?php } ?>
 			<?php if ($track_total == 0) { ?>
@@ -115,7 +115,7 @@
 				}
 			?>
 			<div style="float: left; margin-bottom: 10px; <?php echo $markup; ?>">
-			<img src="<?php echo $value[2]; ?>" style="border: 1px solid #999; padding: 1px;" title="<?php echo $value[1]; ?>" alt="<?php echo $value[1]; ?>" />
+			<a href="<?php echo url::base(); ?>profiles/view/<?php echo $value[1]; ?>/"><img src="<?php echo $value[2]; ?>" style="border: 1px solid #999; padding: 1px;" title="<?php echo $value[1]; ?>" alt="<?php echo $value[1]; ?>" /></a>
 			</div>
 			<?php } ?>
 			<?php } ?>
