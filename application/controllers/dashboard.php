@@ -53,12 +53,6 @@ class Dashboard_Controller extends Core_Controller {
 		$update_model = new Update_Model;
 		$comment_model = new Comment_Model;
 
-		// Load the view.
-		$dashboard_view = new View('dashboard');
-
-		// Send some basic variables to the view.
-		$dashboard_view->username = $this->username;
-
 		// Create the "tracking" widget.
 		$dashboard_tracking_view = new View('dashboard_tracking');
 		$dashboard_tracking_view->total = $track_model->track($this->uid);
@@ -120,24 +114,11 @@ class Dashboard_Controller extends Core_Controller {
 			$kudos_total = $kudos_total + $kudos_number;
 		}
 
-		list($width, $height, $type, $attr) = getimagesize(url::site('dashboard/popular_project_subscribers/'. $this->uid));
-		if ($width == 1)
-		{
-			$dashboard_update_activity_view->popular_error = TRUE;
-		}
-
-		// Create the "projects_activity" widget.
-		list($width, $height, $type, $attr) = getimagesize(url::site('dashboard/projects_activity/'. $this->uid));
-		if ($width == 1)
-		{
-			$dashboard_update_activity_view->activity_error = TRUE;
-		}
-
 		// Create the "update_activity" widget.
-		$dashboard_update_activity_view = new View('dashboard_update_activity');
+		$statistics_view = new View('statistics');
 
 		// Set the number of kudos
-		$dashboard_update_activity_view->total = $kudos_total;
+		$statistics_view->total = $kudos_total;
 
 		// Let's format data to generate charts for update activity over time.
 		// Calculate the time ranges 5 weeks into the past.
@@ -232,10 +213,10 @@ class Dashboard_Controller extends Core_Controller {
 		$chxl = substr($chxl, 0, -1);
 
 		// Set all calculated chart variables.
-		$dashboard_update_activity_view->line_chd = $chd;
-		$dashboard_update_activity_view->line_chds = $chds;
-		$dashboard_update_activity_view->line_chxr = $chxr;
-		$dashboard_update_activity_view->line_chxl = $chxl;
+		$statistics_view->line_chd = $chd;
+		$statistics_view->line_chds = $chds;
+		$statistics_view->line_chxr = $chxr;
+		$statistics_view->line_chxl = $chxl;
 
 		// Let's start calculating values for the stacked bar chart.
 		$project_kudos_list = array();
@@ -346,11 +327,11 @@ class Dashboard_Controller extends Core_Controller {
 		$chxl = $chxl . $chxl2;
 		$chxl = substr($chxl, 0, -1);
 
-		$dashboard_update_activity_view->bar_chbh = $chbh;
-		$dashboard_update_activity_view->bar_chd = $chd;
-		$dashboard_update_activity_view->bar_chxl = $chxl;
-		$dashboard_update_activity_view->bar_chxr = $chxr;
-		$dashboard_update_activity_view->bar_chds = $chds;
+		$statistics_view->bar_chbh = $chbh;
+		$statistics_view->bar_chd = $chd;
+		$statistics_view->bar_chxl = $chxl;
+		$statistics_view->bar_chxr = $chxr;
+		$statistics_view->bar_chds = $chds;
 
 		// Create news "newsfeed" widget.
 		$dashboard_newsfeed_view = new View('dashboard_newsfeed');
@@ -362,368 +343,134 @@ class Dashboard_Controller extends Core_Controller {
 		foreach($newsfeed as $news)
 		{
 			// The logtime should be human readable.
-			$logtime = date("jS F H:i", strtotime($news->logtime));
+			$logtime = date("jS F g:ia", strtotime($news->logtime));
 
-			// The username is always useful!
+			// The username and avatar is always useful!
 			$user = $user_model->user_information($news->uid);
+			$avatar = $user['avatar'];
 			$user = $user['username'];
 
 			if (!empty($news->cid))
 			{
 				$comment_information = $comment_model->comment_information($news->cid);
-				$news_view[] = '<b>'. $logtime .'</b> A comment "'. $comment_information['comment'] .'" (id '. $news->cid .') was made by '. $user .' (id '. $news->uid .') on the update '. $news->upid;
+				$update_information = $update_model->update_information($news->upid);
+				$picture = Updates_Controller::_file_icon($update_information['filename0'], $update_information['ext0']);
+				$news_view[] = array(
+					'avatar' => $avatar,
+					'logtime' => $logtime,
+					'user' => $user,
+					'uid' => $news->uid,
+					'text' => 'has commented on the update <strong><a href="'. url::base() .'updates/view/'. $news->upid .'/" style="text-decoration: none;">'. $update_information['summary'] .'</a></strong>:',
+					'picture' => $picture,
+					'picture_url' => url::base() .'updates/view/'. $news->upid .'/',
+					'comment_text' => $comment_information['comment']
+				);
 			}
 			elseif (!empty($news->upid))
 			{
 				$update = $update_model->update_information($news->upid);
+				$picture = Updates_Controller::_file_icon($update['filename0'], $update['ext0']);
 				$update = $update['summary'];
 				$project = $project_model->project_information($news->pid);
+				$p_uid = $project['uid'];
 				$project = $project['name'];
-				$news_view[] = '<b>'. $logtime .'</b>'. $user .' (id '. $news->uid .') has created a new update "'. $update .'" id '. $news->upid .' of project "'. $project .'" (id '. $news->pid .')';
+				$news_view[] = array(
+					'avatar' => $avatar,
+					'logtime' => $logtime,
+					'user' => $user,
+					'uid' => $news->uid,
+					'text' => 'has created a new update on the project <strong><a href="'. url::base() .'projects/view/'. $p_uid .'/'. $news->pid .'/" style="text-decoration: none;">'. $project .'</a></strong>',
+					'picture' => $picture,
+					'picture_url' => url::base() .'updates/view/'. $news->upid .'/',
+					'update_text' => $update
+				);
 			}
 			elseif (!empty($news->pid))
 			{
 				$project = $project_model->project_information($news->pid);
-				$project = $project['name'];
-				$news_view[] = '<b>'. $logtime .'</b>'. $user .' (id '. $news->uid .') has created a new project "'. $project .'" (id '. $news->pid .')';
+				if (!empty($project['icon'])) {
+					$picture = url::base() .'uploads/icons/'. $project['icon'];
+				} else {
+					$picture = url::base() .'images/noprojecticon.png';
+				}
+				$news_view[] = array(
+					'avatar' => $avatar,
+					'logtime' => $logtime,
+					'user' => $user,
+					'uid' => $news->uid,
+					'text' => 'has created a new project! Round of applause, folks.',
+					'picture' => $picture,
+					'picture_url' => url::base() .'projects/view/'. $news->uid .'/'. $news->pid .'/',
+					'update_text' => $project['name'],
+					'extra_text' => $project['summary']
+				);
 			}
 			elseif (!empty($news->kid))
 			{
 				$update = $update_model->update_information($news->kid);
-				$update = $update['summary'];
-				$news_view[] = '<b>'. $logtime .'</b>'. $user .' (id '. $news->uid .') has kudos\'d the update "'. $update .'" (id '. $news->kid .')';
+				$picture = Updates_Controller::_file_icon($update['filename0'], $update['ext0']);
+				$project = $project_model->project_information($update['pid']);
+				$p_uid = $project['uid'];
+				$project = $project['name'];
+				$update_summary = $update['summary'];
+				$news_view[] = array(
+					'avatar' => $avatar,
+					'logtime' => $logtime,
+					'user' => $user,
+					'uid' => $news->uid,
+					'text' => 'has kudos\'d an update on the project <strong><a href="'. url::base() .'projects/view/'. $p_uid .'/'. $news->pid .'/" style="text-decoration: none;">'. $project .'</a></strong>',
+					'picture' => $picture,
+					'picture_url' => url::base() .'updates/view/'. $update['id'] .'/',
+					'update_text' => $update_summary
+				);
 			}
 			elseif (!empty($news->sid))
 			{
 				$project = $project_model->project_information($news->sid);
-				$project = $project['name'];
-				$news_view[] = '<b>'. $logtime .'</b>'. $user .' (id '. $news->uid .') has subscribed to '. $project .' (id '. $news->sid .')';
-
+				if (!empty($project['icon'])) {
+					$picture = url::base() .'uploads/icons/'. $project['icon'];
+				} else {
+					$picture = url::base() .'images/noprojecticon.png';
+				}
+				$p_uname = $user_model->user_information($project['uid']);
+				$p_uname = $p_uname['username'];
+				$news_view[] = array(
+					'avatar' => $avatar,
+					'logtime' => $logtime,
+					'user' => $user,
+					'uid' => $news->uid,
+					'text' => 'has subscribed to a project by <strong><a href="'. url::base() .'profiles/view/'. $project['uid'] .'/" style="text-decoration: none;">'. $p_uname .'</a></strong>.',
+					'picture' => $picture,
+					'picture_url' => url::base() .'projects/view/'. $news->uid .'/'. $news->pid .'/',
+					'update_text' => $project['name'],
+					'extra_text' => $project['summary']
+				);
 			}
 			elseif (!empty($news->tid))
 			{
 				$track_user = $user_model->user_information($news->tid);
+				if (!empty($track_user['avatar'])) {
+					$picture = url::base() .'uploads/avatars/'. $track_user['avatar'] .'_small.jpg';
+				} else {
+					$picture = url::base() .'images/noprojecticon.png';
+				}
 				$track_user = $track_user['username'];
-				$news_view[] = '<b>'. $logtime .'</b>'. $user .' (id '. $news->uid .') has started tracking '. $track_user .' (id '. $news->tid .')';
+				$news_view[] = array(
+					'avatar' => $avatar,
+					'logtime' => $logtime,
+					'user' => $user,
+					'uid' => $news->uid,
+					'text' => 'has started tracking the user <strong><a href="'. url::base() .'profiles/view/'. $news->tid .'/" style="text-decoration: none;">'. $track_user .'</a></strong>.',
+					'picture' => $picture,
+					'picture_url' => url::base() .'projects/view/'. $news->uid .'/'. $news->pid .'/',
+					'update_text' => $track_user
+				);
 			}
 		}
 
 		$dashboard_newsfeed_view->newsfeed = $news_view;
 
 		// Generate the content.
-		$this->template->content = array($dashboard_view, $dashboard_newsfeed_view, $dashboard_update_activity_view, $dashboard_tracking_view, $dashboard_subscribed_view);
-	}
-
-	/**
-	 * Draws a line chart of comment activity for user $uid
-	 *
-	 * This graph shows comments directed at the user $uid as well as the 
-	 * comments created by the user $uid.
-	 *
-	 * @param int $uid The uid to draw for.
-	 *
-	 * @return null
-	 */
-	public function comment_activity($uid)
-	{
-		// Load necessary models.
-		$project_model = new Project_Model;
-		$comment_model = new Comment_Model;
-
-		// Calculate the time ranges 5 weeks into the past.
-		$week8_end = date("Y-m-d", strtotime("last Monday"));
-		$week8_start = date("Y-m-d", strtotime("last Monday", strtotime($week8_end)));
-		$week7_start = date("Y-m-d", strtotime("last Monday", strtotime($week8_start)));
-		$week6_start = date("Y-m-d", strtotime("last Monday", strtotime($week7_start)));
-		$week5_start = date("Y-m-d", strtotime("last Monday", strtotime($week6_start)));
-		$week4_start = date("Y-m-d", strtotime("last Monday", strtotime($week5_start)));
-		$week3_start = date("Y-m-d", strtotime("last Monday", strtotime($week4_start)));
-		$week2_start = date("Y-m-d", strtotime("last Monday", strtotime($week3_start)));
-		$week1_start = date("Y-m-d", strtotime("last Monday", strtotime($week2_start)));
-
-		$comment_by_list = array();
-		$comment_by_list[] = $comment_model->comment_number_time($uid, $week1_start, $week2_start);
-		$comment_by_list[] = $comment_model->comment_number_time($uid, $week2_start, $week3_start);
-		$comment_by_list[] = $comment_model->comment_number_time($uid, $week3_start, $week4_start);
-		$comment_by_list[] = $comment_model->comment_number_time($uid, $week4_start, $week5_start);
-		$comment_by_list[] = $comment_model->comment_number_time($uid, $week5_start, $week6_start);
-		$comment_by_list[] = $comment_model->comment_number_time($uid, $week6_start, $week7_start);
-		$comment_by_list[] = $comment_model->comment_number_time($uid, $week7_start, $week8_start);
-		$comment_by_list[] = $comment_model->comment_number_time($uid, $week8_start, $week8_end);
-
-		$comment_for_list = array();
-		$comment_for_list[] = $comment_model->comment_for_number_time($uid, $week1_start, $week2_start);
-		$comment_for_list[] = $comment_model->comment_for_number_time($uid, $week2_start, $week3_start);
-		$comment_for_list[] = $comment_model->comment_for_number_time($uid, $week3_start, $week4_start);
-		$comment_for_list[] = $comment_model->comment_for_number_time($uid, $week4_start, $week5_start);
-		$comment_for_list[] = $comment_model->comment_for_number_time($uid, $week5_start, $week6_start);
-		$comment_for_list[] = $comment_model->comment_for_number_time($uid, $week6_start, $week7_start);
-		$comment_for_list[] = $comment_model->comment_for_number_time($uid, $week7_start, $week8_start);
-		$comment_for_list[] = $comment_model->comment_for_number_time($uid, $week8_start, $week8_end);
-
-
-		// Reformat the dates to show in the graph nicely.
-		$date_array = array(
-			date("d/m", strtotime($week2_start)),
-			date("d/m", strtotime($week3_start)),
-			date("d/m", strtotime($week4_start)),
-			date("d/m", strtotime($week5_start)),
-			date("d/m", strtotime($week6_start)),
-			date("d/m", strtotime($week7_start)),
-			date("d/m", strtotime($week8_start)),
-			date("d/m", strtotime($week8_end))
-		);
-
-
-		// ... require needed files for graph generation.
-		require Kohana::find_file('vendor', 'pchart/pChart/pData', $required = TRUE, $ext = 'class');
-		require Kohana::find_file('vendor', 'pchart/pChart/pChart', $required = TRUE, $ext = 'class');
-		require Kohana::find_file('vendor', 'pchart/pChart/pCache', $required = TRUE, $ext = 'class');
-
-		// Dataset definition
-		$DataSet = new pData;
-		$DataSet->AddPoint($comment_by_list,"Serie1");
-		$DataSet->AddPoint($comment_for_list,"Serie2");
-		$DataSet->AddSerie('Serie1');
-		$DataSet->AddSerie('Serie2');
-		$DataSet->AddPoint($date_array,"XLabel");
-		$DataSet->SetSerieName('By you', 'Serie1');
-		$DataSet->SetSerieName('For you', 'Serie2');
-		$DataSet->SetAbsciseLabelSerie("XLabel");
-		$DataSet->SetYAxisName("Comments");
-
-		// Cache definition
-		$Cache = new pCache();
-		$Cache->GetFromCache('comment_activity_'. $uid, $DataSet->GetData());
-
-		// Initialise the graph
-		$Test = new pChart(410,200);
-		$Test->setFontProperties(DOCROOT.'application/vendor/pchart/Fonts/tahoma.ttf',8);
-		$Test->setGraphArea(60,30,390,170);
-		$Test->drawFilledRoundedRectangle(7,7,403,193,5,240,240,240);
-		$Test->drawRoundedRectangle(5,5,405,195,5,180,180,180);
-		$Test->drawGraphArea(240,240,240);
-		$Test->drawScale($DataSet->GetData(),$DataSet->GetDataDescription(),SCALE_NORMAL,150,150,150,TRUE,0,2);
-		$Test->drawGrid(4,220,220,220);
-
-		// Draw the 0 line
-		$Test->setFontProperties(DOCROOT.'application/vendor/pchart/Fonts/tahoma.ttf',6);
-		$Test->drawTreshold(0,143,55,72,TRUE,TRUE);
-
-		// Draw the line graph
-		$Test->drawLineGraph($DataSet->GetData(),$DataSet->GetDataDescription());
-		$Test->drawPlotGraph($DataSet->GetData(),$DataSet->GetDataDescription(),3,2,255,255,255);
-
-		// Finish the graph
-		$Test->setFontProperties(DOCROOT.'application/vendor/pchart/Fonts/tahoma.ttf',8);
-		$Test->drawLegend(65,35,$DataSet->GetDataDescription(),255,255,255);
-		$Test->setFontProperties(DOCROOT.'application/vendor/pchart/Fonts/tahoma.ttf',10);
-
-		$Cache->WriteToCache('comment_activity_'. $uid, $DataSet->GetData(), $Test);
-		$Test->Stroke();
-	}
-
-	/**
-	 * Draws a pie chart of project activity for user $uid
-	 *
-	 * @param int $uid The uid to draw for.
-	 *
-	 * @return null
-	 */
-	public function projects_activity($uid)
-	{
-		// Load necessary models.
-		$project_model = new Project_Model;
-		$update_model = new Update_Model;
-
-		// Calculate the information needed in the graph.
-		$projects = $project_model->projects($uid);
-
-		$project_kudos_list = array();
-		$project_name_list = array();
-		$total = 0;
-
-		foreach ($projects as $pid => $p_name)
-		{
-			$update_number = $update_model->project_updates($pid, $uid);
-			$project_update_list[] = $update_number;
-			$project_name_list[] = $p_name .' ('. $update_number .')';
-			$total = $total + $update_number;
-		}
-
-		if ($total == 0)
-		{
-			$handle = ImageCreate(1,1) or die('fail');
-			header("content-type: image/jpeg");
-			Imagejpeg($handle);
-			die();
-		}
-
-		// ... require needed files for graph generation.
-		require Kohana::find_file('vendor', 'pchart/pChart/pData', $required = TRUE, $ext = 'class');
-		require Kohana::find_file('vendor', 'pchart/pChart/pChart', $required = TRUE, $ext = 'class');
-		require Kohana::find_file('vendor', 'pchart/pChart/pCache', $required = TRUE, $ext = 'class');
-
-		// Dataset definition
-		$DataSet = new pData;
-		$DataSet->AddPoint($project_update_list, 'Serie1');
-		$DataSet->AddPoint($project_name_list, 'Serie2');
-		$DataSet->AddAllSeries();
-		$DataSet->SetAbsciseLabelSerie('Serie2');
-
-		// Cache definition
-		$Cache = new pCache();
-		$Cache->GetFromCache('projects_activity_'. $uid, $DataSet->GetData());
-
-		// Initialise the graph
-		$Test = new pChart(410,200);  
-		$Test->drawFilledRoundedRectangle(7,7,403,193,5,240,240,240);  
-		$Test->drawRoundedRectangle(5,5,405,195,5,180,180,180); 
-
-		// Draw the pie chart
-		$Test->setFontProperties(DOCROOT.'application/vendor/pchart/Fonts/tahoma.ttf',8);
-		$Test->drawPieGraph($DataSet->GetData(),$DataSet->GetDataDescription(),130,90,100,PIE_PERCENTAGE,TRUE,50,20,5);  
-		$Test->drawPieLegend(265,15,$DataSet->GetData(),$DataSet->GetDataDescription(),250,250,250); 
-
-		$Cache->WriteToCache('projects_activity_'. $uid, $DataSet->GetData(), $Test);
-		$Test->Stroke();
-	}
-
-
-	/**
-	 * Draws a pie chart of popular projects based on kudos for user $uid
-	 *
-	 * @param int $uid The uid to draw for.
-	 *
-	 * @return null
-	 */
-	public function popular_project_kudos($uid)
-	{
-		// Load necessary models.
-		$project_model = new Project_Model;
-		$kudos_model = new Kudos_Model;
-
-		// Calculate the information needed in the graph.
-		$projects = $project_model->projects($uid);
-
-		$project_kudos_list = array();
-		$project_name_list = array();
-
-		foreach ($projects as $pid => $p_name)
-		{
-			$kudos_number = $kudos_model->kudos_project($pid, $uid);
-			$project_kudos_list[] = $kudos_number;
-			$project_name_list[] = $p_name .' ('. $kudos_number .')';
-		}
-
-		// ... require needed files for graph generation.
-		require Kohana::find_file('vendor', 'pchart/pChart/pData', $required = TRUE, $ext = 'class');
-		require Kohana::find_file('vendor', 'pchart/pChart/pChart', $required = TRUE, $ext = 'class');
-		require Kohana::find_file('vendor', 'pchart/pChart/pCache', $required = TRUE, $ext = 'class');
-
-		// Dataset definition
-		$DataSet = new pData;
-		$DataSet->AddPoint($project_kudos_list, 'Serie1');
-		$DataSet->AddPoint($project_name_list, 'Serie2');
-		$DataSet->AddAllSeries();
-		$DataSet->SetAbsciseLabelSerie('Serie2');
-
-		// Cache definition
-		$Cache = new pCache();
-		$Cache->GetFromCache('popular_project_kudos_'. $uid, $DataSet->GetData());
-
-		// Initialise the graph
-		$Test = new pChart(410,200);  
-		$Test->drawFilledRoundedRectangle(7,7,403,193,5,240,240,240);  
-		$Test->drawRoundedRectangle(5,5,405,195,5,180,180,180); 
-
-		// Draw the pie chart
-		$Test->setFontProperties(DOCROOT.'application/vendor/pchart/Fonts/tahoma.ttf',8);
-		$Test->drawPieGraph($DataSet->GetData(),$DataSet->GetDataDescription(),130,90,100,PIE_PERCENTAGE,TRUE,50,20,5);  
-		$Test->drawPieLegend(265,15,$DataSet->GetData(),$DataSet->GetDataDescription(),250,250,250); 
-
-		$Cache->WriteToCache('popular_project_kudos_'. $uid, $DataSet->GetData(), $Test);
-		$Test->Stroke();
-	}
-
-	/**
-	 * Draws a pie chart of popular projects based on subscribers for user $uid
-	 *
-	 * @param int $uid The uid to draw for.
-	 *
-	 * @return null
-	 */
-	public function popular_project_subscribers($uid)
-	{
-		// Load necessary models.
-		$project_model = new Project_Model;
-		$subscribe_model = new Subscribe_Model;
-		$track_model = new Track_Model;
-
-		// Calculate the information needed in the graph.
-		$projects = $project_model->projects($uid);
-
-		// We will not track the "Uncategorised" project as it is special.
-		//unset($projects[1]);
-
-		$project_subscribe_list = array();
-		$project_name_list = array();
-		$total = 0;
-
-		foreach ($projects as $pid => $p_name)
-		{
-			if ($pid == 1)
-			{
-				// Because you cannot subscribe to uncategorised projects, this 
-				// will instead show the number of people tracking you.
-				$subscribed_number = $track_model->track($uid);
-				$project_subscribe_list[] = $subscribed_number;
-				$project_name_list[] = 'Trackers ('. $subscribed_number .')';
-			}
-			else
-			{
-				$subscribed_number = $subscribe_model->subscribe($pid);
-				$project_subscribe_list[] = $subscribed_number;
-				$project_name_list[] = $p_name .' ('. $subscribed_number .')';
-			}
-			$total = $total + $subscribed_number;
-		}
-
-		if ($total == 0)
-		{
-			$handle = ImageCreate(1,1) or die('fail');
-			header("content-type: image/jpeg");
-			Imagejpeg($handle);
-			die();
-		}
-
-		// ... require needed files for graph generation.
-		require Kohana::find_file('vendor', 'pchart/pChart/pData', $required = TRUE, $ext = 'class');
-		require Kohana::find_file('vendor', 'pchart/pChart/pChart', $required = TRUE, $ext = 'class');
-		require Kohana::find_file('vendor', 'pchart/pChart/pCache', $required = TRUE, $ext = 'class');
-
-		// Dataset definition
-		$DataSet = new pData;
-		$DataSet->AddPoint($project_subscribe_list, 'Serie1');
-		$DataSet->AddPoint($project_name_list, 'Serie2');
-		$DataSet->AddAllSeries();
-		$DataSet->SetAbsciseLabelSerie('Serie2');
-
-		// Cache definition
-		$Cache = new pCache();
-		$Cache->GetFromCache('popular_project_subscribers_'. $uid, $DataSet->GetData());
-
-		// Initialise the graph
-		$Test = new pChart(410,200);  
-		$Test->drawFilledRoundedRectangle(7,7,403,193,5,240,240,240);  
-		$Test->drawRoundedRectangle(5,5,405,195,5,180,180,180); 
-
-		// Draw the pie chart
-		$Test->setFontProperties(DOCROOT.'application/vendor/pchart/Fonts/tahoma.ttf',8);
-		$Test->drawPieGraph($DataSet->GetData(),$DataSet->GetDataDescription(),130,90,100,PIE_PERCENTAGE,TRUE,50,20,5);  
-		$Test->drawPieLegend(265,15,$DataSet->GetData(),$DataSet->GetDataDescription(),250,250,250); 
-
-		$Cache->WriteToCache('popular_project_subscribers_'. $uid, $DataSet->GetData(), $Test);
-		$Test->Stroke();
+		$this->template->content = array($statistics_view, $dashboard_newsfeed_view, $dashboard_tracking_view, $dashboard_subscribed_view);
 	}
 }

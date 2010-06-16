@@ -67,7 +67,7 @@ $(document).ready(function() {
 	<?php if (empty($timeline)) { ?>
 
 	<div style="border: 2px solid #800; background-color: #FDD; margin: 10px; padding: 10px;">
-		Oh no! There's no updates in this project just yet. You should add something, you know.
+		Oh no! There're no updates in this project just yet. You should add something, you know.
 	</div>
 
 	<?php } else { ?>

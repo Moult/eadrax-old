@@ -104,47 +104,6 @@ class Comment_Model extends Model {
 	}
 
 	/**
-	 * Returns the number of comments by a user within two dates.
-	 *
-	 * @param int $uid The user ID.
-	 * @param int $start The start date.
-	 * @param int $end The end date.
-	 *
-	 * @return int
-	 */
-	public function comment_number_time($uid, $start, $end)
-	{
-		$db = $this->db;
-		$count = $db->from('comments')->where(array('uid' => $uid, 'logtime <' => $end, 'logtime >=' => $start))->get()->count();
-		return $count;
-	}
-
-	/**
-	 * Returns the number of comments directed at a user within two dates.
-	 *
-	 * @param int $uid The user ID.
-	 * @param int $start The start date.
-	 * @param int $end The end date.
-	 *
-	 * @return int
-	 */
-	public function comment_for_number_time($uid, $start, $end)
-	{
-		$db = $this->db;
-		$count = $db
-			->from('comments')
-			->where(array(
-				'updates.uid' => $uid,
-				'comments.uid !=' => $uid,
-				'comments.logtime <' => $end,
-				'comments.logtime >=' => $start
-			))->join('updates', array(
-				'comments.upid' => 'updates.id'
-			))->get()->count();
-		return $count;
-	}
-
-	/**
 	 * Returns all the data about a comment with the id $cid.
 	 *
 	 * @param int $cid
