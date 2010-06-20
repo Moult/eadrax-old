@@ -69,7 +69,7 @@
         <div id="copyright">
             The Eadrax Team &copy; 2010
             <br /><br />
-			<a href="http://github.com/Moult/Eadrax">Source</a> - Sponsor - Development - Back to top
+			<a href="http://github.com/Moult/Eadrax">Source</a> - <a href="<?php echo url::base(); ?>site/sponsor/">Sponsor</a> - <a href="<?php echo url::base(); ?>site/development/">Development</a> - <a href="#">Back to top</a>
         </div>
         <!-- </FOOTER> -->
 	</body>

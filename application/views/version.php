@@ -1,4 +1,5 @@
 <h2>
+	<img src="<?php echo url::base(); ?>images/icons/questionmark_48.png" class="icon" alt="" />
 	What's that funky number doing there?
 </h2>
 
@@ -15,5 +16,14 @@
 </p>
 
 <p>
-	You can keep up to date on the "official" WIPUP project, which is tracked on WIPUP itself, on <a href="<?php echo url::base(); ?>profiles/view/Moult/">Dion Moult's profile page</a>.
+	You can keep up to date on the "official" <a href="<?php echo url::base(); ?>projects/view/2/3/">WIPUP project</a>, which is tracked on WIPUP itself.
+</p>
+
+<p>
+	We have a few helpful links which may be of interest to you:
+	<ul>
+		<li><a href="http://github.com/Moult/Eadrax">View the source code</a></li>
+		<li>Sponsor us</li>
+		<li>Get involved with development</li>
+	</ul>
 </p>

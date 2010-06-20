@@ -60,7 +60,7 @@ $(document).ready(function() {
 
 <div id="slider<?php echo $project['id']; ?>" style="width: 830px; display: none;">
 
-	<div style="clear: both; background-color: #FFF; border: 1px solid #888; padding: 10px; margin-bottom: 10px; padding-bottom: 0px;">
+	<div style="clear: both; background-color: #FFF; border-top: 1px solid #888; padding: 10px; margin-bottom: 10px; padding-bottom: 1px; background-image: url('<?php echo url::base(); ?>images/comment_divide.png'); background-repeat: repeat-x; background-position: bottom;">
 	<?php echo $description; ?>
 	</div>
 

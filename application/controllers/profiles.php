@@ -140,7 +140,7 @@ class Profiles_Controller extends Openid_Controller {
 				'<u>$1</u>',
 				'<a href="$1" target="_blank">$2</a>',
 				'<a href="$1" target="_blank">$1</a>',
-				'<ul style="margin-left: 30px; font-size: 16px;">$1</ul>',
+				'<ul>$1</ul>',
 				'<li>$1</li>'
 			);
 			 
@@ -151,7 +151,7 @@ class Profiles_Controller extends Openid_Controller {
             $description = preg_replace("/(?:\r?\n)+/", '</p><p '. $format .'>', $description);
 
 			// Let's do some really nasty fixing to maintain HTML validity.
-			$description = preg_replace(array('/<p '. $format .'><ul style="margin-left: 30px; font-size: 16px;"><\/p>/', '/<p '. $format .'><\/ul><\/p>/', '/<p '. $format .'><li>(.*?)<\/li><\/p>/'), array('<ul style="margin-left: 30px; font-size: 16px;">', '</ul>', '<li>$1</li>'), $description);
+			$description = preg_replace(array('/<p '. $format .'><ul><\/p>/', '/<p '. $format .'><\/ul><\/p>/', '/<p '. $format .'><li>(.*?)<\/li><\/p>/'), array('<ul>', '</ul>', '<li>$1</li>'), $description);
 
 			$$project_view->description = $description;
 
