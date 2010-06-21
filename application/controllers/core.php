@@ -38,8 +38,6 @@
 abstract class Core_Controller extends Template_Controller {
 	// We do not yet have a template.
 	public $template	= 'template/template';
-	public $site_name	= 'Eadrax';
-	public $slogan		= 'Totally awesome.';
 
 	// Useful authentication variables.
 	public $logged_in;
@@ -73,6 +71,58 @@ abstract class Core_Controller extends Template_Controller {
 			$this->logged_in	= FALSE;
 		}
 
+		// Send all the data we collected to the template...
+		$this->template->latest_data = $this->_get_latest_data();
+		
+		// Loading Libraries
+		$this->session = Session::instance();
+		
+		$this->head = Head::instance();
+
+		// Javascripts
+		$this->head->javascript->append_file('js/lib/jquery-1.3.2.min.js');
+		$this->head->javascript->append_file('js/lib/jquery-ui-1.7.2.custom.min.js');
+		$this->head->javascript->append_file('js/base.js');
+
+		// Stylesheets
+		$this->head->css->append_file('css/ui-darkness/jquery-ui-1.7.2.custom');
+
+		$this->template->set_global('head', $this->head);
+	}
+
+	/**
+	 * Redirects users to the login form if they are not signed in.
+	 *
+	 * @param bool $reverse If TRUE, does the opposite.
+	 *
+	 * @return null
+	 */
+	public function restrict_access($reverse = FALSE)
+	{
+		if ($reverse == FALSE)
+		{
+			if ($this->logged_in == FALSE)
+			{
+				url::redirect('users/login');
+			}
+		}
+		elseif ($reverse == TRUE)
+		{
+			if ($this->logged_in == TRUE)
+			{
+				// Useful for login/register pages.
+				url::redirect('dashboard');
+			}
+		}
+	}
+
+	/**
+	 * Retries the latest submitted updates to show in the template footer.
+	 *
+	 * @return array
+	 */
+	public function _get_latest_data()
+	{
 		$update_model = new Update_Model;
 		$project_model = new Project_Model;
 		$user_model = new User_Model;
@@ -114,51 +164,6 @@ abstract class Core_Controller extends Template_Controller {
 
 			$n++;
 		}
-
-		// Send all the data we collected to the template...
-		$this->template->latest_data = $latest_data;
-		
-		// Loading Libraries
-		$this->session = Session::instance();
-		
-		$this->head = Head::instance();
-
-		// Javascripts
-		$this->head->javascript->append_file('js/lib/jquery-1.3.2.min.js');
-		$this->head->javascript->append_file('js/lib/jquery-ui-1.7.2.custom.min.js');
-		$this->head->javascript->append_file('js/base.js');
-
-		// Stylesheets
-		$this->head->css->append_file('css/ui-darkness/jquery-ui-1.7.2.custom');
-
-		$this->head->title->set($this->site_name .' | '. $this->slogan);
-		
-		$this->template->set_global('head', $this->head);
-	}
-
-	/**
-	 * Redirects users to the login form if they are not signed in.
-	 *
-	 * @param bool $reverse If TRUE, does the opposite.
-	 *
-	 * @return null
-	 */
-	public function restrict_access($reverse = FALSE)
-	{
-		if ($reverse == FALSE)
-		{
-			if ($this->logged_in == FALSE)
-			{
-				url::redirect('users/login');
-			}
-		}
-		elseif ($reverse == TRUE)
-		{
-			if ($this->logged_in == TRUE)
-			{
-				// Useful for login/register pages.
-				url::redirect('dashboard');
-			}
-		}
+		return $latest_data;
 	}
 }
