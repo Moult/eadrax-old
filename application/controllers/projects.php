@@ -57,10 +57,14 @@ class Projects_Controller extends Core_Controller {
 
 		$this->template->content = array();
 
+		// This is the view in which project updates are shown.
+		$project_view = new View('project');
+
 		// Reset variables if a 0 has been given.
-		if ($uid == 0) {
+		if ($uid == '0') {
 			$uid = NULL;
 		}
+
 		if ($pid == 0) {
 			// If there is a user given, but no project...
 			if ($uid != NULL) {
@@ -91,23 +95,15 @@ class Projects_Controller extends Core_Controller {
 
 				$this->template->content[] = $profile_view;
 
+				$project_view->join = 1;
+				$this->template->join = 1;
 			}
 
 			$pid = NULL;
 		}
 
-
 		// Let's update the project view statistics
 		$project_model->view($pid);
-
-		$project_view = new View('project');
-
-		// Join all segments together if viewing updates with a profile page.
-		$uri_segment_2 = $this->uri->segment(2);
-		if ($this->uri->segment(1) == 'profiles' && !empty($uri_segment_2)) {
-			$project_view->join = 1;
-			$this->template->join = 1;
-		}
 
 		// Parse the project itself first.
 		$project_information = $project_model->project_information($pid);
@@ -164,7 +160,14 @@ class Projects_Controller extends Core_Controller {
 		}
 
 		// Let's parse individual updates.
-		$query = $update_model->updates($uid, $pid, 'DESC', Kohana::config('projects.updates_page'), ($page-1)*Kohana::config('projects.updates_page'));
+		if ($uid != 'category') {
+			$query = $update_model->updates($uid, $pid, 'DESC', Kohana::config('projects.updates_page'), ($page-1)*Kohana::config('projects.updates_page'));
+		} else {
+			$query = $update_model->updates($uid, $pid, 'DESC', Kohana::config('projects.updates_page'), ($page-1)*Kohana::config('projects.updates_page'));
+			$category_name = $project_model->categories();
+			$project_view->category_name = $category_name[$pid];
+			$project_view->category_id = $pid;
+		}
         $markup = '';
 
         if (count($query) > 0) {
@@ -180,7 +183,7 @@ class Projects_Controller extends Core_Controller {
 				$project_name = $project_name['name'];
 				$star_width = 0;
 
-				if ($pid != 0) {
+				if ($pid != 0 && $uid != 'category') {
 					$project_name = '';
 
 					// Calculate star width

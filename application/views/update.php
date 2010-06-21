@@ -99,7 +99,7 @@ if (isset($last)) {
 <div style="clear: both; margin-bottom: 10px;"></div>
 
 <?php if (!empty($detail)) { ?>
-<div style="border: 1px solid #AAA; margin-bottom: 10px; padding: 10px; padding-bottom: 0px; background-color: #FFFFFF;">
+<div style="clear: both; background-color: #FFF; border-top: 1px solid #888; padding: 10px; margin-bottom: 10px; padding-bottom: 1px; background-image: url('<?php echo url::base(); ?>images/comment_divide.png'); background-repeat: repeat-x; background-position: bottom;">
 	<?php echo $detail; ?>
 </div>
 <?php } ?>

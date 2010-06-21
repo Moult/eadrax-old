@@ -4,12 +4,16 @@
 <?php } else { ?>
 <h2>
 <?php } ?>
-	<?php if (!empty($project['icon'])) { ?>
+	<?php if (isset($category_name)) { ?>
+	<img src="<?php echo url::base(); ?>images/icons/folder_48.png" class="icon" alt="" />
+	<?php } elseif (!empty($project['icon'])) { ?>
 	<img src="<?php echo url::base(); ?>uploads/icons/<?php echo $project['icon']; ?>" class="icon" alt="" style="border: 1px solid #999; padding: 1px;" />
 	<?php } else { ?>
 	<img src="<?php echo url::base(); ?>images/noprojecticon.png" class="icon" alt="" style="border: 1px solid #999; padding: 1px;" />
 	<?php } ?>
-	<?php if (!empty($uid)) { ?>
+	<?php if (isset($category_name)) { ?>
+	<?php echo $category_name; ?> Updates
+	<?php } elseif (!empty($uid)) { ?>
 		<?php if (empty($project)) { echo $u_name; } else { echo $project['name']; } ?>'s Updates <?php if ($project['uid'] == $this->uid && $project['uid'] != 1) { ?><a href="<?php echo url::base(); ?>projects/add/<?php echo $project['id']; ?>/"><img src="<?php echo url::base(); ?>images/icons/pencil.png" class="icon" alt="Edit" /></a><?php } ?>
 	<?php } else { ?>
 		Latest WIP Updates
@@ -17,6 +21,7 @@
 </h2>
 <?php } ?>
 
+<?php if (!isset($category_name)) { ?>
 <?php if (!empty($project)) { ?>
 
 <div style="float: left;font-size: 18px; letter-spacing: -1px; color: #AAA; text-align: right; margin-bottom: 5px;">
@@ -28,6 +33,7 @@ By <a href="<?php echo url::base(); ?>profiles/view/<?php echo $u_name; ?>/"><?p
 <div style="clear: both; background-color: #FFF; border-top: 1px solid #888; padding: 10px; margin-bottom: 10px; padding-bottom: 1px; background-image: url('<?php echo url::base(); ?>images/comment_divide.png'); background-repeat: repeat-x; background-position: bottom;">
 <?php echo $description; ?>
 </div>
+<?php } ?>
 <?php } ?>
 
 <?php if (empty($markup)) { ?>
@@ -47,6 +53,7 @@ By <a href="<?php echo url::base(); ?>profiles/view/<?php echo $u_name; ?>/"><?p
 <?php if ($pages > 1) { ?>
 <?php if (empty($project)) { $project['id'] = 0; } ?>
 <?php if (empty($uid)) { $uid = 0; $project['id'] = 0; } ?>
+<?php if (isset($category_name)) { $project['id'] = $category_id; } ?>
 <div style="padding: 20px; margin-left: auto; margin-right: auto; clear: both; text-align: center;">
     <ul style="display: inline;">
 <?php

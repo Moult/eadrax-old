@@ -445,9 +445,11 @@ class Update_Model extends Model {
 	}
 
 	/**
-	 * Returns all the updates in a project by a user.
+	 * Returns all the updates in a project by a user - or alternatively all 
+	 * updates within a project category.
 	 *
-	 * @param int $uid The ID of the user who owns the updates.
+	 * @param mixed $uid The ID of the user who owns the updates, or 'category'.
+	 * @param mixed $pid The project ID, or if $uid = 'category', the category id.
 	 *
 	 * @return array
 	 */
@@ -461,7 +463,11 @@ class Update_Model extends Model {
 			$search_array['pid'] = $pid;
 		}
 
-		$updates = $this->db->from('updates')->where($search_array)->orderby('id', $order);
+		if ($uid != NULL && $search_array['uid'] == 'category') {
+			$updates = $this->db->from('projects')->join('updates', 'updates.pid', 'projects.id')->where(array('projects.cid' => $pid))->orderby('updates.id', $order);
+		} else {
+			$updates = $this->db->from('updates')->where($search_array)->orderby('id', $order);
+		}
 
 		if ($limit != FALSE && $offset != FALSE) {
 			$updates = $updates->limit($limit, $offset);
