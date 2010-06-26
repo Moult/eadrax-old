@@ -135,19 +135,20 @@ for ($i=0; $i<5; $i++)
 			if (file_exists(DOCROOT .'uploads/files/'. ${'filename'. $i} .'_fit.jpg'))
 			{
 ?>
+
 <script type="text/javascript">
 $(document).ready(function() {
-	$(".single_image").mouseenter(function(){
-		$(".single_cite").slideToggle("fast");
+	$(".single_image<?php echo $i; ?>").mouseenter(function(){
+		$(".single_cite<?php echo $i; ?>").slideToggle("fast");
 	});
-	$(".single_image").mouseleave(function(){
-		$(".single_cite").slideToggle("fast");
+	$(".single_image<?php echo $i; ?>").mouseleave(function(){
+		$(".single_cite<?php echo $i; ?>").slideToggle("fast");
 	});
 });
 </script>
 <?php
-				echo '<a class="single_image" href="'. url::base() .'uploads/files/'. ${'filename'. $i} .'.'. ${'ext'. $i} .'" title="'. $summary .'"><img src="'. url::base() .'uploads/files/'. ${'filename'. $i} .'_fit.jpg" style="border: 2px solid #DDD; position: relative; left: -2px;" alt="attachment'. $i .'" /></a>';
-				echo '<cite class="single_cite">This image is scaled down, click to view image full size.</cite>';
+				echo '<a class="single_image'. $i .'" href="'. url::base() .'uploads/files/'. ${'filename'. $i} .'.'. ${'ext'. $i} .'" title="'. $summary .'"><img src="'. url::base() .'uploads/files/'. ${'filename'. $i} .'_fit.jpg" style="border: 2px solid #DDD; position: relative; left: -2px;" alt="attachment'. $i .'" /></a>';
+				echo '<cite class="single_cite'. $i .'" style="background: #000000; -moz-opacity:.55; filter:alpha(opacity=55); opacity: .55; color: #FFF; position: absolute; margin-left: auto; margin-right: auto; bottom: 5px; height: 15px; width: 810px; padding: 10px; border-top: 2px solid #FFF; font-weight: bold; display: none;">This image is scaled down, click to view image full size.</cite>';
 			}
 			else
 			{
