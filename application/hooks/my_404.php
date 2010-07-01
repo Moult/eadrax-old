@@ -55,7 +55,7 @@ class my_404 extends Core_Controller {
 		$template->content = array($error404_view);
 		$template->latest_data = Site_Controller::_get_latest_data();
 		$template->render(TRUE);
-		die('404 not found!');
+		die();
 	}
 }
 

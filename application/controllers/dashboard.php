@@ -237,7 +237,7 @@ class Dashboard_Controller extends Core_Controller {
 
 		// Calculate the width of each bar.
 		$project_number = count($project_name_list);
-		$bar_width = (360/$project_number)-10;
+		$bar_width = ceil((360/$project_number)-10);
 		$chbh = $bar_width .',10,15';
 
 		// Set the values for the bar chart.
@@ -436,7 +436,7 @@ class Dashboard_Controller extends Core_Controller {
 		{
 			$username = $user_model->user_information($uid);
 			if (!empty($username['avatar'])) {
-				$avatar = url::base() .'uploads/avatars/'. $track_user['avatar'] .'_small.jpg';
+				$avatar = url::base() .'uploads/avatars/'. $username['avatar'] .'_small.jpg';
 			} else {
 				$avatar = url::base() .'images/noprojecticon.png';
 			}
