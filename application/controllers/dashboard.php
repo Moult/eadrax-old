@@ -39,7 +39,7 @@ class Dashboard_Controller extends Core_Controller {
 	 *
 	 * @return null
 	 */
-	public function index()
+	public function index($offset = 0)
 	{
 		// Only logged in users are allowed.
 		$this->restrict_access();
@@ -292,10 +292,14 @@ class Dashboard_Controller extends Core_Controller {
 		$dashboard_newsfeed_view = new View('dashboard_newsfeed');
 
 		// Prepare the newsfeed.
-		$newsfeed = $update_model->news($this->uid);
+		$newsfeed = $update_model->news($this->uid, $offset);
 		$news_view = array();
 
-		foreach($newsfeed as $news)
+		// Pagination information.
+		$dashboard_newsfeed_view->offset = $offset;
+		$dashboard_newsfeed_view->news_total = $newsfeed[0];
+
+		foreach($newsfeed[1] as $news)
 		{
 			// The logtime should be human readable.
 			$logtime = date("jS F g:ia", strtotime($news->logtime));

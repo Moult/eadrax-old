@@ -30,35 +30,55 @@
 				<a href="<?php echo url::base(); ?>profiles/view/<?php echo $news['user']; ?>/"><img src="<?php echo url::base(); ?>images/noprojecticon.png" class="icon" alt="" style="border: 1px solid #999; padding: 1px; float: left;" /></a>
 				<?php } ?>
 			</div>
+
 			<div style="float: left; margin-left: 5px; width: 480px;">
 				<p style="color: #555;">
 				<strong><a href="<?php echo url::base(); ?>profiles/view/<?php echo $news['user']; ?>/" style="text-decoration: none;"><?php echo $news['user']; ?></a></strong> <?php echo $news['text']; ?>
 				</p>
-	<?php
-		if (!strpos($news['picture'], 'images/icons') || strpos($news['picture'], 'images/noprojecticon.png')) { $style = 'border: 1px solid #999; padding: 1px;'; } else { $style = ''; }
-		echo '<p style="float: left;"><a href="'. $news['picture_url'] .'"><img style="vertical-align: middle; '. $style .'" src="'. $news['picture'] .'" alt="update icon" /></a></p>';
-	?>
+				<?php
+					if (!strpos($news['picture'], 'images/icons') || strpos($news['picture'], 'images/noprojecticon.png')) { $style = 'border: 1px solid #999; padding: 1px;'; } else { $style = ''; }
+					echo '<p style="float: left;"><a href="'. $news['picture_url'] .'"><img style="vertical-align: middle; '. $style .'" src="'. $news['picture'] .'" alt="update icon" /></a></p>';
+				?>
 
-	<?php if (!empty($news['comment_text'])) { ?>
-	<span style="float: left; font-size: 14px; font-style: italic; margin-left: 5px; width: 300px;">
-	<?php echo $news['comment_text']; ?>
-	</span>
-	<?php } ?>
+				<?php if (!empty($news['comment_text'])) { ?>
+				<span style="float: left; font-size: 14px; font-style: italic; margin-left: 5px; width: 300px; margin-bottom: 10px;">
+				<?php echo $news['comment_text']; ?>
+				</span>
+				<?php } ?>
 
-	<?php if (!empty($news['update_text'])) { ?>
-	<p style="float: left; margin-left: 5px; width: 300px;">
-		<span style="font-size: 14px;">
-			<strong><a href="<?php echo $news['picture_url']; ?>" style="text-decoration: none;"><?php echo $news['update_text']; ?></a></strong>
-		</span><br />
-		<?php if (!empty($news['extra_text'])) { ?>
-		<?php echo $news['extra_text']; ?>
-		<?php } ?>
-	</p>
-	<?php } ?>
-
+				<?php if (!empty($news['update_text'])) { ?>
+				<p style="float: left; margin-left: 5px; width: 300px;">
+					<span style="font-size: 14px;">
+						<strong><a href="<?php echo $news['picture_url']; ?>" style="text-decoration: none;"><?php echo $news['update_text']; ?></a></strong>
+					</span><br />
+					<?php if (!empty($news['extra_text'])) { ?>
+					<?php echo $news['extra_text']; ?>
+					<?php } ?>
+				</p>
+				<?php } ?>
 			</div>
 		</div>
 	<? } ?>
+
+	<?php if ($offset+10 >= $news_total) { ?>
+	<p style="font-style: italic;">
+		No more news items are available after this date.
+	</p>
+	<?php } ?>
+
+	<div style="float: left;">
+	<?php if ($offset > 10 || $offset != 0) { ?>
+	<a href="<?php echo url::base(); ?>dashboard/">Latest</a>
+	<?php } if ($offset > 10) { ?>
+	 - <a href="<?php echo url::base(); ?>dashboard/index/<?php echo $offset-10; ?>/">Newer</a>
+	<?php } ?>
+	</div>
+
+	<?php if ($offset+10 < $news_total) { ?>
+	<div style="float: right;">
+	<a href="<?php echo url::base(); ?>dashboard/index/<?php echo $offset+10; ?>/">Older</a>
+	</div>
+	<?php } ?>
 </div>
 
 <div class="right">

@@ -286,7 +286,7 @@ class Update_Model extends Model {
 	 *
 	 * @return array
 	 */
-	public function news($uid)
+	public function news($uid, $offset = 0)
 	{
 		$db = $this->db;
 
@@ -374,17 +374,25 @@ class Update_Model extends Model {
 			}
 			else
 			{
-				$query = $query .' ORDER BY logtime DESC LIMIT 8';
+				$count_query = $query .' ORDER BY logtime DESC';
+				$count_news = $db->query($count_query);
+				$count_news = $count_news->count();
+
+				$query = $query .' ORDER BY logtime DESC LIMIT '. $offset .', 10';
 				$news = $db->query($query);
 			}
 		}
-
-				else
+		else
 		{
 			// no news? Blank array.
 			$news = array();
 		}
-		return $news;
+
+		if (!isset($count_news)) {
+			$count_news = 0;
+		}
+
+		return array($count_news, $news);
 	}
 
 	/**
