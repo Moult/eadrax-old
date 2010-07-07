@@ -53,8 +53,6 @@ class Dashboard_Controller extends Core_Controller {
 		$update_model = new Update_Model;
 		$comment_model = new Comment_Model;
 
-
-
 		// Create the statistics widget.
 		$statistics_view = new View('statistics');
 
@@ -263,7 +261,8 @@ class Dashboard_Controller extends Core_Controller {
 			4 => 17,
 			5 => 13,
 			6 => 9,
-			7 => 7
+			7 => 7,
+			8 => 5
 		);
 
 		// Set the values for the x-axis.

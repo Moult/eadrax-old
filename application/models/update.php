@@ -296,8 +296,10 @@ class Update_Model extends Model {
 
 		$tracks = $db->from('track')->where('uid', $uid)->get();
 		$subscribes = $db->from('subscribe')->where('uid', $uid)->get();
+		$updates = $db->from('updates')->where('uid', $uid)->get();
+		$projects = $db->from('projects')->where('uid', $uid)->get();
 
-		if ($tracks->count() || $subscribes->count())
+		if ($tracks->count() || $subscribes->count() || $updates->count() || $projects->count())
 		{
 			foreach ($tracks as $row)
 			{
@@ -314,7 +316,6 @@ class Update_Model extends Model {
 
 			foreach ($subscribes as $row)
 			{
-
 				if ($first == TRUE)
 				{
 					$first = FALSE;
@@ -326,11 +327,59 @@ class Update_Model extends Model {
 				}
 			}
 
+			// Even if we aren't tracking or subscribed to a project we may have 
+			// news on our very own updates.
+			foreach ($updates as $row)
+			{
+				if ($first == TRUE)
+				{
+					$first = FALSE;
+					$query = $query .'SELECT * FROM news WHERE upid='. $row->id;
+				}
+				else
+				{
+					$query = $query .' UNION SELECT * FROM news WHERE upid='. $row->id;
+				}
+			}
+
+			// For the egotistical people let's see what we did ourselves or 
+			// happened to our updates and projects ...
+			if ($first == TRUE)
+			{
+				$first = FALSE;
+				$query = $query .'SELECT * FROM news WHERE uid='. $uid .' OR tid='. $uid;
+			}
+			else
+			{
+				$query = $query .' UNION SELECT * FROM news WHERE uid='. $uid .' OR tid='. $uid;
+			}
+
+			foreach ($projects as $row)
+			{
+				if ($first == TRUE)
+				{
+					$first = FALSE;
+					$query = $query .'SELECT * FROM news WHERE pid='. $row->id .' OR sid='. $row->id;
+				}
+				else
+				{
+					$query = $query .' UNION SELECT * FROM news WHERE pid='. $row->id .' OR sid='. $row->id;
+				}
+			}
+
 			// Finish off the query.
-			$query = $query .' ORDER BY logtime DESC LIMIT 8';
-			$news = $db->query($query);
+			if ($first == TRUE) {
+				// No results, no news!
+				$news = array();
+			}
+			else
+			{
+				$query = $query .' ORDER BY logtime DESC LIMIT 8';
+				$news = $db->query($query);
+			}
 		}
-		else
+
+				else
 		{
 			// no news? Blank array.
 			$news = array();
