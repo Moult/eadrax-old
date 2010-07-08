@@ -131,7 +131,7 @@ if (($this->uri->segment(1) == 'updates' && $this->uri->segment(2) == 'add') || 
 
 		<div id="content-top">
 			<div id="content-left"></div>
-			<div id="global-message">Version xx.06.10a (<a href="<?php echo url::base(); ?>site/version/" style="color: #2c7994; text-decoration: none;">eh?</a>)</div>
+			<div id="global-message">Running on live.WIPUP (<a href="<?php echo url::base(); ?>site/version/" style="color: #2c7994; text-decoration: none;">eh?</a>)</div>
 			<div id="content-right"></div>
 		</div>
 

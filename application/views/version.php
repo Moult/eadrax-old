@@ -12,6 +12,10 @@
 </p>
 
 <p>
+	The <a href="http://live.wipup.org/">live.WIPUP</a> version is a special version released to increase the user-developer transparency. It is an effort to show what WIPUP truly is - a work in progress: continuously changing and improving to better help the community. It is routinely updated with the latest code in the GIT repository, no matter how broken it may be. It is a useful way for people to try out the latest and greatest features. It shares the same database so you can use it just like you would with the real WIPUP.
+</p>
+
+<p>
 	We want to emphasize that this is an <em>evolving</em> website - things are created based on people using it and giving feedback. The system is shaped around you, the user. The more you complain, the better it'll be.
 </p>
 
@@ -23,7 +27,8 @@
 	We have a few helpful links which may be of interest to you:
 	<ul>
 		<li><a href="http://github.com/Moult/Eadrax">View the source code</a></li>
-		<li>Sponsor us</li>
-		<li>Get involved with development</li>
+		<li><a href="http://live.wipup.org/">Start using live.WIPUP</a></li>
+		<li><a href="<?php echo url::base(); ?>site/sponsor/">Sponsor us</a></li>
+		<li><a href="<?php echo url::base(); ?>site/development/">Get involved with development</a></li>
 	</ul>
 </p>
