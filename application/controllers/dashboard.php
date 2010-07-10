@@ -174,7 +174,6 @@ class Dashboard_Controller extends Core_Controller {
 
 		// Let's start calculating values for the stacked bar chart.
 		$project_kudos_list = array();
-		$project_name_list = array();
 		$total_updates = 0;
 
 		$project_subscribe_list = array();
@@ -212,13 +211,24 @@ class Dashboard_Controller extends Core_Controller {
 		}
 
 		// Sort into descending order:
-		$tmp = $project_total_list;
+		$tmp_total_list = $project_total_list;
+
+		// Sorting the three components of the chart based on 
+		// $project_total_list would yield unpredictable results if the total 
+		// array contained several identical values (ie 1, 2, 3, 3, 4). We will 
+		// therefore offset each by a negligible and unique value to fix this.
+		for ($i = 0; array_key_exists($i, $tmp_total_list); $i++) {
+			$tmp_total_list[$i] += $i * 0.001;
+		}
+
+		// Now we can safely sort the rest without ambiguity.
+		$tmp = $tmp_total_list;
 		array_multisort($tmp, $project_update_list);
-		$tmp = $project_total_list;
+		$tmp = $tmp_total_list;
 		array_multisort($tmp, $project_kudos_list);
-		$tmp = $project_total_list;
+		$tmp = $tmp_total_list;
 		array_multisort($tmp, $project_subscribe_list);
-		$tmp = $project_total_list;
+		$tmp = $tmp_total_list;
 		array_multisort($tmp, $project_name_list);
 
 		$project_update_list = array_reverse($project_update_list);
