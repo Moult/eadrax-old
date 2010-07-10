@@ -83,6 +83,11 @@ class Dashboard_Controller extends Core_Controller {
 		$week2_start = date("Y-m-d", strtotime("last Monday", strtotime($week3_start)));
 		$week1_start = date("Y-m-d", strtotime("last Monday", strtotime($week2_start)));
 
+		// Calculate time ranges for each day 5 weeks into the past.
+		$year_end = date("Y", strtotime("last Monday"));
+		$month_end = date("m", strtotime("last Monday"));
+		$day_end = date("d", strtotime("last Monday"));
+
 		$activity_list = array();
 		$activity_list[] = $update_model->update_number_time($this->uid, $week1_start, $week2_start);
 		$activity_list[] = $update_model->update_number_time($this->uid, $week2_start, $week3_start);
@@ -94,14 +99,9 @@ class Dashboard_Controller extends Core_Controller {
 		$activity_list[] = $update_model->update_number_time($this->uid, $week8_start, $week8_end);
 
 		$view_list = array();
-		$view_list[] = $update_model->view_number_time($this->uid, $week1_start, $week2_start) + $project_model->view_number_time($this->uid, $week1_start, $week2_start);
-		$view_list[] = $update_model->view_number_time($this->uid, $week2_start, $week3_start) + $project_model->view_number_time($this->uid, $week2_start, $week3_start);
-		$view_list[] = $update_model->view_number_time($this->uid, $week3_start, $week4_start) + $project_model->view_number_time($this->uid, $week3_start, $week4_start);
-		$view_list[] = $update_model->view_number_time($this->uid, $week4_start, $week5_start) + $project_model->view_number_time($this->uid, $week4_start, $week5_start);
-		$view_list[] = $update_model->view_number_time($this->uid, $week5_start, $week6_start) + $project_model->view_number_time($this->uid, $week5_start, $week6_start);
-		$view_list[] = $update_model->view_number_time($this->uid, $week6_start, $week7_start) + $project_model->view_number_time($this->uid, $week6_start, $week7_start);
-		$view_list[] = $update_model->view_number_time($this->uid, $week7_start, $week8_start) + $project_model->view_number_time($this->uid, $week7_start, $week8_start);
-		$view_list[] = $update_model->view_number_time($this->uid, $week8_start, $week8_end) + $project_model->view_number_time($this->uid, $week8_start, $week8_end);
+		for ($i = 49; $i >= 0; $i--) {
+			$view_list[] = $update_model->view_number_time($this->uid, date('Y-m-d', mktime(0, 0, 0, $month_end, $day_end-$i-1, $year_end)), date('Y-m-d', mktime(0, 0, 0, $month_end, $day_end-$i, $year_end))) + $project_model->view_number_time($this->uid, date('Y-m-d', mktime(0, 0, 0, $month_end, $day_end-$i-1, $year_end)), date('Y-m-d', mktime(0, 0, 0, $month_end, $day_end-$i, $year_end)));
+		}
 
 		// Reformat the dates to show in the graph nicely.
 		$date_array = array(
