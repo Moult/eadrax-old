@@ -268,20 +268,30 @@ class Dashboard_Controller extends Core_Controller {
 		// Set the values for the x-axis.
 		$chxl = '0:|';
 		$chxl2 = '2:|';
+		$xline1 = array();
+		$xline2 = array();
 		foreach ($project_name_list as $value) {
 			// ... if there isn't enough space to show the name ...
 			if (strlen($value) > $max_chars[$project_number]) {
 				// .. continue the name on the second x-axis (chxl2)
-				$chxl .= substr($value, 0, $max_chars[$project_number]) .'-|';
-				$chxl2 .= '-'. substr($value, $max_chars[$project_number]);
-			} else {
-				$chxl .= $value .'|';
+				$chxl .= ' |';
 				$chxl2 .= '|';
+				$xline1[] = $value;
+				$xline2[] = TRUE;
+			} else {
+				$chxl .= ' |';
+				$chxl2 .= '|';
+				$xline1[] = $value;
+				$xline2[] = FALSE;
 			}
 		}
 		$chxl = $chxl . $chxl2;
 		$chxl = substr($chxl, 0, -1);
 
+		$statistics_view->bar_width = $bar_width;
+		$statistics_view->bar_height = $project_total_peak;
+		$statistics_view->bar_xline1 = $xline1;
+		$statistics_view->bar_xline2 = $xline2;
 		$statistics_view->bar_chbh = $chbh;
 		$statistics_view->bar_chd = $chd;
 		$statistics_view->bar_chxl = $chxl;
