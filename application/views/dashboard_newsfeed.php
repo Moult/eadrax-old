@@ -85,6 +85,20 @@
 
 	<div class="form">
 		<h3>
+			<img src="<?php echo url::base(); ?>images/icons/clock_link.png" alt="" width="16" height="16" class="icon" />
+			Quick Links
+		</h3>
+		<div class="elements" style="overflow: hidden;">
+			<ul>
+				<li><a href="<?php echo url::base(); ?>projects/add/">Add New Project</a></li>
+				<li><a href="<?php echo url::base(); ?>profiles/update/<?php echo $this->uid; ?>/">Update Profile</a></li>
+				<li><a href="<?php echo url::base(); ?>profiles/options/<?php echo $this->uid; ?>/">Account Options</a></li>
+			</ul>
+		</div>
+	</div>
+
+	<div class="form">
+		<h3>
 			<img src="<?php echo url::base(); ?>images/icons/group_link.png" alt="" width="16" height="16" class="icon" />
 			Trackers (<?php echo $track_total; ?>)
 		</h3>

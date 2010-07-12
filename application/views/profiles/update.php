@@ -1,5 +1,3 @@
-
-
 <div class="left">
 	<h2>
 		<img src="<?php echo url::base(); ?>images/icons/circle_green.png" width="48" height="48" class="icon" alt="" />

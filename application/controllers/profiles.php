@@ -451,6 +451,108 @@ class Profiles_Controller extends Openid_Controller {
 		$this->template->content = array($content);
 	}
 
+	public function options($id = NULL)
+	{
+		// Restrict any guests.
+		$this->restrict_access();
+
+		// Load necessary models.
+		$user_model	= new User_Model;
+
+		if ($this->uid != $id) {
+			die('You can only update your own options');
+		}
+		
+		if ($this->input->post())
+		{
+			$change_password = $this->input->post('change_password');
+			$old_password = $this->input->post('old_password');
+			$new_password = $this->input->post('new_password');
+			$repeat_new_password = $this->input->post('repeat_new_password');
+			$email_notifications = $this->input->post('email_notifications');
+			$email_public = $this->input->post('email_public');
+			$allow_trackers = $this->input->post('allow_trackers');
+
+			// Begin to validate the information.
+			$validate = new Validation($this->input->post());
+			$validate->pre_filter('trim');
+			if ($change_password == 1) {
+				$validate->add_rules('old_password', 'required');
+				$validate->add_callbacks('old_password', array($this, '_validate_password'));
+				$validate->add_rules('new_password', 'required');
+				$validate->add_rules('repeat_new_password', 'required', 'matches[new_password]');
+			}
+
+			if ($validate->validate())
+			{
+				// Everything went great! Let's update the options.
+				$manage_array = array();
+
+				if ($change_password == 1) { 
+					$manage_array['password'] = md5($new_password);
+				}
+
+				if ($email_notifications == 1) {
+					$manage_array['notifications'] = 1;
+				} else {
+					$manage_array['notifications'] = 0;
+				}
+				
+				if ($email_public == 1) {
+					$manage_array['email_public'] = 1;
+				} else {
+					$manage_array['email_public'] = 0;
+				}
+
+				if ($allow_trackers == 1) {
+					$manage_array['enable_tracking'] = 1;
+				} else {
+					$manage_array['enable_tracking'] = 0;
+				}
+
+				$uid = $user_model->manage_user($manage_array, $this->uid);
+
+				// Then load our success view.
+				$update_options_success_view = new View('update_options_success');
+
+				// Generate content.
+				$this->template->content = array($update_options_success_view);
+			}
+			else
+			{
+				// Errors have occured. Fill in the form and set errors.
+				$options_view = new View('options');
+				$options_view->form = arr::overwrite(array(
+					'change_password' => '',
+					'email_notifications' => '',
+					'email_public' => '',
+					'allow_trackers' => ''
+				), $validate->as_array());
+				$options_view->errors = $validate->errors('options_errors');
+
+				// Generate the content.
+				$this->template->content = array($options_view);
+			}
+
+		}
+		else
+		{
+			// Load the necessary view.
+			$options_view = new View('options');
+
+			// If we didn't press submit, we want a blank form.
+			$user_information = $user_model->user_information($this->uid);
+			$options_view->form = array(
+				'change_password' => 0,
+				'email_notifications' => $user_information['notifications'],
+				'email_public' => $user_information['email_public'],
+				'allow_trackers' => $user_information['enable_tracking']
+			);
+
+			$this->template->content = array($options_view);
+		}
+	}
+
 	/**
 	 * Validates the gender.
 	 *
@@ -479,6 +581,24 @@ class Profiles_Controller extends Openid_Controller {
 	{
 		if ($array['yyyy'] > 2003 || $array['yyyy'] < 1933 || $array['mm'] > 12 || $array['mm'] < 1 || $array['dd'] < 1 || $array['dd'] > 31) {
 			$array->add_error($field, 'dob');
+		}
+	}
+
+	/**
+	 * Validates the existing password.
+	 *
+	 * @param Validation $array The array containing validation information.
+	 * @param $field The key for the value.
+	 *
+	 * @return null
+	 */
+	public function _validate_password(Validation $array, $field)
+	{
+		$user_model = new User_Model;
+
+		$existing_password = $user_model->user_information($this->uid);
+		if (md5($array['old_password']) != $existing_password['password']) {
+			$array->add_error($field, 'password');
 		}
 	}
 }
