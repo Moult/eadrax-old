@@ -255,7 +255,9 @@ class Projects_Controller extends Core_Controller {
 		$this->restrict_access();
 
 		// Load necessary models.
-		$project_model = new Project_Model;
+		$project_model	= new Project_Model;
+		$user_model		= new User_Model;
+		$track_model	= new Track_Model;
 
 		// If a $pid is specified, this means we are editing a project, hence we 
 		// need to perform some authentication checks.
@@ -331,7 +333,7 @@ class Projects_Controller extends Core_Controller {
 				if ($pid == FALSE)
 				{
 					// Everything went great! Let's add the project.
-					$project_model->manage_project(array(
+					$new_pid = $project_model->manage_project(array(
 						'uid'			=> $this->uid,
 						'cid'			=> $cid,
 						'name'			=> $name,
@@ -341,6 +343,24 @@ class Projects_Controller extends Core_Controller {
 						'description'	=> $description,
 						'icon'			=> $icon_filename
 						));
+
+					// Send out email notifications.
+					$track_list = $track_model->track_list($this->uid);
+
+					$project_info = $project_model->project_information($new_pid);
+
+					foreach ($track_list as $tid) {
+						$user_information = $user_model->user_information($tid);
+						if (!empty($user_information['email']) && $user_information['notifications'] == 1) {
+							$message = '<html><head><title>New WIPUP Project</title></head><body><p>Dear '. $user_information['username'] .',</p><p><a href="'. url::base() .'profiles/view/'. $this->username .'/">'. $this->username .'</a> has created a new project called \''. $project_info['name'] .'\' ('. $project_info['summary'] .') on WIPUP.org. You can view this project by clicking the link below:</p><p><a href="'. url::base() .'projects/view/'. $new_pid .'/">'. url::base() .'projects/view/'. $new_pid .'/</a></p><p>You may turn of email notifications in your account options when logged in. Please do not reply to this email.</p><p>- The WIPUP Team</p></body></html>';
+							$headers = 'MIME-Version: 1.0' . "\r\n" .
+								'Content-type: text/html; charset=iso-8859-1' . "\r\n" .
+								'From: wipup@wipup.org' . "\r\n" .
+								'Reply-To: wipup@wipup.org' . "\r\n" .
+								'X-Mailer: PHP/' . phpversion();
+							mail($user_information['email'], $this->username .' has made a new project on WIPUP', $message, $headers);
+						}
+					}
 				}
 				else
 				{

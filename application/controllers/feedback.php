@@ -93,6 +93,7 @@ class Feedback_Controller extends Core_Controller {
 		// Load necessary models.
 		$update_model = new Update_Model;
 		$kudos_model = new Kudos_Model;
+		$user_model = new User_Model;
 
 		// First check if they have already kudos'd the update and they don't 
 		// own the update themselves...
@@ -108,6 +109,21 @@ class Feedback_Controller extends Core_Controller {
 		{
 			// Add the kudos!
 			$kudos_model->kudos($uid, $this->uid);
+
+			// Send out email notifications.
+			$update_info = $update_model->update_information($uid);
+			$user_information = $user_model->user_information($update_info['uid']);
+			if (!empty($user_information['email']) && $user_information['notifications'] == 1) {
+				$message = '<html><head><title>New WIPUP Kudos for you!</title></head><body><p>Dear '. $user_information['username'] .',</p><p><a href="'. url::base() .'profiles/view/'. $this->username .'/">'. $this->username .'</a> has kudos\'d your update \'<a href="'. url::base() .'updates/view/'. $update_info['id'] .'/">'. $update_info['summary'] .'</a>\' on WIPUP.org. You can view their profile by clicking the link below:</p><p><a href="'. url::base() .'profiles/view/'. $this->username .'/">'. url::base() .'profiles/view/'. $this->username .'/</a></p><p>You may turn of email notifications in your account options when logged in. Please do not reply to this email.</p><p>- The WIPUP Team</p></body></html>';
+				$headers = 'MIME-Version: 1.0' . "\r\n" .
+					'Content-type: text/html; charset=iso-8859-1' . "\r\n" .
+					'From: wipup@wipup.org' . "\r\n" .
+					'Reply-To: wipup@wipup.org' . "\r\n" .
+					'X-Mailer: PHP/' . phpversion();
+				mail($user_information['email'], $this->username .' has kudos\'d your update on WIPUP', $message, $headers);
+			}
+
+			// ... and back to the view page.
 			url::redirect('updates/view/'. $uid .'/');
 		}
 	}
@@ -129,9 +145,10 @@ class Feedback_Controller extends Core_Controller {
 		$project_model = new Project_Model;
 		$subscribe_model = new Subscribe_Model;
 		$track_model = new Track_Model;
+		$user_model = new User_Model;
 
-		$project_uid = $project_model->project_information($pid);
-		$project_uid = $project_uid['uid'];
+		$project_info = $project_model->project_information($pid);
+		$project_uid = $project_info['uid'];
 
 		// We cannot subscribe to somebody we are tracking.
 		// First check if they have already subscribed themselves...
@@ -147,6 +164,18 @@ class Feedback_Controller extends Core_Controller {
 		{
 			// Subscribe the user!
 			$subscribe_model->subscribe($pid, $this->uid);
+
+			// Send out email notifications.
+			$user_information = $user_model->user_information($project_uid);
+			if (!empty($user_information['email']) && $user_information['notifications'] == 1) {
+				$message = '<html><head><title>New WIPUP Subscriber for you!</title></head><body><p>Dear '. $user_information['username'] .',</p><p><a href="'. url::base() .'profiles/view/'. $this->username .'/">'. $this->username .'</a> has subscribed to your project \''. $project_info['name'] .'\' on WIPUP.org. You can view their profile by clicking the link below:</p><p><a href="'. url::base() .'profiles/view/'. $this->username .'/">'. url::base() .'profiles/view/'. $this->username .'/</a></p><p>You may turn of email notifications in your account options when logged in. Please do not reply to this email.</p><p>- The WIPUP Team</p></body></html>';
+				$headers = 'MIME-Version: 1.0' . "\r\n" .
+					'Content-type: text/html; charset=iso-8859-1' . "\r\n" .
+					'From: wipup@wipup.org' . "\r\n" .
+					'Reply-To: wipup@wipup.org' . "\r\n" .
+					'X-Mailer: PHP/' . phpversion();
+				mail($user_information['email'], $this->username .' has subscribed to your project on WIPUP', $message, $headers);
+			}
 
 			// Load success view.
 			$subscribe_success_view = new View('subscribe_success');
@@ -208,8 +237,10 @@ class Feedback_Controller extends Core_Controller {
 		$track_model = new Track_Model;
 		$subscribe_model = new Subscribe_Model;
 
+		$user_info = $user_model->user_information($uid);
+
 		// First check if they are already tracking the user...
-		if ($track_model->check_track_owner($uid, $this->uid) || !$user_model->check_user_exists($uid) || $uid == $this->uid)
+		if ($track_model->check_track_owner($uid, $this->uid) || !$user_model->check_user_exists($uid) || $uid == $this->uid || $user_info['enable_tracking'] != 1)
 		{
 			// Load error view.
 			$track_error_view = new View('track_error');
@@ -232,6 +263,18 @@ class Feedback_Controller extends Core_Controller {
 
 			// Track the person!
 			$track_model->track($uid, $this->uid);
+
+			// Send out email notifications.
+			$user_information = $user_model->user_information($uid);
+			if (!empty($user_information['email']) && $user_information['notifications'] == 1) {
+				$message = '<html><head><title>New WIPUP Tracker for you!</title></head><body><p>Dear '. $user_information['username'] .',</p><p><a href="'. url::base() .'profiles/view/'. $this->username .'/">'. $this->username .'</a> has started tracking your account on WIPUP.org. You can view their profile by clicking the link below:</p><p><a href="'. url::base() .'profiles/view/'. $this->username .'/">'. url::base() .'profiles/view/'. $this->username .'/</a></p><p>You may turn of email notifications in your account options when logged in. Please do not reply to this email.</p><p>- The WIPUP Team</p></body></html>';
+				$headers = 'MIME-Version: 1.0' . "\r\n" .
+					'Content-type: text/html; charset=iso-8859-1' . "\r\n" .
+					'From: wipup@wipup.org' . "\r\n" .
+					'Reply-To: wipup@wipup.org' . "\r\n" .
+					'X-Mailer: PHP/' . phpversion();
+				mail($user_information['email'], $this->username .' is now tracking you on WIPUP', $message, $headers);
+			}
 
 			// Load success view.
 			$track_success_view = new View('track_success');

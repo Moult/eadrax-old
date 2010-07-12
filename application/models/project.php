@@ -64,11 +64,15 @@ class Project_Model extends Model {
 				'uid' => $data['uid'],
 				'pid' => $result->insert_id()
 			))->insert('news');
+
+			return $result->insert_id();
 		}
 		else
 		{
 			$manage_project->where('id', $pid);
 			$manage_project->update('projects');
+
+			return $uid;
 		}
 	}
 
