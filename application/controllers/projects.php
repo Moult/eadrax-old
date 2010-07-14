@@ -65,6 +65,18 @@ class Projects_Controller extends Core_Controller {
 			$uid = NULL;
 		}
 
+		// Check for potential 404s.
+		if ($uid != NULL) {
+			if (!$user_model->check_user_exists($uid)) {
+				Event::run('system.404');
+			}
+		}
+		if ($pid != NULL) {
+			if (!$project_model->check_project_exists($pid)) {
+				Event::run('system.404');
+			}
+		}
+
 		if ($pid == 0) {
 			// If there is a user given, but no project...
 			if ($uid != NULL) {

@@ -52,6 +52,11 @@ class Updates_Controller extends Core_Controller {
 		$track_model		= new Track_Model;
 		$project_model		= new Project_Model;
 
+		// Hold on, does $uid even exist?
+		if (!$update_model->check_update_exists($uid)) {
+			Event::run('system.404');
+		}
+
 		// We have viewed the update, let's update the update statistics :D
 		$update_model->view($uid);
 
