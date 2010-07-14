@@ -16,7 +16,6 @@
 
 
 <div style="float: left; margin-bottom: 10px;">
-
     <ul style="margin-left: 0px; display: inline;">
 <?php if (isset($feature)) { ?>
         <li style="width: 70px; display: inline;">
@@ -25,7 +24,11 @@
 <?php } ?>
 <?php if ($uid != 1 && $uid != $this->uid) { ?>
         <li style="width: 70px; display: inline;">
+<?php if (isset($kudos_error)) { ?>
+			<input style="width: 70px;" type="button" value="Kudos'd!" disabled="disabled" />
+<?php } else { ?>
 			<input style="width: 70px;" type="button" onclick="parent.location='<?php echo url::base(); ?>feedback/kudos/<?php echo $id; ?>/'" value="Kudos" />
+<?php } ?>
         </li>
 <?php } ?>
 <?php if ($uid != 1) { ?>
@@ -33,17 +36,15 @@
         <li style="width: 70px; display: inline;">
 			<?php if ($subscribed == TRUE) { ?>
             <input style="width: 70px;" type="button" onclick="parent.location='<?php echo url::base(); ?>feedback/unsubscribe/<?php echo $pid; ?>/'" value="Unscribe" />
-			<?php } else { ?>
-			<?php if ($tracking == FALSE && $uid != $this->uid) { ?>
+			<?php } elseif ($tracking == FALSE && $uid != $this->uid ) { ?>
 			<input style="width: 70px;" type="button" onclick="parent.location='<?php echo url::base(); ?>feedback/subscribe/<?php echo $pid; ?>/'" value="Subscribe" />
-			<?php } ?>
 			<?php } ?>
         </li>
 	<?php } ?>
         <li style="width: 70px; display: inline;">
 			<?php if ($tracking == TRUE) { ?>
             <input style="width: 70px;" type="button" onclick="parent.location='<?php echo url::base(); ?>feedback/untrack/<?php echo $uid; ?>/'" value="Untrack" />
-			<?php } elseif ($tracking == FALSE && $uid != $this->uid) { ?>
+			<?php } elseif ($tracking == FALSE && $uid != $this->uid && $user_information['enable_tracking'] == 1) { ?>
             <input style="width: 70px;" type="button" onclick="parent.location='<?php echo url::base(); ?>feedback/track/<?php echo $uid; ?>/'" value="Track" />
 			<?php } ?>
         </li>

@@ -308,6 +308,12 @@ class Updates_Controller extends Core_Controller {
 			$update_view->user_information = $user_model->user_information($update_information['uid']);
 		}
 
+		// Check if we can kudos this update.
+		if ($kudos_model->check_kudos_owner($uid, $this->uid))
+		{
+			$update_view->kudos_error = TRUE;
+		}
+
 		// Parse the project.
 		if ($update_information['pid'] != 1)
 		{
