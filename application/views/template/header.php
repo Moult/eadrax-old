@@ -118,7 +118,7 @@ if (($this->uri->segment(1) == 'updates' && $this->uri->segment(2) == 'add') || 
 
 			<ul id="icon-navigation">
 				<li><a href="<?php echo url::base(); ?>profiles/<?php if ($this->logged_in == TRUE) { echo 'view/'. $this->username .'/'; } ?>"><img src="<?php echo url::base(); ?>images/profile.png" width="39" height="40" alt="Profile" title="Profile" /></a></li>
-                <li><a href="<?php echo url::base(); ?>updates/add/"><img src="<?php echo url::base(); ?>images/update.png" width="39" height="40" alt="Update" title="Update" /></a></li>
+                <li><a href="<?php echo url::base(); ?>updates/add/"><img src="<?php echo url::base(); ?>images/update.png" width="39" height="40" alt=" Add Update" title="Add Update" /></a></li>
 				<li><a href="<?php echo url::base(); ?>updates/random/"><img src="<?php echo url::base(); ?>images/random.png" width="39" height="40" alt="Random" title="Random" /></a></li>
 			</ul>
 

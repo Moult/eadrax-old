@@ -73,20 +73,20 @@ class Dashboard_Controller extends Core_Controller {
 
 		// Let's format data to generate charts for update activity over time.
 		// Calculate the time ranges 5 weeks into the past.
-		$week8_end = date("Y-m-d", strtotime("last Monday"));
-		$week8_start = date("Y-m-d", strtotime("last Monday", strtotime($week8_end)));
-		$week7_start = date("Y-m-d", strtotime("last Monday", strtotime($week8_start)));
-		$week6_start = date("Y-m-d", strtotime("last Monday", strtotime($week7_start)));
-		$week5_start = date("Y-m-d", strtotime("last Monday", strtotime($week6_start)));
-		$week4_start = date("Y-m-d", strtotime("last Monday", strtotime($week5_start)));
-		$week3_start = date("Y-m-d", strtotime("last Monday", strtotime($week4_start)));
-		$week2_start = date("Y-m-d", strtotime("last Monday", strtotime($week3_start)));
-		$week1_start = date("Y-m-d", strtotime("last Monday", strtotime($week2_start)));
+		$week8_end = date("Y-m-d", strtotime("last Sunday"));
+		$week8_start = date("Y-m-d", strtotime("last Sunday", strtotime($week8_end)));
+		$week7_start = date("Y-m-d", strtotime("last Sunday", strtotime($week8_start)));
+		$week6_start = date("Y-m-d", strtotime("last Sunday", strtotime($week7_start)));
+		$week5_start = date("Y-m-d", strtotime("last Sunday", strtotime($week6_start)));
+		$week4_start = date("Y-m-d", strtotime("last Sunday", strtotime($week5_start)));
+		$week3_start = date("Y-m-d", strtotime("last Sunday", strtotime($week4_start)));
+		$week2_start = date("Y-m-d", strtotime("last Sunday", strtotime($week3_start)));
+		$week1_start = date("Y-m-d", strtotime("last Sunday", strtotime($week2_start)));
 
 		// Calculate time ranges for each day 5 weeks into the past.
-		$year_end = date("Y", strtotime("last Monday"));
-		$month_end = date("m", strtotime("last Monday"));
-		$day_end = date("d", strtotime("last Monday"));
+		$year_end = date("Y", strtotime("last Sunday"));
+		$month_end = date("m", strtotime("last Sunday"));
+		$day_end = date("d", strtotime("last Sunday"));
 
 		$activity_list = array();
 		$activity_list[] = $update_model->update_number_time($this->uid, $week1_start, $week2_start);

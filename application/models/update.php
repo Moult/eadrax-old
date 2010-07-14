@@ -306,7 +306,7 @@ class Update_Model extends Model {
 				if ($first == TRUE)
 				{
 					$first = FALSE;
-					$query = $query .'SELECT * FROM news WHERE uid='. $row->track;
+					$query = 'SELECT * FROM news WHERE uid='. $row->track;
 				}
 				else
 				{
@@ -319,7 +319,7 @@ class Update_Model extends Model {
 				if ($first == TRUE)
 				{
 					$first = FALSE;
-					$query = $query .'SELECT * FROM news WHERE pid='. $row->pid;
+					$query = 'SELECT * FROM news WHERE pid='. $row->pid;
 				}
 				else
 				{
@@ -334,7 +334,7 @@ class Update_Model extends Model {
 				if ($first == TRUE)
 				{
 					$first = FALSE;
-					$query = $query .'SELECT * FROM news WHERE upid='. $row->id;
+					$query = 'SELECT * FROM news WHERE upid='. $row->id;
 				}
 				else
 				{
@@ -347,7 +347,7 @@ class Update_Model extends Model {
 			if ($first == TRUE)
 			{
 				$first = FALSE;
-				$query = $query .'SELECT * FROM news WHERE uid='. $uid .' OR tid='. $uid;
+				$query = 'SELECT * FROM news WHERE uid='. $uid .' OR tid='. $uid;
 			}
 			else
 			{
@@ -359,7 +359,7 @@ class Update_Model extends Model {
 				if ($first == TRUE)
 				{
 					$first = FALSE;
-					$query = $query .'SELECT * FROM news WHERE pid='. $row->id .' OR sid='. $row->id;
+					$query = 'SELECT * FROM news WHERE pid='. $row->id .' OR sid='. $row->id;
 				}
 				else
 				{
