@@ -72,7 +72,7 @@ class Project_Model extends Model {
 			$manage_project->where('id', $pid);
 			$manage_project->update('projects');
 
-			return $uid;
+			return $pid;
 		}
 	}
 

@@ -36,13 +36,13 @@
 				<div class="elements">
 					<?php if ($this->logged_in) { ?>
 					<p>
-						<label for="pid">Project:</label>
+						<label for="pid">Project:
+						<a href="<?php echo url::base(); ?>projects/add/"><img src="<?php echo url::base(); ?>images/icons/add.png" alt="Add" /></a></label>
 						<select name="pid" id="pid">
 						<?php foreach ($projects as $pid => $p_name) { ?>
 						<option value="<?php echo $pid; ?>"><?php echo $p_name; ?></option>
 						<?php } ?>
 						</select>
-						<a href="<?php echo url::base(); ?>projects/add/"><img src="<?php echo url::base(); ?>images/icons/add.png" alt="Add" /></a>
 					</p>
 					<?php } ?>
 
@@ -58,14 +58,19 @@
 					</p>
 
 					<p>
-						<label for="attachment">Attach:</label>
-						<input type="file" id="attachment" name="attachment0" style="height: 23px;" />
+						<label for="attachment">Attach:
 						<?php if ($this->logged_in) { ?>
-						<span style="margin-left: 70px;">
-							<a href="javascript:addInput()"><img src="<?php echo url::base(); ?>images/icons/add.png" alt="Add" id="add" /></a>
+						<span>
+							<a href="javascript:addUploadFields(1)"><img src="<?php echo url::base(); ?>images/icons/add.png" alt="Add" id="add" /></a>
 							<a href="javascript:deleteInput()"><img src="<?php echo url::base(); ?>images/icons/delete.png" alt="Delete" id="delete" style="display: none;" /></a>
 						</span>
-						<p id="more_files"></p>
+						<?php } ?></label>
+
+
+						<span style="float: left;"><input type="file" id="attachment" name="attachment0" style="height: 23px;" /></span>
+
+						<?php if ($this->logged_in) { ?>
+						<p id="upload_fields_container"></p>
 						<?php } ?>
 					</p>
 

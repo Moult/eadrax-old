@@ -1,42 +1,53 @@
-var arrInput = new Array(0);
-var arrInputValue = new Array(0);
+var onloadFunctions = [];
+var maxFields     = 4; // maximum number of fields to display
+var fieldsCount   = 0;  // keep track of number of fields
+var fieldsNumber  = 1;  // used to give name to fields
 
-function addInput() {
-  arrInput.push(arrInput.length);
-  arrInputValue.push("");
-  display();
+function addOnLoadFunc ( onloadFunction )
+{
+    onloadFunctions[onloadFunctions.length] = onloadFunction;
+
+    window.onload = function ( )
+    {
+        for ( var i = 0; i < onloadFunctions.length; i++ )
+        {
+            onloadFunctions[i]();
+        }
+    }
 }
 
-function display() {
-  document.getElementById('more_files').innerHTML="";
-  for (intI=1;intI<arrInput.length;intI++) {
-	if(intI<4) {
-	  document.getElementById('delete').style.display = 'inline';
-	  document.getElementById('add').style.display = 'inline';
-	} else {
-	  document.getElementById('add').style.display = 'none';
+function getObj ( id )
+{
+	return document.getElementById ( id );
+}
+
+/* Display default number of fields */
+uploadFunc = function ( )
+{
+    uplContainer  = getObj ( 'upload_fields_container' );
+}
+
+addOnLoadFunc ( uploadFunc );
+
+function addUploadFields ( iCount )
+{
+    for ( var i = 0; i < iCount; i++ ) addUploadField ( );
+}
+
+function addUploadField ( )
+{
+	if ( uplContainer && fieldsCount < maxFields )
+	{
+		var newField = document.createElement ( 'div' );
+		newField.innerHTML = '<img src="http://wipup.org/images/icons/delete.png" style="float: left; margin-left: 100px; margin-bottom: 10px; clear: both;" onclick="removeUploadField(this.parentNode);" /> <input type="file" style="float: left; height: 23px; margin-left: 5px;" name="attachment' + fieldsNumber + '" id="attachment' + fieldsNumber + '" />' + ' ';
+		uplContainer.appendChild ( newField );
+		fieldsCount++;
+		fieldsNumber++;
 	}
-	  document.getElementById('more_files').innerHTML+=createInput(arrInput[intI], arrInputValue[intI]);
-  }
-
-  if (intI == 1) {
-	document.getElementById('delete').style.display = 'none';
-  }
 }
 
-function saveValue(intId,strValue) {
-  arrInputValue[intId]=strValue;
-}  
-
-function createInput(id,value) {
-  return "<input type='file' name='attachment"+ id +"' style='height: 23px;' onChange='javascript:saveValue("+ id +",this.value)' value='"+ value +"'><br>";
+function removeUploadField ( oField )
+{
+	uplContainer.removeChild ( oField );
+	fieldsCount--;
 }
-
-function deleteInput() {
-  if (arrInput.length > 0) { 
-     arrInput.pop(); 
-     arrInputValue.pop();
-  }
-  display(); 
-}
-
