@@ -113,19 +113,20 @@ if (($this->uri->segment(1) == 'updates' && $this->uri->segment(2) == 'add') || 
 
         <div id="container">
             <h1>
-                <a href="<?php echo url::base(); ?>"><img src="<?php echo url::base(); ?>images/wipup.png" width="220" height="80" alt="WIPUP" /></a>
+                <a href="<?php echo url::base(); ?>"><img src="<?php echo url::base(); ?>images/wipup.png" width="221" height="87" alt="WIPUP" /></a>
             </h1>
 
 			<ul id="icon-navigation">
-				<li><a href="<?php echo url::base(); ?>profiles/<?php if ($this->logged_in == TRUE) { echo 'view/'. $this->username .'/'; } ?>"><img src="<?php echo url::base(); ?>images/profile.png" width="39" height="40" alt="Profile" title="Profile" /></a></li>
-                <li><a href="<?php echo url::base(); ?>updates/add/"><img src="<?php echo url::base(); ?>images/update.png" width="39" height="40" alt=" Add Update" title="Add Update" /></a></li>
-				<li><a href="<?php echo url::base(); ?>updates/random/"><img src="<?php echo url::base(); ?>images/random.png" width="39" height="40" alt="Random" title="Random" /></a></li>
+				<li><a href="<?php echo url::base(); ?>profiles/<?php if ($this->logged_in == TRUE) { echo 'view/'. $this->username .'/'; } ?>" onmouseover="javascript:getElementById('navtext1').style.display = 'inline';" onmouseout="javascript:getElementById('navtext1').style.display = 'none';"><img src="<?php echo url::base(); ?>images/profile.png" width="40" height="87" alt="Profile" title="Profile" /></a></li><li><img src="<?php echo url::base(); ?>images/navspace1.png" width="11" height="87" /></li><li><a href="<?php echo url::base(); ?>updates/add/" onmouseover="javascript:getElementById('navtext2').style.display = 'inline';" onmouseout="javascript:getElementById('navtext2').style.display = 'none';"><img src="<?php echo url::base(); ?>images/update.png" width="40" height="87" alt=" Add Update" title="Add Update" /></a></li><li><img src="<?php echo url::base(); ?>images/navspace2.png" width="10" height="87" /></li><li><a href="<?php echo url::base(); ?>updates/random/" onmouseover="javascript:getElementById('navtext3').style.display = 'inline';" onmouseout="javascript:getElementById('navtext3').style.display = 'none';"><img src="<?php echo url::base(); ?>images/random.png" width="41" height="87" alt="Random" title="Random" /></a></li>
 			</ul>
 
             <ul id="text-navigation">
-				<li>What is WIPUP?</li>
-				<li><?php if ($this->logged_in == TRUE) {?>Hey <?php echo $this->username; ?> (<a href="<?php echo url::base(); ?>dashboard/">Dashboard</a> | <a href="<?php echo url::base(); ?>users/logout/">Logout</a>)<?} else {?><a href="<?php echo url::base(); ?>users/login/">Login/Register</a><? } ?></li>
-				<li>Search</li>
+				<li id="navtext1" style="color: #AAA; display: none;">WIPSpaces</li>
+				<li id="navtext2" style="color: #AAA; display: none;">Add WIP</li>
+				<li id="navtext3" style="color: #AAA; display: none;">Discover WIPs</li>
+				<li style="float: right;">Search</li>
+				<li style="float: right;"><?php if ($this->logged_in == TRUE) {?>Hey <?php echo $this->username; ?> (<a href="<?php echo url::base(); ?>dashboard/">Dashboard</a> | <a href="<?php echo url::base(); ?>users/logout/">Logout</a>)<?} else {?><a href="<?php echo url::base(); ?>users/login/">Login/Register</a><? } ?></li>
+				<li style="float: right;">What is WIPUP?</li>
             </ul>
 		</div>
 
