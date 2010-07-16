@@ -75,4 +75,10 @@ class Site_Controller extends Core_Controller {
 		$development_view = new View('development');
 		$this->template->content = array($development_view);
 	}
+
+	public function search()
+	{
+		$search_view = new View('search');
+		$this->template->content = array($search_view);
+	}
 }
