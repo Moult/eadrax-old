@@ -535,4 +535,41 @@ class Update_Model extends Model {
 
 		return $updates;
 	}
+
+	/**
+	 * Returns the results of a search.
+	 *
+	 * @param array $keywords An array of each keyword.
+	 * @param string $search Which table are we searching in?
+	 *
+	 * @return array
+	 */
+	public function search($keywords, $search) {
+		$results = $this->db->from($search);
+
+		// Which fields should we search in for each option?
+		if ($search == 'users') {
+			$fields = array('username', 'description', 'email');
+		} elseif ($search == 'updates') {
+			$fields = array('summary', 'detail', 'pastebin');
+		} elseif ($search == 'projects') {
+			$fields = array('name', 'summary', 'description');
+		}
+
+		foreach ($fields as $field) {
+			$use_or = TRUE;
+			foreach ($keywords as $keyword) {
+				if ($use_or == TRUE) {
+					$results = $results->orlike($field, $keyword);
+					$use_or = FALSE;
+				} else {
+					$results = $results->like($field, $keyword);
+				}
+			}
+		}
+		$results = $results->limit(50);
+		$results = $results->get();
+
+		return $results;
+	}
 }

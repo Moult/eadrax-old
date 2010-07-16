@@ -78,7 +78,63 @@ class Site_Controller extends Core_Controller {
 
 	public function search()
 	{
-		$search_view = new View('search');
-		$this->template->content = array($search_view);
+		// Load necessary models.
+		$update_model = new Update_Model;
+
+		if ($this->input->post())
+		{
+			$keywords = $this->input->post('keywords');
+			$search = $this->input->post('search');
+
+			$validate = new Validation($this->input->post());
+			$validate->pre_filter('trim');
+			$validate->add_rules('keywords', 'required', 'length[5, 50]', 'standard_text');
+
+			if ($validate->validate())
+			{
+				// Everything went great! Let's recreate our form.
+				$search_view = new View('search');
+				$search_view->form	= arr::overwrite(array(
+					'keywords' => '',
+					'search' => ''
+					), $validate->as_array());
+
+				// ... and search!
+				if ($search == 'profiles') {
+					$search = 'users';
+				} elseif ($search != 'projects' && $search != 'updates') {
+					die(); # TODO dying is never good.
+				}
+				$keywords = explode(' ', $keywords);
+				$search_view->results = $update_model->search($keywords, $search);
+
+				// Then generate content.
+				$this->template->content = array($search_view);
+			}
+			else
+			{
+				// Errors have occured. Fill in the form and set errors.
+				$search_view = new View('search');
+				$search_view->form	= arr::overwrite(array(
+					'keywords' => '',
+					'search' => ''
+					), $validate->as_array());
+				$search_view->errors = $validate->errors('search_errors');
+
+				// Generate the content.
+				$this->template->content = array($search_view);
+			}
+		}
+		else
+		{
+			// Load the neccessary view.
+			$search_view = new View('search');
+
+			// If we didn't press submit, we want a blank form.
+			$search_view->form = array('keywords'=>'', 'search'=>'profiles');
+
+			// Generate the content.
+			$this->template->content = array($search_view);
+		}
 	}
 }

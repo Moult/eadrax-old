@@ -109,7 +109,6 @@ class Users_Controller extends Openid_Controller {
 			// Generate the content.
 			$this->template->content = array($register_view);
 		}
-
 	}
 
 	/**
