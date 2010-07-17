@@ -40,7 +40,7 @@
 						<a href="<?php echo url::base(); ?>projects/add/"><img src="<?php echo url::base(); ?>images/icons/add.png" alt="Add" /></a></label>
 						<select name="pid" id="pid">
 						<?php foreach ($projects as $pid => $p_name) { ?>
-						<option value="<?php echo $pid; ?>"><?php echo $p_name; ?></option>
+						<option value="<?php echo $pid; ?>" <?php if ($form['pid'] == $pid) { echo 'selected="selected"'; } ?>><?php echo $p_name; ?></option>
 						<?php } ?>
 						</select>
 					</p>
@@ -78,7 +78,7 @@
 						<label for="syntax">Syntax:</label>
 						<select id="syntax" name="syntax">
 						<?php foreach ($languages as $lid => $l_name) { ?>
-						<option value="<?php echo $lid; ?>"><?php echo $l_name; ?></option>
+						<option value="<?php echo $lid; ?>" <?php if ($form['syntax'] == $lid) { echo 'selected="selected"'; } ?>><?php echo $l_name; ?></option>
 						<?php } ?>
 						</select>
 					</p>

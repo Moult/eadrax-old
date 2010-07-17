@@ -287,7 +287,7 @@ class Profiles_Controller extends Openid_Controller {
 			$validate->add_rules('email', 'email');
 			$validate->add_rules('dd', 'digit', 'length[1,2]');
 			$validate->add_rules('mm', 'digit', 'length[1,2]');
-			$validate->add_rules('yyyy', 'digit', 'length[4]');
+			$validate->add_rules('yyyy', 'digit');
 			$validate->add_rules('msn', 'email');
 			$validate->add_rules('gtalk', 'email');
 			$validate->add_rules('website', 'url');
@@ -393,7 +393,11 @@ class Profiles_Controller extends Openid_Controller {
 					'yahoo' => '',
 					'skype' => '',
 					'website' => '',
-					'location' => ''
+					'location' => '',
+					'gender' => '',
+					'dd' => '',
+					'mm' => '',
+					'yyyy' => ''
 				), $validate->as_array());
 				$update_profile_view->errors = $validate->errors('profile_errors');
 
@@ -416,10 +420,20 @@ class Profiles_Controller extends Openid_Controller {
 				'yahoo' => '',
 				'skype' => '',
 				'website' => '',
-				'location' => ''
+				'location' => '',
+				'gender' => '',
+				'dd' => '',
+				'mm' => '',
+				'yyyy' => ''
 			);
 
 			$update_profile_view->form = $user_model->user_information($this->uid);
+
+			// We need to manually get the date fields of the profile.
+			list($dd, $mm, $yyyy) = explode('/', $update_profile_view->form['dob']);
+			$update_profile_view->form['dd'] = $dd;
+			$update_profile_view->form['mm'] = $mm;
+			$update_profile_view->form['yyyy'] = $yyyy;
 
 			$this->template->content = array($update_profile_view);
 		}
@@ -579,7 +593,7 @@ class Profiles_Controller extends Openid_Controller {
 	 */
 	public function _validate_dob(Validation $array, $field)
 	{
-		if ($array['yyyy'] > 2003 || $array['yyyy'] < 1933 || $array['mm'] > 12 || $array['mm'] < 1 || $array['dd'] < 1 || $array['dd'] > 31) {
+		if ($array['yyyy'] > 2003 || ($array['yyyy'] < 1933 && $array['yyyy'] != 0) || $array['mm'] > 12 || $array['mm'] < 0 || $array['dd'] < 0 || $array['dd'] > 31) {
 			$array->add_error($field, 'dob');
 		}
 	}

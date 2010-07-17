@@ -909,7 +909,9 @@ class Updates_Controller extends Core_Controller {
 				$update_form_view->form = arr::overwrite(array(
 					'summary' => '',
 					'detail' => '',
-					'pastebin' => ''
+					'pastebin' => '',
+					'syntax' => '',
+					'pid' => ''
 				), $validate->as_array());
 				$update_form_view->errors = $validate->errors('update_errors');
 
@@ -939,7 +941,9 @@ class Updates_Controller extends Core_Controller {
 				$update_form_view->form = array(
 					'summary' => '',
 					'detail' => '',
-					'pastebin' => ''
+					'pastebin' => '',
+					'syntax' => '',
+					'pid' => ''
 				);
 			}
 			else

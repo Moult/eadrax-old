@@ -28,7 +28,10 @@
 <div style="clear: both; line-height: 30px; font-size: 15px; letter-spacing: -1px; color: #888; border-top: 1px solid #999; border-left: 0px; border-right: 0px; background-image: url(<?php echo url::base(); ?>images/formbg.gif); background-position: top; background-repeat: repeat-x; background-color: #D8D8D8; padding: 8px; padding-top: 2px; padding-bottom: 4px; margin-bottom: 10px;">
 <div style="float: left;">
 <?php if (!empty($age)) { ?>
+<?php if ($age == 'no') { ?>
+Some <?php } else { ?>
 <?php echo $age; ?> year old
+<?php } ?>
 <?php if ($user['gender'] != 'Confused') { ?>
 <?php echo strtolower($user['gender']); ?> 
 <?php } else { ?>
@@ -46,7 +49,7 @@ A sociopath who hasn't yet updated his profile information
 <div style="width: 150px; text-align: right; float: right; font-size: 14px; color: #AAA; letter-spacing: -1px; line-height: 30px;">Last active: <?php echo date('jS F', $user['lastactive']); ?></div>
 
 	<div style="clear: both; height: 25px; line-height: 25px; font-size: 12px; letter-spacing: 0px; color: #888;">
-<?php if(!empty($user['email'])) { ?><a href="mailto:<?php echo $user['email']; ?>"><img src="<?php echo url::base(); ?>images/icons/email.png" /></a>&nbsp;<?php } ?>
+<?php if(!empty($user['email']) && $user['email_public'] == 1) { ?><a href="mailto:<?php echo $user['email']; ?>"><img src="<?php echo url::base(); ?>images/icons/email.png" /></a>&nbsp;<?php } ?>
 <?php if(!empty($user['website'])) { ?><a href="<?php echo $user['website']; ?>"><img src="<?php echo url::base(); ?>images/icons/world_link.png" /></a>&nbsp;<?php } ?>
 <?php if(!empty($user['msn'])) { ?><img src="<?php echo url::base(); ?>images/icons/msn.png" title="<?php echo $user['msn']; ?>" alt="MSN" />&nbsp;<?php } ?>
 <?php if(!empty($user['gtalk'])) { ?><img src="<?php echo url::base(); ?>images/icons/gtalk.png" title="<?php echo $user['gtalk']; ?>" alt="gtalk" />&nbsp;<?php } ?>

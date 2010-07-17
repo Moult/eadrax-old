@@ -45,8 +45,8 @@
 					<p>
 						<label for="cid">Category:</label>
 						<select name="cid" id="cid">
-						<?php foreach ($categories as $cid => $c_name) { ?>
-						<option value="<?php echo $cid; ?>" <?php if (Kohana::config('projects.default_cid') == $cid) { echo 'selected="selected"'; } ?>><?php echo $c_name; ?></option>
+						<?php $select = TRUE; foreach ($categories as $cid => $c_name) { ?>
+						<option value="<?php echo $cid; ?>" <?php if ($form['cid'] == $cid) { echo 'selected="selected"'; $select = FALSE; } if (Kohana::config('projects.default_cid') == $cid && $select == TRUE) { echo 'selected="selected"'; } ?>><?php echo $c_name; ?></option>
 						<?php } ?>
 						</select>
 					</p>

@@ -96,6 +96,10 @@ class Projects_Controller extends Core_Controller {
 					if(date('m') < $mm || (date('m') == $mm && date('d') < $dd)) {
 						$age--;
 					}
+
+					if ($age == 2010) {
+						$age = 'no';
+					}
 				}
 				else
 				{
@@ -412,7 +416,8 @@ class Projects_Controller extends Core_Controller {
 					'website' => '',
 					'summary' => '',
 					'contributors' => '',
-					'description' => ''
+					'description' => '',
+					'cid' => ''
 					), $validate->as_array());
 				$project_form_view->errors = $validate->errors('project_errors');
 
@@ -441,7 +446,8 @@ class Projects_Controller extends Core_Controller {
 					'website' => '',
 					'summary' => '',
 					'contributors' => '',
-					'description' => ''
+					'description' => '',
+					'cid' => ''
 				);
 			}
 			else

@@ -20,8 +20,8 @@
 						<label for="gender">Gender:</label>
 						<select name="gender" id="gender">
 							<option value="Confused" selected="selected">Confused</option>
-							<option value="Male">Male</option>
-							<option value="Female">Female</option>
+							<option value="Male" <?php if ($form['gender'] == 'Male') { echo 'selected="selected"'; } ?>>Male</option>
+							<option value="Female" <?php if ($form['gender'] == 'Female') { echo 'selected="selected"'; } ?>>Female</option>
 						</select>	
 					</p>
 
@@ -36,25 +36,25 @@
 					</p>
 
 					<p>
-						<label for="dd">DOB (d/m/y):</label>
+						<label for="dd">DOB:</label>
 						<select name="dd" id="dd">
-							<option value="1" selected="selected">1</option>
-							<?php for($i=2;$i<32;$i++) { ?>
-							<option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+							<option value="0" selected="selected">dd</option>
+							<?php for($i=1;$i<32;$i++) { ?>
+							<option value="<?php echo $i; ?>" <?php if ($form['dd'] == $i) { echo 'selected="selected"'; } ?>><?php echo $i; ?></option>
 							<?php } ?>
 						</select>
 						/
 						<select name="mm" id="mm">
-							<option value="1" selected="selected">1</option>
-							<?php for($i=2;$i<13;$i++) { ?>
-							<option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+							<option value="0" selected="selected">mm</option>
+							<?php for($i=1;$i<13;$i++) { ?>
+							<option value="<?php echo $i; ?>" <?php if ($form['mm'] == $i) { echo 'selected="selected"'; } ?>><?php echo $i; ?></option>
 							<?php } ?>
 						</select>
 						/
 						<select name="yyyy" id="yyyy">
-							<option value="2003" selected="selected">2003</option>
-							<?php for($i=2002;$i>1932;$i--) { ?>
-							<option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+							<option value="0" selected="selected">yyyy</option>
+							<?php for($i=2003;$i>1932;$i--) { ?>
+							<option value="<?php echo $i; ?>" <?php if ($form['yyyy'] == $i) { echo 'selected="selected"'; } ?>><?php echo $i; ?></option>
 							<?php } ?>
 						</select>
 					</p>
