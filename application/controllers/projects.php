@@ -160,6 +160,40 @@ class Projects_Controller extends Core_Controller {
 
 		$project_view->description = $description;
 
+		// Parse the contributors.
+		$contributors = $project_information['contributors'];
+		if (!empty($contributors)) {
+			$contributors = explode(',', $contributors);
+			foreach ($contributors as $con_id => $contributor) {
+				preg_match('/\(.*\)/', $contributor, $matches);
+				if (!empty($matches[0])) {
+					// We've got a possible alias! Strip it out!
+					$contributor = str_replace($matches[0], '', $contributor);
+					$contributors[$con_id] = trim($contributor);
+
+					// No brackets please...
+					$alias_name = substr($matches[0], 1, -1);
+					$aliases[] = $alias_name;
+
+					// Does this alias match a user?
+					if ($user_model->uid($alias_name)) {
+						$match[] = $user_model->uid($alias_name);
+					} else {
+						$match[] = FALSE;
+					}
+				} else {
+					// No alias.
+					$aliases[] = FALSE;
+					$match[] = FALSE;
+				}
+			}
+			$project_view->contributors = $contributors;
+			$project_view->aliases = $aliases;
+			$project_view->match = $match;
+		} else {
+			$contributors = FALSE;
+		}
+
 		if ($pid != 0) {
 			// Calculate average view per updates and average kudos per update.
 			$project_updates = $update_model->project_updates($pid, $uid);
@@ -312,7 +346,6 @@ class Projects_Controller extends Core_Controller {
 			$validate->add_rules('name', 'required', 'length[1, 25]', 'standard_text');
 			$validate->add_rules('website', 'url');
 			$validate->add_rules('summary', 'required', 'length[1,80]', 'standard_text');
-			$validate->add_rules('contributors', 'standard_text');
 			$validate->add_rules('description', 'required');
 			$validate->add_rules('cid', 'required', 'between[1, '. Kohana::config('projects.max_cid') .']');
 
