@@ -457,6 +457,7 @@ class Projects_Controller extends Core_Controller {
 						), $pid);
 
 					// Email to contributors too!
+					$contributor_list = array();
 					if (!empty($contributors)) {
 						$contributors = explode(',', $contributors);
 						foreach ($contributors as $con_id => $contributor) {
@@ -634,9 +635,10 @@ class Projects_Controller extends Core_Controller {
 		if ($this->input->post())
 		{
 			$new_pid = $this->input->post('new_pid');
+			$contributor_projects = $project_model->contributor_projects($this->uid);
 
 			// First check if you own the project.
-			if (!empty($pid) && $project_model->check_project_owner($pid, $this->uid))
+			if (!empty($pid) && ($project_model->check_project_owner($pid, $this->uid) || array_key_exists($pid, $contributor_projects)) && $pid != $new_pid)
 			{
 				// Load necessary models.
 				$update_model = new Update_Model;
@@ -708,6 +710,8 @@ class Projects_Controller extends Core_Controller {
 			$project_delete_view = new View('project_delete');
 
 			$project_delete_view->projects = $project_model->projects($this->uid);
+			$project_delete_view->contributor_projects = $project_model->contributor_projects($this->uid);
+			unset($project_delete_view->projects[$pid]);
 			$project_delete_view->pid = $pid;
 
 			$this->template->content = array($project_delete_view);

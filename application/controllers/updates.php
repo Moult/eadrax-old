@@ -347,7 +347,7 @@ class Updates_Controller extends Core_Controller {
 			// Load the pastebin view.
 			$pastebin_view = new View('pastebin');
 
-			$geshi = new GeSHi($update_information['pastebin'], $update_information['syntax']);
+			$geshi = new GeSHi(str_replace('&#039;', '\'', htmlspecialchars_decode($update_information['pastebin'])), $update_information['syntax']);
 			$geshi->set_language_path(DOCROOT .'modules/geshi/resource/');
 			$geshi->set_header_type(GESHI_HEADER_PRE_VALID);
 			$geshi->enable_line_numbers(GESHI_FANCY_LINE_NUMBERS);
@@ -363,9 +363,6 @@ class Updates_Controller extends Core_Controller {
 
         // Parse the description
         if (!empty($update_information['detail'])) {
-			$detail = htmlentities($update_information['detail']);
-            // This parsing properly puts the detail in paragraph blocks.
-
 			$simple_search = array(
 				'/\[b\](.*?)\[\/b\]/is',
 				'/\[i\](.*?)\[\/i\]/is',
@@ -386,7 +383,7 @@ class Updates_Controller extends Core_Controller {
 				'<li>$1</li>'
 			);
 			 
-			$detail = preg_replace($simple_search, $simple_replace, $detail);
+			$detail = preg_replace($simple_search, $simple_replace, $update_information['detail']);
 
             $format = 'style="font-size:16px; margin-bottom: 10px;"';
             $detail = '<p '. $format .'>'. $detail .'</p>';
