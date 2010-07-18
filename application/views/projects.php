@@ -4,7 +4,7 @@
 	<?php } else { ?>
 	<img src="<?php echo url::base(); ?>images/noprojecticon.png" class="icon" alt="" style="border: 1px solid #999; padding: 1px;" />
 	<?php } ?>
-	<a href="<?php echo url::base(); ?>projects/view/<?php echo $uid; ?>/<?php echo $project['id']; ?>/" style="color: #FF7600; text-decoration: none;"><?php echo $project['name']; ?></a> <?php if ($project['uid'] == $this->uid && $project['uid'] != 1) { ?><a href="<?php echo url::base(); ?>projects/add/<?php echo $project['id']; ?>/"><img src="<?php echo url::base(); ?>images/icons/pencil.png" class="icon" alt="Edit" /></a><?php } ?>
+	<a href="<?php echo url::base(); ?>projects/view/<?php echo $uid; ?>/<?php echo $project['id']; ?>/" style="color: #FF7600; text-decoration: none;"><?php echo $project['name']; ?></a> <?php if ($uid != $project['uid'] && $project['uid'] != 1) { ?><img src="<?php echo url::base(); ?>images/icons/user_edit.png" class="icon" alt="Contributor" title="Contributor" /><?php } ?> <?php if ($project['uid'] == $this->uid && $project['uid'] != 1) { ?><a href="<?php echo url::base(); ?>projects/add/<?php echo $project['id']; ?>/"><img src="<?php echo url::base(); ?>images/icons/pencil.png" class="icon" alt="Edit" /></a><?php } ?>
 </h2>
 
 <div style="float: left; margin-left: 5px; margin-top: 8px;">

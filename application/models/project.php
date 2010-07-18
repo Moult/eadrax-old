@@ -194,6 +194,28 @@ class Project_Model extends Model {
 	}
 
 	/**
+	 * Returns an array with a list of projects contributed by a user.
+	 *
+	 * @param int $username The username of the user who ontributes to the projects.
+	 *
+	 * @return array
+	 */
+	public function contributor_projects($username)
+	{
+		$projects = $this->db;
+		$projects = $projects->from('projects')->like('contributors', '('. $username .')')->orderby('logtime', 'DESC')->get();
+
+		$project_list = array();
+
+		foreach ($projects as $project)
+		{
+			$project_list[$project->id] = $project->name;
+		}
+
+		return $project_list;
+	}
+
+	/**
 	 * Checks if a project exists.
 	 *
 	 * @param int $pid The project ID to check.

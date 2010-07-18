@@ -280,7 +280,7 @@ class Projects_Controller extends Core_Controller {
 
 		$project_view->markup = $markup;
 		$project_view->uid = $uid;
-		$u_name = $user_model->user_information($uid);
+		$u_name = $user_model->user_information($project_information['uid']);
 		$project_view->u_name = $u_name['username'];
 
 		// Pagination work.
@@ -348,6 +348,7 @@ class Projects_Controller extends Core_Controller {
 			$validate->add_rules('summary', 'required', 'length[1,80]', 'standard_text');
 			$validate->add_rules('description', 'required');
 			$validate->add_rules('cid', 'required', 'between[1, '. Kohana::config('projects.max_cid') .']');
+			$validate->add_callbacks('contributors', array($this, '_validate_contributors'));
 
 			if ($validate->validate())
 			{
@@ -410,6 +411,36 @@ class Projects_Controller extends Core_Controller {
 							mail($user_information['email'], $this->username .' has made a new project on WIPUP', $message, $headers);
 						}
 					}
+
+					// Email to contributors too!
+					if (!empty($contributors)) {
+						$contributors = explode(',', $contributors);
+						foreach ($contributors as $con_id => $contributor) {
+							preg_match('/\(.*\)/', $contributor, $matches);
+							if (!empty($matches[0])) {
+								// No brackets please...
+								$alias_name = substr($matches[0], 1, -1);
+
+								// Does this alias match a user?
+								if ($user_model->uid($alias_name)) {
+									$contributor_list[] = $user_model->uid($alias_name);
+								}
+							}
+						}
+					}
+
+					foreach ($contributor_list as $tid) {
+						$user_information = $user_model->user_information($tid);
+						if (!empty($user_information['email']) && $user_information['notifications'] == 1) {
+							$message = '<html><head><title>New WIPUP Project</title></head><body><p>Dear '. $user_information['username'] .',</p><p><a href="'. url::base() .'profiles/view/'. $this->username .'/">'. $this->username .'</a> has created a new project called \''. $project_info['name'] .'\' ('. $project_info['summary'] .') on WIPUP.org. It turns out that you\'re a contributor to this project. You can view this project by clicking the link below:</p><p><a href="'. url::base() .'projects/view/'. $new_pid .'/">'. url::base() .'projects/view/'. $new_pid .'/</a></p><p>You may turn of email notifications in your account options when logged in. Please do not reply to this email.</p><p>- The WIPUP Team</p></body></html>';
+							$headers = 'MIME-Version: 1.0' . "\r\n" .
+								'Content-type: text/html; charset=iso-8859-1' . "\r\n" .
+								'From: wipup@wipup.org' . "\r\n" .
+								'Reply-To: wipup@wipup.org' . "\r\n" .
+								'X-Mailer: PHP/' . phpversion();
+							mail($user_information['email'], $this->username .' has made a new project on WIPUP', $message, $headers);
+						}
+					}
 				}
 				else
 				{
@@ -424,6 +455,37 @@ class Projects_Controller extends Core_Controller {
 						'description'	=> $description,
 						'icon'			=> $icon_filename
 						), $pid);
+
+					// Email to contributors too!
+					if (!empty($contributors)) {
+						$contributors = explode(',', $contributors);
+						foreach ($contributors as $con_id => $contributor) {
+							preg_match('/\(.*\)/', $contributor, $matches);
+							if (!empty($matches[0])) {
+								// No brackets please...
+								$alias_name = substr($matches[0], 1, -1);
+
+								// Does this alias match a user?
+								if ($user_model->uid($alias_name)) {
+									$contributor_list[] = $user_model->uid($alias_name);
+								}
+							}
+						}
+					}
+
+					foreach ($contributor_list as $tid) {
+						$user_information = $user_model->user_information($tid);
+						if (!empty($user_information['email']) && $user_information['notifications'] == 1) {
+							$message = '<html><head><title>WIPUP Project Edited</title></head><body><p>Dear '. $user_information['username'] .',</p><p><a href="'. url::base() .'profiles/view/'. $this->username .'/">'. $this->username .'</a> has made edits to the project \''. $project_info['name'] .'\' ('. $project_info['summary'] .') on WIPUP.org. You\'re receiving this because it turns out that you\'re a contributor to this project. You can view this project by clicking the link below:</p><p><a href="'. url::base() .'projects/view/'. $new_pid .'/">'. url::base() .'projects/view/'. $new_pid .'/</a></p><p>You may turn of email notifications in your account options when logged in. Please do not reply to this email.</p><p>- The WIPUP Team</p></body></html>';
+							$headers = 'MIME-Version: 1.0' . "\r\n" .
+								'Content-type: text/html; charset=iso-8859-1' . "\r\n" .
+								'From: wipup@wipup.org' . "\r\n" .
+								'Reply-To: wipup@wipup.org' . "\r\n" .
+								'X-Mailer: PHP/' . phpversion();
+							mail($user_information['email'], $this->username .' has made a new project on WIPUP', $message, $headers);
+						}
+					}
+
 				}
 
 				if ($pid == FALSE)
@@ -498,6 +560,60 @@ class Projects_Controller extends Core_Controller {
 			$this->template->content = array($project_form_view);
 		}
 
+	}
+
+	/**
+	 * Deletes yourself as a contributor.
+	 *
+	 * @param int $pid The project ID of the project to delete from.
+	 *
+	 * @return null
+	 */
+	public function nocontribute($pid)
+	{	
+		// Only logged in users are allowed.
+		$this->restrict_access();
+
+		// Load necessary models.
+		$project_model = new Project_Model;
+
+		if ($this->input->post()) {
+			$contributor_projects = $project_model->contributor_projects($this->username);
+			if (array_key_exists($pid, $contributor_projects)) {
+				// Yep, we're a contributor alright, let's remove ourselves!
+				$project_information = $project_model->project_information($pid);
+				$contributor_array = explode(',', $project_information['contributors']);
+				foreach ($contributor_array as $c_id => $c_name) {
+					if (preg_match('/('. $this->username .')/i', $c_name)) {
+						unset($contributor_array[$c_id]);
+					}
+				}
+
+				// Recreate the contributor string.
+				$contributor_string = '';
+				foreach ($contributor_array as $contributor) {
+					$contributor_string .= trim($contributor) .', ';
+				}
+				$contributor_string = substr($contributor_string, 0, -2);
+
+				$project_model->manage_project(array('contributors' => $contributor_string), $pid);
+			}
+
+			// Load the necessary view.
+			$contributor_delete_success_view = new View('contributor_delete_success');
+
+			$this->template->content = array($contributor_delete_success_view);
+		}
+		else
+		{
+			// Load the necessary view.
+			$contributor_delete_view = new View('contributor_delete');
+
+			$contributor_delete_view->projects = $project_model->projects($this->uid);
+			$contributor_delete_view->pid = $pid;
+
+			$this->template->content = array($contributor_delete_view);
+		}
 	}
 
 	/**
@@ -626,6 +742,22 @@ class Projects_Controller extends Core_Controller {
             }
         }
         return $markup;
+	}
+
+	/**
+	 * Validates the contributors list.
+	 *
+	 * @param Validation $array The array containing validation information.
+	 * @param $field The key for the value.
+	 *
+	 * @return null
+	 */
+	public function _validate_contributors(Validation $array, $field)
+	{
+		$contributors = explode(',', $array[$field]);
+		if (count($contributors) > 4) {
+			$array->add_error($field, 'contributors');
+		}
 	}
 
 }

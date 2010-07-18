@@ -40,7 +40,7 @@ $lang = array(
 	),
 
 	'contributors' => array(
-		'standard_text' => 'There are illegal characters in the contributors list.'
+		'contributors' => 'You are only allowed up to 4 contributors.'
 	),
 
 	'description' => array(

@@ -923,6 +923,9 @@ class Updates_Controller extends Core_Controller {
 				// Set list of projects.
 				$update_form_view->projects = $project_model->projects($this->uid);
 
+				// We need to add contributor projects.
+				$update_form_view->contributor_projects = $project_model->contributor_projects($this->username);
+
 				// Set list of syntax highlight options.
 				$update_form_view->languages = Kohana::config('updates.languages');
 
@@ -955,6 +958,9 @@ class Updates_Controller extends Core_Controller {
 			// Set list of projects.
 			$update_form_view->projects = $project_model->projects($this->uid);
 
+			// We need to add contributor projects.
+			$update_form_view->contributor_projects = $project_model->contributor_projects($this->username);
+
 			// Set list of syntax highlight options.
 			$update_form_view->languages = Kohana::config('updates.languages');
 
@@ -978,9 +984,11 @@ class Updates_Controller extends Core_Controller {
 		$project_uid = $project_model->project_information($array[$field]);
 		$project_uid = $project_uid['uid'];
 
+		$contributor_projects = $project_model->contributor_projects($this->username);
+
 		// We also allow the project uid to be 1, as this is a project owned by 
 		// a guest - used for special universal projects.
-		if ($project_uid != $this->uid && $project_uid != 1)
+		if ($project_uid != $this->uid && $project_uid != 1 && !array_key_exists($array[$field], $contributor_projects))
 		{
 			$array->add_error($field, 'project_owner');
 		}

@@ -113,8 +113,13 @@ class Profiles_Controller extends Openid_Controller {
 		$timelines = array();
 		$template_array = array();
 		$pid_array = array();
+		$projects_array = $project_model->projects($uid);
+		$contributor_projects_array = $project_model->contributor_projects($user_information['username']);
+		foreach ($contributor_projects_array as $con_id => $con_project) {
+			$projects_array[$con_id] = $con_project;
+		}
 
-		foreach ($project_model->projects($uid) as $pid => $p_name)
+		foreach ($projects_array as $pid => $p_name)
 		{
 			// Create each view on the fly!
 			$project_view = 'project_view_'. $pid;
@@ -430,10 +435,16 @@ class Profiles_Controller extends Openid_Controller {
 			$update_profile_view->form = $user_model->user_information($this->uid);
 
 			// We need to manually get the date fields of the profile.
-			list($dd, $mm, $yyyy) = explode('/', $update_profile_view->form['dob']);
-			$update_profile_view->form['dd'] = $dd;
-			$update_profile_view->form['mm'] = $mm;
-			$update_profile_view->form['yyyy'] = $yyyy;
+			if ($update_profile_view->form['dob'] != 0) {
+				list($dd, $mm, $yyyy) = explode('/', $update_profile_view->form['dob']);
+				$update_profile_view->form['dd'] = $dd;
+				$update_profile_view->form['mm'] = $mm;
+				$update_profile_view->form['yyyy'] = $yyyy;
+			} else {
+				$update_profile_view->form['dd'] = 0;
+				$update_profile_view->form['mm'] = 0;
+				$update_profile_view->form['yyyy'] = 0;
+			}
 
 			$this->template->content = array($update_profile_view);
 		}

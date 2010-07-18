@@ -513,14 +513,13 @@ class Update_Model extends Model {
 	public function updates($uid = NULL, $pid = NULL, $order = 'ASC', $limit = FALSE, $offset = FALSE)
 	{
 		$search_array = array();
-		if ($uid != NULL) {
-			$search_array['uid'] = $uid;
-		}
 		if ($pid != NULL) {
 			$search_array['pid'] = $pid;
+		} elseif ($uid != NULL) {
+			$search_array['uid'] = $uid;
 		}
 
-		if ($uid != NULL && $search_array['uid'] == 'category') {
+		if ($uid != NULL && $uid == 'category') {
 			$updates = $this->db->from('projects')->join('updates', 'updates.pid', 'projects.id')->where(array('projects.cid' => $pid))->orderby('updates.id', $order);
 		} else {
 			$updates = $this->db->from('updates')->where($search_array)->orderby('id', $order);

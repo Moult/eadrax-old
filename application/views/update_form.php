@@ -42,6 +42,12 @@
 						<?php foreach ($projects as $pid => $p_name) { ?>
 						<option value="<?php echo $pid; ?>" <?php if ($form['pid'] == $pid) { echo 'selected="selected"'; } ?>><?php echo $p_name; ?></option>
 						<?php } ?>
+						<?php if (!empty($contributor_projects)) { ?>
+						<option value="1">--Shared Projects--</option>
+						<?php foreach ($contributor_projects as $pid => $p_name) { ?>
+						<option value="<?php echo $pid; ?>" <?php if ($form['pid'] == $pid) { echo 'selected="selected"'; } ?>><?php echo $p_name; ?></option>
+						<?php } ?>
+						<?php } ?>
 						</select>
 					</p>
 					<?php } ?>

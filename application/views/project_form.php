@@ -59,6 +59,7 @@
 					<p>
 						<label for="contributors">Contributors:</label>
 						<input type="text" id="contributors" name="contributors" value="<?php echo $form['contributors']; ?>" <?php if (isset($errors['contributors'])) { echo 'class="error"'; } ?> />
+						<br /><br />Format: John Doe (john_username), Jane Doe, James Doe, (another_username)
 					</p>
 
 					<p>
