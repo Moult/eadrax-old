@@ -74,20 +74,7 @@ abstract class Core_Controller extends Template_Controller {
 		// Send all the data we collected to the template...
 		$this->template->latest_data = $this->_get_latest_data();
 		
-		// Loading Libraries
 		$this->session = Session::instance();
-		
-		$this->head = Head::instance();
-
-		// Javascripts
-		$this->head->javascript->append_file('js/lib/jquery-1.3.2.min.js');
-		$this->head->javascript->append_file('js/lib/jquery-ui-1.7.2.custom.min.js');
-		$this->head->javascript->append_file('js/base.js');
-
-		// Stylesheets
-		$this->head->css->append_file('css/ui-darkness/jquery-ui-1.7.2.custom');
-
-		$this->template->set_global('head', $this->head);
 	}
 
 	/**

@@ -450,32 +450,6 @@ class Profiles_Controller extends Openid_Controller {
 		}
 	}
 	
-	public function change_password($id = NULL)
-	{
-		$this->restrict_access();
-		$user = ORM::factory('user', $id);
-		
-		$form = Formo::factory()
-			->add('password')->type('password')->rule('matches[password2]', 'The password does not match')
-    		->add('password2')->type('password')->label('Confirm Password')
-			->add('submit');
-			
-		// $form->add_rule('password', array('matches[password2]', 'Does not match'));
-		
-		if($form->validate()) {
-			$user->password = $this->authlite->hash($form->password->value);
-			
-			if($user->save()){
-                // Setting message for user
-                url::redirect('profiles');
-            }
-		}
-		
-		$content = new View('profiles/password', $form->get(TRUE));
-		
-		$this->template->content = array($content);
-	}
-
 	public function options($id = NULL)
 	{
 		// Restrict any guests.
