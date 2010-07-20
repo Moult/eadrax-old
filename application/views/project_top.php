@@ -67,10 +67,11 @@ A sociopath who hasn't yet updated his profile information
 		Normally we'd advertise a featured project here that <?php echo $user['username']; ?> is rather proud of, but apparently there's nothing very nice to show.
 <script type="text/javascript">
 $(document).ready(function() {
-	$("#content_top").css({'min-height': '120', 'height': '120'});
+	$("#content_top").css({'min-height': '120px'});
+	$("#content_top").animate({height: '120px'});
 	$("#section_divider").css({'background-color': '#E3F8FF'});
-	$("#content_top_left").animate({height: '120'});
-	$("#content_top_right").animate({height: '120'});
+	$("#content_top_left").animate({height: '120px'});
+	$("#content_top_right").animate({height: '120px'});
 });
 </script>
 	<?php } ?>
@@ -84,20 +85,20 @@ $(document).ready(function() {
 <?php foreach ($pid_array as $pid) { ?>
 		if ($("#expand").hasClass('expand')) {
 			$("#section_divider<?php echo $pid; ?>").css("background-color", "white");
-			$("#section_divider<?php echo $pid; ?>").animate({height: '24'});
-			$("#section_top_right<?php echo $pid; ?>").animate({height: '230'});
+			$("#section_divider<?php echo $pid; ?>").animate({height: '24px'});
+			$("#section_top_right<?php echo $pid; ?>").animate({height: '230px'});
 			if (!$("#section_top_left<?php echo $pid; ?>").hasClass('tall')) {
-				$("#section_top_left<?php echo $pid; ?>").animate({height: '230'}).addClass('tall');
+				$("#section_top_left<?php echo $pid; ?>").animate({height: '230px'}).addClass('tall');
 				$("#slider<?php echo $pid; ?>").slideToggle("slow");
 				$("#summary<?php echo $pid; ?>").slideToggle("slow");
 				$("#information<?php echo $pid; ?>").slideToggle("slow");
 			}
 		} else {
 			$("#section_divider<?php echo $pid; ?>").css("background-color", "#E3F8FF");
-			$("#section_divider<?php echo $pid; ?>").animate({height: '18'});
-			$("#section_top_right<?php echo $pid; ?>").animate({height: '100'});
+			$("#section_divider<?php echo $pid; ?>").animate({height: '18px'});
+			$("#section_top_right<?php echo $pid; ?>").animate({height: '100px'});
 			if ($("#section_top_left<?php echo $pid; ?>").hasClass('tall')) {
-				$("#section_top_left<?php echo $pid; ?>").animate({height: '100'}).removeClass('tall');
+				$("#section_top_left<?php echo $pid; ?>").animate({height: '100px'}).removeClass('tall');
 				$("#slider<?php echo $pid; ?>").slideToggle("slow");
 				$("#summary<?php echo $pid; ?>").slideToggle("slow");
 				$("#information<?php echo $pid; ?>").slideToggle("slow");

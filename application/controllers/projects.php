@@ -413,6 +413,7 @@ class Projects_Controller extends Core_Controller {
 					}
 
 					// Email to contributors too!
+					$contributor_list = array();
 					if (!empty($contributors)) {
 						$contributors = explode(',', $contributors);
 						foreach ($contributors as $con_id => $contributor) {

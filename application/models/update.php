@@ -515,6 +515,9 @@ class Update_Model extends Model {
 		$search_array = array();
 		if ($pid != NULL) {
 			$search_array['pid'] = $pid;
+			if ($pid == 1 && $uid != NULL) {
+				$search_array['uid'] = $uid;
+			}
 		} elseif ($uid != NULL) {
 			$search_array['uid'] = $uid;
 		}
