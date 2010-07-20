@@ -15,19 +15,19 @@
 	</li>
 
 	<li style="margin-bottom: 20px;">
-		<img src="<?php echo url::base(); ?>images/profile.png" width="39" height="40" style="margin-right: 7px; margin-bottom: 5px;" class="icon" alt="Profile" />
+		<img src="<?php echo url::base(); ?>images/profile.png" width="40" height="87" style="margin-right: 7px; margin-bottom: 5px;" class="icon" alt="Profile" />
 		<strong>Your Profile</strong><br />
 		This is your public page that everybody can see online. It will show your projects and thumbnails of your progress.
 	</li>
 
 	<li style="margin-bottom: 20px;">
-		<img src="<?php echo url::base(); ?>images/update.png" width="39" height="40" style="margin-right: 7px; margin-bottom: 5px;" class="icon" alt="Upload" />
+		<img src="<?php echo url::base(); ?>images/update.png" width="40" height="87" style="margin-right: 7px; margin-bottom: 5px;" class="icon" alt="Upload" />
 		<strong>Add an Update</strong><br />
 		Update a project, upload a file, or even pastebin from here to find it instantly organised within your projects and ready to share.
 	</li>
 
 	<li style="margin-bottom: 20px;">
-		<img src="<?php echo url::base(); ?>images/random.png" width="39" height="40" style="margin-right: 7px; margin-bottom: 5px;" class="icon" alt="Browse" />
+		<img src="<?php echo url::base(); ?>images/random.png" width="41" height="87" style="margin-right: 7px; margin-bottom: 5px;" class="icon" alt="Browse" />
 		<strong>Browse Random Files</strong><br />
 		Whenever you're bored, just click this to be brought to a random file, ready for you to see what others are up to.
 	</li>

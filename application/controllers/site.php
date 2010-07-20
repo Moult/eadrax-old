@@ -47,6 +47,14 @@ class Site_Controller extends Core_Controller {
 		$this->template->content = array($introduction_view);
 	}
 
+	public function tour()
+	{
+		// Introduction Page.
+		$introduction_view = new View('tour');
+
+		$this->template->content = array($introduction_view);
+	}
+
 	/**
 	 * Page that shows legal information.
 	 *

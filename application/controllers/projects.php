@@ -66,7 +66,7 @@ class Projects_Controller extends Core_Controller {
 		}
 
 		// Check for potential 404s.
-		if ($uid != NULL) {
+		if ($uid != NULL && $uid != 'category') {
 			if (!$user_model->check_user_exists($uid)) {
 				Event::run('system.404');
 			}
