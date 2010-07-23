@@ -384,6 +384,7 @@ class Updates_Controller extends Core_Controller {
 			);
 			 
 			$detail = preg_replace($simple_search, $simple_replace, $update_information['detail']);
+			$detail = str_replace('&#039;', '\'', htmlspecialchars_decode($detail));
 
             $format = 'style="font-size:16px; margin-bottom: 10px;"';
             $detail = '<p '. $format .'>'. $detail .'</p>';
@@ -649,7 +650,7 @@ class Updates_Controller extends Core_Controller {
 									// If it is a video, we need to encode it.
 									// HTML 5 is not out yet, so support goes through 
 									// the FLV format. Oh well :)
-									if ($extension == 'avi' || $extension == 'mpg' || $extension == 'mov' || $extension == 'flv' || $extension == 'ogg' || $extension == 'wmv')
+									if ($extension == 'avi' || $extension == 'mpg' || $extension == 'mov' || $extension == 'flv' || $extension == 'ogg' || $extension == 'wmv' || $extension == 'mp4')
 									{
 										// Define files.
 										$src_file  = DOCROOT .'uploads/files/'. basename($filename);
@@ -1094,7 +1095,7 @@ class Updates_Controller extends Core_Controller {
 	 */
 	public function _file_icon($filename, $ext, $cropped = FALSE)
 	{
-		if ($ext == 'jpg' || $ext == 'png' || $ext == 'gif' || $ext == 'avi' || $ext == 'mpg' || $ext == 'mov' || $ext == 'flv') {
+		if ($ext == 'jpg' || $ext == 'png' || $ext == 'gif' || $ext == 'avi' || $ext == 'mpg' || $ext == 'mov' || $ext == 'flv' || $ext == 'mp4') { 
 			if ($cropped == TRUE) {
 				return url::base() .'uploads/icons/'. $filename .'_crop.jpg';
 			} else {

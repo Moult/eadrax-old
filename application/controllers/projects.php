@@ -72,7 +72,9 @@ class Projects_Controller extends Core_Controller {
 			}
 		}
 		if ($pid != NULL) {
-			if (!$project_model->check_project_exists($pid)) {
+			if (!$project_model->check_project_exists($pid) && $pid != 0 && $uid != 'category') {
+				Event::run('system.404');
+			} elseif ($uid == 'category' && ($pid < 1 || $pid > Kohana::config('projects.max_cid'))) {
 				Event::run('system.404');
 			}
 		}
@@ -446,7 +448,7 @@ class Projects_Controller extends Core_Controller {
 				else
 				{
 					// Everything went great! Let's edit the project.
-					$project_model->manage_project(array(
+					$new_pid = $project_model->manage_project(array(
 						'uid'			=> $this->uid,
 						'cid'			=> $cid,
 						'name'			=> $name,
@@ -474,6 +476,8 @@ class Projects_Controller extends Core_Controller {
 							}
 						}
 					}
+
+					$project_info = $project_model->project_information($new_pid);
 
 					foreach ($contributor_list as $tid) {
 						$user_information = $user_model->user_information($tid);

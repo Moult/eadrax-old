@@ -38,7 +38,7 @@ $config['fit_width'] = 830;
 $config['fit_height'] = 600;
 
 // The allowed filetypes for users on the website.
-$config['filetypes'] = 'gif,jpg,png,svg,tiff,bmp,exr,pdf,zip,rar,tar,gz,bz,7z,ogg,wmv,mp3,wav,avi,mpg,mov,swf,flv,blend,xcf,doc,ppt,xls,odt,ods,odp,odg,psd,fla,ai,indd,aep,txt,cab,csv,exe,diff,patch,rtf,torrent';
+$config['filetypes'] = 'gif,jpg,png,svg,tiff,bmp,exr,pdf,zip,rar,tar,gz,bz,7z,ogg,wmv,mp3,wav,avi,mpg,mov,swf,flv,blend,xcf,doc,ppt,xls,odt,ods,odp,odg,psd,fla,ai,indd,aep,txt,cab,csv,exe,diff,patch,rtf,torrent,mp4';
 
 // Languages to support for syntax highlighting.
 // Note: these must be supported by GeSHi.
