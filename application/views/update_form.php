@@ -175,7 +175,7 @@
 				File Support
 			</h4>
 			<p>
-				gif jpg png svg tiff bmp exr pdf zip rar tar tar.gz tar.bz ogg mp3 wav avi mpg mov swf flv blend xcf doc ppt xls odt ods odp odg psd fla ai indd aep
+				gif jpg png svg tiff bmp exr pdf zip rar tar tar.gz tar.bz ogg mp3 wav avi mpg mov mp4 swf flv blend xcf doc ppt xls odt ods odp odg psd fla ai indd aep
 			</p>
 
 			<h4>
