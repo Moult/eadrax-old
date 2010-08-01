@@ -891,14 +891,12 @@ class Updates_Controller extends Core_Controller {
 
 				// Then load our success view.
 				$update_success_view = new View('update_success');
-				$update_information_view = new View('update_information');
 
 				// Pass some useful information.
 				$update_success_view->uid = $uid;
-				$update_information_view->uid = $uid;
 
 				// Then generate content.
-				$this->template->content = array($update_success_view, $update_information_view);
+				$this->template->content = array($update_success_view);
 			}
 			else
 			{

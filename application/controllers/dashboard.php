@@ -486,7 +486,7 @@ class Dashboard_Controller extends Core_Controller {
 				{
 					$username = $user_model->user_information($uid);
 					if (!empty($username['avatar'])) {
-						$avatar = url::base() .'uploads/avatars/'. $track_user['avatar'] .'_small.jpg';
+						$avatar = url::base() .'uploads/avatars/'. $username['avatar'] .'_small.jpg';
 					} else {
 						$avatar = url::base() .'images/noprojecticon.png';
 					}

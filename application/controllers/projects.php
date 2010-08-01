@@ -503,6 +503,8 @@ class Projects_Controller extends Core_Controller {
 				{
 					// Then load our success view.
 					$project_success_view = new View('project_edit_success');
+					$project_success_view->uid = $this->uid;
+					$project_success_view->pid = $new_pid;
 				}
 
 				// Then generate content.
