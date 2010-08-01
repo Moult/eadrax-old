@@ -14,9 +14,14 @@
 
 <div style="clear: both;"></div>
 
+<div style="display: none;"><div id="data"><?php echo $share; ?></div></div>
+
 
 <div style="float: left; margin-bottom: 10px;">
     <ul style="margin-left: 0px; display: inline;">
+        <li style="width: 70px; display: inline;">
+			<a id="inline" href="#data"><input style="width: 70px;" type="button" value="Share" /></a>
+        </li>
 <?php if (isset($feature)) { ?>
         <li style="width: 70px; display: inline;">
 			<input style="width: 70px;" type="button" onclick="parent.location='<?php echo url::base(); ?>updates/feature/<?php echo $id; ?>/'" value="Feature" />

@@ -68,6 +68,14 @@ class Updates_Controller extends Core_Controller {
 		$comment_form_view = new View('comment_form');
 		$random_update_view = new View('random_update');
 
+		// The share view is slightly special as it'll be loaded inline.
+		$update_information_view = new View('update_information');
+		$update_information_view->uid = $uid;
+		$update_information_view->summary = $update_information['summary'];
+		$update_username = $user_model->user_information($update_information['uid']);
+		$update_information_view->username = $update_username['username'];
+		$update_view->share = $update_information_view;
+
 		// All this information is very useful to the view, let's pass it on.
 		foreach ($update_information as $key => $value)
 		{

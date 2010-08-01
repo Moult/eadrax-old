@@ -32,12 +32,16 @@ if ($this->uri->segment(1) == 'updates' && ($this->uri->segment(2) == 'view' || 
 
 		<script type="text/javascript">
 		$(document).ready(function() {
-			/* This is basic - uses default settings */
 			$("a.single_image").fancybox({
 				'transitionIn'	: 'elastic',
 				'easingIn'		: 'swing',
 				'autoScale'		: false
 			});
+
+			$("a#inline").fancybox({
+				'hideOnContentClick': false
+			});
+
 		});
 		</script>
 
