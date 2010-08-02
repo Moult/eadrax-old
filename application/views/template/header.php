@@ -30,6 +30,32 @@ if ($this->uri->segment(1) == 'updates' && ($this->uri->segment(2) == 'view' || 
 		<script type="text/javascript" src="<?php echo url::base(); ?>js/jquery.fancybox-1.3.0.pack.js"></script>
 		<link rel="stylesheet" href="<?php echo url::base(); ?>css/jquery.fancybox-1.3.0.css" type="text/css" media="screen" />
 
+		<!-- Resizing textarea -->
+        <script type="text/javascript" src="<?php echo url::base(); ?>js/jquery.textarearesizer.compressed.js"></script>
+
+		<style type="text/css">
+		div.grippie {
+			background: #EEEEEE;
+			border-color: #DDDDDD;
+			border-style: solid;
+			border-width: 0pt 1px 1px;
+			cursor: s-resize;
+			height: 5px;
+			overflow: hidden;
+		}
+		.resizable-textarea textarea {
+			display:block;
+			margin-bottom:0pt;
+		}
+		</style>
+
+		<script type="text/javascript">
+		/* jQuery textarea resizer plugin usage */
+		$(document).ready(function() {
+		$('textarea.resizable:not(.processed)').TextAreaResizer();
+		});
+		</script>
+
 		<script type="text/javascript">
 		$(document).ready(function() {
 			$("a.single_image").fancybox({

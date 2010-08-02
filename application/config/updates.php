@@ -25,6 +25,9 @@
 // Set the path to the ffmpeg application binary.
 $config['ffmpeg_path'] = '/usr/bin/ffmpeg';
 
+// Set the path to the diff application binary.
+$config['diff_path'] = '/usr/bin/diff';
+
 // The upload size limit for users per update.
 $config['user_upload_limit'] = '50M';
 

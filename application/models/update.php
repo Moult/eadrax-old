@@ -163,6 +163,30 @@ class Update_Model extends Model {
 	}
 
 	/**
+	 * Returns all the data about an update with the id $uid.
+	 *
+	 * @param int $uid
+	 * 
+	 * @return array
+	 */
+	public function update_revisions($uid)
+	{
+		$update_revisions = new Database();
+		$did_information = $this->update_information($uid);
+		$update_revisions = $update_revisions->where('id', $uid);
+		$update_revisions = $update_revisions->orwhere('did', $uid);
+		if ($did_information['did'] != 0) {
+			$update_revisions = $update_revisions->orwhere('id', $did_information['did']);
+			$update_revisions = $update_revisions->orwhere('did', $did_information['did']);
+		}
+		$update_revisions = $update_revisions->orderby('id', 'DESC');
+		$update_revisions = $update_revisions->get('updates');
+		$update_revisions = $update_revisions->result(FALSE);
+
+		return $update_revisions;
+	}
+
+	/**
 	 * Deletes an update.
 	 *
 	 * @param int $uid The update ID to delete.

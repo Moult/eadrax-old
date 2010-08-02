@@ -367,8 +367,50 @@ class Updates_Controller extends Core_Controller {
 			$pastebin_view->pastebin = $geshi->parse_code();
 			$pastebin_view->vanilla = $update_information['pastebin'];
 			$pastebin_view->syntax = $update_information['syntax'];
+			$pastebin_view->id = $update_information['id'];
 
 			$display_pastebin = TRUE;
+
+			// Parse potential revisions.
+			$update_revisions = $update_model->update_revisions($update_information['id']);
+			$pastebin_view->update_revisions = $update_revisions->count();
+
+			if ($pastebin_view->update_revisions > 1) {
+				// Load the revision view.
+				$revision_view = new View('revision');
+				$revision_view->update_revisions = $update_revisions;
+				$revision_view->uid = $update_information['id'];
+				$pastebin_view->revisions = $revision_view;
+
+				// Calculate diffs.
+				$diff_path = Kohana::config('updates.diff_path');
+				$diff_output = array();
+
+				// Copy our revisions to tmp files.
+				foreach ($update_revisions as $update_revision) {
+					if ($update_revision['id'] == $update_information['id']) {
+						$original = tempnam(DOCROOT .'application/tmp', 'REV');
+						$original_handle = fopen($original, 'w');
+						fwrite($original_handle, $update_revision['pastebin']);
+					}
+				}
+
+				foreach ($update_revisions as $update_revision) {
+					$diff_result = 0;
+					${'diff'. $update_revision['id']} = tempnam(DOCROOT .'application/tmp', 'REV');
+					${'diff'. $update_revision['id'] .'_handle'} = fopen(${'diff'. $update_revision['id']}, 'w');
+					fwrite(${'diff'. $update_revision['id'] .'_handle'}, $update_revision['pastebin']);
+					exec($diff_path ." -u ". escapeshellarg(${'diff'. $update_revision['id']}) ." ". escapeshellarg($original), $diff_result);
+					$diff_output[$update_revision['id']] = $diff_result;
+					fclose(${'diff'. $update_revision['id'] .'_handle'});
+					unlink(${'diff'. $update_revision['id']});
+				}
+
+				fclose($original_handle);
+				unlink($original);
+
+				$revision_view->diffs = $diff_output;
+			}
 		}
 
         // Parse the description
@@ -502,6 +544,14 @@ class Updates_Controller extends Core_Controller {
 			$syntax		= $this->input->post('syntax');
 			$pastebin	= $this->input->post('pastebin');
 
+			// If editing...
+			if ($uid != FALSE) {
+				$did = $update_model->update_information($uid);
+				$did = $did['did'];
+			} else {
+				$did = $this->input->post('did');
+			}
+
 			if ($this->logged_in == TRUE)
 			{
 				$pid = $this->input->post('pid');
@@ -509,6 +559,41 @@ class Updates_Controller extends Core_Controller {
 			else
 			{
 				$pid = 1;
+			}
+
+			// We need to verify valid diffs.
+			if (!empty($did)) {
+				$did_information = $update_model->update_information($did);
+
+				$summary = $did_information['summary'];
+				if ($this->input->post('summary') == 'Describe your changes') {
+					$_POST['summary'] = $summary;
+				} else {
+					$_POST['summary'] = $this->input->post('summary', $summary);
+					$summary = $this->input->post('summary', $summary);
+				}
+
+				$_POST['syntax'] = $did_information['syntax'];
+				$syntax = $did_information['syntax'];
+
+				if ($this->uid == $did_information['uid']) {
+					$_POST['pid'] = $did_information['pid'];
+					$pid = $did_information['pid'];
+				} else {
+					$_POST['$pid'] = 1;
+					$pid = 1;
+				}
+
+				$_POST['detail'] = '';
+				$detail = '';
+
+				// We need to make sure that the $did is the original WIP.
+				while ($did_information['did'] != 0) {
+					$did_information = $update_model->update_information($did_information['did']);
+				}
+				$did = $did_information['id'];
+			} else {
+				$did = 0;
 			}
 
 			if ($uid == FALSE)
@@ -824,6 +909,7 @@ class Updates_Controller extends Core_Controller {
 						'summary' => $summary,
 						'detail' => $detail,
 						'pid' => $pid,
+						'did' => $did,
 						'filename0' => $attachment_array[0],
 						'filename1' => $attachment_array[1],
 						'filename2' => $attachment_array[2],
@@ -883,6 +969,7 @@ class Updates_Controller extends Core_Controller {
 						'summary' => $summary,
 						'detail' => $detail,
 						'pid' => $pid,
+						'did' => $did,
 						'filename0' => $attachment_array[0],
 						'filename1' => $attachment_array[1],
 						'filename2' => $attachment_array[2],
