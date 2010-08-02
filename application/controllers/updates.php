@@ -357,9 +357,11 @@ class Updates_Controller extends Core_Controller {
 
 			$geshi = new GeSHi(str_replace('&#039;', '\'', htmlspecialchars_decode($update_information['pastebin'])), $update_information['syntax']);
 			$geshi->set_language_path(DOCROOT .'modules/geshi/resource/');
-			$geshi->set_header_type(GESHI_HEADER_PRE_VALID);
+			$geshi->set_header_type(GESHI_HEADER_DIV);
 			$geshi->enable_line_numbers(GESHI_FANCY_LINE_NUMBERS);
-			$geshi->enable_classes();
+			$geshi->set_line_style('color: #CCC; background-color: #FFF; border-bottom: 1px solid #DDD;', 'color: #AAA; background-color: #EEE; border-bottom: 1px solid #DDD;', true);
+			$geshi->set_code_style('color: #000; font-weight: normal;');
+			$geshi->enable_classes(false);
 
 			$pastebin_view->css = $geshi->get_stylesheet();
 			$pastebin_view->pastebin = $geshi->parse_code();
@@ -392,7 +394,6 @@ class Updates_Controller extends Core_Controller {
 			);
 			 
 			$detail = preg_replace($simple_search, $simple_replace, $update_information['detail']);
-			$detail = str_replace('&#039;', '\'', htmlspecialchars_decode($detail));
 
             $format = 'style="font-size:16px; margin-bottom: 10px;"';
             $detail = '<p '. $format .'>'. $detail .'</p>';
