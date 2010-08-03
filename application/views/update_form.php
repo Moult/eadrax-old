@@ -34,6 +34,7 @@
 					<?php } ?>
 				</legend>
 				<div class="elements">
+					<input type="hidden" name="did" value="<?php echo $form['did']; ?>" />
 					<?php if ($this->logged_in) { ?>
 					<p>
 						<label for="pid">Project:

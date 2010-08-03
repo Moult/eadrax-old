@@ -1003,7 +1003,8 @@ class Updates_Controller extends Core_Controller {
 					'detail' => '',
 					'pastebin' => '',
 					'syntax' => '',
-					'pid' => ''
+					'pid' => '',
+					'did' => ''
 				), $validate->as_array());
 				$update_form_view->errors = $validate->errors('update_errors');
 
@@ -1038,7 +1039,8 @@ class Updates_Controller extends Core_Controller {
 					'detail' => '',
 					'pastebin' => '',
 					'syntax' => '',
-					'pid' => ''
+					'pid' => '',
+					'did' => ''
 				);
 			}
 			else
