@@ -111,7 +111,9 @@ class Site_Controller extends Core_Controller {
 				if ($search == 'profiles') {
 					$search = 'users';
 				} elseif ($search != 'projects' && $search != 'updates') {
-					die(); # TODO dying is never good.
+					// Hacking attempt... but we'll throw them at the permission 
+					// error anyway.
+					throw new Kohana_User_Exception('', '', 'permissions_error');
 				}
 				$keywords = explode(' ', $keywords);
 				$search_view->results = $update_model->search($keywords, $search);

@@ -264,7 +264,8 @@ class Profiles_Controller extends Openid_Controller {
 		$user_model	= new User_Model;
 
 		if ($this->uid != $id) {
-			die('You can only update your own profile');
+			// You can only update your own profile.
+			throw new Kohana_User_Exception('', '', 'permissions_error');
 		}
 		
 		if ($this->input->post())
@@ -359,7 +360,8 @@ class Profiles_Controller extends Openid_Controller {
 					}
 					else
 					{
-						die ('Your upload has failed, please check your file extension.');
+						// Your upload has failed, please check your file extension.
+						throw new Kohana_User_Exception('', '', 'upload_error');
 					}
 				}
 
@@ -459,7 +461,8 @@ class Profiles_Controller extends Openid_Controller {
 		$user_model	= new User_Model;
 
 		if ($this->uid != $id) {
-			die('You can only update your own options');
+			// You can only update your own options.
+			throw new Kohana_User_Exception('', '', 'permissions_error');
 		}
 		
 		if ($this->input->post())

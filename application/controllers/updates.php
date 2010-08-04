@@ -533,7 +533,8 @@ class Updates_Controller extends Core_Controller {
 			// ... make sure they own the update,
 			if (!$update_model->check_update_owner($uid, $this->uid))
 			{
-				die('You are not allowed to edit this update.');
+				// You are not allowed to edit this update.
+				throw new Kohana_User_Exception('', '', 'permissions_error');
 			}
 		}
 
@@ -872,7 +873,8 @@ class Updates_Controller extends Core_Controller {
 								}
 								else
 								{
-									die('Your upload has failed.'); # TODO dying is never good.
+									// Throw up our error.
+									throw new Kohana_User_Exception('', '', 'upload_error');
 								}
 							}
 						}
@@ -1154,7 +1156,8 @@ class Updates_Controller extends Core_Controller {
 		}
 		else
 		{
-			die('Please ensure an ID is specified and you own the update.'); # TODO dying isn't good.
+			// Please ensure an ID is specified and you own the update.
+			throw new Kohana_User_Exception('', '', 'permissions_error');
 		}
 
 		// Load views.

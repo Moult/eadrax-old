@@ -318,7 +318,8 @@ class Projects_Controller extends Core_Controller {
 			// Check whether or not we own the project.
 			if (!$project_model->check_project_owner($pid, $this->uid))
 			{
-				die('You do not own this project.'); # TODO dying isn't very good.
+				// You do not own this project.
+				throw new Kohana_User_Exception('', '', 'permissions_error');
 			}
 		}
 
@@ -378,7 +379,8 @@ class Projects_Controller extends Core_Controller {
 					}
 					else
 					{
-						die ('Your upload has failed.');
+						// Your upload has failed.
+						throw new Kohana_User_Exception('', '', 'upload_error');
 					}
 				}
 				
@@ -708,7 +710,8 @@ class Projects_Controller extends Core_Controller {
 			}
 			else
 			{
-				die('Please ensure an ID is specified and you own the project.'); # TODO dying isn't good.
+				// Please ensure an ID is specified and you own the project.
+				throw new Kohana_User_Exception('', '', 'permissions_error');
 			}
 		}
 		else

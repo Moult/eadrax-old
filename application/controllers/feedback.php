@@ -74,7 +74,8 @@ class Feedback_Controller extends Core_Controller {
 		}
 		else
 		{
-			die('Please ensure an ID is specified and you wrote the comment.'); # TODO dying isn't good.
+			// Please ensure an ID is specified and you wrote the comment.
+			throw new Kohana_User_Exception('', '', 'permissions_error');
 		}
 	}
 
