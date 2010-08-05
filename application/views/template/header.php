@@ -30,6 +30,13 @@ if ($this->uri->segment(1) == 'updates' && ($this->uri->segment(2) == 'view' || 
 		<script type="text/javascript" src="<?php echo url::base(); ?>js/jquery.fancybox-1.3.0.pack.js"></script>
 		<link rel="stylesheet" href="<?php echo url::base(); ?>css/jquery.fancybox-1.3.0.css" type="text/css" media="screen" />
 
+        <!-- Scrollable support -->
+        <script type="text/javascript" src="<?php echo url::base(); ?>js/jquery.mousewheel.js"></script>
+        <script type="text/javascript" src="<?php echo url::base(); ?>js/jquery.scrollable-1.0.2.min.js"></script>
+		<script type="text/javascript" src="<?php echo url::base(); ?>js/scrollable.js"></script>
+        <!-- Scrollable styles -->
+        <link rel="stylesheet" href="<?php echo url::base(); ?>css/scrollable.css" type="text/css" media="screen" />
+
 		<!-- Resizing textarea -->
         <script type="text/javascript" src="<?php echo url::base(); ?>js/jquery.textarearesizer.compressed.js"></script>
 

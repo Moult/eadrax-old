@@ -37,6 +37,34 @@
 	<div style="float: right; font-size: 18px; letter-spacing: -1px; color: #AAA; text-align: right; margin-bottom: 5px;"><?php echo date('jS F Y', strtotime($project['logtime'])); ?></div>
 </div>
 
+<?php if ($this->uri->segment(1) == 'updates') { ?>
+<script type="text/javascript">
+$(document).ready(function() {
+	$("#content_top").css({'min-height': '100px'});
+	$("#section_divider<?php echo $project['id']; ?>").css({'background-color': '#E3F8FF'});
+	$("#section_divider<?php echo $project['id']; ?>").animate({height: '18px'});
+	$("#content_top_left").animate({height: '100px'});
+	$("#content_top_right").animate({height: '100px'});
+
+	$("#expand<?php echo $project['id']; ?>").click(function(){
+		$("#slider<?php echo $project['id']; ?>").slideToggle("slow");
+		$("#summary<?php echo $project['id']; ?>").slideToggle("slow");
+		$("#information<?php echo $project['id']; ?>").slideToggle("slow");
+		if ($("#content_top_left").hasClass('tall')) {
+			$("#section_divider<?php echo $project['id']; ?>").css("background-color", "#E3F8FF");
+			$("#section_divider<?php echo $project['id']; ?>").animate({height: '18'});
+			$("#content_top_right").animate({height: '100'});
+			$("#content_top_left").animate({height: '100'}).removeClass('tall');
+		} else {
+			$("#section_divider<?php echo $project['id']; ?>").css("background-color", "white");
+			$("#section_divider<?php echo $project['id']; ?>").animate({height: '24'});
+			$("#content_top_right").animate({height: '230'});
+			$("#content_top_left").animate({height: '230'}).addClass('tall');
+		}
+	});
+});
+</script>
+<?php } else { ?>
 <script type="text/javascript">
 $(document).ready(function() {
 	$("#expand<?php echo $project['id']; ?>").click(function(){
@@ -57,6 +85,7 @@ $(document).ready(function() {
 	});
 });
 </script>
+<?php } ?>
 
 <div id="slider<?php echo $project['id']; ?>" style="width: 830px; display: none;">
 

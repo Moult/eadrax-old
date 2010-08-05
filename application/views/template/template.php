@@ -59,16 +59,28 @@ if (!empty($content))
 			}
 			else
 			{
-				if (!isset($join)) {
+				if ($this->uri->segment(1) == 'updates' && ($this->uri->segment(2) == 'view' || $this->uri->segment(2) == 'random') && $i == 1) { 
+					echo '<div class="section_divider" id="section_divider'. $pid .'"></div>';
+					echo '<div class="section_top_left" id="section_top_left'. $pid .'"></div>';
+					echo '<div class="section_top" id="section_top'. $pid .'">';
+				} elseif (!isset($join)) {
 					echo '<div class="section_divider"></div>';
 					echo '<div class="section_top_left"></div>';
 					echo '<div class="section_top">';
 				}
+
+				// Output the content block.
 				echo $block;
-				if (!isset($join)) {
+
+
+				if ($this->uri->segment(1) == 'updates' && ($this->uri->segment(2) == 'view' || $this->uri->segment(2) == 'random') && $i == 1) { 
+					echo '</div>';
+					echo '<div class="section_top_right" id="section_top_right'. $pid .'"></div>';
+				} elseif (!isset($join)) {
 					echo '</div>';
 					echo '<div class="section_top_right"></div>';
 				}
+				$i++;
 			}
 		}
 	}

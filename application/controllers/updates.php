@@ -153,48 +153,63 @@ class Updates_Controller extends Core_Controller {
 			}
 		}
 
-		// Let's find out some random updates!
-		if ($update_model->update_number($update_information['uid']) > 0)
-		{
-			$display_random = TRUE;
-			$random_query = $update_model->update_number_random($update_information['uid']);
-			$n = 0;
-			$random_data = array();
+		// Let's create the project carousel view.
+		$project_view = new View('projects');
+		$pid = $update_information['pid'];
+		$project_view->project = $project_model->project_information($pid);
 
-			foreach ($random_query->result() as $row)
-			{
-				$random_data[$n]['summary'] = $row->summary;
-				$random_data[$n]['id'] = $row->id;
-				$random_data[$n]['uid'] = $row->uid;
+		// Parse the description
+		$description = $project_view->project['description'];
 
-				// Let's parse the thumbnails.
-				$random_data[$n]['filename0'] = $this->_file_icon($row->filename0, $row->ext0);
+		$simple_search = array(
+			'/\[b\](.*?)\[\/b\]/is',
+			'/\[i\](.*?)\[\/i\]/is',
+			'/\[u\](.*?)\[\/u\]/is',
+			'/\[url\=(.*?)\](.*?)\[\/url\]/is',
+			'/\[url\](.*?)\[\/url\]/is',
+			'/\[list\](.*?)\[\/list\]/is',
+			'/\[\*\](.*?)\[\/\*\]/is'
+		);
+		 
+		$simple_replace = array(
+			'<strong>$1</strong>',
+			'<em>$1</em>',
+			'<u>$1</u>',
+			'<a href="$1" target="_blank">$2</a>',
+			'<a href="$1" target="_blank">$1</a>',
+			'<ul>$1</ul>',
+			'<li>$1</li>'
+		);
+		 
+		$description = preg_replace($simple_search, $simple_replace, $description);
 
-                // Determind the sizes for offsetting.
-                $path = substr($random_data[$n]['filename0'],strlen(url::base()));
-                $path = DOCROOT . $path;
-                $random_data[$n]['thumb_height'] = getimagesize($path);
-                $random_data[$n]['thumb_width']  = $random_data[$n]['thumb_height'][0];
-                $random_data[$n]['thumb_height'] = $random_data[$n]['thumb_height'][1];
-                $random_data[$n]['thumb_offset'] = $random_data[$n]['thumb_height']/2;
+		$format = 'style="margin-bottom: 10px;"';
+		$description = '<p '. $format .'>'. $description .'</p>';
+		$description = preg_replace("/(?:\r?\n)+/", '</p><p '. $format .'>', $description);
 
-                // Right, now find out the project name.
-                if ($row->pid == 0) {
-                    $random_data[$n]['project_name'] = 'Uncategorised';
-                    $random_data[$n]['pid'] = 0;
-                } else {
-                    $random_data[$n]['pid'] = $row->pid;
-					$random_data[$n]['project_name'] = $project_model->project_information($row->pid);
-					$random_data[$n]['project_name'] = $random_data[$n]['project_name']['name'];
-                }
+		// Let's do some really nasty fixing to maintain HTML validity.
+		$description = preg_replace(array('/<p '. $format .'><ul><\/p>/', '/<p '. $format .'><\/ul><\/p>/', '/<p '. $format .'><li>(.*?)<\/li><\/p>/'), array('<ul>', '</ul>', '<li>$1</li>'), $description);
 
-                $n++;
-			}
+		$project_view->description = $description;
 
-			// Send all the data we collected to the view...
-			$random_update_view->random_data = $random_data;
-			$random_update_view->user = $user_model->user_information($update_information['uid']);
+		$project_view->timeline = Projects_Controller::_generate_project_timeline($update_information['uid'], $pid);
+		$project_view->categories = $project_model->categories();
+		$project_view->uid = $update_information['uid'];
+
+		// Generate the mini preview.
+		$mini = $update_model->updates($update_information['uid'], $pid, 'DESC', 5);
+		$mini_markup = '';
+
+		$mini_opacity = 90;
+		foreach ($mini as $row) {
+			$icon = Updates_Controller::_file_icon($row->filename0, $row->ext0);
+			$mini_markup = $mini_markup .'<div class="mini" style="-moz-opacity:.'. $mini_opacity .'; filter:alpha(opacity='. $mini_opacity .'); opacity: .'. $mini_opacity .'; background-image: url('. url::base() .'images/mini_icon.png); background-position: 2px; 2px; background-repeat: no-repeat;">';
+			$mini_markup = $mini_markup .'<div style="padding: 1px; border: 1px solid #CCC;"><a href="'. url::base() .'/updates/view/'. $row->id .'/"><img style="vertical-align: middle; background-image: url('. $icon .');" src="'. url::base() .'images/mini_overlay.png" alt="update icon" /></a></div>';
+			$mini_markup = $mini_markup .'</div>';
+			$mini_opacity = $mini_opacity - 20;
 		}
+
+		$project_view->mini_markup = $mini_markup;
 
 		// Send the comment view some useful information.
 		$comment_form_view->uid = $uid;
@@ -449,16 +464,14 @@ class Updates_Controller extends Core_Controller {
 
 		// Generate the content.
 		$content = array();
+		$content[] = $project_view;
 		$content[] = $update_view;
 		if (isset($display_pastebin))
 		{
 			$content[] = $pastebin_view;
 		}
-		if (isset($display_random))
-		{
-			$content[] = $random_update_view;
-		}
 		$content[] = $comment_form_view;
+		$this->template->pid = $pid;
 		$this->template->content = $content;
 	}
 
