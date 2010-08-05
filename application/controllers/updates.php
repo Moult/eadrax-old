@@ -1013,6 +1013,20 @@ class Updates_Controller extends Core_Controller {
 				if ($uid != FALSE)
 				{
 					$update_form_view->uid = $uid;
+
+					// Find details on existing attachments.
+					$attachment_information = $update_model->update_information($uid);
+
+					for ($i = 0; $i < 5; $i++)
+					{
+						$update_form_view->{'existing_filename'. $i} = $attachment_information['filename'. $i];
+						$update_form_view->{'existing_extension'. $i} = $attachment_information['ext'. $i];
+
+						if (!empty($update_form_view->{'existing_filename'. $i})) {
+							$update_form_view->{'existing_icon'. $i} = $this->_file_icon($update_form_view->{'existing_filename'. $i}, $update_form_view->{'existing_extension'. $i});
+						}
+					}
+
 				}
 
 				// Set list of projects.
@@ -1049,6 +1063,19 @@ class Updates_Controller extends Core_Controller {
 			{
 				$update_form_view->form = $update_model->update_information($uid);
 				$update_form_view->uid = $uid;
+
+				// Find details on existing attachments.
+				$attachment_information = $update_model->update_information($uid);
+
+				for ($i = 0; $i < 5; $i++)
+				{
+					$update_form_view->{'existing_filename'. $i} = $attachment_information['filename'. $i];
+					$update_form_view->{'existing_extension'. $i} = $attachment_information['ext'. $i];
+
+					if (!empty($update_form_view->{'existing_filename'. $i})) {
+						$update_form_view->{'existing_icon'. $i} = $this->_file_icon($update_form_view->{'existing_filename'. $i}, $update_form_view->{'existing_extension'. $i});
+					}
+				}
 			}
 
 			// Set list of projects.

@@ -29,8 +29,10 @@ uploadFunc = function ( )
 
 addOnLoadFunc ( uploadFunc );
 
-function addUploadFields ( iCount )
+function addUploadFields ( iCount, offset )
 {
+	maxFields = 5 - offset;
+	fieldsNubmer = offset;
     for ( var i = 0; i < iCount; i++ ) addUploadField ( );
 }
 

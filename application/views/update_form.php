@@ -68,13 +68,37 @@
 						<label for="attachment">Attach:
 						<?php if ($this->logged_in) { ?>
 						<span>
-							<a href="javascript:addUploadFields(1)"><img src="<?php echo url::base(); ?>images/icons/add.png" alt="Add" id="add" /></a>
-							<a href="javascript:deleteInput()"><img src="<?php echo url::base(); ?>images/icons/delete.png" alt="Delete" id="delete" style="display: none;" /></a>
+<?php
+if (isset($uid)) {
+	$offset = 0;
+	for ($i = 0; $i < 5; $i++) {
+		if (!empty(${'existing_filename'. $i})) {
+			$offset = $i + 1;
+		}
+	}
+?>
+							<a href="javascript:addUploadFields(1, <?php echo $offset; ?>)"><img src="<?php echo url::base(); ?>images/icons/add.png" alt="Add" id="add" /></a>
+<?php } else { ?>
+							<a href="javascript:addUploadFields(1, 1)"><img src="<?php echo url::base(); ?>images/icons/add.png" alt="Add" id="add" /></a>
+<?php } ?>
 						</span>
 						<?php } ?></label>
 
+<?php
+if (isset($uid)) {
+	for ($i = 0; $i < 5; $i++) {
+		if (!empty(${'existing_filename'. $i})) {
+?>
+<div style="float: left; clear: both; margin-bottom: 5px;">
+<span style="float: left; margin-right: 15px;"><img src="<?php echo ${'existing_icon'. $i}; ?>" alt="attachment<?php echo $i; ?>" style="padding: 1px; border: 1px solid #999;" /></span>
+						<span style="float: left;"><input type="file" id="attachment" name="attachment0" style="height: 23px;" /></span>
+</div>
+
+<?php } } } else { ?>
 
 						<span style="float: left;"><input type="file" id="attachment" name="attachment0" style="height: 23px;" /></span>
+
+<?php } ?>
 
 						<?php if ($this->logged_in) { ?>
 						<p id="upload_fields_container"></p>
