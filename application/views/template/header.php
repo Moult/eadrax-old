@@ -13,7 +13,6 @@
     <head>
         <!-- Hacks and dirty IE Fixes for PNG Transparency -->
         <script type="text/javascript" src="<?php echo url::base(); ?>js/clear.js"></script>
-        <!--<script type="text/javascript" src="<?php echo url::base(); ?>js/login.js"></script>-->
         <!--[if lt IE 7]>
         <script defer type="text/javascript" src="<?php echo url::base(); ?>js/pngfix.js"></script>
         <![endif]-->
@@ -21,12 +20,13 @@
         <!-- CSS styling and browser compatibility resets -->
         <link rel="stylesheet" type="text/css" href="<?php echo url::base(); ?>css/reset.css" />
         <link rel="stylesheet" type="text/css" href="<?php echo url::base(); ?>css/stylesheet.css" />
+		<!-- Let's load JQuery! -->
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 <?php
 // If we are viewing an update, we need a couple more fancy stuff.
 if ($this->uri->segment(1) == 'updates' && ($this->uri->segment(2) == 'view' || $this->uri->segment(2) == 'random')) {
 ?>
         <!-- Fancybox support -->
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 		<script type="text/javascript" src="<?php echo url::base(); ?>js/jquery.fancybox-1.3.0.pack.js"></script>
 		<link rel="stylesheet" href="<?php echo url::base(); ?>css/jquery.fancybox-1.3.0.css" type="text/css" media="screen" />
 
@@ -34,7 +34,6 @@ if ($this->uri->segment(1) == 'updates' && ($this->uri->segment(2) == 'view' || 
         <script type="text/javascript" src="<?php echo url::base(); ?>js/jquery.mousewheel.js"></script>
         <script type="text/javascript" src="<?php echo url::base(); ?>js/jquery.scrollable-1.0.2.min.js"></script>
 		<script type="text/javascript" src="<?php echo url::base(); ?>js/scrollable.js"></script>
-        <!-- Scrollable styles -->
         <link rel="stylesheet" href="<?php echo url::base(); ?>css/scrollable.css" type="text/css" media="screen" />
 
 		<!-- Resizing textarea -->
@@ -89,33 +88,86 @@ if ($this->uri->segment(1) == 'updates' && ($this->uri->segment(2) == 'view' || 
 // If we are viewing a project timeline, we again need more fancy stuff.
 if ($this->uri->segment(1) == 'profiles') {
 ?>
+
+<?php if ($this->uri->segment(2) == 'projects') { ?>
         <!-- Scrollable support -->
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
         <script type="text/javascript" src="<?php echo url::base(); ?>js/jquery.mousewheel.js"></script>
         <script type="text/javascript" src="<?php echo url::base(); ?>js/jquery.scrollable-1.0.2.min.js"></script>
 		<script type="text/javascript" src="<?php echo url::base(); ?>js/scrollable.js"></script>
         <!-- Scrollable styles -->
         <link rel="stylesheet" href="<?php echo url::base(); ?>css/scrollable.css" type="text/css" media="screen" />
-<?php }
+
+<?php } elseif ($this->uri->segment(2) == 'view') { ?>
+		<!-- Tooltip support -->
+		<script src="http://cdn.jquerytools.org/1.2.3/full/jquery.tools.min.js"></script>
+
+		<style>
+		.tooltip {
+			background-color:#000;
+			border:1px solid #fff;
+			padding:10px 15px;
+			width:600px;
+			display:none;
+			color:#fff;
+			text-align:left;
+			font-size:12px;
+
+			/* outline radius for mozilla/firefox only */
+			-moz-box-shadow:0 0 10px #000;
+			-webkit-box-shadow:0 0 10px #000;
+		}
+		</style>
+
+		<script>
+		$(function() {
+			$("span[title]").tooltip({
+				position: "bottom center",
+				offset: [10, 0],
+				effect: "fade",
+				opacity: 0.8
+			});
+		});
+		</script>
+<?php } }
 // Certain forms need some BBCode fun!
 if (($this->uri->segment(1) == 'updates' && $this->uri->segment(2) == 'add') || ($this->uri->segment(1) == 'projects' && $this->uri->segment(2) == 'add')) {
 ?>
+		<!-- Tooltip support -->
+		<script src="http://cdn.jquerytools.org/1.2.3/full/jquery.tools.min.js"></script>
+
+		<style>
+		.tooltip {
+			background-color:#000;
+			border:1px solid #fff;
+			padding:10px 15px;
+			width:200px;
+			display:none;
+			color:#fff;
+			text-align:left;
+			font-size:12px;
+
+			/* outline radius for mozilla/firefox only */
+			-moz-box-shadow:0 0 10px #000;
+			-webkit-box-shadow:0 0 10px #000;
+		}
+		</style>
+
+		<script>
+		$(function() {
+			$("label[title]").tooltip({
+				position: "bottom center",
+				offset: [10, 0],
+				effect: "fade",
+				opacity: 0.8
+			});
+		});
+		</script>
+
 		<!-- BBCode support -->
         <script type="text/javascript" src="<?php echo url::base(); ?>js/ed.js"></script>
+
 		<!-- Resizing textarea -->
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
         <script type="text/javascript" src="<?php echo url::base(); ?>js/jquery.textarearesizer.compressed.js"></script>
-<?php if ($this->uri->segment(1) == 'updates' && $this->uri->segment(2) == 'add') { ?>
-		<!-- More file fields -->
-        <script type="text/javascript" src="<?php echo url::base(); ?>js/browse.js"></script>
-		<script type="text/javascript">
-			function doOverlay() {
-				document.getElementById('overlay').style.display = "table";
-				document.getElementById('submit').value = "Submitting ... please wait.";
-				document.getElementById('overlay').disabled = true;
-			}
-		</script>
-<?php } ?>
 
 		<style type="text/css">
 		div.grippie {
@@ -140,6 +192,20 @@ if (($this->uri->segment(1) == 'updates' && $this->uri->segment(2) == 'add') || 
 		$('textarea.resizable:not(.processed)').TextAreaResizer();
 		});
 		</script>
+
+<?php if ($this->uri->segment(1) == 'updates' && $this->uri->segment(2) == 'add') { ?>
+		<!-- More file fields -->
+        <script type="text/javascript" src="<?php echo url::base(); ?>js/browse.js"></script>
+		<script type="text/javascript">
+			function doOverlay() {
+				document.getElementById('overlay').style.display = "table";
+				document.getElementById('submit').value = "Submitting ... please wait.";
+				document.getElementById('overlay').disabled = true;
+			}
+		</script>
+<?php } ?>
+
+
 <?php } ?>
         <!-- Favicon -->
         <link rel="icon" type="image/png" href="<?php echo url::base(); ?>images/favicon.png" />
@@ -154,16 +220,14 @@ if (($this->uri->segment(1) == 'updates' && $this->uri->segment(2) == 'add') || 
             </h1>
 
 			<ul id="icon-navigation">
-				<li><a href="<?php echo url::base(); ?>profiles/<?php if ($this->logged_in == TRUE) { echo 'view/'. $this->username .'/'; } ?>" onmouseover="javascript:getElementById('navtext1').style.display = 'inline';" onmouseout="javascript:getElementById('navtext1').style.display = 'none';"><img src="<?php echo url::base(); ?>images/profile.png" width="40" height="87" alt="Profile" title="Profile" /></a></li><li><img src="<?php echo url::base(); ?>images/navspace1.png" width="11" height="87" /></li><li><a href="<?php echo url::base(); ?>updates/add/" onmouseover="javascript:getElementById('navtext2').style.display = 'inline';" onmouseout="javascript:getElementById('navtext2').style.display = 'none';"><img src="<?php echo url::base(); ?>images/update.png" width="40" height="87" alt=" Add Update" title="Add Update" /></a></li><li><img src="<?php echo url::base(); ?>images/navspace2.png" width="10" height="87" /></li><li><a href="<?php echo url::base(); ?>updates/random/" onmouseover="javascript:getElementById('navtext3').style.display = 'inline';" onmouseout="javascript:getElementById('navtext3').style.display = 'none';"><img src="<?php echo url::base(); ?>images/random.png" width="41" height="87" alt="Random" title="Random" /></a></li>
+				<li><a href="<?php echo url::base(); ?>projects/view/" onmouseover="javascript:getElementById('navtext1').style.display = 'inline';" onmouseout="javascript:getElementById('navtext1').style.display = 'none';"><img src="<?php echo url::base(); ?>images/profile.png" width="40" height="87" alt="Latest WIPs" title="Profile" /></a></li><li><img src="<?php echo url::base(); ?>images/navspace1.png" width="11" height="87" /></li><li><a href="<?php echo url::base(); ?>updates/add/" onmouseover="javascript:getElementById('navtext2').style.display = 'inline';" onmouseout="javascript:getElementById('navtext2').style.display = 'none';"><img src="<?php echo url::base(); ?>images/update.png" width="40" height="87" alt=" Add Update" title="Add Update" /></a></li><li><img src="<?php echo url::base(); ?>images/navspace2.png" width="10" height="87" /></li><li><a href="<?php echo url::base(); ?>updates/random/" onmouseover="javascript:getElementById('navtext3').style.display = 'inline';" onmouseout="javascript:getElementById('navtext3').style.display = 'none';"><img src="<?php echo url::base(); ?>images/random.png" width="41" height="87" alt="Random" title="Random" /></a></li>
 			</ul>
 
             <ul id="text-navigation">
-				<li id="navtext1" style="color: #AAA; display: none;">WIPSpaces</li>
+				<li id="navtext1" style="color: #AAA; display: none;">Latest WIPs</li>
 				<li id="navtext2" style="color: #AAA; display: none;">Add WIP</li>
 				<li id="navtext3" style="color: #AAA; display: none;">Discover WIPs</li>
-				<li style="float: right;"><a href="<?php echo url::base(); ?>site/search/">Search</a></li>
-				<li style="float: right;"><?php if ($this->logged_in == TRUE) {?><?php echo $this->username; ?> (<a href="<?php echo url::base(); ?>dashboard/">Dashboard</a>) <a href="<?php echo url::base(); ?>users/logout/"><img src="<?php echo url::base(); ?>images/icons/logout.png" alt="Logout" title="Logout" /></a><?} else {?><a href="<?php echo url::base(); ?>users/login/">Login/Register</a><? } ?></li>
-				<li style="float: right;"><a href="<?php echo url::base(); ?>site/tour/">What is WIPUP?</a></li>
+				<li style="float: right;"><?php if ($this->logged_in == TRUE) {?>Hey <?php echo $this->username; ?> (<a href="<?php echo url::base(); ?>profiles/view/<?php echo $this->username; ?>/">My WIPSpace</a> | <a href="<?php echo url::base(); ?>dashboard/">Dashboard</a>) <a href="<?php echo url::base(); ?>users/logout/"><img src="<?php echo url::base(); ?>images/icons/logout.png" alt="Logout" title="Logout" /></a><?} else {?><a href="<?php echo url::base(); ?>users/login/">Login/Register</a><? } ?></li>
             </ul>
 		</div>
 

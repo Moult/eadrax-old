@@ -5,11 +5,7 @@
 	</h2>
 
 	<p>
-		Here is where you can update the progress on a project. Your updates will be public and shown right away. You can then view and share your chronological progress via your profile or project page.
-	</p>
-
-	<p>
-		<strong>We're flexible.</strong> You don't need to fill up everything in the form below - only what you need. We only ask for a summary.
+		WIPs can be everything from a single summary sentence to a fancy article complete with images, video and pastes, so there's no pressure to fill all these fields in.
 	</p>
 
 	<?php if (!$this->logged_in) { ?>
@@ -54,7 +50,7 @@
 					<?php } ?>
 
 					<p>
-						<label for="summary">Summary:</label>
+						<label for="summary" title="A short sentence describing how you've progressed and what you've done. This is the minimum requirement.">Summary<img src="<?php echo url::base(); ?>images/icons/help.png" alt="info" />:</label>
 						<input type="text" id="summary" name="summary" style="height: 25px; width: 400px; font-size: 15px;" value="<?php echo $form['summary']; ?>" <?php if (isset($errors['summary'])) { echo 'class="error"'; } ?> />
 					</p>
 
@@ -65,7 +61,7 @@
 					</p>
 
 					<p>
-						<label for="attachment">Attach:
+					<label for="attachment" title="<?php if ($this->logged_in) { ?>Up to 50MB per file.<?php } else { ?>Up to 5MB per file.<?php } ?> Supported filetypes include gif jpg png svg tiff bmp exr pdf zip rar tar tar.gz tar.bz ogg mp3 wav avi mpg mov mp4 swf flv blend xcf doc ppt xls odt ods odp odg psd fla ai indd aep.">Attach<img src="<?php echo url::base(); ?>images/icons/help.png" alt="info" />:
 						<?php if ($this->logged_in) { ?>
 						<span>
 <?php
@@ -115,7 +111,7 @@ if (isset($uid)) {
 					</p>
 
 					<p>
-						<label for="pastebin">Pastebin:</label>
+						<label for="pastebin" title="Pastebinning allows other users to post revisions of your text as well as benefit from syntax highlighting.">Pastebin<img src="<?php echo url::base(); ?>images/icons/help.png" alt="info" />:</label>
 						<textarea name="pastebin" id="pastebin" rows="6" cols="40" <?php if (isset($errors['pastebin'])) { echo 'class="error"'; } ?>><?php echo $form['pastebin']; ?></textarea>
 					</p>
 
@@ -147,12 +143,6 @@ if (isset($uid)) {
 						<input type="submit" id="submit" name="submit" class="submit" onclick="doOverlay();" value="Add update" />
 						<?php } ?>
 					</p>
-
-					<?php if (!isset($uid)) { ?>
-					<p>
-						By using this site, you agree to our <a href="<?php echo url::base() .'site/legal/'; ?>">legal and licensing information</a>.
-					</p>
-					<?php } ?>
 				</div>
 			</fieldset>
 		</form>
@@ -180,37 +170,6 @@ if (isset($uid)) {
 		</div>
 	</div>
 	<?php } ?>
-
-	<div class="form">
-		<h3>
-			<img src="/images/icons/cup.png" alt="" width="16" height="16" class="icon" />
-			Some tips
-		</h3>
-		<div class="elements">
-			<?php if (!$this->logged_in) { ?>
-			<h4>
-				Anonymous File Limitations
-			</h4>
-			<p>
-				As a guest, your files are stored temporarily and will be removed periodically. You are also limited to a maximum filesize of 5MB.
-			</p>
-			<?php } ?>
-			
-			<h4>
-				File Support
-			</h4>
-			<p>
-				gif jpg png svg tiff bmp exr pdf zip rar tar tar.gz tar.bz ogg mp3 wav avi mpg mov mp4 swf flv blend xcf doc ppt xls odt ods odp odg psd fla ai indd aep
-			</p>
-
-			<h4>
-				The Pastebin
-			</h4>
-			<p>
-				Sometimes you would like to paste source code snippets online. We do not allow single source code file uploads here, such as a .php file, but we do allow you to paste the code. If you want to release a lot of source code, consider compressing it into a single file and uploading it as a package.
-			</p>
-		</div>
-	</div>
 
 	<div id="picture">
 		<img src="<?php echo url::base(); ?>images/icons/post_note.png" alt="" />

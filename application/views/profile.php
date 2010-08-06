@@ -1,7 +1,7 @@
 <?php if (!empty($user['avatar'])) { ?>
-<img src="<?php echo url::base(); ?>uploads/avatars/<?php echo $user['avatar']; ?>.jpg" class="icon" alt="" style="border: 1px solid #999; padding: 1px; float: left;" />
+<img src="<?php echo url::base(); ?>uploads/avatars/<?php echo $user['avatar']; ?>.jpg" class="icon" alt="" style="border: 1px solid #D8D8D8; padding: 1px; float: left;" />
 <?php } else { ?>
-<img src="<?php echo url::base(); ?>images/noavatar.png" class="icon" alt="" style="border: 1px solid #999; padding: 1px; float: left;" />
+<img src="<?php echo url::base(); ?>images/noavatar.png" class="icon" alt="" style="border: 1px solid #D8D8D8; padding: 1px; float: left;" />
 <?php } ?>
 
 <h2 style="margin-left: 6px; float: left; height: 82px; width: 740px;">
@@ -48,7 +48,13 @@ A sociopath who hasn't yet updated his profile information
 
 <div style="width: 150px; text-align: right; float: right; font-size: 14px; color: #AAA; letter-spacing: -1px; line-height: 30px;">Last active: <?php echo date('jS F', $user['lastactive']); ?></div>
 
-	<div style="clear: both; height: 25px; line-height: 25px; font-size: 12px; letter-spacing: 0px; color: #888;">
+<div style="clear: both; float: left; font-size: 13px; text-shadow: 0px 1px 0px #FFF; line-height: 15px;">
+<?php if (!empty($user['description'])) { ?>
+<span title="<?php echo html::specialchars($user['description']); ?>"><?php echo text::limit_words($user['description'], 20, '...'); ?></span>
+<?php } ?>
+</div>
+
+	<div style="float: right; height: 25px; line-height: 25px; font-size: 12px; letter-spacing: 0px; color: #888;">
 <?php if(!empty($user['email']) && $user['email_public'] == 1) { ?><a href="mailto:<?php echo $user['email']; ?>"><img src="<?php echo url::base(); ?>images/icons/email.png" /></a>&nbsp;<?php } ?>
 <?php if(!empty($user['website'])) { ?><a href="<?php echo $user['website']; ?>"><img src="<?php echo url::base(); ?>images/icons/world_link.png" /></a>&nbsp;<?php } ?>
 <?php if(!empty($user['msn'])) { ?><img src="<?php echo url::base(); ?>images/icons/msn.png" title="<?php echo $user['msn']; ?>" alt="MSN" />&nbsp;<?php } ?>
@@ -57,14 +63,6 @@ A sociopath who hasn't yet updated his profile information
 <?php if(!empty($user['skype'])) { ?><img src="<?php echo url::base(); ?>images/icons/skype.png" title="<?php echo $user['skype']; ?>" alt="skype" />&nbsp;<?php } ?>
 <?php if(empty($user['email']) && empty($user['website']) && empty($user['msn']) && empty($user['gtalk']) && empty($user['yahoo']) && empty($user['skype'])) { ?><img src="<?php echo url::base(); ?>images/icons/status_online.png" alt="" /> No contact information is available<?php } ?>
 	</div>
+	<div style="clear:both;"></div>
 </div>
 </h2>
-
-
-<div style="clear: both; border-bottom: 1px solid #999; background-color: #D8D8D8; padding: 10px; padding-top: 5px; padding-bottom: 8px; margin-bottom: 10px; font-size: 13px; text-shadow: 0px 1px 0px #FFF;">
-<?php if (!empty($user['description'])) { ?>
-<?php echo $user['description']; ?>
-<?php } else { ?>
-	Normally a descriptive paragraph about the person would be placed here, but since there is no other information describing <?php echo $user['username']; ?> you'll just have to use your imagination. Oh well.
-<?php } ?>
-</div>

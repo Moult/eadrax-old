@@ -9,7 +9,7 @@
 	<?php } elseif (!empty($project['icon'])) { ?>
 	<img src="<?php echo url::base(); ?>uploads/icons/<?php echo $project['icon']; ?>" class="icon" alt="" style="border: 1px solid #999; padding: 1px;" />
 	<?php } else { ?>
-	<img src="<?php echo url::base(); ?>images/noprojecticon.png" class="icon" alt="" style="border: 1px solid #999; padding: 1px;" />
+	<img src="<?php echo url::base(); ?>images/icons/folder_48.png" class="icon" alt="" />
 	<?php } ?>
 	<?php if (isset($category_name)) { ?>
 	<?php echo $category_name; ?> Updates
@@ -40,12 +40,21 @@ in <em><?php echo $categories[$project['cid']]; ?></em> <?php if (!empty($projec
 
 <?php if (empty($markup)) { ?>
 
+<?php if ($this->uri->segment(1) == 'profiles') { ?>
+<div style="clear: both; line-height: 23px; font-size: 15px; text-shadow: 0px 1px 0px #FFF; color: #555; border-bottom: 1px solid #999; border-left: 0px; border-right: 0px; background-color: #D8D8D8; padding: 8px; padding-top: 40px; padding-bottom: 40px; margin-bottom: 10px; line-height: 30px; text-align: center;">
+	<img src="<?php echo url::base(); ?>images/icons/warning_48.png" alt="Oh no!" /><br />
+<?php } else { ?>
 <div style="clear: both; border: 2px solid #800; background-color: #FDD; margin: 10px; padding: 10px;">
-	Oh no! There's no updates just yet. You should add something, you know.
+<?php } ?>
+	Oh no! There're no updates to show just yet. You should <a href="<?php echo url::base(); ?>updates/add/">add something</a>, you know.
 </div>
 
 <?php } else { ?>
+<?php if ($this->uri->segment(1) == 'profiles' && $this->uri->segment(2) == 'view') { ?>
+<div style="clear: both; overflow: hidden; background: #EEE; border-bottom: 1px dotted #AAA; padding-bottom: 5px; background-position: top; background-repeat: repeat-x; background-color: #DDD;">
+<?php } else { ?>
 <div style="clear: both; overflow: hidden; background: #EEE; border: 1px dotted #AAA; padding-bottom: 5px; background-image: url(<?php echo url::base(); ?>images/formbg.gif); background-position: top; background-repeat: repeat-x; background-color: #DDD; border-left: 0px; border-right: 0px;">
+<?php } ?>
 	<div style="margin-right: auto; margin-left: auto; padding-right: 4px; width: 822px;">
 		<?php echo $markup; ?>
 	</div>

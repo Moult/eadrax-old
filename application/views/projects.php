@@ -25,7 +25,7 @@
 
 <div style="clear: both;">
 	<div style="float: left; font-size: 18px; letter-spacing: -1px; color: #AAA; margin-bottom: 5px;">
-		<div id="summary<?php echo $project['id']; ?>">
+		<div id="summary<?php echo $project['id']; ?>" style="color: #555;">
 			<?php echo $project['summary']; ?>
 		</div>
 

@@ -282,7 +282,7 @@ class Projects_Controller extends Core_Controller {
 
 		$project_view->markup = $markup;
 		$project_view->uid = $uid;
-		$u_name = $user_model->user_information($project_information['uid']);
+		$u_name = $user_model->user_information($uid);
 		$project_view->u_name = $u_name['username'];
 
 		// Pagination work.

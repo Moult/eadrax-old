@@ -69,7 +69,7 @@
         <div id="copyright">
             The Eadrax Team &copy; 2010
             <br /><br />
-			<a href="<?php echo url::base(); ?>site/sponsor/">Sponsor</a> - <a href="<?php echo url::base(); ?>site/development/">Development</a> - <a href="#">Back to top</a>
+			<a href="<?php echo url::base(); ?>site/tour/">What is WIPUP?</a> - <a href="<?php echo url::base(); ?>site/sponsor/">Sponsor</a> - <a href="<?php echo url::base(); ?>site/development/">Development</a> - <a href="<?php echo url::base(); ?>site/search/">Search</a> - <a href="<?php echo url::base() .'site/legal/'; ?>">Legal Information</a>
         </div>
         <!-- </FOOTER> -->
 	</body>

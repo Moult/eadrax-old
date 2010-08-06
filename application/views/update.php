@@ -150,8 +150,8 @@ $(document).ready(function() {
 });
 </script>
 <?php
-				echo '<a class="single_image" id="single_image'. $i .'" href="'. url::base() .'uploads/files/'. ${'filename'. $i} .'.'. ${'ext'. $i} .'" title="'. $summary .'"><img src="'. url::base() .'uploads/files/'. ${'filename'. $i} .'_fit.jpg" style="border: 2px solid #DDD; position: relative; left: -2px;" alt="attachment'. $i .'" /></a>';
-				echo '<cite id="single_cite'. $i .'" style="background: #000000; -moz-opacity:.55; filter:alpha(opacity=55); opacity: .55; color: #FFF; position: absolute; margin-left: auto; margin-right: auto; bottom: 5px; height: 15px; width: 810px; padding: 10px; border-top: 2px solid #FFF; font-weight: bold; display: none;">This image is scaled down, click to view image full size.</cite>';
+			echo '<cite id="single_cite'. $i .'" style="background-color: #EEE; background-image: url(\''. url::base() .'/images/formbg.gif\'); background-repeat: repeat-x; color: #555; position: relative; display: block; margin-left: auto; margin-right: auto; top: 0px; height: 15px; width: 814px; padding: 10px; border-top: 1px dotted #999; font-weight: bold; display: none;">This image has been scaled down, click to view the image full size.</cite>';
+			echo '<a id="single_image'. $i .'" class="single_image" href="'. url::base() .'uploads/files/'. ${'filename'. $i} .'.'. ${'ext'. $i} .'"><img style="vertical-align: middle; border: 1px solid #999; padding: 1px;" src="'. url::base() .'uploads/files/'. ${'filename'. $i} .'_fit.jpg" alt="'. $summary .' (attachment #'. ($i + 1) .')" title="'. $summary .'" /></a>';
 			}
 			else
 			{
