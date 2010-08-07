@@ -247,7 +247,7 @@ class Updates_Controller extends Core_Controller {
 				$project_info = $project_model->project_information($update_information['pid']);
 
 				$user_information = $user_model->user_information($update_information['uid']);
-				if (!empty($user_information['email']) && $user_information['notifications'] == 1) {
+				if (!empty($user_information['email']) && $user_information['notifications'] == 1 && $update_information['uid'] != $this->uid) {
 					$message = '<html><head><title>New WIPUP Comment for you!</title></head><body><p>Dear '. $user_information['username'] .',</p><p><a href="'. url::base() .'profiles/view/'. $this->username .'/">'. $this->username .'</a> has commented your update entitled \''. $update_information['summary'] .'\' from the project \'<a href="'. url::base() .'projects/view/'. $this->uid .'/'. $project_info['id'] .'/">'. $project_info['name'] .'</a>\' on WIPUP.org. You can view this comment by clicking the link below:</p><p><a href="'. url::base() .'updates/view/'. $update_information['id'] .'/">'. url::base() .'updates/view/'. $update_information['id'] .'/</a></p><p>For your convenience, the comment is quoted below:<br /><span style="font-style: italic;">'. $comment .'</span></p><p>You may turn of email notifications in your account options when logged in. Please do not reply to this email.</p><p>- The WIPUP Team</p></body></html>';
 					$headers = 'MIME-Version: 1.0' . "\r\n" .
 						'Content-type: text/html; charset=iso-8859-1' . "\r\n" .
@@ -258,28 +258,32 @@ class Updates_Controller extends Core_Controller {
 				}
 
 				foreach ($track_list as $tid) {
-					$user_information = $user_model->user_information($tid);
-					if (!empty($user_information['email']) && $user_information['notifications'] == 1) {
-						$message = '<html><head><title>New WIPUP Comment</title></head><body><p>Dear '. $user_information['username'] .',</p><p><a href="'. url::base() .'profiles/view/'. $this->username .'/">'. $this->username .'</a> has commented on the update entitled \''. $update_information['summary'] .'\' from the project \'<a href="'. url::base() .'projects/view/'. $this->uid .'/'. $project_info['id'] .'/">'. $project_info['name'] .'</a>\' on WIPUP.org. You can view this comment by clicking the link below:</p><p><a href="'. url::base() .'updates/view/'. $update_information['id'] .'/">'. url::base() .'updates/view/'. $update_information['id'] .'/</a></p><p>For your convenience, the comment is quoted below:<br /><span style="font-style: italic;">'. $comment .'</span></p><p>You may turn of email notifications in your account options when logged in. Please do not reply to this email.</p><p>- The WIPUP Team</p></body></html>';
-						$headers = 'MIME-Version: 1.0' . "\r\n" .
-							'Content-type: text/html; charset=iso-8859-1' . "\r\n" .
-							'From: wipup@wipup.org' . "\r\n" .
-							'Reply-To: wipup@wipup.org' . "\r\n" .
-							'X-Mailer: PHP/' . phpversion();
-						mail($user_information['email'], $this->username .' has made a new comment on WIPUP', $message, $headers);
+					if ($tid != $this->uid) {
+						$user_information = $user_model->user_information($tid);
+						if (!empty($user_information['email']) && $user_information['notifications'] == 1) {
+							$message = '<html><head><title>New WIPUP Comment</title></head><body><p>Dear '. $user_information['username'] .',</p><p><a href="'. url::base() .'profiles/view/'. $this->username .'/">'. $this->username .'</a> has commented on the update entitled \''. $update_information['summary'] .'\' from the project \'<a href="'. url::base() .'projects/view/'. $this->uid .'/'. $project_info['id'] .'/">'. $project_info['name'] .'</a>\' on WIPUP.org. You can view this comment by clicking the link below:</p><p><a href="'. url::base() .'updates/view/'. $update_information['id'] .'/">'. url::base() .'updates/view/'. $update_information['id'] .'/</a></p><p>For your convenience, the comment is quoted below:<br /><span style="font-style: italic;">'. $comment .'</span></p><p>You may turn of email notifications in your account options when logged in. Please do not reply to this email.</p><p>- The WIPUP Team</p></body></html>';
+							$headers = 'MIME-Version: 1.0' . "\r\n" .
+								'Content-type: text/html; charset=iso-8859-1' . "\r\n" .
+								'From: wipup@wipup.org' . "\r\n" .
+								'Reply-To: wipup@wipup.org' . "\r\n" .
+								'X-Mailer: PHP/' . phpversion();
+							mail($user_information['email'], $this->username .' has made a new comment on WIPUP', $message, $headers);
+						}
 					}
 				}
 
 				foreach ($subscribe_list as $sid) {
-					$user_information = $user_model->user_information($sid);
-					if (!empty($user_information['email']) && $user_information['notifications'] == 1) {
-						$message = '<html><head><title>New WIPUP Comment</title></head><body><p>Dear '. $user_information['username'] .',</p><p><a href="'. url::base() .'profiles/view/'. $this->username .'/">'. $this->username .'</a> has commented on the update entitled \''. $update_information['summary'] .'\' from the project \'<a href="'. url::base() .'projects/view/'. $this->uid .'/'. $project_info['id'] .'/">'. $project_info['name'] .'</a>\' on WIPUP.org. You can view this comment by clicking the link below:</p><p><a href="'. url::base() .'updates/view/'. $update_information['id'] .'/">'. url::base() .'updates/view/'. $update_information['id'] .'/</a></p><p>For your convenience, the comment is quoted below:<br /><span style="font-style: italic;">'. $comment .'</span></p><p>You may turn of email notifications in your account options when logged in. Please do not reply to this email.</p><p>- The WIPUP Team</p></body></html>';
-						$headers = 'MIME-Version: 1.0' . "\r\n" .
-							'Content-type: text/html; charset=iso-8859-1' . "\r\n" .
-							'From: wipup@wipup.org' . "\r\n" .
-							'Reply-To: wipup@wipup.org' . "\r\n" .
-							'X-Mailer: PHP/' . phpversion();
-						mail($user_information['email'], $this->username .' has made a new comment on WIPUP', $message, $headers);
+					if ($sid != $this->uid) {
+						$user_information = $user_model->user_information($sid);
+						if (!empty($user_information['email']) && $user_information['notifications'] == 1) {
+							$message = '<html><head><title>New WIPUP Comment</title></head><body><p>Dear '. $user_information['username'] .',</p><p><a href="'. url::base() .'profiles/view/'. $this->username .'/">'. $this->username .'</a> has commented on the update entitled \''. $update_information['summary'] .'\' from the project \'<a href="'. url::base() .'projects/view/'. $this->uid .'/'. $project_info['id'] .'/">'. $project_info['name'] .'</a>\' on WIPUP.org. You can view this comment by clicking the link below:</p><p><a href="'. url::base() .'updates/view/'. $update_information['id'] .'/">'. url::base() .'updates/view/'. $update_information['id'] .'/</a></p><p>For your convenience, the comment is quoted below:<br /><span style="font-style: italic;">'. $comment .'</span></p><p>You may turn of email notifications in your account options when logged in. Please do not reply to this email.</p><p>- The WIPUP Team</p></body></html>';
+							$headers = 'MIME-Version: 1.0' . "\r\n" .
+								'Content-type: text/html; charset=iso-8859-1' . "\r\n" .
+								'From: wipup@wipup.org' . "\r\n" .
+								'Reply-To: wipup@wipup.org' . "\r\n" .
+								'X-Mailer: PHP/' . phpversion();
+							mail($user_information['email'], $this->username .' has made a new comment on WIPUP', $message, $headers);
+						}
 					}
 				}
 
@@ -951,28 +955,32 @@ class Updates_Controller extends Core_Controller {
 					$subscribe_list = $subscribe_model->subscribe_list($pid);
 
 					foreach ($track_list as $tid) {
-						$user_information = $user_model->user_information($tid);
-						if (!empty($user_information['email']) && $user_information['notifications'] == 1) {
-							$message = '<html><head><title>New WIPUP Update</title></head><body><p>Dear '. $user_information['username'] .',</p><p><a href="'. url::base() .'profiles/view/'. $this->username .'/">'. $this->username .'</a> has created a new update entitled \''. $summary .'\' from the project \'<a href="'. url::base() .'projects/view/'. $this->uid .'/'. $pid .'/">'. $project_info['name'] .'</a>\' on WIPUP.org. You can view this update by clicking the link below:</p><p><a href="'. url::base() .'updates/view/'. $uid .'/">'. url::base() .'updates/view/'. $uid .'/</a></p><p>You may turn of email notifications in your account options when logged in. Please do not reply to this email.</p><p>- The WIPUP Team</p></body></html>';
-							$headers = 'MIME-Version: 1.0' . "\r\n" .
-								'Content-type: text/html; charset=iso-8859-1' . "\r\n" .
-								'From: wipup@wipup.org' . "\r\n" .
-								'Reply-To: wipup@wipup.org' . "\r\n" .
-								'X-Mailer: PHP/' . phpversion();
-							mail($user_information['email'], $this->username .' has a new update on WIPUP', $message, $headers);
+						if ($tid != $this->uid) {
+							$user_information = $user_model->user_information($tid);
+							if (!empty($user_information['email']) && $user_information['notifications'] == 1) {
+								$message = '<html><head><title>New WIPUP Update</title></head><body><p>Dear '. $user_information['username'] .',</p><p><a href="'. url::base() .'profiles/view/'. $this->username .'/">'. $this->username .'</a> has created a new update entitled \''. $summary .'\' from the project \'<a href="'. url::base() .'projects/view/'. $this->uid .'/'. $pid .'/">'. $project_info['name'] .'</a>\' on WIPUP.org. You can view this update by clicking the link below:</p><p><a href="'. url::base() .'updates/view/'. $uid .'/">'. url::base() .'updates/view/'. $uid .'/</a></p><p>You may turn of email notifications in your account options when logged in. Please do not reply to this email.</p><p>- The WIPUP Team</p></body></html>';
+								$headers = 'MIME-Version: 1.0' . "\r\n" .
+									'Content-type: text/html; charset=iso-8859-1' . "\r\n" .
+									'From: wipup@wipup.org' . "\r\n" .
+									'Reply-To: wipup@wipup.org' . "\r\n" .
+									'X-Mailer: PHP/' . phpversion();
+								mail($user_information['email'], $this->username .' has a new update on WIPUP', $message, $headers);
+							}
 						}
 					}
 
 					foreach ($subscribe_list as $sid) {
-						$user_information = $user_model->user_information($sid);
-						if (!empty($user_information['email']) && $user_information['notifications'] == 1) {
-							$message = '<html><head><title>New WIPUP Update</title></head><body><p>Dear '. $user_information['username'] .',</p><p><a href="'. url::base() .'profiles/view/'. $this->username .'/">'. $this->username .'</a> has created a new update entitled \''. $summary .'\' from the project \'<a href="'. url::base() .'projects/view/'. $this->uid .'/'. $pid .'/">'. $project_info['name'] .'</a>\' on WIPUP.org. You can view this update by clicking the link below:</p><p><a href="'. url::base() .'updates/view/'. $uid .'/">'. url::base() .'updates/view/'. $uid .'/</a></p><p>You may turn of email notifications in your account options when logged in. Please do not reply to this email.</p><p>- The WIPUP Team</p></body></html>';
-							$headers = 'MIME-Version: 1.0' . "\r\n" .
-								'Content-type: text/html; charset=iso-8859-1' . "\r\n" .
-								'From: wipup@wipup.org' . "\r\n" .
-								'Reply-To: wipup@wipup.org' . "\r\n" .
-								'X-Mailer: PHP/' . phpversion();
-							mail($user_information['email'], $this->username .' has a new update on WIPUP', $message, $headers);
+						if ($sid != $this->uid) {
+							$user_information = $user_model->user_information($sid);
+							if (!empty($user_information['email']) && $user_information['notifications'] == 1) {
+								$message = '<html><head><title>New WIPUP Update</title></head><body><p>Dear '. $user_information['username'] .',</p><p><a href="'. url::base() .'profiles/view/'. $this->username .'/">'. $this->username .'</a> has created a new update entitled \''. $summary .'\' from the project \'<a href="'. url::base() .'projects/view/'. $this->uid .'/'. $pid .'/">'. $project_info['name'] .'</a>\' on WIPUP.org. You can view this update by clicking the link below:</p><p><a href="'. url::base() .'updates/view/'. $uid .'/">'. url::base() .'updates/view/'. $uid .'/</a></p><p>You may turn of email notifications in your account options when logged in. Please do not reply to this email.</p><p>- The WIPUP Team</p></body></html>';
+								$headers = 'MIME-Version: 1.0' . "\r\n" .
+									'Content-type: text/html; charset=iso-8859-1' . "\r\n" .
+									'From: wipup@wipup.org' . "\r\n" .
+									'Reply-To: wipup@wipup.org' . "\r\n" .
+									'X-Mailer: PHP/' . phpversion();
+								mail($user_information['email'], $this->username .' has a new update on WIPUP', $message, $headers);
+							}
 						}
 					}
 				}

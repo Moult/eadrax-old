@@ -404,15 +404,17 @@ class Projects_Controller extends Core_Controller {
 					$project_info = $project_model->project_information($new_pid);
 
 					foreach ($track_list as $tid) {
-						$user_information = $user_model->user_information($tid);
-						if (!empty($user_information['email']) && $user_information['notifications'] == 1) {
-							$message = '<html><head><title>New WIPUP Project</title></head><body><p>Dear '. $user_information['username'] .',</p><p><a href="'. url::base() .'profiles/view/'. $this->username .'/">'. $this->username .'</a> has created a new project called \''. $project_info['name'] .'\' ('. $project_info['summary'] .') on WIPUP.org. You can view this project by clicking the link below:</p><p><a href="'. url::base() .'projects/view/'. $new_pid .'/">'. url::base() .'projects/view/'. $new_pid .'/</a></p><p>You may turn of email notifications in your account options when logged in. Please do not reply to this email.</p><p>- The WIPUP Team</p></body></html>';
-							$headers = 'MIME-Version: 1.0' . "\r\n" .
-								'Content-type: text/html; charset=iso-8859-1' . "\r\n" .
-								'From: wipup@wipup.org' . "\r\n" .
-								'Reply-To: wipup@wipup.org' . "\r\n" .
-								'X-Mailer: PHP/' . phpversion();
-							mail($user_information['email'], $this->username .' has made a new project on WIPUP', $message, $headers);
+						if ($tid != $this->uid) { 
+							$user_information = $user_model->user_information($tid);
+							if (!empty($user_information['email']) && $user_information['notifications'] == 1) {
+								$message = '<html><head><title>New WIPUP Project</title></head><body><p>Dear '. $user_information['username'] .',</p><p><a href="'. url::base() .'profiles/view/'. $this->username .'/">'. $this->username .'</a> has created a new project called \''. $project_info['name'] .'\' ('. $project_info['summary'] .') on WIPUP.org. You can view this project by clicking the link below:</p><p><a href="'. url::base() .'projects/view/'. $new_pid .'/">'. url::base() .'projects/view/'. $new_pid .'/</a></p><p>You may turn of email notifications in your account options when logged in. Please do not reply to this email.</p><p>- The WIPUP Team</p></body></html>';
+								$headers = 'MIME-Version: 1.0' . "\r\n" .
+									'Content-type: text/html; charset=iso-8859-1' . "\r\n" .
+									'From: wipup@wipup.org' . "\r\n" .
+									'Reply-To: wipup@wipup.org' . "\r\n" .
+									'X-Mailer: PHP/' . phpversion();
+								mail($user_information['email'], $this->username .' has made a new project on WIPUP', $message, $headers);
+							}
 						}
 					}
 
@@ -435,15 +437,17 @@ class Projects_Controller extends Core_Controller {
 					}
 
 					foreach ($contributor_list as $tid) {
+						if ($tid != $this->uid) {
 						$user_information = $user_model->user_information($tid);
-						if (!empty($user_information['email']) && $user_information['notifications'] == 1) {
-							$message = '<html><head><title>New WIPUP Project</title></head><body><p>Dear '. $user_information['username'] .',</p><p><a href="'. url::base() .'profiles/view/'. $this->username .'/">'. $this->username .'</a> has created a new project called \''. $project_info['name'] .'\' ('. $project_info['summary'] .') on WIPUP.org. It turns out that you\'re a contributor to this project. You can view this project by clicking the link below:</p><p><a href="'. url::base() .'projects/view/'. $new_pid .'/">'. url::base() .'projects/view/'. $new_pid .'/</a></p><p>You may turn of email notifications in your account options when logged in. Please do not reply to this email.</p><p>- The WIPUP Team</p></body></html>';
-							$headers = 'MIME-Version: 1.0' . "\r\n" .
-								'Content-type: text/html; charset=iso-8859-1' . "\r\n" .
-								'From: wipup@wipup.org' . "\r\n" .
-								'Reply-To: wipup@wipup.org' . "\r\n" .
-								'X-Mailer: PHP/' . phpversion();
-							mail($user_information['email'], $this->username .' has made a new project on WIPUP', $message, $headers);
+							if (!empty($user_information['email']) && $user_information['notifications'] == 1) {
+								$message = '<html><head><title>New WIPUP Project</title></head><body><p>Dear '. $user_information['username'] .',</p><p><a href="'. url::base() .'profiles/view/'. $this->username .'/">'. $this->username .'</a> has created a new project called \''. $project_info['name'] .'\' ('. $project_info['summary'] .') on WIPUP.org. It turns out that you\'re a contributor to this project. You can view this project by clicking the link below:</p><p><a href="'. url::base() .'projects/view/'. $new_pid .'/">'. url::base() .'projects/view/'. $new_pid .'/</a></p><p>You may turn of email notifications in your account options when logged in. Please do not reply to this email.</p><p>- The WIPUP Team</p></body></html>';
+								$headers = 'MIME-Version: 1.0' . "\r\n" .
+									'Content-type: text/html; charset=iso-8859-1' . "\r\n" .
+									'From: wipup@wipup.org' . "\r\n" .
+									'Reply-To: wipup@wipup.org' . "\r\n" .
+									'X-Mailer: PHP/' . phpversion();
+								mail($user_information['email'], $this->username .' has made a new project on WIPUP', $message, $headers);
+							}
 						}
 					}
 				}
@@ -482,15 +486,17 @@ class Projects_Controller extends Core_Controller {
 					$project_info = $project_model->project_information($new_pid);
 
 					foreach ($contributor_list as $tid) {
-						$user_information = $user_model->user_information($tid);
-						if (!empty($user_information['email']) && $user_information['notifications'] == 1) {
-							$message = '<html><head><title>WIPUP Project Edited</title></head><body><p>Dear '. $user_information['username'] .',</p><p><a href="'. url::base() .'profiles/view/'. $this->username .'/">'. $this->username .'</a> has made edits to the project \''. $project_info['name'] .'\' ('. $project_info['summary'] .') on WIPUP.org. You\'re receiving this because it turns out that you\'re a contributor to this project. You can view this project by clicking the link below:</p><p><a href="'. url::base() .'projects/view/'. $new_pid .'/">'. url::base() .'projects/view/'. $new_pid .'/</a></p><p>You may turn of email notifications in your account options when logged in. Please do not reply to this email.</p><p>- The WIPUP Team</p></body></html>';
-							$headers = 'MIME-Version: 1.0' . "\r\n" .
-								'Content-type: text/html; charset=iso-8859-1' . "\r\n" .
-								'From: wipup@wipup.org' . "\r\n" .
-								'Reply-To: wipup@wipup.org' . "\r\n" .
-								'X-Mailer: PHP/' . phpversion();
-							mail($user_information['email'], $this->username .' has made a new project on WIPUP', $message, $headers);
+						if ($tid != $this->uid) {
+							$user_information = $user_model->user_information($tid);
+							if (!empty($user_information['email']) && $user_information['notifications'] == 1) {
+								$message = '<html><head><title>WIPUP Project Edited</title></head><body><p>Dear '. $user_information['username'] .',</p><p><a href="'. url::base() .'profiles/view/'. $this->username .'/">'. $this->username .'</a> has made edits to the project \''. $project_info['name'] .'\' ('. $project_info['summary'] .') on WIPUP.org. You\'re receiving this because it turns out that you\'re a contributor to this project. You can view this project by clicking the link below:</p><p><a href="'. url::base() .'projects/view/'. $new_pid .'/">'. url::base() .'projects/view/'. $new_pid .'/</a></p><p>You may turn of email notifications in your account options when logged in. Please do not reply to this email.</p><p>- The WIPUP Team</p></body></html>';
+								$headers = 'MIME-Version: 1.0' . "\r\n" .
+									'Content-type: text/html; charset=iso-8859-1' . "\r\n" .
+									'From: wipup@wipup.org' . "\r\n" .
+									'Reply-To: wipup@wipup.org' . "\r\n" .
+									'X-Mailer: PHP/' . phpversion();
+								mail($user_information['email'], $this->username .' has made a new project on WIPUP', $message, $headers);
+							}
 						}
 					}
 
