@@ -382,11 +382,8 @@ class Profiles_Controller extends Openid_Controller {
 					'avatar' => $avatar_filename
 				), $this->uid);
 
-				// Then load our success view.
-				$update_profile_success_view = new View('update_profile_success');
-
-				// Generate content.
-				$this->template->content = array($update_profile_success_view);
+				$this->session->set('notification', 'On the internet, nobody knows you\'re a dog. With your profile updated, now they will.');
+				url::redirect(url::base() .'profiles/view/'. $this->username .'/');
 			}
 			else
 			{
@@ -514,11 +511,8 @@ class Profiles_Controller extends Openid_Controller {
 
 				$uid = $user_model->manage_user($manage_array, $this->uid);
 
-				// Then load our success view.
-				$update_options_success_view = new View('update_options_success');
-
-				// Generate content.
-				$this->template->content = array($update_options_success_view);
+				$this->session->set('notification', 'Your account options have been set ... in stone. Nah, just set.');
+				url::redirect(url::base() .'dashboard/');
 			}
 			else
 			{

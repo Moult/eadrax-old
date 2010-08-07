@@ -214,6 +214,20 @@ if (($this->uri->segment(1) == 'updates' && $this->uri->segment(2) == 'add') || 
 
 	<body>
 
+<?php $notification = $this->session->get_once('notification'); if (!empty($notification)) { ?>
+		<script type="text/javascript">
+		$(document).ready(function() {
+			$("body").css("backgroundPosition", "0px 41px");
+			$("#notifyclose").click(function(){
+				$("#notification").css("display", "none");
+				$("body").css("backgroundPosition", "0px 0px");
+			});
+		});
+		</script>
+
+		<div id="notification"><?php echo $notification; ?><img src="<?php echo url::base(); ?>images/fancy_close.png" class="icon" id="notifyclose" alt="close" /></div>
+<?php } ?>
+
         <div id="container">
             <h1>
                 <a href="<?php echo url::base(); ?>"><img src="<?php echo url::base(); ?>images/wipup.png" width="221" height="87" alt="WIPUP" /></a>

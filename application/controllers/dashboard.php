@@ -439,9 +439,9 @@ class Dashboard_Controller extends Core_Controller {
 					'logtime' => $logtime,
 					'user' => $user,
 					'uid' => $news->uid,
-					'text' => 'has started tracking the user <strong><a href="'. url::base() .'profiles/view/'. $news->tid .'/" style="text-decoration: none;">'. $track_user .'</a></strong>.',
+					'text' => 'has started tracking the user <strong><a href="'. url::base() .'profiles/view/'. $track_user .'/" style="text-decoration: none;">'. $track_user .'</a></strong>.',
 					'picture' => $picture,
-					'picture_url' => url::base() .'projects/view/'. $news->uid .'/'. $news->pid .'/',
+					'picture_url' => url::base() .'profiles/view/'. $track_user .'/',
 					'update_text' => $track_user
 				);
 			}

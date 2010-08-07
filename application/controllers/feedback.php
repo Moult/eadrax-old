@@ -100,11 +100,9 @@ class Feedback_Controller extends Core_Controller {
 		// own the update themselves...
 		if ($kudos_model->check_kudos_owner($uid, $this->uid) || $update_model->check_update_owner($uid, $this->uid) || !$update_model->check_update_exists($uid))
 		{
-			// Load error view.
-			$kudos_error_view = new View('kudos_error');
-
-			// Generate the content.
-			$this->template->content = array($kudos_error_view);
+			// ... and back to the view page.
+			$this->session->set('notification', 'Eh? Either you\'ve already kudos\'d it or you\'re not allowed to kudos your own stuff.');
+			url::redirect(url::base() .'updates/view/'. $uid .'/');
 		}
 		else
 		{
@@ -125,7 +123,8 @@ class Feedback_Controller extends Core_Controller {
 			}
 
 			// ... and back to the view page.
-			url::redirect('updates/view/'. $uid .'/');
+			$this->session->set('notification', 'We\'ve added your kudos. You\'ve just made somebody happy. Good on you!');
+			url::redirect(url::base() .'updates/view/'. $uid .'/');
 		}
 	}
 
@@ -155,11 +154,9 @@ class Feedback_Controller extends Core_Controller {
 		// First check if they have already subscribed themselves...
 		if ($subscribe_model->check_project_subscriber($pid, $this->uid) || !$project_model->check_project_exists($pid) || $track_model->check_track_owner($project_uid, $this->uid) || $project_uid == $this->uid)
 		{
-			// Load error view.
-			$subscribe_error_view = new View('subscribe_error');
-
-			// Generate the content.
-			$this->template->content = array($subscribe_error_view);
+			// Redirect to the project itself.
+			$this->session->set('notification', 'Eh? You\'re already subscribed. Doesn\'t make sense to subscribe twice.');
+			url::redirect(url::base() .'projects/view/'. $project_uid .'/'. $pid .'/');
 		}
 		else
 		{
@@ -178,11 +175,9 @@ class Feedback_Controller extends Core_Controller {
 				mail($user_information['email'], $this->username .' has subscribed to your project on WIPUP', $message, $headers);
 			}
 
-			// Load success view.
-			$subscribe_success_view = new View('subscribe_success');
-
-			// Generate the content.
-			$this->template->content = array($subscribe_success_view);
+			// Redirect to the project itself.
+			$this->session->set('notification', 'You\'ll now receive a notification whenever something happens. It\'s like free spam!');
+			url::redirect(url::base() .'projects/view/'. $project_uid .'/'. $pid .'/');
 		}
 	}
 
@@ -200,24 +195,23 @@ class Feedback_Controller extends Core_Controller {
 
 		// Load necessary models.
 		$subscribe_model = new Subscribe_Model;
+		$project_model = new Project_Model;
+
+		$project_information = $project_model->project_information($pid);
 
 		if ($subscribe_model->check_project_subscriber($pid, $this->uid))
 		{
 			$subscribe_model->delete($pid, $this->uid);
 
-			// Load success view.
-			$unsubscribe_success_view = new View('unsubscribe_success');
-
-			// Generate the content.
-			$this->template->content = array($unsubscribe_success_view);
+			// Redirect to the project itself.
+			$this->session->set('notification', 'You\'re now no longer subscribed. Plenty of other lonely projects wanting your attention you know?');
+			url::redirect(url::base() .'projects/view/'. $project_information['uid'] .'/'. $pid .'/');
 		}
 		else
 		{
-			// Load error view.
-			$unsubscribe_error_view = new View('unsubscribe_error');
-
-			// Generate the content.
-			$this->template->content = array($unsubscribe_error_view);
+			// Redirect to the project itself.
+			$this->session->set('notification', 'Eh? You can\'t unsubscribe to something you were never subscribed to in the first place. Sheesh.');
+			url::redirect(url::base() .'projects/view/'. $project_information['uid'] .'/'. $pid .'/');
 		}
 	}
 
@@ -243,11 +237,8 @@ class Feedback_Controller extends Core_Controller {
 		// First check if they are already tracking the user...
 		if ($track_model->check_track_owner($uid, $this->uid) || !$user_model->check_user_exists($uid) || $uid == $this->uid || $user_info['enable_tracking'] != 1)
 		{
-			// Load error view.
-			$track_error_view = new View('track_error');
-
-			// Generate the content.
-			$this->template->content = array($track_error_view);
+			$this->session->set('notification', 'Eh? You\'re already tracking '. $user_info['username'] .'. Can\'t stalk somebody twice, you know?');
+			url::redirect(url::base() .'profiles/view/'. $user_info['username'] .'/');
 		}
 		else
 		{
@@ -277,11 +268,8 @@ class Feedback_Controller extends Core_Controller {
 				mail($user_information['email'], $this->username .' is now tracking you on WIPUP', $message, $headers);
 			}
 
-			// Load success view.
-			$track_success_view = new View('track_success');
-
-			// Generate the content.
-			$this->template->content = array($track_success_view);
+			$this->session->set('notification', 'You\'re now tracking '. $user_information['username'] .'. Ever realised how similar it is to stalking?');
+			url::redirect(url::base() .'profiles/view/'. $user_information['username'] .'/');
 		}
 	}
 
@@ -299,24 +287,21 @@ class Feedback_Controller extends Core_Controller {
 
 		// Load necessary models.
 		$track_model = new Track_Model;
+		$user_model = new User_Model;
+
+		$user_information = $user_model->user_information($uid);
 
 		if ($track_model->check_track_owner($uid, $this->uid))
 		{
 			$track_model->delete($uid, $this->uid);
 
-			// Load success view.
-			$untrack_success_view = new View('untrack_success');
-
-			// Generate the content.
-			$this->template->content = array($untrack_success_view);
+			$this->session->set('notification', 'You\'ve stopped tracking '. $user_information['username'] .'. Find someone else to stalk now. Go on.');
+			url::redirect(url::base() .'profiles/view/'. $user_information['username'] .'/');
 		}
 		else
 		{
-			// Load error view.
-			$untrack_error_view = new View('untrack_error');
-
-			// Generate the content.
-			$this->template->content = array($untrack_error_view);
+			$this->session->set('notification', 'Eh? You\'re were never tracking '. $user_information['username'] .' in the first place.');
+			url::redirect(url::base() .'profiles/view/'. $user_information['username'] .'/');
 		}
 	}
 

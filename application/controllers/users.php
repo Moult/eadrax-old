@@ -179,6 +179,10 @@ class Users_Controller extends Openid_Controller {
 
 				// Generate the content.
 				$this->template->content = array($login_view);
+
+				// Redirect to the dashboard.
+				$this->session->set('notification', 'Welcome back, '. $this->username .'. We really, really missed you. Seriously.');
+				url::redirect(url::base() .'dashboard/');
 			}
 		}
 		elseif ($openid == FALSE)
@@ -191,14 +195,9 @@ class Users_Controller extends Openid_Controller {
 				$this->uid			= $this->authlite->get_user()->id;
 				$this->logged_in	= TRUE;
 
-				// Load the view.
-				$login_success_view = new View('login_success');
-
-				// Give it some basic variables.
-				$login_success_view->username = $username;
-
-				// Generate the content.
-				$this->template->content = array($login_success_view);
+				// Redirect to the dashboard.
+				$this->session->set('notification', 'Welcome back, '. $this->username .'. We really, really missed you. Seriously.');
+				url::redirect(url::base() .'dashboard/');
 			}
 			else
 			{
@@ -222,7 +221,9 @@ class Users_Controller extends Openid_Controller {
 	public function logout()
 	{
 		if($this->authlite->logout()){
-			url::redirect();
+			// Redirect to the project itself.
+			$this->session->set('notification', 'Goodbye :( Please come back soon. Pretty please?');
+			url::redirect(url::base());
 		}
 	}
 }

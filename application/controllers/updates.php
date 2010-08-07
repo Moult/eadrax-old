@@ -290,6 +290,10 @@ class Updates_Controller extends Core_Controller {
 				$comment_form_view->form = array(
 					'comment' => ''
 				);
+
+				// Redirect back to the update.
+				$this->session->set('notification', 'Thanks for contributing to the discussion. That is all.');
+				url::redirect(url::base() .'updates/view/'. $update_information['id'] .'/');
 			}
 			else
 			{
@@ -1008,14 +1012,9 @@ class Updates_Controller extends Core_Controller {
 					), $uid);
 				}
 
-				// Then load our success view.
-				$update_success_view = new View('update_success');
-
-				// Pass some useful information.
-				$update_success_view->uid = $uid;
-
-				// Then generate content.
-				$this->template->content = array($update_success_view);
+				// Redirect to the update itself.
+				$this->session->set('notification', 'You\'ve just updated. Congrats. You have no idea how ecstatic you\'ve made us.');
+				url::redirect(url::base() .'updates/view/'. $uid .'/');
 			}
 			else
 			{

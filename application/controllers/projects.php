@@ -504,19 +504,16 @@ class Projects_Controller extends Core_Controller {
 
 				if ($pid == FALSE)
 				{
-					// Then load our success view.
-					$project_success_view = new View('project_success');
+					// Redirect to the project itself.
+					$this->session->set('notification', 'You\'ve got yourself a new project. Now let\'s fill it up with pure awesomeness.');
+					url::redirect(url::base() .'projects/view/'. $this->uid .'/'. $new_pid .'/');
 				}
 				else
 				{
-					// Then load our success view.
-					$project_success_view = new View('project_edit_success');
-					$project_success_view->uid = $this->uid;
-					$project_success_view->pid = $new_pid;
+					// Redirect to the project itself.
+					$this->session->set('notification', 'We\'ve done the cosmetic updates, now it\'s time for you to add more WIPs.');
+					url::redirect(url::base() .'projects/view/'. $this->uid .'/'. $new_pid .'/');
 				}
-
-				// Then generate content.
-				$this->template->content = array($project_success_view);
 			}
 			else
 			{
@@ -615,10 +612,9 @@ class Projects_Controller extends Core_Controller {
 				$project_model->manage_project(array('contributors' => $contributor_string), $pid);
 			}
 
-			// Load the necessary view.
-			$contributor_delete_success_view = new View('contributor_delete_success');
-
-			$this->template->content = array($contributor_delete_success_view);
+			// Redirect to the project itself.
+			$this->session->set('notification', 'Now you can no longer contribute to the project. Killjoy.');
+			url::redirect(url::base() .'projects/view/'. $project_information['uid'] .'/'. $pid .'/');
 		}
 		else
 		{
@@ -710,9 +706,9 @@ class Projects_Controller extends Core_Controller {
 					}
 				}
 
-				$project_delete_success_view = new View('project_delete_success');
-
-				$this->template->content = array($project_delete_success_view);
+				// Redirect to the update itself.
+				$this->session->set('notification', 'Your project has been viciously fed to the dogs. It is no more.');
+				url::redirect(url::base() .'profiles/projects/'. $this->uid .'/');
 			}
 			else
 			{
