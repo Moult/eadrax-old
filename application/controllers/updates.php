@@ -219,6 +219,8 @@ class Updates_Controller extends Core_Controller {
 		if ($this->input->post())
 		{
 			$comment = $this->input->post('comment');
+			$also_subscribe = $this->input->post('subscribe', FALSE);
+			$also_kudos = $this->input->post('kudos', FALSE);
 
 			// Validate the comment.
 			$validate = new Validation($this->input->post());
@@ -239,6 +241,14 @@ class Updates_Controller extends Core_Controller {
 					'upid' => $uid,
 					'comment' => $comment
 				));
+
+				if ($also_subscribe == 1) {
+					Feedback_Controller::subscribe($pid);
+				}
+
+				if ($also_kudos == 1) {
+					Feedback_Controller::kudos($uid);
+				}
 
 				// Send out email notifications.
 				$track_list = $track_model->track_list($this->uid);
@@ -334,9 +344,12 @@ class Updates_Controller extends Core_Controller {
 
 		// Now subscribing...
 		$update_view->subscribed = $subscribe_model->check_project_subscriber($update_information['pid'], $this->uid);
+		$comment_form_view->subscribed = $update_view->subscribed;
+		$comment_form_view->pid = $update_view->pid;
 
 		// Now tracking...
 		$update_view->tracking = $track_model->check_track_owner($update_information['uid'], $this->uid);
+		$comment_form_view->tracking = $update_view->tracking;
 
 		// Parse the user (creator of the update)
 		if ($update_information['uid'] != 1)
@@ -348,6 +361,7 @@ class Updates_Controller extends Core_Controller {
 		if ($kudos_model->check_kudos_owner($uid, $this->uid))
 		{
 			$update_view->kudos_error = TRUE;
+			$comment_form_view->kudos_error = TRUE;
 		}
 
 		// Parse the project.

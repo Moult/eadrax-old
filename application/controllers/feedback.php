@@ -63,14 +63,20 @@ class Feedback_Controller extends Core_Controller {
 		{
 			// Delete the comment.
 			$comment_model->delete_comment($cid);
-			url::redirect('updates/view/'. $comment_upid .'/');
+
+			// ... and back to the view page.
+			$this->session->set('notification', 'We\'ve deleted your comment. It\'s gone forever.');
+			url::redirect(url::base() .'updates/view/'. $comment_upid .'/');
 		}
 		// or if you own the update itself...
 		elseif (!empty($cid) && $update_uid == $this->uid && $this->uid != 1)
 		{
 			// Delete the comment.
 			$comment_model->delete_comment($cid);
-			url::redirect('updates/view/'. $comment_upid .'/');
+
+			// ... and back to the view page.
+			$this->session->set('notification', 'We\'ve deleted your comment. It\'s gone forever.');
+			url::redirect(url::base() .'updates/view/'. $comment_upid .'/');
 		}
 		else
 		{
@@ -122,9 +128,12 @@ class Feedback_Controller extends Core_Controller {
 				mail($user_information['email'], $this->username .' has kudos\'d your update on WIPUP', $message, $headers);
 			}
 
-			// ... and back to the view page.
-			$this->session->set('notification', 'We\'ve added your kudos. You\'ve just made somebody happy. Good on you!');
-			url::redirect(url::base() .'updates/view/'. $uid .'/');
+			// Only redirect if we're calling the feedback controller directly. 
+			if ($this->uri->segment(1) == 'feedback') {
+				// ... and back to the view page.
+				$this->session->set('notification', 'We\'ve added your kudos. You\'ve just made somebody happy. Good on you!');
+				url::redirect(url::base() .'updates/view/'. $uid .'/');
+			}
 		}
 	}
 
@@ -175,9 +184,12 @@ class Feedback_Controller extends Core_Controller {
 				mail($user_information['email'], $this->username .' has subscribed to your project on WIPUP', $message, $headers);
 			}
 
-			// Redirect to the project itself.
-			$this->session->set('notification', 'You\'ll now receive a notification whenever something happens. It\'s like free spam!');
-			url::redirect(url::base() .'projects/view/'. $project_uid .'/'. $pid .'/');
+			// Only redirect if we're calling the feedback controller directly. 
+			if ($this->uri->segment(1) == 'feedback') {
+				// Redirect to the project itself.
+				$this->session->set('notification', 'You\'ll now receive a notification whenever something happens. It\'s like free spam!');
+				url::redirect(url::base() .'projects/view/'. $project_uid .'/'. $pid .'/');
+			}
 		}
 	}
 
