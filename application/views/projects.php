@@ -95,7 +95,7 @@ $(document).ready(function() {
 
 	<?php if (empty($timeline)) { ?>
 
-	<div style="border: 2px solid #800; background-color: #FDD; margin: 10px; padding: 10px;">
+	<div class="error_message">
 		Oh no! There're no updates in this project just yet. You should add something, you know.
 	</div>
 

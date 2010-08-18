@@ -44,7 +44,7 @@ in <em><?php echo $categories[$project['cid']]; ?></em> <?php if (!empty($projec
 <div style="clear: both; line-height: 23px; font-size: 15px; text-shadow: 0px 1px 0px #FFF; color: #555; border-bottom: 1px solid #999; border-left: 0px; border-right: 0px; background-color: #D8D8D8; padding: 8px; padding-top: 40px; padding-bottom: 40px; margin-bottom: 10px; line-height: 30px; text-align: center;">
 	<img src="<?php echo url::base(); ?>images/icons/warning_48.png" alt="Oh no!" /><br />
 <?php } else { ?>
-<div style="clear: both; border: 2px solid #800; background-color: #FDD; margin: 10px; padding: 10px;">
+<div class="error_message">
 <?php } ?>
 	Oh no! There're no updates to show just yet. You should <a href="<?php echo url::base(); ?>updates/add/">add something</a>, you know.
 </div>

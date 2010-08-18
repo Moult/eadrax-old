@@ -425,7 +425,14 @@ ul {
 }
 
 .error {
-    border: 1px solid #F00;
+	border: 1px solid #800;
+}
+
+.error_message {
+	border: 1px solid #800;
+	background-color: #FDD;
+	margin: 10px;
+	padding: 10px;
 }
 
 .errors {

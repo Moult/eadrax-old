@@ -563,7 +563,7 @@ class Updates_Controller extends Core_Controller {
 				'<span style="text-decoration: underline;">$1</span>',
 				'<a href="$1">$2</a>',
 				'<a href="$1">$1</a>',
-				'<ul style="margin-left: 30px; font-size: 16px;">$1</ul>',
+				'<ul>$1</ul>',
 				'<li>$1</li>'
 			);
 			 

@@ -3,11 +3,11 @@
 	<?php echo $summary; ?>
 </h2>
 
-<div style="float: left;font-size: 18px; letter-spacing: -1px; color: #AAA; text-align: right; margin-bottom: 5px;">
-	by <em><?php if ($uid != 1) { ?><a href="<?php echo url::base(); ?>profiles/view/<?php echo $user_information['username']; ?>/"><?php echo $user_information['username']; ?></a><?php } else { ?>Guest<?php } ?></em> with <?php echo $kudos; ?> kudos
+<div style="float: left; color: #777; text-align: right; margin-bottom: 5px;">
+	by <em><?php if ($uid != 1) { ?><a href="<?php echo url::base(); ?>profiles/view/<?php echo $user_information['username']; ?>/"><?php echo $user_information['username']; ?></a><?php } else { ?>Guest<?php } ?></em> with <span style="font-weight: bold;"><?php echo $kudos; ?></span> kudos
 </div>
 
-<div style="float: right; font-size: 18px; letter-spacing: -1px; color: #AAA; text-align: right; margin-bottom: 5px;"><?php echo date('jS F Y', strtotime($logtime)); ?></div>
+<div style="float: right; color: #AAA; text-align: right; margin-bottom: 5px;"><?php echo date('jS F Y', strtotime($logtime)); ?></div>
 
 <div style="clear: both;"></div>
 
@@ -108,8 +108,8 @@ if (isset($last)) {
 <?php } ?>
 
 <?php if ($no_of_files == 0 && (empty($detail))) { ?>
-<div style="border: 2px solid #800; background-color: #FDD; margin: 10px; padding: 10px;">
-	This update contains no further detail. Don't worry, there's nothing wrong with that!
+<div class="error_message">
+	This update contains no further description or attachments. Don't worry, there's nothing wrong with that!
 </div>
 <?php } elseif ($no_of_files > 1) { ?>
 <div id="file-wrap">
@@ -190,22 +190,23 @@ $(document).ready(function() {
 <?php } ?>
 
 <?php if (${'display'. $i} == 'download' || ${'display'. $i} == 'video' || ${'display'. $i} == 'sound') { ?>
-<div style="border: 2px solid #88AAFF; margin-left: auto; margin-right: auto; margin-top: 10px; font-size: 18px; background-color: #DDEEFF; padding: 10px;">
-		<div style="float: left; width: 61%;">
+<div style="border: 1px solid #88AAFF; margin-left: auto; margin-right: auto; margin-top: 10px; background-color: #DDEEFF; padding: 10px;">
+		<div style="float: left; width: 100px;">
 			<p style="font-size: 18px; margin-bottom: 0px; line-height: 63px;">
 				<img src="<?php echo ${'filename_icon'. $i}; ?>" class="icon" alt="" <?php if (!strpos(${'filename_icon'. $i}, 'images/icons')) { echo 'style="border: 1px solid #999; padding: 1px;"'; } ?> />
-				<a href="<?php echo url::base(); ?>updates/view/<?php echo $id; ?>/<?php echo $i; ?>/"><strong>Download</strong> <?php echo substr(${'filename'. $i}, 10) .'.'. ${'ext'. $i}; ?></a>
 			</p>
         </div>
 
-        <div style="width: 300px; float: right; height: 63px;">
-            <p style="font-size: 18px; color: #555; margin-bottom: 0;">
+        <div style="float: left;">
+			<p style="font-size: 18px; margin-top: 5px; margin-bottom: 5px;">
+				<a href="<?php echo url::base(); ?>updates/view/<?php echo $id; ?>/<?php echo $i; ?>/"><strong>Download</strong> <?php echo substr(${'filename'. $i}, 10) .'.'. ${'ext'. $i}; ?></a>
+			</p>
+            <p style="color: #555; margin-bottom: 0;">
                 Size: <?php echo ${'file_size'. $i}; ?><br />
-                Date: <?php echo $logtime; ?><br />
-                By: <?php if ($uid != 1) { ?><a href="<?php echo url::base(); ?>profile/view/<?php echo $uid; ?>/"><?php echo $user_information['username']; ?></a><?php } else { ?>Guest<?php } ?>
+                Date: <?php echo date('jS F Y', strtotime($logtime)); ?><br />
             </p>
         </div>
-        <div style="clear: both; padding: 0; margin: 0;"></div>
+        <div style="clear: both;"></div>
     </div>
 <?php } ?>
 
