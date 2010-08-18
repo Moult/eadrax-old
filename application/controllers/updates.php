@@ -38,10 +38,11 @@ class Updates_Controller extends Core_Controller {
 	 * Displays an update.
 	 *
 	 * @param int $uid The update ID to display.
+	 * @param int $attachment The attachment ID to download.
 	 *
 	 * @return null
 	 */
-	public function view($uid)
+	public function view($uid, $attachment = NULL)
 	{
 		// Load necessary models.
 		$update_model		= new Update_Model;
@@ -62,6 +63,16 @@ class Updates_Controller extends Core_Controller {
 
 		// Let's grab all the information we can about the update.
 		$update_information = $update_model->update_information($uid);
+
+		// If an attachment ID was passed, we should force a download.
+		if ($attachment != NULL) {
+			if (!empty($update_information['filename'. $attachment])) {
+				$this->auto_render = FALSE;
+				return download::force(url::base() .'uploads/files/'. $update_information['filename'. $attachment] .'.'. $update_information['ext'. $attachment], 'File could not be found.', substr($update_information['filename'. $attachment], 10) .'.'. $update_information['ext'. $attachment]);
+			} else {
+				Event::run('system.404');
+			}
+		}
 
 		// Load the views.
 		$update_view = new View('update');
@@ -101,23 +112,7 @@ class Updates_Controller extends Core_Controller {
 				$update_view->{'filename_icon'. $i} = $this->_file_icon($update_information['filename'. $i], $update_information['ext'. $i]);
 
 				// Find out generic information such as size, format, etc.
-				$update_view->{'file_size'. $i} = filesize(DOCROOT .'uploads/files/'. $update_information['filename'. $i] .'.'.  $update_information['ext'. $i]);
-
-				// What size to start off with?
-				$update_view->{'file_size_ext'. $i} = 'bytes';
-
-				if ($update_view->{'file_size'. $i} > 1024) {
-					$update_view->{'file_size'. $i}     = $update_view->{'file_size'. $i} / 1024;
-					$update_view->{'file_size_ext'. $i} = 'kb';
-				}
-
-				if ($update_view->{'file_size'. $i} > 1024) {
-					$update_view->{'file_size'. $i}     = $update_view->{'file_size'. $i} / 1024;
-					$update_view->{'file_size_ext'. $i} = 'Mb';
-				}
-
-				// Now to clean up the value we get.
-				$update_view->{'file_size'. $i} = ceil($update_view->{'file_size'. $i});
+				$update_view->{'file_size'. $i} = text::bytes(filesize(DOCROOT .'uploads/files/'. $update_information['filename'. $i] .'.'.  $update_information['ext'. $i]));
 
 				// How should we display the attachment?
 				if (empty($update_information['filename'. $i]))
@@ -183,12 +178,8 @@ class Updates_Controller extends Core_Controller {
 		 
 		$description = preg_replace($simple_search, $simple_replace, $description);
 
-		$format = 'style="margin-bottom: 10px;"';
-		$description = '<p '. $format .'>'. $description .'</p>';
-		$description = preg_replace("/(?:\r?\n)+/", '</p><p '. $format .'>', $description);
-
-		// Let's do some really nasty fixing to maintain HTML validity.
-		$description = preg_replace(array('/<p '. $format .'><ul><\/p>/', '/<p '. $format .'><\/ul><\/p>/', '/<p '. $format .'><li>(.*?)<\/li><\/p>/'), array('<ul>', '</ul>', '<li>$1</li>'), $description);
+		$description = text::auto_link($description);
+		$description = text::auto_p($description);
 
 		$project_view->description = $description;
 
@@ -439,6 +430,7 @@ class Updates_Controller extends Core_Controller {
 					fwrite(${'diff'. $update_revision['id'] .'_handle'}, $update_revision['pastebin']);
 					exec($diff_path ." -u ". escapeshellarg(${'diff'. $update_revision['id']}) ." ". escapeshellarg($original), $diff_result);
 					$diff_output[$update_revision['id']] = $diff_result;
+
 					fclose(${'diff'. $update_revision['id'] .'_handle'});
 					unlink(${'diff'. $update_revision['id']});
 				}
@@ -446,6 +438,109 @@ class Updates_Controller extends Core_Controller {
 				fclose($original_handle);
 				unlink($original);
 
+				// We require the PEAR Text_Diff package for inline diffs.
+				require_once 'Text/Diff.php';
+				require_once 'Text/Diff/Renderer/inline.php';
+
+				// Parse diff formatting.
+				foreach ($update_revisions as $update_revision) {
+					if ($update_revision['id'] != $uid) {
+						$i = 0;
+						$revision[$update_revision['id']] = '';
+						$diff_log[$update_revision['id']] = array();
+						foreach ($diff_output[$update_revision['id']] as $diff) {
+							$i++;
+							if ($i > 2) {
+								if (substr($diff, 0, 1) == '-') {
+									$revision[$update_revision['id']] .= '<span style="color: #991111;">'. $diff .'</span><br />';
+									// Log this line as there may be changes.
+									$diff_log[$update_revision['id']][] = $diff;
+								} elseif (substr($diff, 0, 1) == '+') {
+									if (count($diff_log[$update_revision['id']]) > 0) {
+										// We potentially have something to 
+										// compare against.
+
+										// Compare against each of the 
+										// previously logged lines.
+										for ($n = 0; $n < count($diff_log[$update_revision['id']]); $n++) {
+											$text1 = substr($diff_log[$update_revision['id']][$n], 1);
+											$text2 = substr($diff, 1);
+
+											// create the hacked lines for each file
+											$htext1 = chunk_split($text1, 1, "\n");
+											$htext2 = chunk_split($text2, 1, "\n");
+
+											// convert the hacked texts to arrays
+											$hlines1 = str_split($htext1, 2);
+											$hlines2 = str_split($htext2, 2);
+
+											$text1 = str_replace("\n"," \n",$text1);
+											$text2 = str_replace("\n"," \n",$text2);
+
+											$hlines1 = explode(" ", $text1);
+											$hlines2 = explode(" ", $text2);
+
+											// create the diff object
+											$render = &new Text_Diff($hlines1, $hlines2);
+
+											// Get the diff in unified format
+											$markup_settings = array(
+												'ins_prefix' => '<span style="background-color: #B5E379; font-weight: bold;">',
+												'ins_suffix' => '</span>',
+												'del_prefix' => '<span style="display: none;">',
+												// 'del_prefix' => '<span style="background-color: #D28A8A; color: #991111; display: none;">',
+												'del_suffix' => '</span>'
+											);
+
+											$renderer = &new Text_Diff_Renderer_inline($markup_settings);
+											$render = $renderer->render($render);
+											$render = str_replace(array("\r\n", "\n", "\r"), ' ', $render);
+											$render = htmlspecialchars_decode($render);
+
+											// Create a string which only holds 
+											// the unchanged text.
+											$unchanged_diff = preg_replace('/<span style="display: none;">(.*?)<\/span>/i', '', $render);
+											$unchanged_diff = preg_replace('/<span style="background-color: #B5E379; font-weight: bold;">(.*?)<\/span>/i', '', $unchanged_diff);
+											// If the majority is unchanged...
+											if (strlen($unchanged_diff) / strlen(substr($diff, 1)) > 0.5) {
+												// ... let's show an inline diff.
+												$revision[$update_revision['id']] .= '<span style="color: #00b000;">+'. $render .'</span><br />';
+												// For efficiency, clear out all 
+												// already checked lines.
+												for ($x = 0; $x < $n; $x++) {
+													array_shift($diff_log[$update_revision['id']]);
+												}
+
+												break;
+											} elseif($n == count($diff_log[$update_revision['id']])) {
+												// If we got to the end without 
+												// showing an inline diff, let's 
+												// just show a normal line.
+												$revision[$update_revision['id']] .= '<span style="color: #00b000;">'. $diff .'</span><br />';
+											}
+										}
+
+									} else {
+										// Just echo the line as normal.
+										$revision[$update_revision['id']] .= '<span style="color: #00b000;">'. $diff .'</span><br />';
+									}
+								} elseif (substr($diff, 0, 1) == '@') {
+									// Clear the inline diff log.
+									$diff_log[$update_revision['id']] = array();
+
+									$revision[$update_revision['id']] .= '<span style="color: #440088; font-weight: bold;">'. $diff .'</span><br />';
+								} else {
+									// Clear the inline diff log.
+									$diff_log[$update_revision['id']] = array();
+
+									$revision[$update_revision['id']] .= $diff .'<br />';
+								}
+							}
+						}
+					}
+				}
+
+				$revision_view->revision = $revision;
 				$revision_view->diffs = $diff_output;
 			}
 		}
@@ -474,12 +569,8 @@ class Updates_Controller extends Core_Controller {
 			 
 			$detail = preg_replace($simple_search, $simple_replace, $update_information['detail']);
 
-            $format = 'style="font-size:16px; margin-bottom: 10px;"';
-            $detail = '<p '. $format .'>'. $detail .'</p>';
-            $detail = preg_replace("/(?:\r?\n)+/", '</p><p '. $format .'>', $detail);
-
-			// Let's do some really nasty fixing to maintain HTML validity.
-			$detail = preg_replace(array('/<p '. $format .'><ul style="margin-left: 30px; font-size: 16px;"><\/p>/', '/<p '. $format .'><\/ul><\/p>/', '/<p '. $format .'><li>(.*?)<\/li><\/p>/'), array('<ul style="margin-left: 30px; font-size: 16px;">', '</ul>', '<li>$1</li>'), $detail);
+			$detail = text::auto_link($detail);
+			$detail = text::auto_p($detail);
 
             $update_view->detail = $detail;
         }

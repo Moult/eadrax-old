@@ -25,9 +25,7 @@ by <a href="<?php echo url::base(); ?>profiles/view/<?php echo $uid_info['userna
 	</p>
 
 <pre id="diff<?php echo $update_revision['id']; ?>" style="display: none; white-space: -moz-pre-wrap; white-space: -pre-wrap; white-space: -o-pre-wrap; white-space: pre-wrap; word-wrap: break-word; background-color: #FFF; border: 1px solid #CCC; padding: 8px; margin-bottom: 10px;">
-<?php $i = 0; foreach ($diffs[$update_revision['id']] as $diff) { $i++; if ($i > 2) { ?>
-<?php if (substr($diff, 0, 1) == '+') { ?><span style="color: #00b000;"><?php echo $diff; ?></span><br /><?php } elseif (substr($diff, 0, 1) == '-') {?><span style="color: #991111;"><?php echo $diff; ?></span><br /><?php } elseif (substr($diff, 0, 1) == '@') { ?><span style="color: #440088; font-weight: bold;"><?php echo $diff; ?></span><br /><?php } else { ?><?php echo $diff; ?><br /><?php } ?>
-<?php } } ?>
+<?php echo $revision[$update_revision['id']]; ?>
 </pre>
 
 <?php } } ?>

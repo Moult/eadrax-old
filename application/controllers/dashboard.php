@@ -138,9 +138,9 @@ class Dashboard_Controller extends Core_Controller {
 
 		// We need to calculate the peak values to use.
 		$activity_peak = max($activity_list);
-		$activity_peak = ceil(intval($activity_peak)/5)*5;
+		$activity_peak = num::round($activity_peak)+5;
 		$view_peak = max($view_list);
-		$view_peak = ceil(intval($view_peak)/5)*5;
+		$view_peak = num::round($view_peak)+5;
 
 		// Let's start creating our URL for the chart!
 		$chd = 't:';

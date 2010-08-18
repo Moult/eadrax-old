@@ -1,9 +1,8 @@
-Eadrax is available live at: http://www.wipup.org
-
 ------------
 ABOUT EADRAX
 ------------
 Providing an easy way for people to show what they're working on.
+Eadrax is available live at: http://live.wipup.org
 
 ---------------------
 IMPORTANT INFORMATION
@@ -15,10 +14,12 @@ The most recent packages are recommended.
 -------------------
 SYSTEM REQUIREMENTS
 -------------------
-* A webserver, eg: Apache
-* PHP 5.x 
-* MySQL 5.1.x
-* ffmpeg (optional, but needed for video features)
+* Apache >= 2.2
+* PHP >= 5.x (4.x is not supported)
+* MySQL >= 5.0
+* ffmpeg >= 0.6 (needed for video features)
+* diff >= 2.8.0 (needed for revision features)
+* PEAR Text_Diff >= 1.1.1 (needed for inline revision features)
 
 ------------------
 DOWNLOADING EADRAX
@@ -39,25 +40,21 @@ the command line for Unix based systems:
 If all went well, you will find a folder named "Eadrax" in the directory where
 you executed the above command.
 
-[For Windows and MAC systems, please adapt the above guide to your respective
+[For Windows and Mac systems, please adapt the above guide to your respective
 systems for GIT.]
 
-------------------
-CONFIGURING EADRAX
-------------------
+-----------------
+INSTALLING EADRAX
+-----------------
 
-1. Make sure you have the copy of Eadrax in a dir which is accessible through
-your web-server. Something like http://localhost/Eadrax should point to it. The
-folder where you should copy Eadrax source is most likely named wwwroot or
-something similar. You may have to look into your server's documentation to set
-this up.
+1. Upload a copy of Eadrax to your webserver. It is possible to install Eadrax
+in a subdirectory.
 
 2. Make sure the following directories are writable by your webserver
 (and thusly by PHP):
 		application/cache/
 		application/logs/
 		application/tmp/
-		application/vendor/pchart/Cache/*
 		uploads/
 		uploads/*/ (ie. any subdirectory within uploads)
 
@@ -93,9 +90,6 @@ mysql> GRANT ALL ON eadrax.* TO 'eadrax'@'localhost';
 # This line assumes that you have your mysql server on localhost. 
 # If not we hope you already know what you are doing.
 
-NOTE: You may alternatively use tools like PHPMyAdmin to complete the
-above steps if you are more comfortable working with GUI based tools.
-
 Import the database schema in DATABASE into your newly created database.
 
 Change to the directory where Eadrax is copied or checked out (git clone'd), 
@@ -114,9 +108,13 @@ The above command is in the format
 
 	$ mysql -u username -p database_name < input_sql_file
 
+NOTE: You may alternatively use tools like PHPMyAdmin to complete the
+above steps if you are more comfortable working with GUI based tools.
+
 4. Configuration files.
 
 Files to edit:
+	.htaccess
 	application/config/config.php
 	application/config/database.php
 
@@ -138,6 +136,8 @@ you need to change line 7 from
 to
 	 $config['site_domain'] = $_SERVER['SERVER_NAME']."/path/to/Eadrax";
 
+Just ensure that all of the paths to the application binaries (eg: ffmpeg) are
+correct.
 
 Editing database.php:
 
@@ -156,10 +156,9 @@ ENJOY EADRAX!
 -------------
 
 That's about it. If you did everything right, you should see the page
-load at the URL http://localhost/Eadrax
-
-Replace localhost with your domain name or IP in case you are working
-with a remote server.
+load at the URL http://localhost/Eadrax if you installed it right to your
+localhost. Otherwise just point your browser at the address at which you have
+installed Eadrax into.
 
 ------------------------------
 DEVELOPER-SPECIFIC INFORMATION
@@ -175,12 +174,9 @@ uploads/files/*
 uploads/icons/*
 uploads/avatars/*
 application/logs/*
-application/vendor/pchart/Cache/*
 application/config/*
 # end of example
 
- * Eadrax runs on the Kohana 2.x PHP MVC framework, and has no intention on
-   migrating to Kohana 3 anytime soon (it has no need to)
  * Don't refer to the site as Eadrax in the code, its name is WIPUP.
  * Documentation is inline and follows the PHPDoc conventions.
  * We don't use camelCase, we name variables exactly what they are and use

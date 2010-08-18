@@ -55,13 +55,13 @@ $comment_user_info = $$comment_var_name;
 						<textarea name="comment" id="comment" cols="40" rows="6" <?php if (isset($errors['comment'])) { echo 'class="error"'; } ?>><?php echo $form['comment']; ?></textarea>
 					</p>
 
-<?php if ($this->logged_in) { if ($subscribed != TRUE && $uid != 1 && $pid != 1 && $tracking == FALSE && $uid != $this->uid) { ?>
+<?php if ($this->logged_in) { if ($subscribed != TRUE && $update_uid != 1 && $pid != 1 && $tracking == FALSE && $update_uid != $this->uid) { ?>
 					<p>
 						<input type="checkbox" name="subscribe" value="1" checked="checked" /> - Yes, I also want to subscribe to this project.
 					</p>
 <?php } ?>
 
-<?php if ($uid != 1 && $uid != $this->uid && !isset($kudos_error)) { ?>
+<?php if ($update_uid != 1 && $update_uid != $this->uid && !isset($kudos_error)) { ?>
 					<p>
 						<input type="checkbox" name="kudos" value="1" checked="checked" /> - Yes, I also want to kudos this WIP.
 					</p>

@@ -153,12 +153,8 @@ class Projects_Controller extends Core_Controller {
 		 
 		$description = preg_replace($simple_search, $simple_replace, $description);
 
-		$format = 'style="margin-bottom: 10px;"';
-		$description = '<p '. $format .'>'. $description .'</p>';
-		$description = preg_replace("/(?:\r?\n)+/", '</p><p '. $format .'>', $description);
-
-		// Let's do some really nasty fixing to maintain HTML validity.
-		$description = preg_replace(array('/<p '. $format .'><ul><\/p>/', '/<p '. $format .'><\/ul><\/p>/', '/<p '. $format .'><li>(.*?)<\/li><\/p>/'), array('<ul>', '</ul>', '<li>$1</li>'), $description);
+		$description = text::auto_link($description);
+		$description = text::auto_p($description);
 
 		$project_view->description = $description;
 

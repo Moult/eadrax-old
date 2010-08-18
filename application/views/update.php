@@ -194,13 +194,13 @@ $(document).ready(function() {
 		<div style="float: left; width: 61%;">
 			<p style="font-size: 18px; margin-bottom: 0px; line-height: 63px;">
 				<img src="<?php echo ${'filename_icon'. $i}; ?>" class="icon" alt="" <?php if (!strpos(${'filename_icon'. $i}, 'images/icons')) { echo 'style="border: 1px solid #999; padding: 1px;"'; } ?> />
-				<a href="<?php echo url::base(); ?>uploads/files/<?php echo ${'filename'. $i}; ?>.<?php echo ${'ext'. $i}; ?>"><strong>Download</strong> <?php echo substr(${'filename'. $i}, 10) .'.'. ${'ext'. $i}; ?></a>
+				<a href="<?php echo url::base(); ?>updates/view/<?php echo $id; ?>/<?php echo $i; ?>/"><strong>Download</strong> <?php echo substr(${'filename'. $i}, 10) .'.'. ${'ext'. $i}; ?></a>
 			</p>
         </div>
 
         <div style="width: 300px; float: right; height: 63px;">
             <p style="font-size: 18px; color: #555; margin-bottom: 0;">
-                Size: <?php echo ${'file_size'. $i}; ?> <?php echo ${'file_size_ext'. $i}; ?><br />
+                Size: <?php echo ${'file_size'. $i}; ?><br />
                 Date: <?php echo $logtime; ?><br />
                 By: <?php if ($uid != 1) { ?><a href="<?php echo url::base(); ?>profile/view/<?php echo $uid; ?>/"><?php echo $user_information['username']; ?></a><?php } else { ?>Guest<?php } ?>
             </p>

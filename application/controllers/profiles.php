@@ -151,12 +151,8 @@ class Profiles_Controller extends Openid_Controller {
 			 
 			$description = preg_replace($simple_search, $simple_replace, $description);
 
-            $format = 'style="margin-bottom: 10px;"';
-            $description = '<p '. $format .'>'. $description .'</p>';
-            $description = preg_replace("/(?:\r?\n)+/", '</p><p '. $format .'>', $description);
-
-			// Let's do some really nasty fixing to maintain HTML validity.
-			$description = preg_replace(array('/<p '. $format .'><ul><\/p>/', '/<p '. $format .'><\/ul><\/p>/', '/<p '. $format .'><li>(.*?)<\/li><\/p>/'), array('<ul>', '</ul>', '<li>$1</li>'), $description);
+			$description = text::auto_link($description);
+			$description = text::auto_p($description);
 
 			$$project_view->description = $description;
 
@@ -290,6 +286,7 @@ class Profiles_Controller extends Openid_Controller {
 			// Begin to validate the information.
 			$validate = new Validation($this->input->post());
 			$validate->pre_filter('trim');
+			$validate->pre_filter('format::url', 'website');
 			$validate->add_rules('email', 'email');
 			$validate->add_rules('dd', 'digit', 'length[1,2]');
 			$validate->add_rules('mm', 'digit', 'length[1,2]');
@@ -377,7 +374,7 @@ class Profiles_Controller extends Openid_Controller {
 					'gtalk' => $gtalk,
 					'yahoo' => $yahoo,
 					'skype' => $skype,
-					'website' => $website,
+					'website' => format::url($website),
 					'location' => $location,
 					'avatar' => $avatar_filename
 				), $this->uid);
