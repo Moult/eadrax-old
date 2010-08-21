@@ -514,6 +514,10 @@ NIFTYNESS
 	clear: right;
 }
 
+.form input[type=checkbox] {
+	width: 15px;
+}
+
 .form ul {
 	padding: 0px;
 	margin-left: 16px;

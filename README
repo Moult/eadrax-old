@@ -1,25 +1,23 @@
 ------------
 ABOUT EADRAX
 ------------
+
 Providing an easy way for people to show what they're working on.
 Eadrax is available live at: http://live.wipup.org
-
----------------------
-IMPORTANT INFORMATION
----------------------
-Eadrax (WIPUP) has been tested with following server environments:
-	Apache 2.2 with PHP 5.1.2 and MySQL 5.1.30
-The most recent packages are recommended.
 
 -------------------
 SYSTEM REQUIREMENTS
 -------------------
-* Apache >= 2.2
-* PHP >= 5.x (4.x is not supported)
-* MySQL >= 5.0
-* ffmpeg >= 0.6 (needed for video features)
-* diff >= 2.8.0 (needed for revision features)
-* PEAR Text_Diff >= 1.1.1 (needed for inline revision features)
+
+ * Apache >= 2.2
+ * PHP >= 5.x (4.x is not supported)
+ * MySQL >= 5.0
+ * ffmpeg >= 0.6 (needed for video features)
+ * ffmpeg-php >= 0.6 (needed for video features)
+ * diff >= 2.8.0 (needed for revision features)
+ * PEAR Text_Diff >= 1.1.1 (needed for inline revision features)
+
+The most recent packages are recommended.
 
 ------------------
 DOWNLOADING EADRAX
