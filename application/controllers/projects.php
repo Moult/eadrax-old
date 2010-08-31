@@ -272,6 +272,7 @@ class Projects_Controller extends Core_Controller {
 					$markup = $markup .'<img src="'. $file_icon .'" style="position: relative; top: -170px; left: -5px;" />';
 				}
                 $markup = $markup .'</div>';
+				$markup = $markup .'<div style="margin-top: 4px; width: 264px; height: 12px; background-image: url(\''. url::base() .'images/grid_shadow.png\');"></div>';
 				$markup = $markup .'</div>';
             }
         }
