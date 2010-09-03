@@ -6,7 +6,7 @@
  * WIPUP is a website that allows you to show others what you are currently 
  * working on.
  *
- * Copyright 2009 (c)
+ * Copyright 2010 (c)
  */
 -->
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
@@ -234,7 +234,7 @@ if (($this->uri->segment(1) == 'updates' && $this->uri->segment(2) == 'add') || 
             </h1>
 
 			<ul id="icon-navigation">
-				<li><a href="<?php echo url::base(); ?>projects/view/" onmouseover="javascript:getElementById('navtext1').style.display = 'inline';" onmouseout="javascript:getElementById('navtext1').style.display = 'none';"><img src="<?php echo url::base(); ?>images/profile.png" width="40" height="87" alt="Latest WIPs" title="Profile" /></a></li><li><img src="<?php echo url::base(); ?>images/navspace1.png" width="11" height="87" /></li><li><a href="<?php echo url::base(); ?>updates/add/" onmouseover="javascript:getElementById('navtext2').style.display = 'inline';" onmouseout="javascript:getElementById('navtext2').style.display = 'none';"><img src="<?php echo url::base(); ?>images/update.png" width="40" height="87" alt=" Add Update" title="Add Update" /></a></li><li><img src="<?php echo url::base(); ?>images/navspace2.png" width="10" height="87" /></li><li><a href="<?php echo url::base(); ?>updates/random/" onmouseover="javascript:getElementById('navtext3').style.display = 'inline';" onmouseout="javascript:getElementById('navtext3').style.display = 'none';"><img src="<?php echo url::base(); ?>images/random.png" width="41" height="87" alt="Random" title="Random" /></a></li>
+				<li><a href="<?php echo url::base(); ?>projects/view/" onmouseover="javascript:getElementById('navtext1').style.display = 'inline';" onmouseout="javascript:getElementById('navtext1').style.display = 'none';"><img src="<?php echo url::base(); ?>images/profile.png" width="40" height="87" alt="Latest WIPs" title="Latest WIPs" /></a></li><li><img src="<?php echo url::base(); ?>images/navspace1.png" width="11" height="87" /></li><li><a href="<?php echo url::base(); ?>updates/add/" onmouseover="javascript:getElementById('navtext2').style.display = 'inline';" onmouseout="javascript:getElementById('navtext2').style.display = 'none';"><img src="<?php echo url::base(); ?>images/update.png" width="40" height="87" alt="Add WIP" title="Add WIP" /></a></li><li><img src="<?php echo url::base(); ?>images/navspace2.png" width="10" height="87" /></li><li><a href="<?php echo url::base(); ?>updates/random/" onmouseover="javascript:getElementById('navtext3').style.display = 'inline';" onmouseout="javascript:getElementById('navtext3').style.display = 'none';"><img src="<?php echo url::base(); ?>images/random.png" width="41" height="87" alt="Discover WIPs" title="Discover WIPs" /></a></li>
 			</ul>
 
             <ul id="text-navigation">

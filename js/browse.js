@@ -41,7 +41,7 @@ function addUploadField ( )
 	if ( uplContainer && fieldsCount < maxFields )
 	{
 		var newField = document.createElement ( 'div' );
-		newField.innerHTML = '<img src="http://wipup.org/images/icons/delete.png" style="float: left; margin-left: 100px; margin-bottom: 10px; clear: both;" onclick="removeUploadField(this.parentNode);" /> <input type="file" style="float: left; height: 23px; margin-left: 5px;" name="attachment' + fieldsNumber + '" id="attachment' + fieldsNumber + '" />' + ' ';
+		newField.innerHTML = '<img src="http://wipup.org/images/icons/delete.png" style="float: left; margin-left: 100px; margin-bottom: 10px; margin-top: 13px; clear: both;" onclick="removeUploadField(this.parentNode);" /> <input type="file" style="float: left; height: 23px; margin-left: 5px; margin-top: 10px;" name="attachment' + fieldsNumber + '" id="attachment' + fieldsNumber + '" />' + ' ';
 		uplContainer.appendChild ( newField );
 		fieldsCount++;
 		fieldsNumber++;

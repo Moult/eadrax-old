@@ -97,7 +97,7 @@ if (isset($uid)) {
 <?php } ?>
 
 						<?php if ($this->logged_in) { ?>
-						<p id="upload_fields_container"></p>
+						<span id="upload_fields_container" style="padding: 0px; margin: 0px;"></span>
 						<?php } ?>
 					</p>
 

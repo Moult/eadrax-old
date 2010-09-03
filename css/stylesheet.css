@@ -14,7 +14,7 @@ img.icon {
     vertical-align: middle;
 }
 
-input, textarea {
+select, input, textarea {
 	background-color: #EEE;
 	border: 1px solid #CCC;
 	background-color: #D8D8D8;
@@ -25,6 +25,18 @@ input, textarea {
 	font-size: 13px;
 	font-weight: bold;
 	text-shadow: 0px 1px 0px #FFF;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	padding: 3px;
+}
+
+select {
+	background-color: #EFEFEF;
+}
+
+input:focus, textarea:focus {
+	border: 1px solid #555;
 }
 
 textarea {
@@ -482,6 +494,12 @@ NIFTYNESS
 	padding-right: 7px;
 	color: #000000;
 	text-shadow: 0px 1px 0px #FFF;
+	-webkit-border-top-left-radius: 5px;
+	-webkit-border-top-right-radius: 5px;
+	-moz-border-radius-topleft: 5px;
+	-moz-border-radius-topright: 5px;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
 }
 
 .form p {
@@ -518,6 +536,14 @@ NIFTYNESS
 	width: 15px;
 }
 
+input[type=button] {
+	border: 1px solid #999;
+}
+
+input[type=button]:hover {
+	border: 1px solid #555;
+}
+
 .form ul {
 	padding: 0px;
 	margin-left: 16px;
@@ -549,9 +575,10 @@ NIFTYNESS
 }
 
 .submit input {
-	margin-left: auto;
+	margin-left: 100px;
 	width: 200px;
 	height: 25px;
+	border: 1px solid #555;
 }
 
 .mini {
@@ -598,10 +625,6 @@ div.mini:hover {
     list-style-type: decimal;
     margin-left: 40px;
 }
-
-/*
-#file-wrap { }
-*/
 
 .ui-tabs .ui-tabs-nav {
 	margin: 0px;

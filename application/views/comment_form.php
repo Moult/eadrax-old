@@ -57,13 +57,13 @@ $comment_user_info = $$comment_var_name;
 
 <?php if ($this->logged_in) { if ($subscribed != TRUE && $update_uid != 1 && $pid != 1 && $tracking == FALSE && $update_uid != $this->uid) { ?>
 					<p>
-						<input type="checkbox" name="subscribe" value="1" checked="checked" /> - Yes, I also want to subscribe to this project.
+						<input type="checkbox" name="subscribe" value="1" checked="checked" style="margin-left: 100px;" /> - Yes, I also want to subscribe to this project.
 					</p>
 <?php } ?>
 
 <?php if ($update_uid != 1 && $update_uid != $this->uid && !isset($kudos_error)) { ?>
 					<p>
-						<input type="checkbox" name="kudos" value="1" checked="checked" /> - Yes, I also want to kudos this WIP.
+						<input type="checkbox" name="kudos" value="1" checked="checked" style="margin-left: 100px;" /> - Yes, I also want to kudos this WIP.
 					</p>
 <?php } } ?>
 
