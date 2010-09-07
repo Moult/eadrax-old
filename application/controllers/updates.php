@@ -68,7 +68,7 @@ class Updates_Controller extends Core_Controller {
 		if ($attachment != NULL) {
 			if (!empty($update_information['filename'. $attachment])) {
 				$this->auto_render = FALSE;
-				return download::force(url::base() .'uploads/files/'. $update_information['filename'. $attachment] .'.'. $update_information['ext'. $attachment], 'File could not be found.', substr($update_information['filename'. $attachment], 10) .'.'. $update_information['ext'. $attachment]);
+				return download::force(DOCROOT .'uploads/files/'. $update_information['filename'. $attachment] .'.'. $update_information['ext'. $attachment], NULL, substr($update_information['filename'. $attachment], 10) .'.'. $update_information['ext'. $attachment]);
 			} else {
 				Event::run('system.404');
 			}
