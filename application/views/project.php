@@ -51,9 +51,9 @@ in <em><?php echo $categories[$project['cid']]; ?></em> <?php if (!empty($projec
 
 <?php } else { ?>
 <?php if ($this->uri->segment(1) == 'profiles' && $this->uri->segment(2) == 'view') { ?>
-<div style="clear: both; overflow: hidden; background: #EEE; border-bottom: 1px dotted #AAA; padding-bottom: 5px; background-position: top; background-repeat: repeat-x; background-color: #DDD;">
+<div style="clear: both; overflow: hidden; border-bottom: 1px dotted #AAA; padding-bottom: 5px; background-position: top; background-repeat: repeat-x; background-color: #D8D8D8;">
 <?php } else { ?>
-<div style="clear: both; overflow: hidden; background: #EEE; border: 1px dotted #AAA; padding-bottom: 5px; background-image: url(<?php echo url::base(); ?>images/formbg.gif); background-position: top; background-repeat: repeat-x; background-color: #DDD; border-left: 0px; border-right: 0px;">
+<div style="clear: both; overflow: hidden; border: 1px dotted #AAA; padding-bottom: 5px; background-image: url(<?php echo url::base(); ?>images/formbg.gif); background-position: top; background-repeat: repeat-x; background-color: #D8D8D8; border-left: 0px; border-right: 0px;">
 <?php } ?>
 	<div style="margin-right: auto; margin-left: auto; padding-right: 4px; width: 822px;">
 		<?php echo $markup; ?>
