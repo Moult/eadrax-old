@@ -43,23 +43,12 @@ class Openid_Model extends Model {
 	 */
 	public function add_user($username, $openid)
 	{
-		$make_dummy_user = $this->db;
-		$make_dummy_user->set('username', $username);
-		$make_dummy_user->set('password', 'openid');
-		$make_dummy_user->insert('users');
+		$make_user = $this->db;
+		$make_user->set('username', $username);
+		$make_user->set('password', $openid);
+		$result = $make_user->insert('users');
 
-		// Find the UID of the user we just created.
-		$uid = $this->db;
-		$uid = $uid->where(array('username'=>$username,'password'=>'openid'));
-		$uid = $uid->get('users');
-		$uid = $uid->current();
-		$uid = $uid->id;
-
-		// Bind an OpenID account to the dummy user.
-		$bind_openid = $this->db;
-		$bind_openid->set('url', $openid);
-		$bind_openid->set('uid', $uid);
-		$bind_openid->insert('openid');
+		return $result->insert_id();
 	}
 
 	/**
@@ -75,7 +64,7 @@ class Openid_Model extends Model {
 	public function unique_openid($post, $callback = TRUE)
 	{
 		$db = $this->db;
-		$count = $db->from('openid')->where('url', $post['openid_url'])->get()->count();
+		$count = $db->from('users')->where('password', $post['openid_url'])->get()->count();
 		if ($count >= 1)
 		{
 			if ($callback == TRUE)
@@ -99,16 +88,9 @@ class Openid_Model extends Model {
 	 */
 	public function get_openid_username($openid)
 	{
-		// Get the UID of the OpenID account.
-		$openid_uid = $this->db;
-		$openid_uid = $openid_uid->where(array('url'=>$openid));
-		$openid_uid = $openid_uid->get('openid');
-		$openid_uid = $openid_uid->current();
-		$openid_uid = $openid_uid->uid;
-
 		// Find the username with the corresponding UID.
 		$username = $this->db;
-		$username = $username->where(array('id'=>$openid_uid));
+		$username = $username->where('password', $openid);
 		$username = $username->get('users');
 		$username = $username->current();
 

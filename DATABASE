@@ -77,13 +77,6 @@ CREATE TABLE IF NOT EXISTS `news` (
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ;
 
-CREATE TABLE IF NOT EXISTS `openid` (
-  `url` varchar(255) NOT NULL,
-  `uid` int(10) NOT NULL,
-  PRIMARY KEY  (`url`),
-  KEY `uid` (`uid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 CREATE TABLE IF NOT EXISTS `projects` (
   `id` int(11) NOT NULL auto_increment,
   `uid` int(11) NOT NULL,
@@ -186,9 +179,6 @@ ALTER TABLE `comments`
 ALTER TABLE `kudos`
   ADD CONSTRAINT `kudos_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `kudos_ibfk_2` FOREIGN KEY (`upid`) REFERENCES `updates` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
-ALTER TABLE `openid`
-  ADD CONSTRAINT `openid_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE `projects`
   ADD CONSTRAINT `projects_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,

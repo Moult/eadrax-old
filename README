@@ -16,6 +16,7 @@ SYSTEM REQUIREMENTS
  * ffmpeg-php >= 0.6 (needed for video features)
  * diff >= 2.8.0 (needed for revision features)
  * PEAR Text_Diff >= 1.1.1 (needed for inline revision features)
+ * An RPX API key by Janrain's OpenID services. (needed for OpenID features)
 
 The most recent packages are recommended.
 
@@ -115,6 +116,7 @@ Files to edit:
 	.htaccess
 	application/config/config.php
 	application/config/database.php
+	application/config/authlite.php
 
 Editing config.php:
 
@@ -147,7 +149,22 @@ you would only need to change line 34 in this file from
 to
 	    'pass'     => 'your-database-password',
 
-Note the comma in the end of that line!
+Note the comma at the end of that line!
+
+Editing authlite.php"
+
+If you want OpenID services to work, you need an RPX Api key (Janrain Engage)
+available from http://www.janrain.com/. Change:
+	$config['rpxApiKey'] = 'replace_with_your_key_here';
+
+For security, we also recommend changing the session_key to a unique and random
+value that you may choose yourself. Change:
+	$config['session_key'] = 'authlite_user';
+
+5. Deploying Eadrax as a live site (optional).
+
+If you are planning on deploying Eadrax as a live website, please read:
+	http://docs.kohanaphp.com/installation/deployment
 
 -------------
 ENJOY EADRAX!
@@ -162,7 +179,7 @@ installed Eadrax into.
 DEVELOPER-SPECIFIC INFORMATION
 ------------------------------
 
-Before you commit, you might want to add them to .gitignore so that you don't
+Before you commit, you might want to add these to .gitignore so that you don't
 accidentally commit your local system's settings to the GIT repository.
 
 # example contents of file .gitignore

@@ -72,5 +72,16 @@
 			<a href="<?php echo url::base(); ?>site/tour/">What is WIPUP?</a> - <a href="<?php echo url::base(); ?>site/sponsor/">Sponsor</a> - <a href="<?php echo url::base(); ?>site/development/">Development</a> - <a href="<?php echo url::base(); ?>site/search/">Search</a> - <a href="<?php echo url::base() .'site/legal/'; ?>">Legal Information</a>
         </div>
         <!-- </FOOTER> -->
+<?php if ($this->uri->segment(1) == 'users' && ($this->uri->segment(2) == 'register' || $this->uri->segment(2) == 'login' || $this->uri->segment(2) == 'rpx')) { ?>
+		<script type="text/javascript">
+		  var rpxJsHost = (("https:" == document.location.protocol) ? "https://" : "http://static.");
+		  document.write(unescape("%3Cscript src='" + rpxJsHost +
+		"rpxnow.com/js/lib/rpx.js' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+		<script type="text/javascript">
+		  RPXNOW.overlay = true;
+		  RPXNOW.language_preference = 'en';
+		</script>
+<?php } ?>
 	</body>
 </html>

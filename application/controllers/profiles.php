@@ -33,7 +33,7 @@
  * @copyright	Copyright (C) 2009 Eadrax Team
  * @version		$Id$
  */
-class Profiles_Controller extends Openid_Controller {
+class Profiles_Controller extends Core_Controller {
 	
 	public function index($uid = FALSE)
 	{

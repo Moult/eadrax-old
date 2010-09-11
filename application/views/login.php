@@ -5,7 +5,7 @@
 	</h2>
 
 	<p>
-		Once you're logged in, you're ready to take WIPUP to a personal level. If you don't have an account, you can <a href="<?php echo url::base(); ?>users/register/">register</a> one now.
+		Once you're logged in, you're ready to take WIPUP to a personal level. If you don't have an account, you can <a href="<?php echo url::base(); ?>users/register/">register</a> one now. If you have OpenID, you can use it to immediately sign in.
 	</p>
 
 	<div class="form">
@@ -17,7 +17,9 @@
 				</legend>
 				<div class="elements">
 					<p>
-						<label for="openid_identifier">Username:</label>
+						<label for="openid_identifier" title="WIPUP allows you to use OpenID-enabled accounts to sign in, such as Google, Facebook, Twitter, and Wordpress. Just click the OpenID icon to get started.">Username:
+							<a class="rpxnow" onclick="return false;" href="https://wipup.rpxnow.com/openid/v2/signin?token_url=http%3A%2F%2F<?php echo substr(url::base(), 7); ?>users%2Frpx%2F"><img src="<?php echo url::base(); ?>images/icons/openid.gif" class="icon" /></a>
+						</label>
 						<input type="text" id="openid_identifier" name="openid_identifier" value="<?php //echo $form['openid_identifier']; ?>" <?php if (isset($errors['openid_identifier'])) { echo 'class="error"'; } ?> />
 					</p>
 

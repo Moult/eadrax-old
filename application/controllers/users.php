@@ -33,7 +33,115 @@
  * @copyright	Copyright (C) 2009 Eadrax Team
  * @version		$Id$
  */
-class Users_Controller extends Openid_Controller {
+class Users_Controller extends Core_Controller {
+	/**
+	 * Talks to the Janrain OpenID service to allow OpenID registrations.
+	 *
+	 * @return null
+	 */
+	public function rpx()
+	{
+		$rpxApiKey = Kohana::config('authlite.rpxApiKey');
+
+		if(isset($_POST['token'])) { 
+
+			// STEP 1: Extract token POST parameter
+			$token = $_POST['token'];
+
+			// STEP 2: Use the token to make the auth_info API call
+			$post_data = array('token' => $_POST['token'],
+							 'apiKey' => $rpxApiKey,
+							 'format' => 'json'); 
+
+			$curl = curl_init();
+			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($curl, CURLOPT_URL, 'https://rpxnow.com/api/v2/auth_info');
+			curl_setopt($curl, CURLOPT_POST, true);
+			curl_setopt($curl, CURLOPT_POSTFIELDS, $post_data);
+			curl_setopt($curl, CURLOPT_HEADER, false);
+			curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+			$raw_json = curl_exec($curl);
+			curl_close($curl);
+
+			// STEP 3: Parse the JSON auth_info response
+			$auth_info = json_decode($raw_json, true);
+
+			if ($auth_info['stat'] == 'ok') {
+			  
+				// STEP 3 Continued: Extract the 'identifier' from the response
+				$profile = $auth_info['profile'];
+				$identifier = $profile['identifier'];
+				$openid = $identifier;
+
+				if (isset($profile['preferredUsername']))  {
+				  $username = $profile['preferredUsername'];
+				}
+
+				// STEP 4: Use the identifier as the unique key to sign the user into your system.
+
+				// Load necessary models.
+				$openid_model = new Openid_Model;
+
+				// Let's see if it's a registered OpenID.
+				if (!$openid_model->unique_openid(array('openid_url' => $openid), FALSE)) {
+					// Let's log them in without bothering thme.
+					$username = $openid_model->get_openid_username($openid);
+					$this->_login_user($username, FALSE, FALSE, TRUE);
+				} else {
+					// ... if not, let's register them.
+					// Load necessary models.
+					$user_model   = new User_Model;
+
+					$validate = new Validation(array('openid_identifier' => $username, 'openid_url' => $openid));
+					$validate->pre_filter('trim');
+					$validate->add_rules('openid_identifier', 'required', 'length[5, 15]', 'alpha_dash');
+					$validate->add_callbacks('openid_identifier', array($user_model, 'unique_user_name'));
+					$validate->add_callbacks('openid_url', array($openid_model, 'unique_openid'));
+
+					if ($validate->validate())
+					{
+						// Grab profile information from the OpenID provider.
+						$data = array();
+
+						if (isset($profile['email'])) {
+						  $data['email'] = $profile['email'];
+						}
+
+						if (isset($profile['gender'])) {
+						  $data['gender'] = ucfirst(strtolower(trim($profile['gender'])));
+						}
+
+						if (isset($profile['url'])) {
+						  $data['website'] = format::url($profile['url']);
+						}
+
+						// Let's register the user!
+						$uid = $openid_model->add_user($username, $openid);
+
+						// Update the user with any possible information.
+						$user_model->manage_user($data, $uid);
+
+						// ... and immediately log them in.
+						$this->_login_user($username, FALSE, FALSE, TRUE);
+					} else {
+						// Errors have occured. Fill in the form and set errors.
+						// Note that this time we fill in the "username" with the "openid"
+						$register_view = new View('register');
+						$register_view->form	= array('openid_identifier' => $username);
+						$register_view->errors	= $validate->errors('register_errors');
+
+						// Generate the content.
+						$this->template->content = array($register_view);
+					}
+				}
+			} else {
+				// Error occured - gracefully handle the error by redirecting to the login page.
+				$this->session->set('notification', 'Uh oh! An OpenID error occured: '. $auth_info['err']['msg'] .' - please try again.');
+				url::redirect(url::base() .'users/login/');
+			}
+		}
+	}
+
 	/**
 	 * Process to register a user account.
 	 *
@@ -52,16 +160,6 @@ class Users_Controller extends Openid_Controller {
 			$username = $this->input->post('openid_identifier');
 			$password = $this->input->post('password');
 
-			// This line runs the OpenID check. If the OpenID check succeeds, it 
-			// will automatically continue with the OpenID registration system. 
-			// If it fails (hence the user is not using OpenID), it will return 
-			// false and continue with normal registration.
-			// Note: The OpenID can also fail in the _later_ part of 
-			// authentication, after it has redirected to a completely different 
-			// method in the OpenID controller. It currently does _not_ fall 
-			// back to normal registration if this happens.
-			$this->try_auth(FALSE);
-
 			// ...and we continue doing normal registration.
 			$validate = new Validation($this->input->post());
 			$validate->pre_filter('trim');
@@ -76,13 +174,6 @@ class Users_Controller extends Openid_Controller {
 
 				// Log them in automatically.
 				$this->_login_user($username, $password, FALSE, FALSE);
-
-				// Then load our success view.
-				$register_success_view = new View('register_success');
-				$register_introduction_view = new View('register_introduction');
-
-				// Then generate content.
-				$this->template->content = array($register_success_view, $register_introduction_view);
 			}
 			else
 			{
@@ -132,11 +223,6 @@ class Users_Controller extends Openid_Controller {
 				$remember = FALSE;
 			}
 
-			// Run the OpenID authentication. If it fails, it'll continue with 
-			// normal user login. If not, it'll continue the registration in 
-			// Openid_Controller->finish_login();
-			$this->try_auth(TRUE);
-
 			// Do normal login.
 			$this->_login_user($username, $password, $remember, FALSE);
 		}
@@ -173,12 +259,6 @@ class Users_Controller extends Openid_Controller {
 				$this->username		= $this->authlite->get_user()->username;
 				$this->uid			= $this->authlite->get_user()->id;
 				$this->logged_in	= TRUE;
-
-				// Load the view.
-				$login_view = new View('login_success');
-
-				// Generate the content.
-				$this->template->content = array($login_view);
 
 				// Redirect to the dashboard.
 				$this->session->set('notification', 'Welcome back, '. $this->username .'. We really, really missed you. Seriously.');

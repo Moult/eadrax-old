@@ -21,6 +21,11 @@ $config['password'] = 'password';
 $config['session'] = 'session';
 
 /**
+ * rpxApiKey for Janrain OpenID RPX services.
+ */
+$config['rpxApiKey'] = 'replace_with_your_key_here';
+
+/**
  * Type of hash to use for passwords. Any algorithm supported by the hash function
  * can be used here.
  * @see http://php.net/hash

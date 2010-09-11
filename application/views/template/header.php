@@ -112,9 +112,10 @@ if ($this->uri->segment(1) == 'profiles') {
 			text-align:left;
 			font-size:12px;
 
-			/* outline radius for mozilla/firefox only */
+			/* outline radius for mozilla/firefox/css3-complaint only */
 			-moz-box-shadow:0 0 10px #000;
 			-webkit-box-shadow:0 0 10px #000;
+			box-shadow:0 0 10px #000;
 		}
 		</style>
 
@@ -130,7 +131,7 @@ if ($this->uri->segment(1) == 'profiles') {
 		</script>
 <?php } }
 // Certain forms need some BBCode fun!
-if (($this->uri->segment(1) == 'updates' && $this->uri->segment(2) == 'add') || ($this->uri->segment(1) == 'projects' && $this->uri->segment(2) == 'add')) {
+if (($this->uri->segment(1) == 'updates' && $this->uri->segment(2) == 'add') || ($this->uri->segment(1) == 'projects' && $this->uri->segment(2) == 'add') || ($this->uri->segment(1) == 'users' && ($this->uri->segment(2) == 'register' || $this->uri->segment(2) == 'login' || $this->uri->segment(2) == 'rpx'))) {
 ?>
 		<!-- Tooltip support -->
 		<script src="http://cdn.jquerytools.org/1.2.3/full/jquery.tools.min.js"></script>
@@ -146,9 +147,10 @@ if (($this->uri->segment(1) == 'updates' && $this->uri->segment(2) == 'add') || 
 			text-align:left;
 			font-size:12px;
 
-			/* outline radius for mozilla/firefox only */
+			/* outline radius for mozilla/firefox/css3-complaint only */
 			-moz-box-shadow:0 0 10px #000;
 			-webkit-box-shadow:0 0 10px #000;
+			box-shadow:0 0 10px #000;
 		}
 		</style>
 
