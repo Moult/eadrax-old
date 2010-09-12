@@ -128,7 +128,7 @@ if (isset($uid)) {
 					</p>
 					<?php } ?>
 
-					<div id="overlay" style="display: none; position: absolute; text-align: center; top: 0; left: 0; width: 100%; height: 170%; background-color: #000; -moz-opacity: 0.8; opacity: .80; filter: alpha(opacity=80);">
+					<div id="overlay" style="display: none; position: fixed; text-align: center; top: 0; left: 0; width: 100%; height: 100%; background-color: #000; -moz-opacity: 0.8; opacity: .80; filter: alpha(opacity=80); z-index: 10;">
 						<div style="display: table-cell; vertical-align: middle; color: #FFF;">
 							<img src="<?php echo url::base(); ?>images/loading.gif" alt="Loading" /><br />
 							Please be patient as your update is submitted.<br />
