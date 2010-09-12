@@ -1,85 +1,17 @@
-/* Copyright (c) 2006 Brandon Aaron (brandon.aaron@gmail.com || http://brandonaaron.net)
- * Dual licensed under the MIT (http://www.opensource.org/licenses/mit-license.php)
- * and GPL (http://www.opensource.org/licenses/gpl-license.php) licenses.
- * Thanks to: http://adomas.org/javascript-mouse-wheel/ for some pointers.
- * Thanks to: Mathias Bank(http://www.mathias-bank.de) for a scope bug fix.
- *
- * $LastChangedDate: 2007-12-20 09:02:08 -0600 (Thu, 20 Dec 2007) $
- * $Rev: 4265 $
- *
- * Version: 3.0
- * 
- * Requires: $ 1.2.2+
- */
+/*
+ 
+ jQuery Tools 1.2.4 Mousewheel
 
-(function($) {
+ NO COPYRIGHTS OR LICENSES. DO WHAT YOU LIKE.
 
-$.event.special.mousewheel = {
-	setup: function() {
-		var handler = $.event.special.mousewheel.handler;
-		
-		// Fix pageX, pageY, clientX and clientY for mozilla
-		if ( $.browser.mozilla )
-			$(this).bind('mousemove.mousewheel', function(event) {
-				$.data(this, 'mwcursorposdata', {
-					pageX: event.pageX,
-					pageY: event.pageY,
-					clientX: event.clientX,
-					clientY: event.clientY
-				});
-			});
-	
-		if ( this.addEventListener )
-			this.addEventListener( ($.browser.mozilla ? 'DOMMouseScroll' : 'mousewheel'), handler, false);
-		else
-			this.onmousewheel = handler;
-	},
-	
-	teardown: function() {
-		var handler = $.event.special.mousewheel.handler;
-		
-		$(this).unbind('mousemove.mousewheel');
-		
-		if ( this.removeEventListener )
-			this.removeEventListener( ($.browser.mozilla ? 'DOMMouseScroll' : 'mousewheel'), handler, false);
-		else
-			this.onmousewheel = function(){};
-		
-		$.removeData(this, 'mwcursorposdata');
-	},
-	
-	handler: function(event) {
-		var args = Array.prototype.slice.call( arguments, 1 );
-		
-		event = $.event.fix(event || window.event);
-		// Get correct pageX, pageY, clientX and clientY for mozilla
-		$.extend( event, $.data(this, 'mwcursorposdata') || {} );
-		var delta = 0, returnValue = true;
-		
-		if ( event.wheelDelta ) delta = event.wheelDelta/120;
-		if ( event.detail     ) delta = -event.detail/3;
-		if ( $.browser.opera  ) delta = -event.wheelDelta;
-		
-		event.data  = event.data || {};
-		event.type  = "mousewheel";
-		
-		// Add delta to the front of the arguments
-		args.unshift(delta);
-		// Add event to the front of the arguments
-		args.unshift(event);
+ http://flowplayer.org/tools/toolbox/mousewheel.html
 
-		return $.event.handle.apply(this, args);
-	}
-};
+ based on jquery.event.wheel.js ~ rev 1 ~ 
+ Copyright (c) 2008, Three Dub Media
+ http://threedubmedia.com 
 
-$.fn.extend({
-	mousewheel: function(fn) {
-		return fn ? this.bind("mousewheel", fn) : this.trigger("mousewheel");
-	},
-	
-	unmousewheel: function(fn) {
-		return this.unbind("mousewheel", fn);
-	}
-});
-
-})(jQuery);
+ Since: Mar 2010
+ Date:    Sun Aug 15 08:16:31 2010 +0000 
+*/
+(function(b){function c(a){switch(a.type){case "mousemove":return b.extend(a.data,{clientX:a.clientX,clientY:a.clientY,pageX:a.pageX,pageY:a.pageY});case "DOMMouseScroll":b.extend(a,a.data);a.delta=-a.detail/3;break;case "mousewheel":a.delta=a.wheelDelta/120;break}a.type="wheel";return b.event.handle.call(this,a,a.delta)}b.fn.mousewheel=function(a){return this[a?"bind":"trigger"]("wheel",a)};b.event.special.wheel={setup:function(){b.event.add(this,d,c,{})},teardown:function(){b.event.remove(this,
+d,c)}};var d=!b.browser.mozilla?"mousewheel":"DOMMouseScroll"+(b.browser.version<"1.9"?" mousemove":"")})(jQuery);

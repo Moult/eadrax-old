@@ -32,7 +32,7 @@ if ($this->uri->segment(1) == 'updates' && ($this->uri->segment(2) == 'view' || 
 
         <!-- Scrollable support -->
         <script type="text/javascript" src="<?php echo url::base(); ?>js/jquery.mousewheel.js"></script>
-        <script type="text/javascript" src="<?php echo url::base(); ?>js/jquery.scrollable-1.0.2.min.js"></script>
+        <script type="text/javascript" src="<?php echo url::base(); ?>js/scrollable.min.js"></script>
 		<script type="text/javascript" src="<?php echo url::base(); ?>js/scrollable.js"></script>
         <link rel="stylesheet" href="<?php echo url::base(); ?>css/scrollable.css" type="text/css" media="screen" />
 
@@ -92,7 +92,7 @@ if ($this->uri->segment(1) == 'profiles') {
 <?php if ($this->uri->segment(2) == 'projects') { ?>
         <!-- Scrollable support -->
         <script type="text/javascript" src="<?php echo url::base(); ?>js/jquery.mousewheel.js"></script>
-        <script type="text/javascript" src="<?php echo url::base(); ?>js/jquery.scrollable-1.0.2.min.js"></script>
+        <script type="text/javascript" src="<?php echo url::base(); ?>js/scrollable.min.js"></script>
 		<script type="text/javascript" src="<?php echo url::base(); ?>js/scrollable.js"></script>
         <!-- Scrollable styles -->
         <link rel="stylesheet" href="<?php echo url::base(); ?>css/scrollable.css" type="text/css" media="screen" />
