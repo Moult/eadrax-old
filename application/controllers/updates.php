@@ -632,8 +632,8 @@ class Updates_Controller extends Core_Controller {
 			$upid = $row->id;
 		}
 
-		// Load that update!
-		$this->view($upid);
+		// Redirect to the update.
+		url::redirect(url::base() .'updates/view/'. $upid .'/');
 	}
 
 	/**

@@ -142,15 +142,15 @@ for ($i=0; $i<5; $i++)
 <script type="text/javascript">
 $(document).ready(function() {
 	$("#single_image<?php echo $i; ?>").mouseenter(function(){
-		$("#single_cite<?php echo $i; ?>").slideToggle("fast");
+		$("#single_cite<?php echo $i; ?>").animate({opacity: 0.7}, 300);
 	});
 	$("#single_image<?php echo $i; ?>").mouseleave(function(){
-		$("#single_cite<?php echo $i; ?>").slideToggle("fast");
+		$("#single_cite<?php echo $i; ?>").animate({opacity: 0}, 300);
 	});
 });
 </script>
 <?php
-			echo '<cite id="single_cite'. $i .'" style="background-color: #EEE; background-image: url(\''. url::base() .'/images/formbg.gif\'); background-repeat: repeat-x; color: #555; position: relative; display: block; margin-left: auto; margin-right: auto; top: 0px; height: 15px; width: 814px; padding: 10px; border-top: 1px dotted #999; font-weight: bold; display: none;">This image has been scaled down, click to view the image full size.</cite>';
+			echo '<cite id="single_cite'. $i .'" style="-webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; background-color: #000; color: #FFF; position: relative; margin-left: auto; margin-right: auto; top: 40px; height: 15px; padding: 10px; font-weight: bold; opacity: 0; z-index: 1;">This image has been scaled down, click to view the image full size.</cite>';
 			echo '<a id="single_image'. $i .'" class="single_image" href="'. url::base() .'uploads/files/'. ${'filename'. $i} .'.'. ${'ext'. $i} .'"><img style="vertical-align: middle; border: 1px solid #999; padding: 1px;" src="'. url::base() .'uploads/files/'. ${'filename'. $i} .'_fit.jpg" alt="'. $summary .' (attachment #'. ($i + 1) .')" title="'. $summary .'" /></a>';
 			}
 			else
