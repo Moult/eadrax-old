@@ -24,7 +24,7 @@
 
 /**
  *
- * Users controller for tasks related to user management
+ * Profile controller for tasks related to profile management
  *
  * @category	Eadrax
  * @package		Profile
