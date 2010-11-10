@@ -44,6 +44,9 @@ class Api_Controller extends Core_Controller {
 	public $maxrequests = 200; # per 15m per IP
 	public $maxrequestsauthenticated = 400;
 	public $format = 'xml';
+
+	// APIs don't need fancy pants views.
+	public $auto_render = FALSE;
 	
 	public function index()
 	{
@@ -101,7 +104,7 @@ class Api_Controller extends Core_Controller {
 			$txt = 'please check the syntax. api specifications are here: http://www.freedesktop.org/wiki/Specifications/open-collaboration-services' . "\n";
 			$txt .= $this->getdebugoutput();
 
-			echo $this->generatexml($this->format, 'failed', 999, $txt);
+			echo $this->generatexml('failed', 999, $txt);
 		}
 		exit();
 	}
@@ -310,7 +313,7 @@ class Api_Controller extends Core_Controller {
 		}
 
 		if ($count > $max) {
-			echo $this->generatexml($this->format, 'failed', 200, 'too many API requests in the last 15 minutes from your IP address. please try again later.');
+			echo $this->generatexml('failed', 200, 'too many API requests in the last 15 minutes from your IP address. please try again later.');
 			exit();
 		}
 
@@ -321,7 +324,6 @@ class Api_Controller extends Core_Controller {
 	 * Generates the XML or JSON response for the API call from a 
 	 * multidimensional data array.
 	 *
-	 * @param string $format
 	 * @param string $status
 	 * @param string $statuscode
 	 * @param string $message
@@ -334,8 +336,8 @@ class Api_Controller extends Core_Controller {
 	 *
 	 * @return string xml/json
 	 */
-	private function generatexml($format, $status, $statuscode, $message, $data = array(), $tag = '', $tagattribute = '', $dimension = -1, $itemscount = '', $itemsperpage = '') {
-		if ($format == 'json') {
+	private function generatexml($status, $statuscode, $message, $data = array(), $tag = '', $tagattribute = '', $dimension = -1, $itemscount = '', $itemsperpage = '') {
+		if ($this->format == 'json') {
 			$json = array();
 			$json['status'] = $status;
 			$json['statuscode'] = $statuscode;
@@ -416,11 +418,9 @@ class Api_Controller extends Core_Controller {
 	/**
 	 * Return the config data of this server
 	 *
-	 * @param string $format
-	 * 
 	 * @return string xml/json
 	 */
-	private function config_get($format) {
+	private function config_get() {
 		$user = $this->checkpassword(FALSE);
 
 		$this->checktrafficlimit($user);
@@ -431,10 +431,10 @@ class Api_Controller extends Core_Controller {
 		$xml['contact'] = 'dion@thinkmoult.com';
 		$xml['ssl'] = 'false';
 
-		echo $this->generatexml($format, 'ok', 100, '', $xml, 'config', '', 1);
+		echo $this->generatexml('ok', 100, '', $xml, 'config', '', 1);
 	}
 
-	private function person_check_post($format) {
+	private function person_check_post() {
 		$user = $this->checkpassword(FALSE);
 		$this->checktrafficlimit($user);
 
@@ -445,7 +445,7 @@ class Api_Controller extends Core_Controller {
 
 		$user = $user_model->username($login);
 		if ($login == NULL || ($user == FALSE && $password == NULL)) {
-		  echo $this->generatexml($format,'failed',101,'please specify all mandatory fields');
+			echo $this->generatexml('failed',101,'please specify all mandatory fields');
 		} else {
 			if ($user == FALSE) {
 				// If not found, check login using a special function (USER/PASS auth)
@@ -458,11 +458,54 @@ class Api_Controller extends Core_Controller {
 			}
 
 			if ($user == FALSE) {
-				  echo $this->generatexml($format,'failed',102,'login not valid');
+				echo $this->generatexml('failed',102,'login not valid');
 			} else {
 				$xml['person']['personid'] = $user;
-				echo $this->generatexml($format,'ok',100,'',$xml,'person','check',2); 
+				echo $this->generatexml('ok',100,'',$xml,'person','check',2); 
 			}
 		}
+	}
+
+	private function person_add_post() {
+		// Reroute POST vars.
+		$_POST['openid_identifier'] = $this->input->post('login');
+
+		// Run our existing controller function.
+		Users_Controller::register();
+
+		// Remap vars from original controller.
+		if (isset($this->template->content)) {
+			$errors = isset($this->template->content[0]->errors) ? $this->template->content[0]->errors : NULL;
+		} else {
+			$errors = NULL;
+		}
+		$openid_identifier = isset($errors['openid_identifier']) ? $errors['openid_identifier'] : NULL;
+		$password = isset($errors['password']) ? $errors['password'] : NULL;
+
+		$error_msgs = Kohana::lang('register_errors');
+
+		if ( $errors == NULL) {
+			echo $this->generatexml('ok',100,'');
+		} elseif (
+			$openid_identifier == $error_msgs['openid_identifier']['required'] || 
+			$password == $error_msgs['password']['required']
+		) {
+			echo $this->generatexml('failed',101,'please specify all mandatory fields');
+		} elseif (
+			$openid_identifier == $error_msgs['openid_identifier']['length'] || 
+			$openid_identifier == $error_msgs['openid_identifier']['alpha_dash']
+		) {
+			echo $this->generatexml('failed',103,'please specify a valid login');
+		} elseif (
+			$openid_identifier == $error_msgs['openid_identifier']['unique']
+		) {
+			echo $this->generatexml('failed',104,'login already exists');
+		}
+	}
+
+	// Dirty hacks.
+
+	public function _login_user($username, $password, $remember, $openid) {
+		Users_Controller::_login_user($username, $password, $remember, $openid);
 	}
 }
