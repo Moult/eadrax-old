@@ -26,11 +26,11 @@
                     <li><a href="<?php echo url::base(); ?>projects/view/category/11/">Magazines &amp; Newsletters</a></li>
                     <li><a href="<?php echo url::base(); ?>projects/view/category/12/">Miscellaneous</a></li>
                     <li><a href="<?php echo url::base(); ?>projects/view/category/13/">Music</a></li>
-                    <li><a href="<?php echo url::base(); ?>projects/view/category/14/">Posters</a></li>
-                    <li><a href="<?php echo url::base(); ?>projects/view/category/15/">Presentations</a></li>
+                    <li><a href="<?php echo url::base(); ?>projects/view/category/14/">Photography</a></li>
+                    <li><a href="<?php echo url::base(); ?>projects/view/category/15/">Posters &amp; Presentations</a></li>
                     <li><a href="<?php echo url::base(); ?>projects/view/category/16/">Sound Effects</a></li>
                     <li><a href="<?php echo url::base(); ?>projects/view/category/17/">Vector Art</a></li>
-                    <li><a href="<?php echo url::base(); ?>projects/view/category/18/">Video</a></li>
+                    <li><a href="<?php echo url::base(); ?>projects/view/category/18/">Video &amp; Film</a></li>
                     <li><a href="<?php echo url::base(); ?>projects/view/category/19/">Website Programming</a></li>
                 </ol>
             </div>

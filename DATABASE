@@ -36,11 +36,11 @@ INSERT INTO `categories` (`id`, `name`) VALUES
 (11, 'Magazines & Newsletters'),
 (12, 'Miscellaneous'),
 (13, 'Music'),
-(14, 'Posters'),
-(15, 'Presentations'),
+(14, 'Photography'),
+(15, 'Posters & Presentations'),
 (16, 'Sound Effects'),
 (17, 'Vector Art'),
-(18, 'Video'),
+(18, 'Video & Film'),
 (19, 'Website Programming');
 
 CREATE TABLE IF NOT EXISTS `comments` (
