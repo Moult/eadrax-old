@@ -411,6 +411,8 @@ class Api_Controller extends Core_Controller {
 		}
 	}
 
+	// NOW WE BEGIN OUR FUNCTIONS FOR API CALLS
+
 	/**
 	 * Return the config data of this server
 	 *
@@ -432,5 +434,35 @@ class Api_Controller extends Core_Controller {
 		echo $this->generatexml($format, 'ok', 100, '', $xml, 'config', '', 1);
 	}
 
-	// NOW WE BEGIN OUR FUNCTIONS FOR API CALLS
+	private function person_check_post($format) {
+		$user = $this->checkpassword(FALSE);
+		$this->checktrafficlimit($user);
+
+		$user_model = new User_Model;
+
+		$login = $this->input->post('login', NULL);
+		$password = $this->input->post('password', NULL);
+
+		$user = $user_model->username($login);
+		if ($login == NULL || ($user == FALSE && $password == NULL)) {
+		  echo $this->generatexml($format,'failed',101,'please specify all mandatory fields');
+		} else {
+			if ($user == FALSE) {
+				// If not found, check login using a special function (USER/PASS auth)
+				$authlite = new Authlite();
+				if ($authlite->login($login, $password, FALSE)) {
+					$user = $authlite->get_user()->username;
+				} else {
+					$user = FALSE;
+				}
+			}
+
+			if ($user == FALSE) {
+				  echo $this->generatexml($format,'failed',102,'login not valid');
+			} else {
+				$xml['person']['personid'] = $user;
+				echo $this->generatexml($format,'ok',100,'',$xml,'person','check',2); 
+			}
+		}
+	}
 }
