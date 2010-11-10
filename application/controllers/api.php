@@ -27,7 +27,7 @@
  * Implementation of the OCS REST API
  *
  * For more information: http://socialdesktop.org/
- * This is based loosely upon lib_ocs (PHP serverside implementation)
+ * This is based upon lib_ocs (PHP serverside implementation)
  *
  * @category	Eadrax
  * @package		API
@@ -38,14 +38,99 @@
  */
 class Api_Controller extends Core_Controller {
 
-	public static $whitelist = array('127.0.0.1', 'x.x.x.x');
-	public static $maxpersonsearchpage = 20;
-	public static $maxrequests = 200; # per 15m per IP
-	public static $maxrequestsauthenticated = 400;
+	//public $whitelist = array('127.0.0.1', 'x.x.x.x');
+	public $whitelist = array('x.x.x.x');
+	public $maxpersonsearchpage = 20;
+	public $maxrequests = 200; # per 15m per IP
+	public $maxrequestsauthenticated = 400;
 	
 	public function index()
 	{
 		die();
+	}
+
+	/**
+	 * We're going to have the 'v1' "file" here, just for testing.
+	 */
+	public function v1() {
+		// Let's get rolling.
+		$this->handle();
+	}
+
+	/**
+	 * Generates an API key for a user after getting them to agree to basic ToS.
+	 */
+	public function generate() {
+		// We only want logged in people.
+		$this->restrict_access();
+
+		// Load necessary models.
+		$user_model = new User_Model;
+
+		$user_info = $user_model->user_information($this->uid);
+		$apikey = $user_info['apikey'];
+
+		if ($this->input->post() && empty($apikey))
+		{
+			$agree = $this->input->post('agree');
+
+			// ...and we continue doing normal registration.
+			$validate = new Validation($this->input->post());
+			$validate->pre_filter('trim');
+			$validate->add_rules('agree', 'required');
+
+			if ($validate->validate())
+			{
+				// Everything went great! Let's generate.
+				$apikey = '';
+
+				for ($n = 0; $n < 3; $n++) {
+					// can't handle numbers larger than 2^31-1 = 2147483647
+					$rand = rand(1000000, 2147483647);
+					$base = 62;
+					$chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+					$str = '';
+
+					do {
+						$i = $rand % 62;
+						$str = $chars[$i] . $str;
+						$rand = ($rand - $i) / 62;
+					} while($rand > 0);
+
+					$apikey .= $str;
+				}
+
+				$user_model->manage_user(array('apikey' => $apikey), $this->uid);
+
+				$this->session->set('notification', 'Your API key has been generated. Wicked.');
+				url::redirect(url::base() .'api/generate/');
+			}
+			else
+			{
+				// Errors have occured. Fill in the form and set errors.
+				$generate_view = new View('generate');
+				$generate_view->form	= arr::overwrite(array(
+					'agree' => '',
+					), $validate->as_array());
+				$generate_view->errors	= $validate->errors('generate_errors');
+
+				// Generate the content.
+				$this->template->content = array($generate_view);
+			}
+		}
+		else
+		{
+			// Load the neccessary view.
+			$generate_view = new View('generate');
+
+			// If we didn't press submit, we want a blank form.
+			$generate_view->form = array('agree'=>'');
+
+			$generate_view->apikey = $apikey;
+
+			// Generate the content.
+			$this->template->content = array($generate_view);
+		}
 	}
 
 	/**
@@ -105,7 +190,7 @@ class Api_Controller extends Core_Controller {
 			$data = (float) $data;
 			return $data;
 		} else {
-			H01_UTIL::exception('readdata: internal error:'. $type);
+			die('readdata: internal error: '. $type);
 			return FALSE;
 		}
 	}
@@ -129,26 +214,18 @@ class Api_Controller extends Core_Controller {
 			exit();
 		}
 
-		// Preprocess URL
-		$url = $_SERVER['PHP_SELF'];
-
-		// Must end in a /
-		if (substr($url, (strlen($url)-1)) != '/') {
-			$url .= '/';
-		}
-
-		$ex = explode('/', $url);
-
 		// Eventhandler
-		if (count($ex) == 2) {
-			H01_GUI::showtemplate('apidoc');
-		} elseif ($method == 'get' && strtolower($ex[1]) == 'v1' && strtolower($ex[2]]) == 'config' && count($ex[$4])) {
-			$format = H01_OCS::readdata('format', 'text');
-			H01::OCS::apiconfig($format);
+		if ($this->uri->total_segments() == 1) {
+			echo 'showing the apidoc template';
+		} elseif ($method == 'get' && strtolower($this->uri->segment(2)) == 'v1' && strtolower($this->uri->segment(3)) == 'config' && $this->uri->total_segments() == 3) {
+			$format = $this->readdata('format', 'text');
+			$this->apiconfig($format);
 		} else {
-			$format = H01_OCS::readdata('format', 'text');
+			$format = $this->readdata('format', 'text');
 			$txt = 'please check the syntax. api specifications are here: http://www.freedesktop.org/wiki/Specifications/open-collaboration-services' . "\n";
-			$text .= H01_OCS::getdebugoutput();
+			$txt .= $this->getdebugoutput();
+
+			echo $this->generatexml($format, 'failed', 999, $txt);
 		}
 		exit();
 	}
@@ -190,8 +267,11 @@ class Api_Controller extends Core_Controller {
 	 * @return string
 	 */
 	private function checkpassword($forceuser = TRUE) {
+		// Load necessary models.
+		$user_model = new User_Model;
+
 		// Check whitelist first.
-		if (in_array($_SERVER['REMOTE_ADDR'], H01_OCS::$whitelist)) {
+		if (in_array($_SERVER['REMOTE_ADDR'], $this->whitelist)) {
 			$identifieduser = '';
 		} else {
 			// is it a valid user account?
@@ -216,9 +296,18 @@ class Api_Controller extends Core_Controller {
 					$identifieduser = '';
 				}
 			} else {
-				$user = H01_USER::finduserbyapikey($authuser, CONFIG_USERDB);
+				// Finds the corresponding row for the user in our database (API 
+				// key auth).
+				$user = $user_model->username($authuser);
 				if ($user == FALSE) {
-					$user = H01_USER::checklogin($authuser, CONFIG_USERDB, $authpw, PERM_Login);
+					// If not found, check login using a special function (USER/PASS auth)
+					$authlite = new Authlite();
+					if ($authlite->login($authuser, $authpw, FALSE)) {
+						$user = $authlite->get_user()->username;
+					} else {
+						$user = FALSE;
+					}
+
 					if ($user == false) {
 						if ($forceuser) {
 							header('WWW-Authenticate: Basic realm="your valid user account or api key"');
@@ -244,8 +333,9 @@ class Api_Controller extends Core_Controller {
 	 * Should be called by a cronjob every 15 minutes.
 	 */
 	public function cleanuptrafficlimit() {
-		$result = H01_DB::query('truncate apitraffic');
-		H01_DB::freeresult($result);
+		$api_model = new Api_Model;
+
+		$api_model->truncate();
 	}
 
 	/**
@@ -256,28 +346,20 @@ class Api_Controller extends Core_Controller {
 	 *
 	 * @return bool
 	 */
-	private function checktrafficlimit($user) {
-		$result = H01_DB::insert('apitraffic', 'into apitraffic (ip, count) values ('. ip2long($_SERVER['REMOTE_ADDR']) .',1) on duplicate key update count=count+1');
-		H01_DB::free_result($result);
+	private function checktrafficlimit($user = '') {
+		$api_model = new Api_Model;
 
-		$result = H01_DB::select('apitraffic', 'count from apitraffic where ip="'. ip2long($_SERVER['REMOTE_ADDR']) .'"');
-		$numrows = H01_DB::numrows($result);
-		$DBCount = H01_DB::fetch_assoc($result);
-		H01_DB::free_result($result);
-
-		if ($numrows == 0) {
-			return TRUE;
-		}
+		$count = $api_model->add_traffic($_SERVER['REMOTE_ADDR']);
 
 		if ($user == '') {
-			$max = H01_OCS::$maxrequests;
+			$max = $this->maxrequests;
 		} else {
-			$max = H01_OCS::$maxrequestsauthenticated;
+			$max = $this->maxrequestsauthenticated;
 		}
 
-		if ($DBCount['count'] > $max) {
-			$format = H01_OCS::readdata('format', 'text');
-			echo H01_OCS::generatexml($format, 'failed', 200, 'too many API requests in the last 15 minutes from your IP address. please try again later.');
+		if ($count > $max) {
+			$format = $this->readdata('format', 'text');
+			echo $this->generatexml($format, 'failed', 200, 'too many API requests in the last 15 minutes from your IP address. please try again later.');
 			exit();
 		}
 
@@ -319,9 +401,9 @@ class Api_Controller extends Core_Controller {
 			xmlwriter_start_document($writer);
 			xmlwriter_start_element($writer, 'ocs');
 			xmlwriter_start_element($writer, 'meta');
-			xmlwriter_start_element($writer, 'status', $status);
-			xmlwriter_start_element($writer, 'statuscode', $statuscode);
-			xmlwriter_start_element($writer, 'message', $message);
+			xmlwriter_write_element($writer, 'status', $status);
+			xmlwriter_write_element($writer, 'statuscode', $statuscode);
+			xmlwriter_write_element($writer, 'message', $message);
 
 			if ($itemscount != '') {
 				xmlwriter_write_element($writer, 'totalitems', $itemscount);
@@ -386,17 +468,18 @@ class Api_Controller extends Core_Controller {
 	 * @return string xml/json
 	 */
 	private function apiconfig($format) {
-		$user = H01_OCS::checkpassword(FALSE);
-		H01_OCS::checktrafficlimit($user);
+		$user = $this->checkpassword(FALSE);
+
+		$this->checktrafficlimit($user);
 
 		$xml['version'] = '1.4';
-		$xml['website'] = 'openDesktop.org';
-		$xml['host'] = 'api.openDesktop.org';
-		$xml['contact'] = 'frank@openDesktop.org';
-		$xml['ssl'] = 'true';
+		$xml['website'] = 'wipup.org';
+		$xml['host'] = 'wipup.org';
+		$xml['contact'] = 'dion@thinkmoult.com';
+		$xml['ssl'] = 'false';
 
-		echo H01_OCS::generatexml($format, 'ok', 100, '', $xml, 'config', '', 1);
+		echo $this->generatexml($format, 'ok', 100, '', $xml, 'config', '', 1);
 	}
 
-	// NOW WE BEGIN FUNCTIONS FOR API CALLS
+	// NOW WE BEGIN OUR FUNCTIONS FOR API CALLS
 }

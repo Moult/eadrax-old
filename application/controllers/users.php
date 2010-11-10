@@ -149,7 +149,7 @@ class Users_Controller extends Core_Controller {
 	 */
 	public function register()
 	{
-		// We only want logged in people.
+		// We only want non logged in people.
 		$this->restrict_access(TRUE);
 
 		// Load necessary models.

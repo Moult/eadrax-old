@@ -130,6 +130,24 @@ class User_Model extends ORM {
 	}
 
 	/**
+	 * Returns username based on API key.
+	 *
+	 * @param string $apikey
+	 *
+	 * @return mixed
+	 */
+	public function username($apikey)
+	{
+		$find_username = $this->db->from('users')->where('apikey', $apikey)->get();
+		if ($find_username->count() == 0 OR empty($apikey)) {
+			return FALSE;
+		} else {
+			$find_username = $find_username->current();
+			return $find_username->username;
+		}
+	}
+
+	/**
 	 * Edits a user with the data specified in $data.
 	 *
 	 * @param array $data An array with field_name=>content for data to add.
