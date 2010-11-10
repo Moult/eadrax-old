@@ -43,18 +43,67 @@ class Api_Controller extends Core_Controller {
 	public $maxpersonsearchpage = 20;
 	public $maxrequests = 200; # per 15m per IP
 	public $maxrequestsauthenticated = 400;
+	public $format = 'xml';
 	
 	public function index()
 	{
-		die();
+		die('<a href="http://www.freedesktop.org/wiki/Specifications/open-collaboration-services">OCS v1</a> is currently implemented.');
 	}
 
 	/**
-	 * We're going to have the 'v1' "file" here, just for testing.
+	 * Main function to handle the REST request
 	 */
-	public function v1() {
-		// Let's get rolling.
-		$this->handle();
+	public function v1($module = NULL, $call = '') {
+		// Overwrite the 404 error page returncode
+		header('HTTP/1.0 200 OK');
+
+		if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+			$method = 'get';
+		} elseif($_SERVER['REQUEST_METHOD'] == 'PUT') {
+			$method = 'put';
+			parse_str(file_get_contents('php://input'), $put_vars);
+		} elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			$method = 'post';
+		} else {
+			echo 'internal server error: method not supported';
+			exit();
+		}
+
+		if ($this->input->get('format', NULL) != NULL) {
+			$this->format = $this->input->get('format');
+		} elseif ($this->input->post('format', NULL) != NULL) {
+			$this->format = $this->input->post('format');
+		} else {
+			$this->format = 'xml';
+		}
+
+		// Find out if we have a valid module and call.
+		if (valid::alpha($module) == FALSE || (!empty($call) && valid::alpha($call) == FALSE)) {
+			$api_call = FALSE;
+		} else {
+			if (empty($call)) {
+				$api_call = $module .'_'. $method;
+			} else {
+				$api_call = $module .'_'. $call .'_'. $method;
+			}
+
+			if (method_exists($this, $api_call) != TRUE) {
+				$api_call = FALSE;
+			}
+		}
+
+		// Eventhandler
+		if ($this->uri->total_segments() == 1) {
+			echo 'showing the apidoc template';
+		} elseif ($api_call != FALSE) {
+			$this->$api_call($this->format);
+		} else {
+			$txt = 'please check the syntax. api specifications are here: http://www.freedesktop.org/wiki/Specifications/open-collaboration-services' . "\n";
+			$txt .= $this->getdebugoutput();
+
+			echo $this->generatexml($this->format, 'failed', 999, $txt);
+		}
+		exit();
 	}
 
 	/**
@@ -131,103 +180,6 @@ class Api_Controller extends Core_Controller {
 			// Generate the content.
 			$this->template->content = array($generate_view);
 		}
-	}
-
-	/**
-	 * Reads data specified by $key from various get/post/default sources.
-	 *
-	 * @param string $key		The key to refer to the variable
-	 * @param string $type		The data type of the variable
-	 * @param bool $getpriority	The priority of the variable
-	 * @param mixed $default	The default value of the variable
-	 *
-	 * @return mixed
-	 */
-	public function readdata($key, $type = 'raw', $getpriority = FALSE, $default = '')
-	{
-		if ($getpriority) {
-			if (isset($_GET[$key])) {
-				$data = $_GET[$key];
-			} elseif (isset($_POST[$key])) {
-				$data = $_POST[$key];
-			} else {
-				if ($default == '') {
-					if (($type == 'int') || ($type == 'float')) {
-						$data = 0;
-					} else {
-						$data = '';
-					}
-				} else {
-					$data = $default;
-				}
-			}
-		} else {
-			if (isset($_POST[$key])) {
-				$data = $_POST[$key];
-			} elseif (isset($_GET[$key])) {
-				$data = $_POST[$key];
-			} else {
-				if ($default == '') {
-					if (($type == 'int') || ($type == 'float')) {
-						$data = 0;
-					} else {
-						$data = '';
-					}
-				} else {
-					$data = $default;
-				}
-			}
-		}
-
-		if ($type == 'raw' || $type == 'array') {
-			return $data;
-		} elseif ($type == 'text') {
-			return addslashes(strip_tags($data));
-		} elseif ($type == 'int') {
-			$data = (int) $data;
-			return $data;
-		} elseif ($type == 'float') {
-			$data = (float) $data;
-			return $data;
-		} else {
-			die('readdata: internal error: '. $type);
-			return FALSE;
-		}
-	}
-
-	/**
-	 * Main function to handle the REST request
-	 */
-	public function handle() {
-		// Overwrite the 404 error page returncode
-		header('HTTP/1.0 200 OK');
-
-		if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-			$method = 'get';
-		} elseif($_SERVER['REQUEST_METHOD'] == 'PUT') {
-			$method = 'put';
-			parse_str(file_get_contents('php://input'), $put_vars);
-		} elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
-			$method = 'post';
-		} else {
-			echo 'internal server error: method not supported';
-			exit();
-		}
-
-		// Eventhandler
-		if ($this->uri->total_segments() == 1) {
-			echo 'showing the apidoc template';
-		} elseif ($method == 'get' && strtolower($this->uri->segment(2)) == 'v1' && strtolower($this->uri->segment(3)) == 'config' && $this->uri->total_segments() == 3) {
-			$format = $this->readdata('format', 'text');
-			$this->apiconfig($format);
-		} else {
-			$format = $this->readdata('format', 'text');
-			$txt = 'please check the syntax. api specifications are here: http://www.freedesktop.org/wiki/Specifications/open-collaboration-services' . "\n";
-			$txt .= $this->getdebugoutput();
-
-			echo $this->generatexml($format, 'failed', 999, $txt);
-		}
-		exit();
 	}
 
 	/**
@@ -358,8 +310,7 @@ class Api_Controller extends Core_Controller {
 		}
 
 		if ($count > $max) {
-			$format = $this->readdata('format', 'text');
-			echo $this->generatexml($format, 'failed', 200, 'too many API requests in the last 15 minutes from your IP address. please try again later.');
+			echo $this->generatexml($this->format, 'failed', 200, 'too many API requests in the last 15 minutes from your IP address. please try again later.');
 			exit();
 		}
 
@@ -467,7 +418,7 @@ class Api_Controller extends Core_Controller {
 	 * 
 	 * @return string xml/json
 	 */
-	private function apiconfig($format) {
+	private function config_get($format) {
 		$user = $this->checkpassword(FALSE);
 
 		$this->checktrafficlimit($user);
