@@ -33,8 +33,8 @@ if (!empty($content))
 				}
 				if ($section_id != '') {
 					// We need specific styles to be added to the defaults.
-					$side_style = ' style="height: 100px;"';
-					$top_style = ' style="min-height: 90px;"';
+					$side_style = ' style="height: 60px;"';
+					$top_style = ' style="min-height: 50px; height: 50px;"';
 				} else {
 					$side_style = '';
 					$top_style = '';

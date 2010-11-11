@@ -24,13 +24,13 @@
 <?php if (!isset($category_name)) { ?>
 <?php if (!empty($project)) { ?>
 
-<div style="float: left;font-size: 18px; letter-spacing: -1px; color: #AAA; text-align: right; margin-bottom: 5px;">
+<div style="float: left; font-size: 12px; color: #666; text-align: right; margin-bottom: 5px;">
 By <a href="<?php echo url::base(); ?>profiles/view/<?php echo $u_name; ?>/"><?php echo $u_name; ?></a>
-<?php if (!empty($contributors)) { ?><span style="font-size: 14px; letter-spacing: -1px;">with <?php foreach ($contributors as $i => $contributor) { ?><?php echo $contributor; ?><?php if (!empty($aliases[$i])) { ?> <?php if (!empty($contributor)) { echo '('; } ?><?php if (!empty($match[$i])) { ?><a href="<?php echo url::base(); ?>profiles/view/<?php echo $aliases[$i]; ?>/"><?php } ?><?php echo $aliases[$i]; ?><?php if (!empty($match[$i])) { ?></a><?php if ($this->username == $aliases[$i]) { ?>[<a href="<?php echo url::base(); ?>projects/nocontribute/<?php echo $project['id']; ?>/">X</a>]<?php } ?><?php } ?><?php if (!empty($contributor)) { echo ')'; } ?><?php } ?>, <?php } ?></span><?php } ?>
+<?php if (!empty($contributors)) { ?> with <?php foreach ($contributors as $i => $contributor) { ?><?php echo $contributor; ?><?php if (!empty($aliases[$i])) { ?> <?php if (!empty($contributor)) { echo '('; } ?><?php if (!empty($match[$i])) { ?><a href="<?php echo url::base(); ?>profiles/view/<?php echo $aliases[$i]; ?>/"><?php } ?><?php echo $aliases[$i]; ?><?php if (!empty($match[$i])) { ?></a><?php if ($this->username == $aliases[$i]) { ?>[<a href="<?php echo url::base(); ?>projects/nocontribute/<?php echo $project['id']; ?>/">X</a>]<?php } ?><?php } ?><?php if (!empty($contributor)) { echo ')'; } ?><?php } ?>, <?php } ?><?php } ?>
 in <em><?php echo $categories[$project['cid']]; ?></em> <?php if (!empty($project['website'])) { echo ' (<a href="'. $project['website'] .'">www</a>)'; } ?>
 </div>
 
-<div style="float: right; font-size: 18px; letter-spacing: -1px; color: #AAA; text-align: right; margin-bottom: 5px;"><?php echo date('jS F Y', strtotime($project['logtime'])); ?></div>
+<div style="float: right; font-size: 12px; color: #666; text-align: right; margin-bottom: 5px;"><?php echo date('jS F Y', strtotime($project['logtime'])); ?></div>
 
 <div style="clear: both; background-color: #FFF; border-top: 1px solid #888; padding: 10px; margin-bottom: 10px; padding-bottom: 1px; background-image: url('<?php echo url::base(); ?>images/comment_divide.png'); background-repeat: repeat-x; background-position: bottom;">
 <?php echo $description; ?>

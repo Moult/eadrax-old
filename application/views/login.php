@@ -5,7 +5,7 @@
 	</h2>
 
 	<p>
-		Once you're logged in, you're ready to take WIPUP to a personal level. If you don't have an account, you can <a href="<?php echo url::base(); ?>users/register/">register</a> one now. If you have OpenID, you can use it to immediately sign in.
+		Once you're logged in, you're ready to take WIPUP to a personal level. If you don't have an account, you can <a href="<?php echo url::base(); ?>users/register/">register</a> one now.
 	</p>
 
 	<div class="form">

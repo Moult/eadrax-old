@@ -112,7 +112,7 @@ if (isset($uid)) {
 
 					<p>
 						<label for="pastebin" title="Pastebinning allows other users to post revisions of your text as well as benefit from syntax highlighting.">Pastebin<img src="<?php echo url::base(); ?>images/icons/help.png" alt="info" />:</label>
-						<textarea name="pastebin" id="pastebin" rows="6" cols="40" <?php if (isset($errors['pastebin'])) { echo 'class="error"'; } ?>><?php echo $form['pastebin']; ?></textarea>
+						<textarea name="pastebin" id="pastebin" rows="6" cols="40" class="resizable" <?php if (isset($errors['pastebin'])) { echo 'class="error"'; } ?>><?php echo $form['pastebin']; ?></textarea>
 					</p>
 
 					<?php if (!$this->logged_in) { ?>

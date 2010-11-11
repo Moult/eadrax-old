@@ -68,24 +68,23 @@ $(document).ready(function() {
 	$("#expand").click(function(){
 <?php foreach ($pid_array as $pid) { ?>
 		if ($("#expand").hasClass('expand')) {
+			$("#section_top<?php echo $pid; ?>").css({'height': ''});
 			$("#section_divider<?php echo $pid; ?>").css("background-color", "white");
 			$("#section_divider<?php echo $pid; ?>").animate({height: '24px'});
 			$("#section_top_right<?php echo $pid; ?>").animate({height: '230px'});
 			if (!$("#section_top_left<?php echo $pid; ?>").hasClass('tall')) {
 				$("#section_top_left<?php echo $pid; ?>").animate({height: '230px'}).addClass('tall');
 				$("#slider<?php echo $pid; ?>").slideToggle("slow");
-				$("#summary<?php echo $pid; ?>").slideToggle("slow");
-				$("#information<?php echo $pid; ?>").slideToggle("slow");
 			}
 		} else {
+			$("#section_top<?php echo $pid; ?>").css({'min-height': '50px'});
+			$("#section_top<?php echo $pid; ?>").animate({height: '50px'});
 			$("#section_divider<?php echo $pid; ?>").css("background-color", "#E3F8FF");
 			$("#section_divider<?php echo $pid; ?>").animate({height: '18px'});
-			$("#section_top_right<?php echo $pid; ?>").animate({height: '100px'});
+			$("#section_top_right<?php echo $pid; ?>").animate({height: '60px'});
 			if ($("#section_top_left<?php echo $pid; ?>").hasClass('tall')) {
-				$("#section_top_left<?php echo $pid; ?>").animate({height: '100px'}).removeClass('tall');
+				$("#section_top_left<?php echo $pid; ?>").animate({height: '60px'}).removeClass('tall');
 				$("#slider<?php echo $pid; ?>").slideToggle("slow");
-				$("#summary<?php echo $pid; ?>").slideToggle("slow");
-				$("#information<?php echo $pid; ?>").slideToggle("slow");
 			}
 		}
 <?php } ?>
