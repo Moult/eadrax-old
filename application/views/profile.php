@@ -25,20 +25,20 @@
 		</ul>
 	</div>
 	<?php } ?>
-<div style="clear: both; line-height: 30px; font-size: 15px; letter-spacing: -1px; color: #888; border-top: 1px solid #999; border-left: 0px; border-right: 0px; background-image: url(<?php echo url::base(); ?>images/formbg.gif); background-position: top; background-repeat: repeat-x; background-color: #D8D8D8; padding: 8px; padding-top: 2px; padding-bottom: 4px; margin-bottom: 10px;">
+<div style="clear: both; line-height: 25px; font-size: 12px; letter-spacing: 0px; color: #888; border-top: 1px solid #999; border-bottom: 1px solid #999; border-left: 0px; border-right: 0px; background-position: top; background-repeat: repeat-x; background-color: #EEE; padding: 8px; padding-top: 2px; padding-bottom: 0px; margin-bottom: 0px;">
 <div style="float: left;">
 <?php if (!empty($age)) { ?>
 <?php if ($age == 'no') { ?>
 Some <?php } else { ?>
-<?php echo $age; ?> year old
+<strong><?php echo $age; ?></strong> year old
 <?php } ?>
 <?php if ($user['gender'] != 'Confused') { ?>
-<?php echo strtolower($user['gender']); ?> 
+<strong><?php echo strtolower($user['gender']); ?></strong> 
 <?php } else { ?>
 gender-confused person
 <?php } ?>
 <?php if (!empty($user['location'])) { ?>
-living in <?php echo $user['location']; ?>
+living in <strong><?php echo $user['location']; ?></strong>
 <?php } ?>
 <?php } else { ?>
 A sociopath who hasn't yet updated his profile information
@@ -46,15 +46,15 @@ A sociopath who hasn't yet updated his profile information
 <?php if ($this->uid == $user['id']) { ?> <a href="<?php echo url::base(); ?>profiles/update/<?php echo $user['id']; ?>/"><img src="<?php echo url::base(); ?>images/icons/pencil.png" alt="" /></a><?php } ?></div>
 
 
-<div style="width: 150px; text-align: right; float: right; font-size: 14px; color: #AAA; letter-spacing: -1px; line-height: 30px;">Last active: <?php echo date('jS F', $user['lastactive']); ?></div>
+<div style="width: 150px; text-align: right; float: right; font-size: 10px; color: #AAA; letter-spacing: 0px; line-height: 25px;">Last active: <?php echo date('jS F', $user['lastactive']); ?></div>
 
-<div style="clear: both; float: left; font-size: 13px; text-shadow: 0px 1px 0px #FFF; line-height: 15px;">
+<div style="clear: both; float: left; font-size: 12px; text-shadow: 0px 1px 0px #FFF; line-height: 15px;">
 <?php if (!empty($user['description'])) { ?>
-<span title="<?php echo html::specialchars($user['description']); ?>"><?php echo text::limit_words($user['description'], 20, '...'); ?></span>
+<span title="<?php echo html::specialchars($user['description']); ?>"><?php echo text::limit_words($user['description'], 17, '...'); ?></span>
 <?php } ?>
 </div>
 
-	<div style="float: right; height: 25px; line-height: 25px; font-size: 12px; letter-spacing: 0px; color: #888;">
+	<div style="text-align: right; float: right; height: 25px; line-height: 25px; font-size: 12px; letter-spacing: 0px; color: #888;">
 <?php if(!empty($user['email']) && $user['email_public'] == 1) { ?><a href="mailto:<?php echo $user['email']; ?>"><img src="<?php echo url::base(); ?>images/icons/email.png" /></a>&nbsp;<?php } ?>
 <?php if(!empty($user['website'])) { ?><a href="<?php echo $user['website']; ?>"><img src="<?php echo url::base(); ?>images/icons/world_link.png" /></a>&nbsp;<?php } ?>
 <?php if(!empty($user['msn'])) { ?><img src="<?php echo url::base(); ?>images/icons/msn.png" title="<?php echo $user['msn']; ?>" alt="MSN" />&nbsp;<?php } ?>

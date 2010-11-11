@@ -1,6 +1,6 @@
 <h2>
 	<img src="<?php echo url::base(); ?>images/icons/questionmark_48.png" class="icon" alt="" />
-	So, what exactly is WIPUP?
+	Why should I use WIPUP?
 </h2>
 
 <p style="text-align: center; font-size: 20px; color: #000; text-shadow: 0px 1px 0px #CCC;">

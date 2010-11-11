@@ -60,6 +60,20 @@ class Projects_Controller extends Core_Controller {
 		// This is the view in which project updates are shown.
 		$project_view = new View('project');
 
+		// Reset special uid options for sorting results.
+		if ($uid == 'a') {
+			$project_view->filter = $uid;
+			$uid = 0;
+			$order = array('views', 'DESC');
+		} elseif ($uid == 'r') {
+			$project_view->filter = $uid;
+			$uid = 0;
+			$order = array(NULL, 'RAND()');
+		} else {
+			$project_view->filter = 'l';
+			$order = 'DESC';
+		}
+
 		// Reset variables if a 0 has been given.
 		if ($uid == '0') {
 			$uid = NULL;
@@ -209,9 +223,9 @@ class Projects_Controller extends Core_Controller {
 
 		// Let's parse individual updates.
 		if ($uid != 'category') {
-			$query = $update_model->updates($uid, $pid, 'DESC', Kohana::config('projects.updates_page'), ($page-1)*Kohana::config('projects.updates_page'));
+			$query = $update_model->updates($uid, $pid, $order, Kohana::config('projects.updates_page'), ($page-1)*Kohana::config('projects.updates_page'));
 		} else {
-			$query = $update_model->updates($uid, $pid, 'DESC', Kohana::config('projects.updates_page'), ($page-1)*Kohana::config('projects.updates_page'));
+			$query = $update_model->updates($uid, $pid, $order, Kohana::config('projects.updates_page'), ($page-1)*Kohana::config('projects.updates_page'));
 			$category_name = $project_model->categories();
 			$project_view->category_name = $category_name[$pid];
 			$project_view->category_id = $pid;
@@ -261,9 +275,15 @@ class Projects_Controller extends Core_Controller {
 					}
 				}
 
+				if (date('Y') == date('Y', strtotime($row->logtime))) {
+					$datestring = 'j M';
+				} else {
+					$datestring = 'j M Y';
+				}
+
                 // Build the markup.
                 $markup = $markup .'<div style="float: left; width: 260px; height: 240px; border: 0px solid #F00; margin: 7px;">';
-				$markup = $markup .'<div style="height: 20px; width: 262px; margin-bottom: 5px; background-color: #1c1b19; background-repeat: repeat-x; background-image: url(\''. url::base() .'images/timebar.png\'); padding: 2px; font-size: 10px; font-family: Arial; color: #FFF; text-shadow: 0px 1px 0px #000; line-height: 20px; padding-left: 0px;"><span style="padding-left: 5px;"><div style="float: left; position: relative; top: 3px; left: 5px; background-image: url(\''. url::base() .'images/star.png\'); width: '. $star_width .'px; height: 12px;"></div><a href="'. url::base() .'projects/view/'. $row->uid .'/'. $row->pid .'/" style="text-decoration: none; color: #FFF;">'. $project_name .'</a></span><span style="float: right; padding-right: 5px;">'. date('jS F Y', strtotime($row->logtime)) .'</span></div>';
+				$markup = $markup .'<div style="height: 20px; width: 262px; margin-bottom: 5px; background-color: #1c1b19; background-repeat: repeat-x; background-image: url(\''. url::base() .'images/timebar.png\'); padding: 2px; font-size: 10px; font-family: Arial; color: #FFF; text-shadow: 0px 1px 0px #000; line-height: 20px; padding-left: 0px;"><span style="padding-left: 5px;"><div style="float: left; position: relative; top: 3px; left: 5px; background-image: url(\''. url::base() .'images/star.png\'); width: '. $star_width .'px; height: 12px;"></div><a href="'. url::base() .'projects/view/'. $row->uid .'/'. $row->pid .'/" style="text-decoration: none; color: #FFF;">'. $project_name .'</a></span><span style="float: right; padding-right: 5px;">'. date($datestring, strtotime($row->logtime)) .'</span></div>';
                 $markup = $markup .'<div style="width: 260px; margin: 0px; height: 200px; border: 0px solid #F00;">';
 				$markup = $markup .'<p><a href="'. url::base() .'updates/view/'. $row->id .'/"><img style="vertical-align: middle; border: 1px solid #999; padding: 1px; background: url('. $icon .'); background-repeat: no-repeat; background-position: 1px 1px; width: 260px; height: 200px;" src="'. url::base() .'images/crop_overlay.png" alt="update icon" /></a></p>';
 				$markup = $markup .'<cite style="background-color: #D8D8D8; background-image: url(\''. url::base() .'/images/formbg.gif\'); background-repeat: repeat-x; -moz-opacity:.55; filter:alpha(opacity=55); opacity: .55; color: #000; position: relative; display: block; margin-left: auto; margin-right: auto; left: 2px; top: -63px; height: 30px; width: 240px; padding: 10px; border-top: 1px solid #888; font-weight: bold;"><span style="font-weight: 100; font-size: 9px; float: right; position: relative; top: -2px; text-align: right;">'. $row->views .'V<br />'. $kudos_model->kudos($row->id) .'K<br />'. $comment_model->comment_update_number($row->id) .'C</span></cite>';

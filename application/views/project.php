@@ -1,4 +1,17 @@
-<?php if (!isset($join)) { ?>
+<?php if (empty($uid) && empty($project['icon'])) { ?>
+<div id="filter">
+<ul class="block_links" style="float: left;">
+<li><a href="<?php echo url::base(); ?>" class="block" <?php if ($filter == 'l') { echo 'style="background-color: #FF6500;" '; } ?>>Latest</a></li>
+<li><a href="<?php echo url::base(); ?>projects/view/a/" class="block" <?php if ($filter == 'a') { echo 'style="background-color: #FF6500;" '; } ?>>Awesomest</a></li>
+<li><a href="<?php echo url::base(); ?>projects/view/r/" class="block" <?php if ($filter == 'r') { echo 'style="background-color: #FF6500;" '; } ?>>Randomest</a></li>
+</ul>
+
+<ul class="block_links" style="float: right;">
+<li><a href="<?php echo url::base(); ?>site/tour/" class="block" style="background-color: #444;">What is WIPUP?</a></li>
+</ul>
+</div>
+
+<?php } elseif (!isset($join)) { ?>
 <?php if (empty($project)) { ?>
 <h2 style="float: left;">
 <?php } else { ?>
@@ -41,7 +54,7 @@ in <em><?php echo $categories[$project['cid']]; ?></em> <?php if (!empty($projec
 <?php if (empty($markup)) { ?>
 
 <?php if ($this->uri->segment(1) == 'profiles') { ?>
-<div style="clear: both; line-height: 23px; font-size: 15px; text-shadow: 0px 1px 0px #FFF; color: #555; border-bottom: 1px solid #999; border-left: 0px; border-right: 0px; background-color: #D8D8D8; padding: 8px; padding-top: 40px; padding-bottom: 40px; margin-bottom: 10px; line-height: 30px; text-align: center;">
+<div style="clear: both; line-height: 23px; font-size: 15px; text-shadow: 0px 1px 0px #FFF; color: #555; border-bottom: 1px solid #999; border-left: 0px; border-right: 0px; padding: 8px; padding-top: 40px; padding-bottom: 40px; margin-bottom: 10px; line-height: 30px; text-align: center;">
 	<img src="<?php echo url::base(); ?>images/icons/warning_48.png" alt="Oh no!" /><br />
 <?php } else { ?>
 <div class="error_message">
@@ -51,9 +64,9 @@ in <em><?php echo $categories[$project['cid']]; ?></em> <?php if (!empty($projec
 
 <?php } else { ?>
 <?php if ($this->uri->segment(1) == 'profiles' && $this->uri->segment(2) == 'view') { ?>
-<div style="clear: both; overflow: hidden; border-bottom: 1px dotted #AAA; padding-bottom: 5px; background-position: top; background-repeat: repeat-x; background-color: #D8D8D8;">
+<div style="clear: both; overflow: hidden; border-bottom: 1px dotted #AAA; padding-bottom: 5px; background-position: top; background-repeat: repeat-x;">
 <?php } else { ?>
-<div style="clear: both; overflow: hidden; border: 1px dotted #AAA; padding-bottom: 5px; background-image: url(<?php echo url::base(); ?>images/formbg.gif); background-position: top; background-repeat: repeat-x; background-color: #D8D8D8; border-left: 0px; border-right: 0px;">
+<div style="clear: both; overflow: hidden; border: 0px dotted #AAA; padding-bottom: 5px; background-position: top; background-repeat: repeat-x; border-left: 0px; border-right: 0px;">
 <?php } ?>
 	<div style="margin-right: auto; margin-left: auto; padding-right: 4px; width: 822px;">
 		<?php echo $markup; ?>

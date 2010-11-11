@@ -658,3 +658,34 @@ div.mini:hover {
 .ui-tabs .ui-tabs-hide {
 	display: none !important;
 }
+
+#filter {
+	clear: both;
+}
+
+#filter a {
+	color: #EEE;
+	text-decoration: none;
+}
+
+#filter a:hover {
+	color: #FFF;
+	background-color: #FF7600 !important;
+}
+
+.block_links {
+	margin: 0px;
+	margin-top: 5px;
+	margin-bottom: 15px;
+}
+
+.block_links li {
+	display: inline;
+	margin-right: 3px;
+}
+
+.block {
+	background-color: #333;
+	padding: 5px;
+	color: #EEE;
+}

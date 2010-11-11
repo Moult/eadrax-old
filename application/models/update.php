@@ -536,6 +536,13 @@ class Update_Model extends Model {
 	 */
 	public function updates($uid = NULL, $pid = NULL, $order = 'ASC', $limit = FALSE, $offset = FALSE)
 	{
+		if (is_array($order)) {
+			$orderby = $order[0];
+			$order = $order[1];
+		} else {
+			$orderby = 'id';
+		}
+
 		$search_array = array();
 		if ($pid != NULL) {
 			$search_array['pid'] = $pid;
@@ -547,9 +554,12 @@ class Update_Model extends Model {
 		}
 
 		if ($uid != NULL && $uid == 'category') {
-			$updates = $this->db->from('projects')->join('updates', 'updates.pid', 'projects.id')->where(array('projects.cid' => $pid))->orderby('updates.id', $order);
+			if ($orderby != NULL) {
+				$orderby = 'updates.'. $orderby;
+			}
+			$updates = $this->db->from('projects')->join('updates', 'updates.pid', 'projects.id')->where(array('projects.cid' => $pid))->orderby($orderby, $order);
 		} else {
-			$updates = $this->db->from('updates')->where($search_array)->orderby('id', $order);
+			$updates = $this->db->from('updates')->where($search_array)->orderby($orderby, $order);
 		}
 
 		if ($limit != FALSE && $offset != FALSE) {

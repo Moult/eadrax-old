@@ -40,7 +40,3 @@
 	</p>
 	<div id="report"></div>
 </div>
-
-<div style="float: right;">
-<a href="<?php echo url::base(); ?>site/tour/"><img src="<?php echo url::base(); ?>images/learnmore.png" alt="Learn more about WIPUP" /></a>
-</div>
