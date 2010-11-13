@@ -250,20 +250,20 @@ if (($this->uri->segment(1) == 'updates' && $this->uri->segment(2) == 'add') || 
             </h1>
 
 			<ul id="icon-navigation">
-				<li><a href="<?php echo url::base(); ?>projects/view/" onmouseover="javascript:getElementById('navtext1').style.display = 'inline';" onmouseout="javascript:getElementById('navtext1').style.display = 'none';"><img src="<?php echo url::base(); ?>images/profile.png" width="40" height="87" alt="Latest WIPs" title="Latest WIPs" /></a></li><li><img src="<?php echo url::base(); ?>images/navspace1.png" width="11" height="87" /></li><li><a href="<?php echo url::base(); ?>updates/add/" onmouseover="javascript:getElementById('navtext2').style.display = 'inline';" onmouseout="javascript:getElementById('navtext2').style.display = 'none';"><img src="<?php echo url::base(); ?>images/update.png" width="40" height="87" alt="Add WIP" title="Add WIP" /></a></li><li><img src="<?php echo url::base(); ?>images/navspace2.png" width="10" height="87" /></li><li><a href="<?php echo url::base(); ?>updates/random/" onmouseover="javascript:getElementById('navtext3').style.display = 'inline';" onmouseout="javascript:getElementById('navtext3').style.display = 'none';"><img src="<?php echo url::base(); ?>images/random.png" width="41" height="87" alt="Discover WIPs" title="Discover WIPs" /></a></li>
+				<li><a href="<?php if ($this->logged_in == TRUE) { echo url::base() .'profiles/view/'. $this->username; } else { echo url::base() .'users/login/'; } ?>" onmouseover="javascript:getElementById('navtext1').style.display = 'inline';" onmouseout="javascript:getElementById('navtext1').style.display = 'none';"><img src="<?php echo url::base(); ?>images/profile.png" width="40" height="87" alt="Latest WIPs" title="Latest WIPs" /></a></li><li><img src="<?php echo url::base(); ?>images/navspace1.png" width="11" height="87" /></li><li><a href="<?php echo url::base(); ?>updates/add/" onmouseover="javascript:getElementById('navtext2').style.display = 'inline';" onmouseout="javascript:getElementById('navtext2').style.display = 'none';"><img src="<?php echo url::base(); ?>images/update.png" width="40" height="87" alt="Add WIP" title="Add WIP" /></a></li><li><img src="<?php echo url::base(); ?>images/navspace2.png" width="10" height="87" /></li><li><a href="<?php echo url::base(); ?>updates/random/" onmouseover="javascript:getElementById('navtext3').style.display = 'inline';" onmouseout="javascript:getElementById('navtext3').style.display = 'none';"><img src="<?php echo url::base(); ?>images/random.png" width="41" height="87" alt="Discover WIPs" title="Discover WIPs" /></a></li>
 			</ul>
 
             <ul id="text-navigation">
-				<li id="navtext1" style="color: #AAA; display: none;">Latest WIPs</li>
+				<li id="navtext1" style="color: #AAA; display: none;">My WIPSpace</li>
 				<li id="navtext2" style="color: #AAA; display: none;">Add WIP</li>
 				<li id="navtext3" style="color: #AAA; display: none;">Discover WIPs</li>
-				<li style="float: right;"><?php if ($this->logged_in == TRUE) {?>Hey <?php echo $this->username; ?> (<a href="<?php echo url::base(); ?>profiles/view/<?php echo $this->username; ?>/">My WIPSpace</a> | <a href="<?php echo url::base(); ?>dashboard/">Dashboard</a>) <a href="<?php echo url::base(); ?>users/logout/"><img src="<?php echo url::base(); ?>images/icons/logout.png" alt="Logout" title="Logout" /></a><?} else {?><a href="<?php echo url::base(); ?>users/login/">Login/Register</a><? } ?></li>
+				<li style="float: right;"><?php if ($this->logged_in == TRUE) {?>Hey <?php echo $this->username; ?> (<a href="<?php echo url::base(); ?>dashboard/">Dashboard</a>) <a href="<?php echo url::base(); ?>users/logout/"><img src="<?php echo url::base(); ?>images/icons/logout.png" alt="Logout" title="Logout" /></a><?} else {?><a href="<?php echo url::base(); ?>users/login/">Login/Register</a><? } ?></li>
             </ul>
 		</div>
 
 		<div id="content-top">
 			<div id="content-left"></div>
-			<div id="global-message">Share, critique, and track your projects</div>
+			<div id="global-message">Share, critique, and track projects</div>
 			<div id="content-right"></div>
 		</div>
 

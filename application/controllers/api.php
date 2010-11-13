@@ -99,7 +99,7 @@ class Api_Controller extends Core_Controller {
 		if ($this->uri->total_segments() == 1) {
 			echo 'showing the apidoc template';
 		} elseif ($api_call != FALSE) {
-			$this->$api_call($this->format);
+			$this->$api_call();
 		} else {
 			$txt = 'please check the syntax. api specifications are here: http://www.freedesktop.org/wiki/Specifications/open-collaboration-services' . "\n";
 			$txt .= $this->getdebugoutput();
@@ -422,7 +422,6 @@ class Api_Controller extends Core_Controller {
 	 */
 	private function config_get() {
 		$user = $this->checkpassword(FALSE);
-
 		$this->checktrafficlimit($user);
 
 		$xml['version'] = '1.4';
@@ -467,6 +466,9 @@ class Api_Controller extends Core_Controller {
 	}
 
 	private function person_add_post() {
+		$user = $this->checkpassword(FALSE);
+		$this->checktrafficlimit($user);
+
 		// Reroute POST vars.
 		$_POST['openid_identifier'] = $this->input->post('login');
 
@@ -500,6 +502,90 @@ class Api_Controller extends Core_Controller {
 			$openid_identifier == $error_msgs['openid_identifier']['unique']
 		) {
 			echo $this->generatexml('failed',104,'login already exists');
+		}
+	}
+
+	private function person_data_get() {
+		$personid = $this->uri->segment(5);
+
+		// This means it's PERSON->Get(self)
+		if (!empty($personid)) {
+			if ($personid == 'self') {
+				// Yes, it is PERSON->Getself
+				$user = $this->checkpassword();
+				$personid = $user;
+			} else {
+				$user = $this->checkpassword(FALSE);
+			}
+			$this->checktrafficlimit($user);
+
+			// Reroute POST vars.
+			$_POST['keywords'] = $this->input->get('name');
+			$_POST['search'] = 'profiles';
+
+			$user_model = new User_Model;
+
+			$uid = $user_model->uid($personid);
+
+			if ($uid == FALSE) {
+				// User doesn't exist.
+				echo $this->generatexml('failed',101,'person not found');
+			} else {
+				$user_information = $user_model->user_information($uid);
+
+				$xml[0]['personid'] = $user_information['username'];
+				if ($user_information['email_public'] == 1) {
+					$xml[0]['email'] = $user_information['email'];
+				} else {
+					$xml[0]['email'] = '';
+				}
+				$xml[0]['gender'] = $user_information['gender'];
+				$xml[0]['description'] = $user_information['description'];
+				if (!empty($user_information['avatar'])) {
+					$xml[0]['avatarpicfound'] = 1;
+					$xml[0]['avatarpic'] = url::base() .'uploads/avatars/'. $user_information['avatar'] .'.jpg';
+				} else {
+					$xml[0]['avatarpicfound'] = 0;
+					$xml[0]['avatarpic'] = '';
+				}
+
+				echo $this->generatexml('ok',100,'',$xml,'person','full',2);
+			}
+		// Otherwise it is PERSON->Search
+		} else {
+			// Reroute POST vars.
+			$_POST['keywords'] = $this->input->get('name');
+			$_POST['search'] = 'profiles';
+
+			// Run our existing controller function.
+			Site_Controller::search();
+
+			$page = $this->input->get('page', 1);
+			$pagesize = $this->input->get('pagesize', 50);
+
+			if ($pagesize < 1 || $pagesize > 50) {
+				$pagesize = 50;
+			}
+
+			$start = ($page - 1) * $pagesize;
+			$end = $start + $pagesize;
+
+			// Remap vars from original controller.
+			$results = $this->template->content[0]->results;
+
+			$usercount = count($results);
+
+			$i = 0;
+			foreach ($results as $row) {
+				$i++;
+				if ($i > $start && $i <= $end) {
+					$xml[$i]['personid'] = $row->username;
+					$xml[$i]['gender'] = $row->gender;
+					$xml[$i]['description'] = $row->description;
+				}
+			}
+
+			echo $this->generatexml('ok',100,'',$xml,'person','summary',2,$usercount,$pagesize);
 		}
 	}
 

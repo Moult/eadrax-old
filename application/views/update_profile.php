@@ -5,7 +5,7 @@
 	</h2>
 
 	<p>
-		Others might want to find out a bit more about you as they check out your work, so give them that chance and don't be selfish.
+	Others might want to find out a bit more about you as they check out your work, so give them that chance and don't be selfish. You might also want to tweak your <a href="<?php echo url::base(); ?>profiles/options/<?php echo $this->uid; ?>/">account options</a>.
 	</p>
 
 	<div class="form">
