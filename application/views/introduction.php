@@ -3,10 +3,7 @@
 		Show people what you're working on
 	</h2>
 	<p>
-		Whenever you want to quickly dump files online to show your current progress on a project, put it on WIPUP.
-	</p>
-	<p>
-		Once it's online, it'll be presented beautifully - all ready for you to share with others.
+		Whenever you want to share your current progress on a project, put it on WIPUP.
 	</p>
 	<div id="user"></div>
 </div>
@@ -20,9 +17,6 @@
 	<p>
 		Anybody can leave you comments on your update or kudos things they like.
 	</p>
-	<p>
-		Organising your work-in-progress files within projects allows you to easily discuss ideas with the community, and find related projects.
-	</p>
 	<div id="mail"></div>
 </div>
 
@@ -33,10 +27,7 @@
 		Discover and log your own progress
 	</h2>
 	<p>
-		Check out when you were most active on a project, and its progress over time.
-	</p>
-	<p>
-		People can subscribe to your projects and track your activity to see what's new!
+		Check out when your project activity over time, and subscribe to projects you like.
 	</p>
 	<div id="report"></div>
 </div>
