@@ -4,7 +4,11 @@
 </h2>
 
 <p>
-	WIPUP.org, like the name, is a work-in-progress - it is continuously changing. The code behind WIPUP is an open-source project going by the name of The Eadrax Project. Thus, contributing to Eadrax would be contributing to WIPUP.org. You don't even need to have technical know-how to contribute to WIPUP.org.
+	WIPUP.org, like the name, is a work-in-progress - it is continuously changing. The open-source system that WIPUP runs on is called Eadrax, as the project began before the name WIPUP was picked.
+</p>
+
+<p>
+	We invite any and all people who want to contribute to do so. Technical knowledge is an added bonus, but is not a requirement.
 </p>
 
 <p>

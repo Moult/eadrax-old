@@ -87,7 +87,7 @@ if (isset($uid)) {
 ?>
 <div style="float: left; clear: both; margin-bottom: 5px;">
 <span style="float: left; margin-right: 15px;"><img src="<?php echo ${'existing_icon'. $i}; ?>" alt="attachment<?php echo $i; ?>" style="padding: 1px; border: 1px solid #999;" /></span>
-						<span style="float: left;"><input type="file" id="attachment" name="attachment0" style="height: 23px;" /></span>
+						<span style="float: left;"><div style="overflow: hidden;"><input type="file" id="attachment" name="attachment<?php echo $i; ?>" style="height: 23px;" /></div><div style="clear: left; margin-top: 5px;"><input type="checkbox" name="delete<?php echo $i; ?>" value="1">- Delete</div></span>
 </div>
 
 <?php } } } else { ?>
@@ -143,6 +143,12 @@ if (isset($uid)) {
 						<input type="submit" id="submit" name="submit" class="submit" onclick="doOverlay();" value="Add update" />
 						<?php } ?>
 					</p>
+
+<?php if (isset($uid)) { ?>
+					<p>
+						For whatever reason, you might wish to <a href="<?php echo url::base(); ?>updates/delete/<?php echo $uid; ?>/">delete this update</a> permanently.
+					</p>
+<?php } ?>
 				</div>
 			</fieldset>
 		</form>

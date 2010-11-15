@@ -730,6 +730,7 @@ class Updates_Controller extends Core_Controller {
 				{
 					${'attachment_filename'. $i} = '';
 					${'extension'. $i} = '';
+					${'delete'. $i} = '';
 				}
 			}
 			else
@@ -740,6 +741,7 @@ class Updates_Controller extends Core_Controller {
 				{
 					${'attachment_filename'. $i} = $attachment_filename['filename'. $i];
 					${'extension'. $i} = $extension['ext'. $i];
+					${'delete'. $i} = $this->input->post('delete'. $i);
 				}
 			}
 
@@ -764,244 +766,244 @@ class Updates_Controller extends Core_Controller {
 
 			if ($validate->validate())
 			{
-				// Do we even have a single file to validate?
-				if (!empty($_FILES))
+				// Loop through each file to validate.
+				for ($i = 0; $i < 5; $i++)
 				{
-					// Loop through each file to validate.
-					for ($i = 0; $i < 5; $i++)
+					// Guests should only have one upload.
+					if ($i == 0 || ($i > 0 && $this->logged_in == TRUE))
 					{
-						// Guests should only have one upload.
-						if ($i == 0 || ($i > 0 && $this->logged_in == TRUE))
+
+						// If there is a new file or the delete has been 
+						// checked... as well as an existing file...
+						if ((!empty($_FILES['attachment'. $i]['name']) || ${'delete'. $i} == '1') && !empty(${'attachment_filename'. $i}))
 						{
-							// Check whether or not we even have a file to validate.
-							if (!empty($_FILES['attachment'. $i]['name']))
+							// ... Delete it!
+							unlink(DOCROOT .'uploads/files/'. ${'attachment_filename'. $i} .'.'. ${'extension'. $i});
+
+							if (file_exists(DOCROOT .'uploads/icons/'. ${'attachment_filename'. $i} .'.jpg'))
 							{
-								// If there is an existing file...
-								if (!empty(${'attachment_filename'. $i}))
-								{
-									// ... Delete it!
-									unlink(DOCROOT .'uploads/files/'. ${'attachment_filename'. $i} .'.'. ${'extension'. $i});
+								unlink(DOCROOT .'uploads/icons/'. ${'attachment_filename'. $i} .'.jpg');
+							}
 
-									if (file_exists(DOCROOT .'uploads/icons/'. ${'attachment_filename'. $i} .'.jpg'))
+							if (file_exists(DOCROOT .'uploads/icons/'. ${'attachment_filename'. $i} .'_crop.jpg'))
+							{
+								unlink(DOCROOT .'uploads/icons/'. ${'attachment_filename'. $i} .'_crop.jpg');
+							}
+
+							if (file_exists(DOCROOT .'uploads/files/'. ${'attachment_filename'. $i} .'_fit.jpg'))
+							{
+								unlink(DOCROOT .'uploads/files/'. ${'attachment_filename'. $i} .'_fit.jpg');
+							}
+
+							${'attachment_filename'. $i} = '';
+						}
+
+						// Check whether or not we even have a file to validate.
+						if (!empty($_FILES['attachment'. $i]['name']))
+						{
+							// The upload size limit will be different for guests and normal users.
+							if ($this->logged_in == TRUE)
+							{
+								$size_limit = Kohana::config('updates.user_upload_limit');
+							}
+							else
+							{
+								$size_limit = Kohana::config('updates.guest_upload_limit');
+							}
+
+							// Do not forget we need to validate the file.
+							$files = new Validation($_FILES);
+							$files = $files->add_rules('attachment'. $i, 'upload::valid', 'upload::type['. Kohana::config('updates.filetypes') .']', 'upload::size['. $size_limit .']');
+
+							if ($files->validate())
+							{
+								// Upload the file as normal.
+								$filename = upload::save('attachment'. $i, time() . strtolower($_FILES['attachment'. $i]['name']), DOCROOT .'uploads/files/');
+
+								// Let's determine what extension this file is.
+								$extension = strtolower(substr(strrchr($_FILES['attachment'. $i]['name'], '.'), 1));
+
+								// Now determine the file name.
+								$attachment_filename = substr(basename($filename), 0, -strlen($extension)-1);
+
+								// If it is an image, we need to thumbnail it.
+								if ($extension == 'gif' || $extension == 'jpg' || $extension == 'png')
+								{
+									// If the width is greater than the layout width...
+									list($width, $height, $type, $attr) = getimagesize($filename);
+									if ($width > Kohana::config('updates.fit_width'))
 									{
-										unlink(DOCROOT .'uploads/icons/'. ${'attachment_filename'. $i} .'.jpg');
+										// ... we need to resize it.
+										Image::factory($filename)->resize(Kohana::config('updates.fit_width'), Kohana::config('updates.fit_height'), Image::WIDTH)->save(DOCROOT .'uploads/files/'. substr(basename($filename), 0, -4) .'_fit.jpg');
 									}
 
-									if (file_exists(DOCROOT .'uploads/icons/'. ${'attachment_filename'. $i} .'_crop.jpg'))
-									{
-										unlink(DOCROOT .'uploads/icons/'. ${'attachment_filename'. $i} .'_crop.jpg');
+									Image::factory($filename)->resize(80, 80, Image::AUTO)->save(DOCROOT .'uploads/icons/'. substr(basename($filename), 0, -3) .'jpg');
+
+									// Create a cropped thumbnail.
+									if ($extension == 'jpg') {
+										$myImage = imagecreatefromjpeg($filename);   
+									} elseif ($extension == 'gif') {
+										$myImage = imagecreatefromgif($filename);   
+									} elseif ($extension == 'png') {
+										$myImage = imagecreatefrompng($filename);   
+									}
+									  
+									if ($width < $height*1.3) {  
+										$cropWidth   = $width;   
+										$cropHeight  = $width*.769;   
+										$c1 = array("x"=>0, "y"=>($height-$cropHeight)/8);  
+									} elseif ($width > $height) {  
+										$cropWidth   = $height*1.3;   
+										$cropHeight  = $height;   
+										$c1 = array("x"=>($width-$cropWidth)/2, "y"=>0);  
+									} else {
+										$cropWidth   = $width;   
+										$cropHeight  = $width*.769;   
+										$c1 = array("x"=>0, "y"=>($height-$cropHeight)/8);  
 									}
 
-									if (file_exists(DOCROOT .'uploads/files/'. ${'attachment_filename'. $i} .'_fit.jpg'))
+									// Creating the thumbnail  
+									$thumb = imagecreatetruecolor(260, 200);   
+									imagecopyresampled($thumb, $myImage, 0, 0, $c1['x'], $c1['y'], 260, 200, $cropWidth, $cropHeight);   
+									   
+									//final output    
+									imagejpeg($thumb, DOCROOT .'uploads/icons/'. substr(basename($filename), 0, -4) .'_crop.jpg', 100);
+									imagedestroy($thumb); 
+								}
+
+								// If it is a video, we need to encode it.
+								// HTML 5 is not out yet, so support goes through 
+								// the FLV format. Oh well :)
+								if ($extension == 'avi' || $extension == 'mpg' || $extension == 'mov' || $extension == 'flv' || $extension == 'ogg' || $extension == 'wmv' || $extension == 'mp4')
+								{
+									// Define files.
+									$src_file  = DOCROOT .'uploads/files/'. basename($filename);
+									$dest_file = DOCROOT .'uploads/files/'. substr(basename($filename), 0, -3) .'flv';
+									$dest_img  = DOCROOT .'uploads/icons/'. substr(basename($filename), 0, -3) .'jpg';
+
+									// Define ffmpeg application path.
+									$ffmpeg_path = Kohana::config('updates.ffmpeg_path');
+
+									// Before snapshotting the video to make a 
+									// thumbnail image, let's find out the length of 
+									// the video.
+									$ffmpeg_output = array();
+									exec($ffmpeg_path ." -i ". escapeshellarg($src_file) ." 2>&1", $ffmpeg_output);
+
+									// Search each line in the $ffmpeg_output.
+									foreach ($ffmpeg_output as $key => $value)
 									{
-										unlink(DOCROOT .'uploads/files/'. ${'attachment_filename'. $i} .'_fit.jpg');
-									}
-								}
-
-								// The upload size limit will be different for guests and normal users.
-								if ($this->logged_in == TRUE)
-								{
-									$size_limit = Kohana::config('updates.user_upload_limit');
-								}
-								else
-								{
-									$size_limit = Kohana::config('updates.guest_upload_limit');
-								}
-
-								// Do not forget we need to validate the file.
-								$files = new Validation($_FILES);
-								$files = $files->add_rules('attachment'. $i, 'upload::valid', 'upload::type['. Kohana::config('updates.filetypes') .']', 'upload::size['. $size_limit .']');
-
-								if ($files->validate())
-								{
-									// Upload the file as normal.
-									$filename = upload::save('attachment'. $i, time() . strtolower($_FILES['attachment'. $i]['name']), DOCROOT .'uploads/files/');
-
-									// Let's determine what extension this file is.
-									$extension = strtolower(substr(strrchr($_FILES['attachment'. $i]['name'], '.'), 1));
-
-									// Now determine the file name.
-									$attachment_filename = substr(basename($filename), 0, -strlen($extension)-1);
-
-									// If it is an image, we need to thumbnail it.
-									if ($extension == 'gif' || $extension == 'jpg' || $extension == 'png')
-									{
-										// If the width is greater than the layout width...
-										list($width, $height, $type, $attr) = getimagesize($filename);
-										if ($width > Kohana::config('updates.fit_width'))
+										if (preg_match('/Duration: [0-9]{2}:[0-9]{2}:[0-9]{2}/', $value, $matches))
 										{
-											// ... we need to resize it.
-											Image::factory($filename)->resize(Kohana::config('updates.fit_width'), Kohana::config('updates.fit_height'), Image::WIDTH)->save(DOCROOT .'uploads/files/'. substr(basename($filename), 0, -4) .'_fit.jpg');
-										}
+											// Now we are sure we have found the 
+											// duration, get the value we need.
+											$duration = substr($matches[0], 10);
 
-										Image::factory($filename)->resize(80, 80, Image::AUTO)->save(DOCROOT .'uploads/icons/'. substr(basename($filename), 0, -3) .'jpg');
-
-										// Create a cropped thumbnail.
-										if ($extension == 'jpg') {
-											$myImage = imagecreatefromjpeg($filename);   
-										} elseif ($extension == 'gif') {
-											$myImage = imagecreatefromgif($filename);   
-										} elseif ($extension == 'png') {
-											$myImage = imagecreatefrompng($filename);   
-										}
-										  
-										if ($width < $height*1.3) {  
-											$cropWidth   = $width;   
-											$cropHeight  = $width*.769;   
-											$c1 = array("x"=>0, "y"=>($height-$cropHeight)/8);  
-										} elseif ($width > $height) {  
-											$cropWidth   = $height*1.3;   
-											$cropHeight  = $height;   
-											$c1 = array("x"=>($width-$cropWidth)/2, "y"=>0);  
-										} else {
-											$cropWidth   = $width;   
-											$cropHeight  = $width*.769;   
-											$c1 = array("x"=>0, "y"=>($height-$cropHeight)/8);  
-										}
-
-										// Creating the thumbnail  
-										$thumb = imagecreatetruecolor(260, 200);   
-										imagecopyresampled($thumb, $myImage, 0, 0, $c1['x'], $c1['y'], 260, 200, $cropWidth, $cropHeight);   
-										   
-										//final output    
-										imagejpeg($thumb, DOCROOT .'uploads/icons/'. substr(basename($filename), 0, -4) .'_crop.jpg', 100);
-										imagedestroy($thumb); 
-									}
-
-									// If it is a video, we need to encode it.
-									// HTML 5 is not out yet, so support goes through 
-									// the FLV format. Oh well :)
-									if ($extension == 'avi' || $extension == 'mpg' || $extension == 'mov' || $extension == 'flv' || $extension == 'ogg' || $extension == 'wmv' || $extension == 'mp4')
-									{
-										// Define files.
-										$src_file  = DOCROOT .'uploads/files/'. basename($filename);
-										$dest_file = DOCROOT .'uploads/files/'. substr(basename($filename), 0, -3) .'flv';
-										$dest_img  = DOCROOT .'uploads/icons/'. substr(basename($filename), 0, -3) .'jpg';
-
-										// Define ffmpeg application path.
-										$ffmpeg_path = Kohana::config('updates.ffmpeg_path');
-
-										// Before snapshotting the video to make a 
-										// thumbnail image, let's find out the length of 
-										// the video.
-										$ffmpeg_output = array();
-										exec($ffmpeg_path ." -i ". escapeshellarg($src_file) ." 2>&1", $ffmpeg_output);
-
-										// Search each line in the $ffmpeg_output.
-										foreach ($ffmpeg_output as $key => $value)
-										{
-											if (preg_match('/Duration: [0-9]{2}:[0-9]{2}:[0-9]{2}/', $value, $matches))
+											// Calculate the half-time.
+											$duration_h = floor(substr($duration, 0, 2)/2);
+											if ($duration_h%2 == 1)
 											{
-												// Now we are sure we have found the 
-												// duration, get the value we need.
-												$duration = substr($matches[0], 10);
+												$duration_m = floor((substr($duration, 3, 2)+60)/2);
+											}
+											else
+											{
+												$duration_m = floor(substr($duration, 3, 2)/2);
+											}
+											if ($duration_m%2 == 1)
+											{
+												$duration_s = floor((substr($duration, 6, 2)+60)/2);
+											}
+											else
+											{
+												$duration_s = floor(substr($duration, 6, 2)/2);
+											}
 
-												// Calculate the half-time.
-												$duration_h = floor(substr($duration, 0, 2)/2);
-												if ($duration_h%2 == 1)
-												{
-													$duration_m = floor((substr($duration, 3, 2)+60)/2);
-												}
-												else
-												{
-													$duration_m = floor(substr($duration, 3, 2)/2);
-												}
-												if ($duration_m%2 == 1)
-												{
-													$duration_s = floor((substr($duration, 6, 2)+60)/2);
-												}
-												else
-												{
-													$duration_s = floor(substr($duration, 6, 2)/2);
-												}
+											// Let's create the image.
+											exec($ffmpeg_path ." -i ". escapeshellarg($src_file) ." -an -ss ". $duration_h .":". $duration_m .":". $duration_s ." -t 00:00:01 -r 1 -y ". escapeshellarg($dest_img));
 
-												// Let's create the image.
-												exec($ffmpeg_path ." -i ". escapeshellarg($src_file) ." -an -ss ". $duration_h .":". $duration_m .":". $duration_s ." -t 00:00:01 -r 1 -y ". escapeshellarg($dest_img));
+											// Create a cropped thumbnail.
+											list($width, $height, $type, $attr) = getimagesize($dest_img);
+											$myImage = imagecreatefromjpeg($dest_img);   
+											  
+											if($width > $height)  {  
+												$cropWidth   = $height*1.3;   
+												$cropHeight  = $height;   
+												$c1 = array("x"=>($width-$cropWidth)/2, "y"=>0);  
+											} else {
+												$cropWidth   = $width;   
+												$cropHeight  = $width*.769;   
+												$c1 = array("x"=>0, "y"=>($height-$cropHeight)/8);  
+											}
+											   
+											// Creating the thumbnail  
+											$thumb = imagecreatetruecolor(260, 200);   
+											imagecopyresampled($thumb, $myImage, 0, 0, $c1['x'], $c1['y'], 260, 200, $cropWidth, $cropHeight);   
+											   
+											//final output    
+											imagejpeg($thumb, DOCROOT .'uploads/icons/'. substr(basename($filename), 0, -4) .'_crop.jpg', 100);
+											imagedestroy($thumb); 
 
-												// Create a cropped thumbnail.
-												list($width, $height, $type, $attr) = getimagesize($dest_img);
-												$myImage = imagecreatefromjpeg($dest_img);   
-												  
-												if($width > $height)  {  
-													$cropWidth   = $height*1.3;   
-													$cropHeight  = $height;   
-													$c1 = array("x"=>($width-$cropWidth)/2, "y"=>0);  
-												} else {
-													$cropWidth   = $width;   
-													$cropHeight  = $width*.769;   
-													$c1 = array("x"=>0, "y"=>($height-$cropHeight)/8);  
-												}
-												   
-												// Creating the thumbnail  
-												$thumb = imagecreatetruecolor(260, 200);   
-												imagecopyresampled($thumb, $myImage, 0, 0, $c1['x'], $c1['y'], 260, 200, $cropWidth, $cropHeight);   
-												   
-												//final output    
-												imagejpeg($thumb, DOCROOT .'uploads/icons/'. substr(basename($filename), 0, -4) .'_crop.jpg', 100);
-												imagedestroy($thumb); 
+											// Let's turn the image into a thumbnail.
+											Image::factory($dest_img)->resize(80, 80, Image::AUTO)->save($dest_img);
 
-												// Let's turn the image into a thumbnail.
-												Image::factory($dest_img)->resize(80, 80, Image::AUTO)->save($dest_img);
+											// We're done here.
+											break;
+										}
+									}
 
-												// We're done here.
-												break;
+									// If it is not already an FLV we need to encode it.
+									if ($extension != 'flv') {
+										$ffmpeg_obj = new ffmpeg_movie($src_file);
+
+										// Needed function for next section.
+										function make_multiple_two ($value)
+										{
+											$s_type = gettype($value/2); 
+
+											if($s_type == "integer")
+											{
+												return $value;
+											}
+											else
+											{
+												return ($value-1);
 											}
 										}
 
-										// If it is not already an FLV we need to encode it.
-										if ($extension != 'flv') {
-											$ffmpeg_obj = new ffmpeg_movie($src_file);
+										// Save needed variables for conversion.
+										$src_width = make_multiple_two($ffmpeg_obj->getFrameWidth());
+										$src_height = make_multiple_two($ffmpeg_obj->getFrameHeight());
+										$src_fps = $ffmpeg_obj->getFrameRate();
+										//$src_ab = intval($ffmpeg_obj->getAudioBitRate()/1000);
+										$src_ab = 56;
+										// Dion Moult: This is because flv only 
+										// supports certain audio sample rates - or 
+										// to the best of my knowledge they do.
+										// $src_ar = $ffmpeg_obj->getAudioSampleRate();
+										$src_ar = 44100;
 
-											// Needed function for next section.
-											function make_multiple_two ($value)
-											{
-												$s_type = gettype($value/2); 
+										// Do the encoding!
+										exec($ffmpeg_path ." -i ". escapeshellarg($src_file) ." -ar ". $src_ar ." -ab ". $src_ab ." -f flv -s ". $src_width ."x". $src_height ." ". escapeshellarg($dest_file));
 
-												if($s_type == "integer")
-												{
-													return $value;
-												}
-												else
-												{
-													return ($value-1);
-												}
-											}
+										// Now our filetype extension has changed!
+										$extension = 'flv';
 
-											// Save needed variables for conversion.
-											$src_width = make_multiple_two($ffmpeg_obj->getFrameWidth());
-											$src_height = make_multiple_two($ffmpeg_obj->getFrameHeight());
-											$src_fps = $ffmpeg_obj->getFrameRate();
-											//$src_ab = intval($ffmpeg_obj->getAudioBitRate()/1000);
-											$src_ab = 56;
-											// Dion Moult: This is because flv only 
-											// supports certain audio sample rates - or 
-											// to the best of my knowledge they do.
-											// $src_ar = $ffmpeg_obj->getAudioSampleRate();
-											$src_ar = 44100;
-
-											// Do the encoding!
-											exec($ffmpeg_path ." -i ". escapeshellarg($src_file) ." -ar ". $src_ar ." -ab ". $src_ab ." -f flv -s ". $src_width ."x". $src_height ." ". escapeshellarg($dest_file));
-
-											// Now our filetype extension has changed!
-											$extension = 'flv';
-
-											// We will delete the original !.flv file 
-											// to save space on the server. If they want 
-											// to distribute a !.flv file let them host 
-											// it elsewhere.
-											unlink($src_file);
-										}
-
+										// We will delete the original !.flv file 
+										// to save space on the server. If they want 
+										// to distribute a !.flv file let them host 
+										// it elsewhere.
+										unlink($src_file);
 									}
-									// Reset the variables from generic to specific
-									${'attachment_filename'. $i} = $attachment_filename;
-									${'extension'. $i} = $extension;
+
 								}
-								else
-								{
-									// Throw up our error.
-									throw new Kohana_User_Exception('', '', 'upload_error');
-								}
+								// Reset the variables from generic to specific
+								${'attachment_filename'. $i} = $attachment_filename;
+								${'extension'. $i} = $extension;
+							}
+							else
+							{
+								// Throw up our error.
+								throw new Kohana_User_Exception('', '', 'upload_error');
 							}
 						}
 					}
@@ -1312,11 +1314,9 @@ class Updates_Controller extends Core_Controller {
 			throw new Kohana_User_Exception('', '', 'permissions_error');
 		}
 
-		// Load views.
-		$update_delete_view = new View('update_delete');
-
-		// Generate the content.
-		$this->template->content = array($update_delete_view);
+		// Redirect to the update's parent project.
+		$this->session->set('notification', 'Begone! Arrr! Yep, thar be no more longer walkin\' here Earth.');
+		url::redirect(url::base() .'projects/view/'. $fileinfo['uid'] .'/'. $fileinfo['pid'] .'/');
 	}
 
 	/**

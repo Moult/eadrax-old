@@ -57,9 +57,6 @@ if ($this->uid == $uid && $this->uid != 1) {
         <li style="width: 70px; display: inline;">
             <input style="width: 70px;" type="button" onclick="parent.location='<?php echo url::base() .'updates/add/'. $id .'/'; ?>'" value="Edit" />
         </li>
-        <li style="width: 70px; display: inline;">
-            <input style="width: 70px;" type="button" onclick="parent.location='<?php echo url::base() .'updates/delete/'. $id .'/'; ?>'" value="Delete" />
-        </li>
 <?php } ?>
     </ul>
 

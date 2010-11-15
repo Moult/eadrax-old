@@ -581,7 +581,6 @@ class Api_Controller extends Core_Controller {
 				if ($i > $start && $i <= $end) {
 					$xml[$i]['personid'] = $row->username;
 					$xml[$i]['gender'] = $row->gender;
-					$xml[$i]['description'] = $row->description;
 				}
 			}
 
