@@ -104,7 +104,21 @@ for ($i = 1; $i <= $pages; $i++) {
 	} else {
 		$style = '';
 	}
-	echo '<li style="display: inline;"><a href="'. url::base() .'projects/view/'. $uid .'/'. $project['id'] .'/'. $i .'/" style="'. $style .' text-decoration: none; padding: 8px; margin: 2px; margin-top: 0px; background: url('. url::base() .'images/formbg.gif); border: 1px solid #CCC; height: 25px; font-size: 10px;">'. $i .'</a></li>';
+
+	$display = TRUE;
+
+	// Pagination truncation
+	if ($pages > 10) {
+		if ($i > $page+4 || $i < $page-4) {
+			if ($i != 1 && $i != $pages) {
+				$display = FALSE;
+			}
+		}
+	}
+
+	if ($display == TRUE) {
+		echo '<li style="display: inline;"><a href="'. url::base() .'projects/view/'. $uid .'/'. $project['id'] .'/'. $i .'/" style="'. $style .' text-decoration: none; padding: 8px; margin: 2px; margin-top: 0px; background: url('. url::base() .'images/formbg.gif); border: 1px solid #CCC; height: 25px; font-size: 10px;">'. $i .'</a></li>';
+	}
 }
 ?>
 <?php
