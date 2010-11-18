@@ -2,6 +2,7 @@ var onloadFunctions = [];
 var maxFields     = 4; // maximum number of fields to display
 var fieldsCount   = 0;  // keep track of number of fields
 var fieldsNumber  = 1;  // used to give name to fields
+var first = 1; // Used to determine whether or not to look at the offset
 
 function addOnLoadFunc ( onloadFunction )
 {
@@ -32,7 +33,10 @@ addOnLoadFunc ( uploadFunc );
 function addUploadFields ( iCount, offset )
 {
 	maxFields = 5 - offset;
-	fieldsNumber = offset;
+	if (this.first == 1) {
+		fieldsNumber = offset;
+		this.first = 0;
+	}
     for ( var i = 0; i < iCount; i++ ) addUploadField ( );
 }
 

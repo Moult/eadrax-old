@@ -89,7 +89,7 @@ if ($pages != 1 && $page > 1) {
         <li style="width: 50px; display: inline;">
             <input style="width: 50px;" type="button" onclick="parent.location='<?php echo url::base() .'projects/view/'. $uid .'/'. $project['id'] .'/'. ($page-1) .'/'; ?>'" value="&lt;" />
         </li>
-<? } else { ?>
+<?php } else { ?>
         <li style="width: 50px; display: inline;">
             <input style="width: 50px; color: #CCC;" type="button" value="&lt;&lt;" />
         </li>
@@ -130,7 +130,7 @@ if ($pages != 1 && $page < $pages) {
         <li style="width: 50px; display: inline;">
             <input style="width: 50px;" type="button" onclick="parent.location='<?php echo url::base() .'projects/view/'. $uid .'/'. $project['id'] .'/'. $pages .'/'; ?>'" value="&gt;&gt;" />
         </li>
-<? } else { ?>
+<?php } else { ?>
         <li style="width: 50px; display: inline;">
 			<input style="width: 50px; color: #CCC;" type="button" value="&gt;" />
         </li>

@@ -86,7 +86,7 @@ if (isset($uid)) {
 		if (!empty(${'existing_filename'. $i})) {
 ?>
 <div style="float: left; clear: both; margin-bottom: 5px;">
-<span style="float: left; margin-right: 15px;"><img src="<?php echo ${'existing_icon'. $i}; ?>" alt="attachment<?php echo $i; ?>" style="padding: 1px; border: 1px solid #999;" /></span>
+<span style="float: left; margin-right: 15px;"><img src="<?php echo ${'existing_icon'. $i}; ?>" alt="attachment<?php echo $i; ?>" style="padding: 2px; -moz-box-shadow: 1px 1px 3px #555; -webkit-box-shadow: 1px 1px 3px #555; box-shadow: 1px 1px 3px #555;" /></span>
 						<span style="float: left;"><div style="overflow: hidden;"><input type="file" id="attachment" name="attachment<?php echo $i; ?>" style="height: 23px;" /></div><div style="clear: left; margin-top: 5px;"><input type="checkbox" name="delete<?php echo $i; ?>" value="1">- Delete</div></span>
 </div>
 

@@ -481,7 +481,7 @@ class Updates_Controller extends Core_Controller {
 											$hlines2 = explode(" ", $text2);
 
 											// create the diff object
-											$render = &new Text_Diff($hlines1, $hlines2);
+											$render = new Text_Diff($hlines1, $hlines2);
 
 											// Get the diff in unified format
 											$markup_settings = array(
@@ -492,7 +492,7 @@ class Updates_Controller extends Core_Controller {
 												'del_suffix' => '</span>'
 											);
 
-											$renderer = &new Text_Diff_Renderer_inline($markup_settings);
+											$renderer = new Text_Diff_Renderer_inline($markup_settings);
 											$render = $renderer->render($render);
 											$render = str_replace(array("\r\n", "\n", "\r"), ' ', $render);
 											$render = htmlspecialchars_decode($render);

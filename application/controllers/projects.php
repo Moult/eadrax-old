@@ -768,7 +768,7 @@ class Projects_Controller extends Core_Controller {
 				$icon = Updates_Controller::_file_icon($row->filename0, $row->ext0);
                 // Build the markup.
                 $markup = $markup .'<div>';
-				if (!strpos($icon, 'images/icons')) { $markup_add = 'border: 1px solid #999; padding: 1px;'; } else { $markup_add = ''; }
+				if (!strpos($icon, 'images/icons')) { $markup_add = '-moz-box-shadow: 1px 1px 3px #555; -webkit-box-shadow: 1px 1px 3px #555; box-shadow: 1px 1px 3px #555; padding: 2px; background-color: #FFF;'; } else { $markup_add = ''; }
 				$markup = $markup .'<p><a href="'. url::base() .'updates/view/'. $row->id .'/"><img style="vertical-align: middle; '. $markup_add .'" src="'. $icon .'" alt="update icon" /></a></p>';
                 $markup = $markup .'<h3><a href="'. url::base() .'updates/view/'. $row->id .'/">'. $row->summary .'</a></h3><span>'. date('jS F Y', strtotime($row->logtime)) .'</span>';
                 $markup = $markup .'</div>';

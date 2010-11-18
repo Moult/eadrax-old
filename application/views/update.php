@@ -71,28 +71,28 @@ if (isset($first)) {
         <li style="width: 50px; display: inline;">
             <input style="width: 50px;" type="button" onclick="parent.location='<?php echo url::base() .'updates/view/'. $first .'/'; ?>'" value="&lt;&lt;" />
         </li>
-<? } ?>
+<?php } ?>
 <?php
 if (isset($previous)) {
 ?>
         <li style="width: 50px; display: inline;">
             <input style="width: 50px;" type="button" onclick="parent.location='<?php echo url::base() .'updates/view/'. $previous .'/'; ?>'" value="&lt;" />
         </li>
-<? } ?>
+<?php } ?>
 <?php
 if (isset($next)) {
 ?>
         <li style="width: 50px; display: inline;">
             <input style="width: 50px;" type="button" onclick="parent.location='<?php echo url::base() .'updates/view/'. $next .'/'; ?>'" value="&gt;" />
         </li>
-<? } ?>
+<?php } ?>
 <?php
 if (isset($last)) {
 ?>
         <li style="width: 50px; display: inline;">
             <input style="width: 50px;" type="button" onclick="parent.location='<?php echo url::base() .'updates/view/'. $last .'/'; ?>'" value="&gt;&gt;" />
         </li>
-<? } ?>
+<?php } ?>
     </ul>
 </div>
 
@@ -113,7 +113,7 @@ if (isset($last)) {
 	<div id="tabs">
 		<ul>
 <?php for ($i=0; $i<5; $i++) { if(!empty(${'filename'. $i})) { ?>
-			<li><a href="#fragment-<?php echo $i; ?>"><img src="<?php echo ${'filename_icon'. $i}; ?>" <?php if (${'display'. $i} == 'image' || ${'display'. $i} == 'video') { ?>style="border: 1px solid #888; padding: 2px;" <?php } ?>alt="attachment<?php echo $i; ?>" /></a></li>
+			<li><a href="#fragment-<?php echo $i; ?>"><img src="<?php echo ${'filename_icon'. $i}; ?>" <?php if (${'display'. $i} == 'image' || ${'display'. $i} == 'video') { ?>style="-moz-box-shadow: 1px 1px 3px #555; -webkit-box-shadow: 1px 1px 3px #555; box-shadow: 1px 1px 3px #555; padding: 2px;" <?php } ?>alt="attachment<?php echo $i; ?>" /></a></li>
 <?php } } ?>
 		</ul>
 <?php } ?>
@@ -190,7 +190,7 @@ $(document).ready(function() {
 <div style="border: 1px solid #88AAFF; margin-left: auto; margin-right: auto; margin-top: 10px; background-color: #DDEEFF; padding: 10px;">
 		<div style="float: left; width: 100px;">
 			<p style="font-size: 18px; margin-bottom: 0px; line-height: 63px;">
-				<img src="<?php echo ${'filename_icon'. $i}; ?>" class="icon" alt="" <?php if (!strpos(${'filename_icon'. $i}, 'images/icons')) { echo 'style="border: 1px solid #999; padding: 1px;"'; } ?> />
+				<img src="<?php echo ${'filename_icon'. $i}; ?>" class="icon" alt="" <?php if (!strpos(${'filename_icon'. $i}, 'images/icons')) { echo 'style="-moz-box-shadow: 1px 1px 3px #555; -webkit-box-shadow: 1px 1px 3px #555; box-shadow: 1px 1px 3px #555; padding: 2px; background-color: #FFF;"'; } ?> />
 			</p>
         </div>
 

@@ -36,7 +36,7 @@
 				<strong><a href="<?php echo url::base(); ?>profiles/view/<?php echo $news['user']; ?>/" style="text-decoration: none;"><?php echo $news['user']; ?></a></strong> <?php echo $news['text']; ?>
 				</p>
 				<?php
-					if (!strpos($news['picture'], 'images/icons') || strpos($news['picture'], 'images/noprojecticon.png')) { $style = 'border: 1px solid #999; padding: 1px;'; } else { $style = ''; }
+					if (!strpos($news['picture'], 'images/icons') || strpos($news['picture'], 'images/noprojecticon.png')) { $style = '-moz-box-shadow: 1px 1px 3px #555; -webkit-box-shadow: 1px 1px 3px #555; box-shadow: 1px 1px 3px #555; padding: 2px;'; } else { $style = ''; }
 					echo '<p style="float: left;"><a href="'. $news['picture_url'] .'"><img style="vertical-align: middle; '. $style .'" src="'. $news['picture'] .'" alt="update icon" /></a></p>';
 				?>
 
@@ -58,7 +58,7 @@
 				<?php } ?>
 			</div>
 		</div>
-	<? } ?>
+	<?php } ?>
 
 	<?php if ($offset+10 >= $news_total) { ?>
 	<p style="font-style: italic;">
