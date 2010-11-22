@@ -588,6 +588,239 @@ class Api_Controller extends Core_Controller {
 		}
 	}
 
+	public function activity_get() {
+		$user = $this->checkpassword();
+		$this->checktrafficlimit($user);
+
+		$user_model = new User_Model;
+		$update_model = new Update_Model;
+
+		$uid = $user_model->uid($user);
+
+		$page = $this->input->get('page', 1);
+		$pagesize = $this->input->get('pagesize', 50);
+
+		if ($pagesize < 1 || $pagesize > 50) {
+			$pagesize = 50;
+		}
+
+		$start = ($page - 1) * $pagesize;
+		$end = $pagesize;
+
+		// Run our existing controller function.
+		Dashboard_Controller::index($start);
+
+		// Remap vars from original controller.
+		$newsfeed = $this->template->content[1]->newsfeed;
+		$totalitems = $this->template->content[1]->news_total;
+
+		$i = 0;
+		foreach ($newsfeed as $news) {
+			$i++;
+			if ($i <= $end) {
+				$xml[$i]['personid'] = $news['user'];
+				$xml[$i]['avatarpic'] = $news['avatar'];
+				$xml[$i]['timestamp'] = $news['logtime'];
+				if (strpos($news['text'], 'comment')) {
+					$xml[$i]['type'] = 6;
+				} elseif (strpos($news['text'], 'new update')) {
+					$xml[$i]['type'] = 3;
+				} elseif (strpos($news['text'], 'new project')) {
+					$xml[$i]['type'] = 11;
+				} elseif (strpos($news['text'], 'kudos')) {
+					$xml[$i]['type'] = 9;
+				} elseif (strpos($news['text'], 'subscribe')) {
+					$xml[$i]['type'] = 12;
+				} elseif (strpos($news['text'], 'track')) {
+					$xml[$i]['type'] = 2;
+				}
+				$xml[$i]['message'] = $news['text'];
+				$xml[$i]['link'] = $news['picture_url'];
+			}
+		}
+
+		echo $this->generatexml('ok',100,'',$xml,'activity','full',2,$totalitems,$pagesize);
+	}
+
+	public function content_categories_get() {
+		$user = $this->checkpassword(FALSE);
+		$this->checktrafficlimit($user);
+
+		$project_model = new Project_Model;
+		$categories = $project_model->categories();
+
+		$totalitems = count($categories);
+
+		$i = 0;
+		foreach ($categories as $id => $name) {
+			$i++;
+			$xml[$i]['id'] = $id;
+			$xml[$i]['name'] = $name;
+		}
+
+		echo $this->generatexml('ok',100,'',$xml,'category','',2,$totalitems);
+	}
+
+	public function content_subcategories_get() {
+		$personid = $this->uri->segment(5);
+
+		if ($personid == 'self') {
+			$user = $this->checkpassword();
+			$personid = $user;
+		} else {
+			$user = $this->checkpassword(FALSE);
+		}
+		$this->checktrafficlimit($user);
+
+		$project_model = new Project_Model;
+		$user_model = new User_Model;
+
+		$uid = $user_model->uid($personid);
+		$projects = $project_model->projects($uid);
+		$categories = $project_model->categories();
+
+		$totalitems = count($projects);
+
+		$i = 0;
+		foreach ($projects as $id => $name) {
+			$i++;
+			$xml[$i]['id'] = $id;
+			$xml[$i]['name'] = $name;
+
+			$project_information = $project_model->project_information($id);
+			$xml[$i]['category'] = $categories[$project_information['cid']];
+			$xml[$i]['categoryid'] = $project_information['cid'];
+			$project_personid = $user_model->user_information($project_information['uid']);
+			$xml[$i]['personid'] = $project_personid['username'];
+		}
+
+		echo $this->generatexml('ok',100,'',$xml,'subcategory','',2,$totalitems);
+	}
+
+	public function content_data_get() {
+		$user = $this->checkpassword(FALSE);
+		$this->checktrafficlimit($user);
+
+		$update_model = new Update_Model;
+		$project_model = new Project_Model;
+		$user_model = new User_Model;
+		$kudos_model = new Kudos_Model;
+		$comment_model = new Comment_Model;
+
+		// Get our arguments
+		$contentid = $this->uri->segment(5);
+		$category = $this->input->get('categories');
+		$subcategory = $this->input->get('subcategories');
+		$user = $this->input->get('user');
+		$search = explode(' ', $this->input->get('search'));
+
+		$categories = $project_model->categories();
+
+		$page = $this->input->get('page', NULL);
+
+		// Workaround for the stupid first page is 0 thing
+		if ($page == NULL) {
+			$page = 1;
+		} else {
+			$page = $page + 1;
+		}
+
+		$pagesize = $this->input->get('pagesize', 50);
+
+		if ($pagesize < 1 || $pagesize > 50) {
+			$pagesize = 50;
+		}
+
+		$offset = ($page - 1) * $pagesize;
+
+		$order = 'DESC';
+
+		if (!empty($contentid)) {
+			$update = $update_model->update_information($contentid);
+
+			$xml[0]['id'] = $update['id'];
+			$xml[0]['name'] = $update['summary'];
+			$xml[0]['changed'] = $update['logtime'];
+			$xml[0]['subcategoryid'] = $update['pid'];
+			$subcategory = $project_model->project_information($update['pid']);
+			$xml[0]['subcategory'] = $subcategory['name'];
+			$xml[0]['categoryid'] = $subcategory['cid'];
+			$xml[0]['category'] = $categories[$subcategory['cid']];
+			$personid = $user_model->user_information($update['uid']);
+			$xml[0]['personid'] = $personid['username'];
+			$xml[0]['profilepage'] = url::base() .'profiles/view/'. $personid['username'] .'/';
+
+			if ($update['ext0'] == 'jpg' || $update['ext0'] == 'gif' || $update['ext0'] == 'png') {
+				$xml[0]['previewpic1'] = url::base() .'uploads/icons/'. $update['filename0'] .'_crop.jpg';
+			}
+
+			for ($i = 0; $i < 5; $i++) {
+				if (!empty($update['ext'. $i])) {
+					$xml[0]['smallpreviewpic'. ($i + 1)] = Updates_Controller::_file_icon($update['filename'. $i], $update['ext'. $i]);
+					$xml[0]['downloadlink'. ($i + 1)] = url::base() .'uploads/files/'. $update['filename'. $i] .'.'. $update['ext'. $i];
+					if ($update['ext'. $i] == 'jpg' || $update['ext'. $i] == 'png' || $update['ext'. $i] == 'gif') {
+						$xml[0]['downloadtype'. ($i +1)] = 'image';
+					} elseif ($update['ext'. $i] == 'avi' || $update['ext'. $i] == 'mpg' || $update['ext'. $i] == 'mov' || $update['ext'. $i] == 'flv' || $update['ext'. $i] == 'ogg' || $update['ext'. $i] == 'wmv') {
+						$xml[0]['downloadtype'. ($i +1)] = 'video';
+					} elseif ($update['ext'. $i] == 'mp3' || $update['ext'. $i] == 'wav') {
+						$xml[0]['downloadtype'. ($i +1)] = 'sound';
+					} else {
+						$xml[0]['downloadtype'. ($i +1)] = 'download';
+					}
+				}
+			}
+
+			$xml[0]['score'] = $kudos_model->kudos($update['id']);
+			$xml[0]['comments'] = $comment_model->comment_update_number($update['id']);
+
+			echo $this->generatexml('ok',100,'',$xml,'content','full',2);
+		} else {
+			if (!empty($category)) {
+				$updates = $update_model->updates('category', $category, $order, $pagesize, $offset);
+				$totalitems = count($update_model->updates('category', $category));
+			} elseif (!empty($subcategory)) {
+				$uid = $project_model->project_information($subcategory);
+				$uid = $uid['uid'];
+				$updates = $update_model->updates($uid, $subcategory, $order, $pagesize, $offset);
+				$totalitems = count($update_model->updates($uid, $subcategory));
+			} elseif (!empty($user)) {
+				$uid = $user_model->user_information($user);
+				$uid = $uid['id'];
+				$updates = $update_model->updates($uid, NULL, $order, $pagesize, $offset);
+				$totalitems = count($update_model->updates($uid, NULL));
+			} elseif (!empty($search)) {
+				$updates = $update_model->search($search, 'updates');
+				$totalitems = count($updates);
+			}
+
+			$i = 0;
+			foreach ($updates as $update) {
+				$i++;
+				$xml[$i]['id'] = $update->id;
+				$xml[$i]['name'] = $update->summary;
+				$xml[$i]['changed'] = $update->logtime;
+				$xml[$i]['subcategoryid'] = $update->pid;
+				$subcategory = $project_model->project_information($update->pid);
+				$xml[$i]['subcategory'] = $subcategory['name'];
+				$xml[$i]['categoryid'] = $subcategory['cid'];
+				$xml[$i]['category'] = $categories[$subcategory['cid']];
+				$personid = $user_model->user_information($update->uid);
+				$xml[$i]['personid'] = $personid['username'];
+				$xml[$i]['profilepage'] = url::base() .'profiles/view/'. $personid['username'] .'/';
+
+				if ($update->ext0 == 'jpg' || $update->ext0 == 'gif' || $update->ext0 == 'png') {
+					$xml[$i]['previewpic1'] = url::base() .'uploads/icons/'. $update->filename0 .'_crop.jpg';
+				}
+				$xml[$i]['smallpreviewpic1'] = Updates_Controller::_file_icon($update->filename0, $update->ext0);
+
+				$xml[$i]['score'] = $kudos_model->kudos($update->id);
+				$xml[$i]['comments'] = $comment_model->comment_update_number($update->id);
+			}
+
+			echo $this->generatexml('ok',100,'',$xml,'content','summary',2,$totalitems);
+		}
+	}
+
 	// Dirty hacks.
 
 	public function _login_user($username, $password, $remember, $openid) {
