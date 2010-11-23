@@ -7,7 +7,7 @@
 </ul>
 
 <ul class="block_links" style="float: right;">
-<li><a href="<?php echo url::base(); ?>site/tour/" class="block" style="background-color: #444;">What is WIPUP?</a></li>
+<li><a href="<?php echo url::base(); ?>projects/view/2/9/" class="block" style="background-color: #444;">Featured: The ThoughtScore Project</a></li>
 </ul>
 </div>
 
