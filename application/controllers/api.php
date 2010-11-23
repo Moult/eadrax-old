@@ -602,6 +602,13 @@ class Api_Controller extends Core_Controller {
 		$page = $this->input->get('page', 1);
 		$pagesize = $this->input->get('pagesize', 50);
 
+		// Workaround for the stupid first page is 0 thing
+		if ($page == NULL) {
+			$page = 1;
+		} else {
+			$page = $page + 1;
+		}
+
 		if ($pagesize < 1 || $pagesize > 50) {
 			$pagesize = 50;
 		}
@@ -944,6 +951,78 @@ class Api_Controller extends Core_Controller {
 		echo $this->generatexml('ok',100,'');
 	}
 
+	public function comments_data_get() {
+		$user = $this->checkpassword(FALSE);
+		$this->checktrafficlimit($user);
+
+		$updateid = $this->uri->segment(6);
+
+		$comment_model = new Comment_Model;
+		$user_model = new User_Model;
+
+		$comments = $comment_model->comment_update($updateid);
+
+		$page = $this->input->get('page', NULL);
+		$pagesize = $this->input->get('pagesize', 50);
+
+		// Workaround for the stupid first page is 0 thing
+		if ($page == NULL) {
+			$page = 1;
+		} else {
+			$page = $page + 1;
+		}
+
+		if ($pagesize < 1 || $pagesize > 50) {
+			$pagesize = 50;
+		}
+
+		$start = ($page - 1) * $pagesize;
+		$end = $start + $pagesize;
+
+		$i = 0;
+		foreach ($comments as $comment) {
+			$i++;
+			if ($i > $start && $i <= $end) {
+				$xml[$i]['id'] = $comment->id;
+				$xml[$i]['text'] = $comment->comment;
+				$user = $user_model->user_information($comment->uid);
+				$xml[$i]['user'] = $user['username'];
+				$xml[$i]['date'] = $comment->logtime;
+			}
+		}
+
+		echo $this->generatexml('ok',100,'',$xml,'comment','',2);
+	}
+
+	public function comments_add_post() {
+		$user = $this->checkpassword();
+		$this->checktrafficlimit($user);
+
+		$_POST['comment'] = $this->input->post('message', NULL);
+		$uid = $this->input->post('content', NULL);
+
+		if ($_POST['comment'] == NULL) {
+			echo $this->generatexml('failed',102,'message must not be empty.');
+			die();
+		}
+
+		if ($uid == NULL) {
+			echo $this->generatexml('failed',101,'content must not be empty.');
+			die();
+		}
+
+		$update_model = new Update_Model;
+
+		if (!$update_model->check_update_exists($uid)) {
+			echo $this->generatexml('failed',103,'no permission to add a comment.');
+			die();
+		}
+
+		Updates_Controller::view($uid);
+
+		echo $this->generatexml('ok',100,'');
+	}
+
 	// Dirty hacks.
 
 	public function _login_user($username, $password, $remember, $openid) {
@@ -956,5 +1035,9 @@ class Api_Controller extends Core_Controller {
 
 	public function _validate_project_owner(Validation $array, $field) {
 		Updates_Controller::_validate_project_owner($array, $field);
+	}
+
+	public function _file_icon($filename, $ext, $cropped = FALSE) {
+		Updates_Controller::_file_icon($filename, $ext, $cropped = FALSE);
 	}
 }
