@@ -273,9 +273,11 @@ class Api_Controller extends Core_Controller {
 						}
 					} else {
 						$identifieduser = $user;
+						Users_Controller::_login_user($user, $authpw, FALSE, FALSE);
 					}
 				} else {
 					$identifieduser = $user;
+					Users_Controller::_login_user($identifieduser, NULL, FALSE, TRUE);
 				}
 			}
 		}
@@ -736,6 +738,10 @@ class Api_Controller extends Core_Controller {
 		$order = 'DESC';
 
 		if (!empty($contentid)) {
+			if (!$update_model->check_update_exists($contentid)) {
+				echo $this->generatexml('failed',101,'content not found');
+			}
+
 			$update = $update_model->update_information($contentid);
 
 			$xml[0]['id'] = $update['id'];
@@ -749,13 +755,16 @@ class Api_Controller extends Core_Controller {
 			$personid = $user_model->user_information($update['uid']);
 			$xml[0]['personid'] = $personid['username'];
 			$xml[0]['profilepage'] = url::base() .'profiles/view/'. $personid['username'] .'/';
+			$xml[0]['description'] = $update['detail'];
 
 			if ($update['ext0'] == 'jpg' || $update['ext0'] == 'gif' || $update['ext0'] == 'png') {
 				$xml[0]['previewpic1'] = url::base() .'uploads/icons/'. $update['filename0'] .'_crop.jpg';
 			}
 
+			$downloads = 0;
 			for ($i = 0; $i < 5; $i++) {
 				if (!empty($update['ext'. $i])) {
+					$downloads++;
 					$xml[0]['smallpreviewpic'. ($i + 1)] = Updates_Controller::_file_icon($update['filename'. $i], $update['ext'. $i]);
 					$xml[0]['downloadlink'. ($i + 1)] = url::base() .'uploads/files/'. $update['filename'. $i] .'.'. $update['ext'. $i];
 					if ($update['ext'. $i] == 'jpg' || $update['ext'. $i] == 'png' || $update['ext'. $i] == 'gif') {
@@ -772,6 +781,7 @@ class Api_Controller extends Core_Controller {
 
 			$xml[0]['score'] = $kudos_model->kudos($update['id']);
 			$xml[0]['comments'] = $comment_model->comment_update_number($update['id']);
+			$xml[0]['downloads'] = $downloads;
 
 			echo $this->generatexml('ok',100,'',$xml,'content','full',2);
 		} else {
@@ -821,9 +831,130 @@ class Api_Controller extends Core_Controller {
 		}
 	}
 
+	public function content_vote_post() {
+		$user = $this->checkpassword(FALSE);
+		$this->checktrafficlimit($user);
+
+		$contentid = $this->uri->segment(5);
+		$vote = $this->input->post('vote', NULL);
+
+		$update_model = new Update_Model;
+		$kudos_model = new Kudos_Model;
+
+		if (!$update_model->check_update_exists($contentid)) {
+			echo $this->generatexml('failed',101,'content not found');
+			die();
+		}
+
+		if ($vote != NULL) {
+			Feedback_Controller::kudos($contentid);
+
+			if (strpos($this->session->get('notification'), 'added your kudos')) {
+				echo $this->generatexml('ok',100,'');
+			}
+		}
+	}
+
+	public function content_add_post() {
+		$user = $this->checkpassword();
+		$this->checktrafficlimit($user);
+
+		// Reroute POST vars.
+		$_POST['summary'] = $this->input->post('name');
+		$_POST['detail'] = $this->input->post('description', '');
+		$_POST['pid'] = $this->input->post('type', 1);
+		$_POST['syntax'] = $this->input->post('syntax', 0);
+		$_POST['pastebin'] = $this->input->post('pastebin', '');
+
+		// Reroute FILES vars.
+		for ($i = 1; $i < 6; $i++) {
+			if (isset($_FILES['downloadlink'. $i])) {
+				$_FILES['attachment'. ($i - 1)] = $_FILES['downloadlink'. $i];
+			}
+		}
+
+		Updates_Controller::add();
+
+		if (strpos($this->session->get('notification'), 'just updated')) {
+			$xml[0]['id'] = $this->session->get('uid');
+			echo $this->generatexml('ok',100,'',$xml,'content','',2);
+		} else {
+			echo $this->generatexml('failed',101,'please specify all mandatory fields.');
+		}
+	}
+
+	public function content_edit_post() {
+		$user = $this->checkpassword();
+		$this->checktrafficlimit($user);
+
+		$user_model = new User_Model;
+		$update_model = new Update_Model;
+
+		$updateid = $this->uri->segment(5);
+		$uid = $user_model->uid($user);
+
+		if (!$update_model->check_update_owner($updateid, $uid)) {
+			echo $this->generatexml('failed',102,'no permission to change content.');
+			die();
+		}
+
+		// Find original values.
+		$update = $update_model->update_information($updateid);
+
+		// Reroute POST vars.
+		$_POST['summary'] = $this->input->post('name', $update['summary']);
+		$_POST['detail'] = $this->input->post('description', $update['detail']);
+		$_POST['pid'] = $this->input->post('type', $update['pid']);
+		$_POST['syntax'] = $this->input->post('syntax', $update['syntax']);
+		$_POST['pastebin'] = $this->input->post('pastebin', $update['pastebin']);
+
+		// Reroute FILES vars.
+		for ($i = 1; $i < 6; $i++) {
+			if (isset($_FILES['downloadlink'. $i])) {
+				$_FILES['attachment'. ($i - 1)] = $_FILES['downloadlink'. $i];
+			}
+		}
+
+		Updates_Controller::add($updateid);
+
+		if (strpos($this->session->get('notification'), 'just updated')) {
+			echo $this->generatexml('ok',100,'');
+		} else {
+			echo $this->generatexml('failed',101,'please specify all mandatory fields.');
+		}
+	}
+
+	public function content_delete_post() {
+		$user = $this->checkpassword();
+		$this->checktrafficlimit($user);
+
+		$user_model = new User_Model;
+		$update_model = new Update_Model;
+
+		$updateid = $this->uri->segment(5);
+		$uid = $user_model->uid($user);
+
+		if (!$update_model->check_update_owner($updateid, $uid)) {
+			echo $this->generatexml('failed',101,'no permission to change content.');
+			die();
+		}
+
+		Updates_Controller::delete($updateid);
+
+		echo $this->generatexml('ok',100,'');
+	}
+
 	// Dirty hacks.
 
 	public function _login_user($username, $password, $remember, $openid) {
 		Users_Controller::_login_user($username, $password, $remember, $openid);
+	}
+
+	public function _validate_syntax_language(Validation $array, $field) {
+		Updates_Controller::_validate_syntax_language($array, $field);
+	}
+
+	public function _validate_project_owner(Validation $array, $field) {
+		Updates_Controller::_validate_project_owner($array, $field);
 	}
 }

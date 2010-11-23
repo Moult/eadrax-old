@@ -1121,6 +1121,7 @@ class Updates_Controller extends Core_Controller {
 
 				// Redirect to the update itself.
 				$this->session->set('notification', 'You\'ve just updated. Congrats. You have no idea how ecstatic you\'ve made us.');
+				$this->session->set('uid', $uid);
 				url::redirect(url::base() .'updates/view/'. $uid .'/');
 			}
 			else
