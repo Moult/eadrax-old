@@ -52,6 +52,8 @@ class Projects_Controller extends Core_Controller {
 		$update_model	= new Update_Model;
 		$project_model	= new Project_Model;
 		$kudos_model	= new Kudos_Model;
+		$subscribe_model	= new Subscribe_Model;
+		$track_model	= new Track_Model;
 		$comment_model	= new Comment_Model;
 		$user_model		= new User_Model;
 
@@ -140,6 +142,9 @@ class Projects_Controller extends Core_Controller {
 		// Parse the project itself first.
 		$project_information = $project_model->project_information($pid);
 		$project_view->project = $project_information;
+		$project_view->subscribed = $subscribe_model->check_project_subscriber($pid, $this->uid);
+		$project_view->tracking = $track_model->check_track_owner($project_information['uid'], $this->uid);
+		$profile_view->tracking = $track_model->check_track_owner($project_information['uid'], $this->uid);
 		$project_view->categories = $project_model->categories();
 
 		// Parse the description
@@ -231,9 +236,12 @@ class Projects_Controller extends Core_Controller {
 			$project_view->category_id = $pid;
 		}
         $markup = '';
+		$markup_count = 0;
 
         if (count($query) > 0) {
             foreach ($query as $row) {
+				$markup_count++;
+
 				$icon = Updates_Controller::_file_icon($row->filename0, $row->ext0, TRUE);
 				$file_icon = '';
 				if (strpos($icon, 'images/icons')) {
@@ -244,6 +252,9 @@ class Projects_Controller extends Core_Controller {
 				$project_name = $project_model->project_information($row->pid);
 				$project_name = $project_name['name'];
 				$star_width = 0;
+
+				$update_name = $user_model->user_information($row->uid);
+				$update_name = $update_name['username'];
 
 				if ($pid != 0 && $uid != 'category') {
 					$project_name = '';
@@ -282,14 +293,25 @@ class Projects_Controller extends Core_Controller {
 				}
 
                 // Build the markup.
-                $markup = $markup .'<div style="float: left; width: 260px; height: 240px; border: 0px solid #F00; margin: 7px;">';
+				if ($markup_count % 3 == 0) {
+					$markup = $markup .'<div style="float: left; height: 300px; width: 260px; border: 0px solid #F00; margin: 0px;">';
+				} else {
+					$markup = $markup .'<div style="float: left; height: 295px; border: 0px solid #F00; margin-right: 19px;">';
+				}
 				$markup = $markup .'<div style="height: 20px; width: 262px; margin-bottom: 5px; background-color: #1c1b19; background-repeat: repeat-x; background-image: url(\''. url::base() .'images/timebar.png\'); padding: 2px; font-size: 10px; font-family: Arial; color: #FFF; text-shadow: 0px 1px 0px #000; line-height: 20px; padding-left: 0px;"><span style="padding-left: 5px;"><div style="float: left; position: relative; top: 3px; left: 5px; background-image: url(\''. url::base() .'images/star.png\'); width: '. $star_width .'px; height: 12px;"></div><a href="'. url::base() .'projects/view/'. $row->uid .'/'. $row->pid .'/" style="text-decoration: none; color: #FFF;">'. $project_name .'</a></span><span style="float: right; padding-right: 5px;">'. date($datestring, strtotime($row->logtime)) .'</span></div>';
                 $markup = $markup .'<div style="width: 260px; margin: 0px; height: 200px; border: 0px solid #F00;">';
 				$markup = $markup .'<p><a href="'. url::base() .'updates/view/'. $row->id .'/"><img style="vertical-align: middle; border: 1px solid #999; padding: 1px; background: url('. $icon .'); background-repeat: no-repeat; background-position: 1px 1px; width: 260px; height: 200px;" src="'. url::base() .'images/crop_overlay.png" alt="update icon" /></a></p>';
-				$markup = $markup .'<cite style="background-color: #D8D8D8; background-image: url(\''. url::base() .'/images/formbg.gif\'); background-repeat: repeat-x; -moz-opacity:.55; filter:alpha(opacity=55); opacity: .55; color: #000; position: relative; display: block; margin-left: auto; margin-right: auto; left: 2px; top: -63px; height: 30px; width: 240px; padding: 10px; border-top: 1px solid #888; font-weight: bold;"><span style="font-weight: 100; font-size: 9px; float: right; position: relative; top: -2px; text-align: right;">'. $row->views .'V<br />'. $kudos_model->kudos($row->id) .'K<br />'. $comment_model->comment_update_number($row->id) .'C</span></cite>';
-				$markup = $markup .'<span style="color: #000; font-weight: 600; float: left; border: 0px solid #F00; height: 30px; width: 210px; text-shadow: 0px 1px 0px #AAA; position: relative; top: -105px; left: 8px; word-wrap: break-word;">'. $row->summary .'</span>';
+				$markup = $markup .'<cite style="background-color: #D8D8D8; background-image: url(\''. url::base() .'/images/formbg.gif\'); background-repeat: repeat-x; -moz-opacity:.55; filter:alpha(opacity=55); opacity: .55; color: #000; position: relative; display: none; margin-left: auto; margin-right: auto; left: 2px; top: -63px; height: 30px; width: 240px; padding: 10px; border-top: 1px solid #888; font-weight: bold;"><span style="font-weight: 100; font-size: 9px; float: right; position: relative; top: -2px; text-align: right;"></span></cite>';
+				$markup = $markup .'<div style="color: #000; font-family: \'Georgia\'; font-size: 15px; font-style: italic;  border: 0px solid #F00; width: 260px; text-shadow: 0px 1px 0px #AAA; margin-bottom: 5px; margin-left: 8px; word-wrap: break-word;">'. $row->summary .'<br />';
+				if (empty($project_name)) {
+					$markup = $markup .'<span style="text-shadow: none; font-size: 10px; font-family: \'Arial\', sans-serif; color: #555;">'. $row->views .' Views, '. $kudos_model->kudos($row->id) .' Kudos, '. $comment_model->comment_update_number($row->id) .' Comments</span>';
+				} else {
+					$markup = $markup .'<span style="font-size: 10px; font-family: \'Arial\', sans-serif;">By <a href="'. url::base() .'profiles/view/'. $update_name.'/">'. $update_name .'</a></span>';
+					$markup = $markup .'<span style="text-shadow: none; font-size: 10px; font-family: \'Arial\', sans-serif; color: #666;"> ('. $row->views .'V, '. $kudos_model->kudos($row->id) .'K, '. $comment_model->comment_update_number($row->id) .'C)</span>';
+				}
+				$markup = $markup .'</div>';
 				if (!empty($file_icon)) {
-					$markup = $markup .'<img src="'. $file_icon .'" style="position: relative; top: -170px; left: -5px;" />';
+					$markup = $markup .'<img src="'. $file_icon .'" style="position: relative; top: -115px; left: 200px;" />';
 				}
                 $markup = $markup .'</div>';
 				$markup = $markup .'<div style="margin-top: 4px; width: 264px; height: 12px; background-image: url(\''. url::base() .'images/grid_shadow.png\');"></div>';

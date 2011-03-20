@@ -1,102 +1,47 @@
+<!-- For social sharing purposes -->
+<head>
+<meta name="title" content="WIPUP - Share your ambitions" />
+<meta name="description" content="<?php echo $summary .' - '. $detail; ?>" />
+<link rel="image_src" href="<?php echo substr($filename_icon0, 0, -4) .'_crop.jpg'; ?>" />
+<meta property="image" content="<?php echo substr($filename_icon0, 0, -4) .'_crop.jpg'; ?>" />
+<meta property="og:image" content="<?php echo substr($filename_icon0, 0, -4) .'_crop.jpg'; ?>" />
+</head>
 <h2>
-	<img src="<?php echo url::base(); ?>images/icons/spanner_48.png" width="48" height="48" class="icon" alt="" />
-	<?php echo $summary; ?>
+	<div style="float: left;">
+		<img src="<?php echo url::base(); ?>images/icons/spanner_48.png" width="48" height="48" class="icon" alt="" />
+<!--
+		<?php $icon = Updates_Controller::_file_icon($filename0, $ext0); ?>
+		<?php if (!strpos($icon, 'images/icons')) { $markup_add = '-moz-box-shadow: 1px 1px 3px #555; -webkit-box-shadow: 1px 1px 3px #555; box-shadow: 1px 1px 3px #555; padding: 2px; background-color: #FFF;'; } else { $markup_add = ''; } ?>
+		<?php echo '<a href="'. url::base() .'updates/view/'. $id .'/"><img style="vertical-align: middle; '. $markup_add .'" src="'. $icon .'" alt="update icon" /></a></p>'; ?>
+	-->
+	</div>
+
+	<div style="float: left; margin-left: 5px;">
+		<?php echo $summary; ?>
+
+		<?php if ($this->uid == $uid && $this->uid != 1) { ?>
+            <a href="<?php echo url::base() .'updates/add/'. $id .'/'; ?>"><img src="<?php echo url::base(); ?>images/icons/pencil.png" class="icon" alt="Edit" /></a>
+		<?php } ?>
+
+
+		<div style="margin-top: 0px; font-weight: bold; color: #555; letter-spacing: 0px; font-size: 12px;">
+<?php if (isset($project_information)) { ?>
+By <?php if ($uid != 1) { ?><a href="<?php echo url::base(); ?>profiles/view/<?php echo $user_information['username']; ?>/"><?php echo $user_information['username']; ?></a><?php } else { ?>Guest<?php } ?> from <a href="<?php echo url::base(); ?>projects/view/<?php echo $project_information['uid']; ?>/<?php echo $project_information['id']; ?>/"><?php echo $project_information['name']; ?></a> - <?php echo $project_information['summary']; ?>
+<?php } else { ?>
+By <?php if ($uid != 1) { ?><a href="<?php echo url::base(); ?>profiles/view/<?php echo $user_information['username']; ?>/"><?php echo $user_information['username']; ?></a><?php } else { ?>Guest<?php } ?> from <a href="<?php echo url::base(); ?>projects/view/<?php echo $uid; ?>/1/">Uncategorised Updates</a> - Updates that are not part of a long-term project
+<?php } ?>
+		</div>
+
+	</div>
+
+	<div style="float: right; letter-spacing: 0px; color: #999; font-size: 10px; font-weight: 0; margin-top: 30px;">
+		<?php echo date('jS F Y', strtotime($logtime)); ?>
+	</div>
 </h2>
 
-<div style="float: left; color: #777; text-align: right; margin-bottom: 5px;">
-	by <em><?php if ($uid != 1) { ?><a href="<?php echo url::base(); ?>profiles/view/<?php echo $user_information['username']; ?>/"><?php echo $user_information['username']; ?></a><?php } else { ?>Guest<?php } ?></em> with <span style="font-weight: bold;"><?php echo $kudos; ?></span> kudos
-</div>
-
-<div style="float: right; color: #AAA; text-align: right; margin-bottom: 5px;"><?php echo date('jS F Y', strtotime($logtime)); ?></div>
-
-<div style="clear: both;"></div>
+<div style="clear: both; margin-bottom: 5px;"></div>
 
 <div style="display: none;"><div id="data"><?php echo $share; ?></div></div>
-
-
-<div style="float: left; margin-bottom: 10px;">
-    <ul style="margin-left: 0px; display: inline;">
-        <li style="width: 70px; display: inline;">
-			<a id="inline" href="#data"><input style="width: 70px;" type="button" value="Share" /></a>
-        </li>
-<?php if (isset($feature)) { ?>
-        <li style="width: 70px; display: inline;">
-			<input style="width: 70px;" type="button" onclick="parent.location='<?php echo url::base(); ?>updates/feature/<?php echo $id; ?>/'" value="Feature" />
-        </li>
-<?php } ?>
-<?php if ($uid != 1 && $uid != $this->uid) { ?>
-        <li style="width: 70px; display: inline;">
-<?php if (isset($kudos_error)) { ?>
-			<input style="width: 70px;" type="button" value="Kudos'd!" disabled="disabled" />
-<?php } else { ?>
-			<input style="width: 70px;" type="button" onclick="parent.location='<?php echo url::base(); ?>feedback/kudos/<?php echo $id; ?>/'" value="Kudos" />
-<?php } ?>
-        </li>
-<?php } ?>
-<?php if ($uid != 1) { ?>
-	<?php if ($pid != 1) { ?>
-        <li style="width: 70px; display: inline;">
-			<?php if ($subscribed == TRUE) { ?>
-            <input style="width: 70px;" type="button" onclick="parent.location='<?php echo url::base(); ?>feedback/unsubscribe/<?php echo $pid; ?>/'" value="Unscribe" />
-			<?php } elseif ($tracking == FALSE && $uid != $this->uid ) { ?>
-			<input style="width: 70px;" type="button" onclick="parent.location='<?php echo url::base(); ?>feedback/subscribe/<?php echo $pid; ?>/'" value="Subscribe" />
-			<?php } ?>
-        </li>
-	<?php } ?>
-        <li style="width: 70px; display: inline;">
-			<?php if ($tracking == TRUE) { ?>
-            <input style="width: 70px;" type="button" onclick="parent.location='<?php echo url::base(); ?>feedback/untrack/<?php echo $uid; ?>/'" value="Untrack" />
-			<?php } elseif ($tracking == FALSE && $uid != $this->uid && $user_information['enable_tracking'] == 1) { ?>
-            <input style="width: 70px;" type="button" onclick="parent.location='<?php echo url::base(); ?>feedback/track/<?php echo $uid; ?>/'" value="Track" />
-			<?php } ?>
-        </li>
-<?php } ?>
-<?php
-if ($this->uid == $uid && $this->uid != 1) {
-?>
-        <li style="width: 70px; display: inline;">
-            <input style="width: 70px;" type="button" onclick="parent.location='<?php echo url::base() .'updates/add/'. $id .'/'; ?>'" value="Edit" />
-        </li>
-<?php } ?>
-    </ul>
-
-</div>
-
-<div style="float: right;">
-
-    <ul style="display: inline;">
-<?php
-if (isset($first)) {
-?>
-        <li style="width: 50px; display: inline;">
-            <input style="width: 50px;" type="button" onclick="parent.location='<?php echo url::base() .'updates/view/'. $first .'/'; ?>'" value="&lt;&lt;" />
-        </li>
-<?php } ?>
-<?php
-if (isset($previous)) {
-?>
-        <li style="width: 50px; display: inline;">
-            <input style="width: 50px;" type="button" onclick="parent.location='<?php echo url::base() .'updates/view/'. $previous .'/'; ?>'" value="&lt;" />
-        </li>
-<?php } ?>
-<?php
-if (isset($next)) {
-?>
-        <li style="width: 50px; display: inline;">
-            <input style="width: 50px;" type="button" onclick="parent.location='<?php echo url::base() .'updates/view/'. $next .'/'; ?>'" value="&gt;" />
-        </li>
-<?php } ?>
-<?php
-if (isset($last)) {
-?>
-        <li style="width: 50px; display: inline;">
-            <input style="width: 50px;" type="button" onclick="parent.location='<?php echo url::base() .'updates/view/'. $last .'/'; ?>'" value="&gt;&gt;" />
-        </li>
-<?php } ?>
-    </ul>
-</div>
-
-<div style="clear: both; margin-bottom: 10px;"></div>
 
 <?php if (!empty($detail)) { ?>
 <div style="clear: both; background-color: #FFF; border-top: 1px solid #888; padding: 10px; margin-bottom: 10px; padding-bottom: 1px; background-image: url('<?php echo url::base(); ?>images/comment_divide.png'); background-repeat: repeat-x; background-position: bottom;">
@@ -215,3 +160,37 @@ $(document).ready(function() {
 <?php if ($no_of_files > 1) { ?>
 </div></div>
 <?php } ?>
+
+<div style="text-align: center; margin-top: 10px;">
+    <ul style="display: inline; margin: 0px;">
+<?php
+if (isset($first)) {
+?>
+        <li style="width: 50px; display: inline;">
+            <input style="width: 50px;" type="button" onclick="parent.location='<?php echo url::base() .'updates/view/'. $first .'/'; ?>'" value="&lt;&lt;" />
+        </li>
+<?php } ?>
+<?php
+if (isset($previous)) {
+?>
+        <li style="width: 50px; display: inline;">
+            <input style="width: 50px;" type="button" onclick="parent.location='<?php echo url::base() .'updates/view/'. $previous .'/'; ?>'" value="&lt;" />
+        </li>
+<?php } ?>
+<?php
+if (isset($next)) {
+?>
+        <li style="width: 50px; display: inline;">
+            <input style="width: 50px;" type="button" onclick="parent.location='<?php echo url::base() .'updates/view/'. $next .'/'; ?>'" value="&gt;" />
+        </li>
+<?php } ?>
+<?php
+if (isset($last)) {
+?>
+        <li style="width: 50px; display: inline;">
+            <input style="width: 50px;" type="button" onclick="parent.location='<?php echo url::base() .'updates/view/'. $last .'/'; ?>'" value="&gt;&gt;" />
+        </li>
+<?php } ?>
+    </ul>
+</div>
+

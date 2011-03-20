@@ -4,6 +4,19 @@
 		Comments (<?php echo $comment_total; ?>)
 	</h2>
 
+	<div id="filter" style="overflow: hidden;">
+	<ul class="block_links" style="float: left;">
+	<?php if ($uid != 1 && $uid != $this->uid) { ?>
+	<?php if (isset($kudos_error)) { ?>
+		<li><a href="#" class="block">Already Kudos'd</a></li>
+	<?php } else { ?>
+		<li><a href="<?php echo url::base(); ?>feedback/kudos/<?php echo $uid;?>/" class="block">Kudos it!</a></li>
+	<?php } ?>
+	<?php } ?>
+	<li><a id="inline" href="#data" class="block">Share with friends</a></li>
+	</ul>
+	</div>
+
 	<?php foreach ($comments as $row) { ?>
 <?php
 $comment_var_name = 'comment'. $row->uid;
@@ -31,10 +44,6 @@ $comment_user_info = $$comment_var_name;
 		</div>
 	</div>
 	<?php } ?>
-
-	<p>
-		If you don't have anything specific to say but you like this update nonetheless, you should <a href="<?php echo url::base(); ?>feedback/kudos/<?php echo $uid; ?>/">kudos</a> it.
-	</p>
 
 	<?php if ($comment_total == 0) { ?>
 	<p>

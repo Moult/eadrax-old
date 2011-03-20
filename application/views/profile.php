@@ -16,13 +16,18 @@
 		</ul>
 	</div>
 	<?php } else { ?>
-	<div style="float: right; margin-top: -5px;">
-	<img src="<?php echo url::base(); ?>images/icons/photos.png" alt="" />
-		<ul style="margin-left: 0px; display: inline;">
-			<li style="width: 110px; display: inline;">
-				<input style="width: 110px; letter-spacing: 0px;" type="button" onclick="parent.location='<?php echo url::base(); ?>profiles/projects/<?php echo $uid; ?>/'" value="View projects" />
-			</li>
-		</ul>
+	<div id="filter" style="margin: none; clear: none; float: right; text-shadow: none; font-size: 10px; letter-spacing: 0px;">
+	<ul class="block_links" style="margin-bottom: 10px;">
+<?php if ($uid != 1) { ?>
+		<?php if ($tracking == TRUE) { ?>
+		<li><a href="<?php echo url::base(); ?>feedback/untrack/<?php echo $user['id']; ?>" class="block">Track <?php echo $user['username']; ?>'s activity :(</a></li>
+		<?php } elseif ($tracking == FALSE && $uid != $this->uid && $user['enable_tracking'] == 1) { ?>
+		<li><a href="<?php echo url::base(); ?>feedback/track/<?php echo $user['id']; ?>" class="block">Track <?php echo $user['username']; ?>'s activity :)</a></li>
+		<?php } ?>
+<?php } ?>
+		<li style="margin: 0px;"><a href="<?php echo url::base(); ?>profiles/projects/<?php echo $user['id']; ?>" class="block">View <?php echo $user['username']; ?>'s Projects</a></li>
+	</ul>
+
 	</div>
 	<?php } ?>
 <div style="clear: both; line-height: 25px; font-size: 12px; letter-spacing: 0px; color: #888; border-top: 1px solid #999; border-bottom: 1px solid #999; border-left: 0px; border-right: 0px; background-position: top; background-repeat: repeat-x; background-color: #EEE; padding: 8px; padding-top: 2px; padding-bottom: 0px; margin-bottom: 0px;">

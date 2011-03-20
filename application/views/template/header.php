@@ -257,7 +257,7 @@ if (($this->uri->segment(1) == 'updates' && $this->uri->segment(2) == 'add') || 
 				<li id="navtext1" style="color: #AAA; display: none;">My WIPSpace</li>
 				<li id="navtext2" style="color: #AAA; display: none;">Add WIP</li>
 				<li id="navtext3" style="color: #AAA; display: none;">Discover WIPs</li>
-				<li style="float: right;"><?php if ($this->logged_in == TRUE) { ?>Hey <?php echo $this->username; ?> (<a href="<?php echo url::base(); ?>dashboard/">Dashboard</a>) <a href="<?php echo url::base(); ?>users/logout/"><img src="<?php echo url::base(); ?>images/icons/logout.png" alt="Logout" title="Logout" /></a><?php } else {?><a href="<?php echo url::base(); ?>users/login/">Login/Register</a> - <a href="<?php echo url::base(); ?>site/tour/">What is WIPUP?</a><?php } ?></li>
+				<li style="float: right;"><?php if ($this->logged_in == TRUE) { ?>Hey <?php echo $this->username; ?> (<a href="<?php echo url::base(); ?>dashboard/">Dashboard</a>) <a href="<?php echo url::base(); ?>users/logout/"><img src="<?php echo url::base(); ?>images/icons/logout.png" alt="Logout" title="Logout" /></a><?php } else {?><a href="<?php echo url::base(); ?>users/login/">Login/Register</a> - <a href="<?php echo url::base(); ?>projects/view/2/3/">What is WIPUP?</a><?php } ?></li>
             </ul>
 		</div>
 

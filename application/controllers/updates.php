@@ -577,7 +577,6 @@ class Updates_Controller extends Core_Controller {
 
 		// Generate the content.
 		$content = array();
-		$content[] = $project_view;
 		$content[] = $update_view;
 		if (isset($display_pastebin))
 		{

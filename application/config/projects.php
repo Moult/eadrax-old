@@ -29,4 +29,4 @@ $config['default_cid'] = '12';
 $config['max_cid'] = '19';
 
 // The number of updates to be shown per project page.
-$config['updates_page'] = '18';
+$config['updates_page'] = '12';

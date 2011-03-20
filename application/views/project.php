@@ -1,5 +1,9 @@
 <?php if (empty($uid) && empty($project['icon'])) { ?>
-<div id="filter">
+<div style="margin-bottom: 15px; text-align: center;">
+<span style="font-size: 20px; color: #333; font-weight: bold; letter-spacing: -1px;">We're that place you're looking for to document your long-term projects.<br />Share your ambition today.</span>
+</div>
+
+<div id="filter" style="overflow: hidden;">
 <ul class="block_links" style="float: left;">
 <li><a href="<?php echo url::base(); ?>" class="block" <?php if ($filter == 'l') { echo 'style="background-color: #FF6500;" '; } ?>>Latest</a></li>
 <li><a href="<?php echo url::base(); ?>projects/view/a/" class="block" <?php if ($filter == 'a') { echo 'style="background-color: #FF6500;" '; } ?>>Awesomest</a></li>
@@ -7,7 +11,7 @@
 </ul>
 
 <ul class="block_links" style="float: right;">
-<li><a href="<?php echo url::base(); ?>projects/view/2/9/" class="block" style="background-color: #444;">Featured: The ThoughtScore Project</a></li>
+<li style="margin: 0px;"><a href="<?php echo url::base(); ?>projects/view/2/9/" class="block" style="background-color: #444;">Featured: The ThoughtScore Project</a></li>
 </ul>
 </div>
 
@@ -28,6 +32,26 @@
 	<?php echo $category_name; ?> Updates
 	<?php } elseif (!empty($uid)) { ?>
 		<?php if (empty($project)) { echo $u_name; } else { echo $project['name']; } ?>'s Updates <?php if ($project['uid'] == $this->uid && $project['uid'] != 1) { ?><a href="<?php echo url::base(); ?>projects/add/<?php echo $project['id']; ?>/"><img src="<?php echo url::base(); ?>images/icons/pencil.png" class="icon" alt="Edit" /></a><?php } ?>
+		<div style="float: right; text-shadow: none; font-size: 10px; letter-spacing: 0px;">
+
+<div id="filter" style="overflow: hidden; margin-top: 10px;">
+<ul class="block_links" style="float: left;">
+<?php if ($uid != 1) { ?>
+	<?php if ($project['id'] != 1) { ?>
+        <li style="width: 70px; display: inline;">
+			<?php if ($subscribed == TRUE) { ?>
+			<li><a href="<?php echo url::base(); ?>feedback/unsubscribe/<?php echo $project['id'];?>/" class="block">Unsubscribe :(</a></li>
+			<?php } elseif ($tracking == FALSE && $uid != $this->uid ) { ?>
+			<li><a href="<?php echo url::base(); ?>feedback/subscribe/<?php echo $project['id'];?>/" class="block">Subscribe :)</a></li>
+			<?php } ?>
+	<?php } ?>
+<?php } ?>
+
+</ul></div>
+
+
+
+		</div>
 	<?php } else { ?>
 		Latest WIP Updates
 	<?php } ?>
@@ -68,7 +92,7 @@ in <em><?php echo $categories[$project['cid']]; ?></em> <?php if (!empty($projec
 <?php } else { ?>
 <div style="clear: both; overflow: hidden; border: 0px dotted #AAA; padding-bottom: 5px; background-position: top; background-repeat: repeat-x; border-left: 0px; border-right: 0px;">
 <?php } ?>
-	<div style="margin-right: auto; margin-left: auto; padding-right: 4px; width: 822px;">
+	<div style="overflow: hidden; margin-right: auto; margin-left: auto;">
 		<?php echo $markup; ?>
 	</div>
 </div>
