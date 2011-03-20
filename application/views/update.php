@@ -1,10 +1,12 @@
 <!-- For social sharing purposes -->
 <head>
 <meta name="title" content="WIPUP - Share your ambitions" />
-<meta name="description" content="<?php echo $summary .' - '. $detail; ?>" />
+<meta name="description" content="<?php echo $summary; if (!empty($detail)) { echo ' - '. $detail; } ?>" />
+<?php if (isset($filename_icon0)) { ?>
 <link rel="image_src" href="<?php echo substr($filename_icon0, 0, -4) .'_crop.jpg'; ?>" />
 <meta property="image" content="<?php echo substr($filename_icon0, 0, -4) .'_crop.jpg'; ?>" />
 <meta property="og:image" content="<?php echo substr($filename_icon0, 0, -4) .'_crop.jpg'; ?>" />
+<?php } ?>
 </head>
 <h2>
 	<div style="float: left;">

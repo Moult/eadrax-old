@@ -302,7 +302,7 @@ class Projects_Controller extends Core_Controller {
                 $markup = $markup .'<div style="width: 260px; margin: 0px; height: 200px; border: 0px solid #F00;">';
 				$markup = $markup .'<p><a href="'. url::base() .'updates/view/'. $row->id .'/"><img style="vertical-align: middle; border: 1px solid #999; padding: 1px; background: url('. $icon .'); background-repeat: no-repeat; background-position: 1px 1px; width: 260px; height: 200px;" src="'. url::base() .'images/crop_overlay.png" alt="update icon" /></a></p>';
 				$markup = $markup .'<cite style="background-color: #D8D8D8; background-image: url(\''. url::base() .'/images/formbg.gif\'); background-repeat: repeat-x; -moz-opacity:.55; filter:alpha(opacity=55); opacity: .55; color: #000; position: relative; display: none; margin-left: auto; margin-right: auto; left: 2px; top: -63px; height: 30px; width: 240px; padding: 10px; border-top: 1px solid #888; font-weight: bold;"><span style="font-weight: 100; font-size: 9px; float: right; position: relative; top: -2px; text-align: right;"></span></cite>';
-				$markup = $markup .'<div style="color: #000; font-family: \'Georgia\'; font-size: 15px; font-style: italic;  border: 0px solid #F00; width: 260px; text-shadow: 0px 1px 0px #AAA; margin-bottom: 5px; margin-left: 8px; word-wrap: break-word;">'. $row->summary .'<br />';
+				$markup = $markup .'<div style="color: #000; font-family: \'Georgia\', serif; font-size: 15px; font-style: italic; width: 260px; text-shadow: 0px 1px 0px #AAA; margin-bottom: 5px; margin-left: 8px; word-wrap: break-word;">'. $row->summary .'<br />';
 				if (empty($project_name)) {
 					$markup = $markup .'<span style="text-shadow: none; font-size: 10px; font-family: \'Arial\', sans-serif; color: #555;">'. $row->views .' Views, '. $kudos_model->kudos($row->id) .' Kudos, '. $comment_model->comment_update_number($row->id) .' Comments</span>';
 				} else {
@@ -310,11 +310,11 @@ class Projects_Controller extends Core_Controller {
 					$markup = $markup .'<span style="text-shadow: none; font-size: 10px; font-family: \'Arial\', sans-serif; color: #666;"> ('. $row->views .'V, '. $kudos_model->kudos($row->id) .'K, '. $comment_model->comment_update_number($row->id) .'C)</span>';
 				}
 				$markup = $markup .'</div>';
-				if (!empty($file_icon)) {
-					$markup = $markup .'<img src="'. $file_icon .'" style="position: relative; top: -115px; left: 200px;" />';
-				}
                 $markup = $markup .'</div>';
 				$markup = $markup .'<div style="margin-top: 4px; width: 264px; height: 12px; background-image: url(\''. url::base() .'images/grid_shadow.png\');"></div>';
+				if (!empty($file_icon)) {
+					$markup = $markup .'<img src="'. $file_icon .'" style="position: relative; top: -75px; left: 200px;" />';
+				}
 				$markup = $markup .'</div>';
             }
         }
