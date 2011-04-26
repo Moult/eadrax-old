@@ -179,6 +179,8 @@ class Dashboard_Controller extends Core_Controller {
 		$project_subscribe_list = array();
 		$project_name_list = array();
 
+		// Gather the no. of updates, kudos, and subscribers (incl. trackers) 
+		// for each project.
 		foreach ($projects as $pid => $p_name)
 		{
 			$update_number = $update_model->project_updates($pid, $this->uid);
@@ -231,11 +233,17 @@ class Dashboard_Controller extends Core_Controller {
 		$tmp = $tmp_total_list;
 		array_multisort($tmp, $project_name_list);
 
+		// Sort them into descending order...
 		$project_update_list = array_reverse($project_update_list);
 		$project_kudos_list = array_reverse($project_kudos_list);
 		$project_subscribe_list = array_reverse($project_subscribe_list);
 		$project_name_list = array_reverse($project_name_list);
 
+		// We're only interested in the 8 top popular projects. Remove the rest.
+		$project_update_list = array_slice($project_update_list, 0, 8);
+		$project_kudos_list = array_slice($project_kudos_list, 0, 8);
+		$project_subscribe_list = array_slice($project_subscribe_list, 0, 8);
+		$project_name_list = array_slice($project_name_list, 0, 8);
 
 		$project_total_peak = max($project_total_list);
 		$project_total_peak = ceil(intval($project_total_peak)/5)*5;
@@ -272,7 +280,7 @@ class Dashboard_Controller extends Core_Controller {
 			5 => 13,
 			6 => 9,
 			7 => 7,
-			8 => 5
+			8 => 5 # Any more projects and it becomes ridiculous statistics
 		);
 
 		// Set the values for the x-axis.
