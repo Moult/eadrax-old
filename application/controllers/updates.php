@@ -123,7 +123,7 @@ class Updates_Controller extends Core_Controller {
 				{
 					$update_view->{'display'. $i} = 'image';
 				}
-				elseif ($update_information['ext'. $i] == 'avi' || $update_information['ext'. $i] == 'mpg' || $update_information['ext'. $i] == 'mov' || $update_information['ext'. $i] == 'flv' || $update_information['ext'. $i] == 'ogg' || $update_information['ext'. $i] == 'wmv')
+				elseif ($update_information['ext'. $i] == 'avi' || $update_information['ext'. $i] == 'mpeg' || $update_information['ext'. $i] == 'ogv' || $update_information['ext'. $i] == 'mpg' || $update_information['ext'. $i] == 'mov' || $update_information['ext'. $i] == 'flv' || $update_information['ext'. $i] == 'ogg' || $update_information['ext'. $i] == 'wmv')
 				{
 					$update_view->{'display'. $i} = 'video';
 				}
@@ -873,7 +873,7 @@ class Updates_Controller extends Core_Controller {
 								// If it is a video, we need to encode it.
 								// HTML 5 is not out yet, so support goes through 
 								// the FLV format. Oh well :)
-								if ($extension == 'avi' || $extension == 'mpg' || $extension == 'mov' || $extension == 'flv' || $extension == 'ogg' || $extension == 'wmv' || $extension == 'mp4')
+								if ($extension == 'avi' || $extension == 'ogv' || $extension == 'mpeg' || $extension == 'mpg' || $extension == 'mov' || $extension == 'flv' || $extension == 'ogg' || $extension == 'wmv' || $extension == 'mp4')
 								{
 									// Define files.
 									$src_file  = DOCROOT .'uploads/files/'. basename($filename);
@@ -1346,7 +1346,7 @@ class Updates_Controller extends Core_Controller {
 	 */
 	public function _file_icon($filename, $ext, $cropped = FALSE)
 	{
-		if ($ext == 'jpg' || $ext == 'png' || $ext == 'gif' || $ext == 'avi' || $ext == 'mpg' || $ext == 'mov' || $ext == 'flv' || $ext == 'mp4') { 
+		if ($ext == 'jpg' || $ext == 'png' || $ext == 'gif' || $ext == 'avi' || $ext == 'ogv' || $ext == 'mpeg' || $ext == 'mpg' || $ext == 'mov' || $ext == 'flv' || $ext == 'mp4') { 
 			if ($cropped == TRUE) {
 				return url::base() .'uploads/icons/'. $filename .'_crop.jpg';
 			} else {

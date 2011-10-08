@@ -61,7 +61,7 @@
 					</p>
 
 					<p>
-					<label for="attachment" title="<?php if ($this->logged_in) { ?>Up to 50MB per file.<?php } else { ?>Up to 5MB per file.<?php } ?> Supported filetypes include gif jpg png svg tiff bmp exr pdf zip rar tar tar.gz tar.bz ogg mp3 wav avi mpg mov mp4 swf flv blend xcf doc ppt xls odt ods odp odg psd fla ai indd aep.">Attach<img src="<?php echo url::base(); ?>images/icons/help.png" alt="info" />:
+					<label for="attachment" title="<?php if ($this->logged_in) { ?>Up to 50MB per file.<?php } else { ?>Up to 5MB per file.<?php } ?> Supported filetypes include gif jpg png svg tiff bmp exr pdf zip rar tar tar.gz tar.bz ogg ogv mp3 wav avi mpg mpeg mov mp4 swf flv blend xcf doc ppt xls odt ods odp odg psd fla ai indd aep.">Attach<img src="<?php echo url::base(); ?>images/icons/help.png" alt="info" />:
 						<?php if ($this->logged_in) { ?>
 						<span>
 <?php
