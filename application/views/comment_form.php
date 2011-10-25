@@ -1,7 +1,7 @@
 <div class="left">
 	<h2>
 		<img src="<?php echo url::base(); ?>images/icons/comment_48.png" width="48" height="48" class="icon" alt="" />
-		Comments (<?php echo $comment_total; ?>)
+		<?php if ($comment_total > 1) { echo $comment_total; } ?> Comments
 	</h2>
 
 	<div id="filter" style="overflow: hidden;">
@@ -47,7 +47,7 @@ $comment_user_info = $$comment_var_name;
 
 	<?php if ($comment_total == 0) { ?>
 	<p>
-		Uhoh! It seems as though there are <strong>no comments yet</strong> for this update. Why don't you leave one?
+		It seems as though there are <strong>no comments yet</strong> for this update. Why don't you leave one?
 	</p>
 	<?php } ?>
 

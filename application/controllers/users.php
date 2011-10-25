@@ -277,18 +277,10 @@ class Users_Controller extends Core_Controller {
 
 				// Redirect to the dashboard.
 				$this->session->set('notification', 'Welcome back, '. $this->username .'. We really, really missed you. Seriously.');
-				url::redirect(url::base() .'dashboard/');
-			}
-			else
-			{
-				// Load the view.
-				$login_view = new View('login');
-
-				// There is an error!
-				$login_view->errors = array('openid_identifier' => 'Your account details do not match');
-
-				// Generate the content
-				$this->template->content = array($login_view);
+				url::redirect(url::base() .'updates/add/');
+			} else {
+				// The account doesn't exist, let's register them instead.
+				$this->register();
 			}
 		}
 	}

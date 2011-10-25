@@ -4,29 +4,40 @@
 		Show people what you're working on.
 	</h2>
 
-	<p>
-		WIPs can be everything from a single summary sentence to a fancy article complete with images, video and pastes, so there's no pressure to fill all these fields in.
-	</p>
-
-	<?php if (!$this->logged_in) { ?>
-	<p>
-		If seems as though you are <strong>not logged in</strong>. If you <a href="<?php echo url::base(); ?>users/register/">register</a>, you will receive benefits such as project statistics, timelines, permanent file storage, and so many cool things it's not funny any more.
-	</p>
-	<?php } ?>
-
-	<div class="form">
 		<?php if (isset($uid)) { ?>
 		<form action="<?php echo url::base(); ?>updates/add/<?php echo $uid; ?>/" method="post" enctype="multipart/form-data">
 		<?php } else { ?>
 		<form action="<?php echo url::base(); ?>updates/add/" method="post" enctype="multipart/form-data">
 		<?php } ?>
+	<div class="form">
+		<fieldset>
+			<legend>
+				<img src="<?php echo url::base(); ?>images/icons/clock_add.png" alt="" width="16" height="16" class="icon" />
+				<?php if (isset($uid)) { ?>
+				Edit Update
+				<?php } else { ?>
+				Summarise your project's update
+				<?php } ?>
+			</legend>
+			<div class="elements">
+				<p>
+					<label for="summary" title="A short sentence describing how you've progressed and what you've done. This is the minimum requirement.">Summary<img src="<?php echo url::base(); ?>images/icons/help.png" alt="info" />:</label>
+					<input type="text" id="summary" name="summary" style="height: 25px; width: 400px; font-size: 15px;" value="<?php echo $form['summary']; ?>" <?php if (isset($errors['summary'])) { echo 'class="error"'; } ?> />
+				</p>
+			</div>
+		</fieldset>
+	</div>
+
+
+
+	<div class="form">
 			<fieldset>
 				<legend>
 					<img src="<?php echo url::base(); ?>images/icons/clock_add.png" alt="" width="16" height="16" class="icon" />
 					<?php if (isset($uid)) { ?>
-					Edit Update
+					Edit Details
 					<?php } else { ?>
-					Add an update
+					Add optional details
 					<?php } ?>
 				</legend>
 				<div class="elements">
@@ -48,11 +59,6 @@
 						</select>
 					</p>
 					<?php } ?>
-
-					<p>
-						<label for="summary" title="A short sentence describing how you've progressed and what you've done. This is the minimum requirement.">Summary<img src="<?php echo url::base(); ?>images/icons/help.png" alt="info" />:</label>
-						<input type="text" id="summary" name="summary" style="height: 25px; width: 400px; font-size: 15px;" value="<?php echo $form['summary']; ?>" <?php if (isset($errors['summary'])) { echo 'class="error"'; } ?> />
-					</p>
 
 					<p>
 						<label for="detail" style="height: 20px;">Detail:</label>
@@ -157,6 +163,31 @@ if (isset($uid)) {
 </div>
 
 <div class="right">
+
+
+	<?php if (!$this->logged_in) { ?>
+	<div class="form">
+		<h3>
+			<img src="/images/icons/warning_16.png" alt="" width="16" height="16" class="icon" />
+			Oh no! You're not logged in!
+		</h3>
+		<div class="elements">
+			<p>
+			If you <a href="<?php echo url::base(); ?>users/register/">register</a> (it's <strong>free</strong>), you get:
+			</p>
+			<ul>
+			<li>Multiple file attachments</li>
+			<li>Categorise your WIPs in projects</li>
+			<li>Larger upload filesizes allowed</li>
+			<li>Subscribe to other projects and track users</li>
+			<li>Your own personal WIPSpace</li>
+			<li>Statistics on your popular WIPs</li>
+			</ul>
+		</div>
+	</div>
+	<?php } ?>
+
+
 	<?php
 	if (isset($errors)) {
 	?>

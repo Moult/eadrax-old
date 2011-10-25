@@ -1,11 +1,11 @@
 <?php if (!empty($user['avatar'])) { ?>
-<img src="<?php echo url::base(); ?>uploads/avatars/<?php echo $user['avatar']; ?>.jpg" class="icon" alt="" style="border: 1px solid #D8D8D8; padding: 1px; float: left;" />
+<img src="<?php echo url::base(); ?>uploads/avatars/<?php echo $user['avatar']; ?>.jpg" class="icon" alt="" style="float: left; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; position: relative; top: 1px; border: 1px solid #333;" />
 <?php } else { ?>
-<img src="<?php echo url::base(); ?>images/noavatar.png" class="icon" alt="" style="border: 1px solid #D8D8D8; padding: 1px; float: left;" />
+<img src="<?php echo url::base(); ?>images/noavatar.png" class="icon" alt="" style="float: left; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; position: relative; top: 1px; border: 1px solid #333;" />
 <?php } ?>
 
-<h2 style="margin-left: 6px; float: left; height: 82px; width: 740px;">
-	<div style="float: left; height: 30px;"><?php echo $user['username']; ?>'s WIPspace</div>
+<h2 style="margin-left: 6px; float: left; height: 82px; width: 746px;">
+	<div style="float: left; margin-bottom: -13px; height: 30px;"><?php echo $user['username']; ?></div>
 	<?php if (!empty($browseby)) { ?>
 	<div style="float: right; margin-top: -5px;">
 		<img src="<?php echo url::base(); ?>images/icons/report_picture.png" alt="" />
@@ -20,18 +20,22 @@
 	<ul class="block_links" style="margin-bottom: 10px;">
 <?php if ($uid != 1) { ?>
 		<?php if ($tracking == TRUE) { ?>
-		<li><a href="<?php echo url::base(); ?>feedback/untrack/<?php echo $user['id']; ?>" class="block">Track <?php echo $user['username']; ?>'s activity :(</a></li>
+		<li><a style="-webkit-border-top-left-radius: 5px; -webkit-border-top-right-radius: 5px; -moz-border-radius-topleft: 5px; -moz-border-radius-topright: 5px; border-top-left-radius: 5px; border-top-right-radius: 5px; position: relative; top: 8px;" href="<?php echo url::base(); ?>feedback/untrack/<?php echo $user['id']; ?>" class="block"><img src="<?php echo url::base(); ?>images/icons/newspaper_link.png" class="icon" alt="Updates" /> Untrack activity</a></li>
 		<?php } elseif ($tracking == FALSE && $uid != $this->uid && $user['enable_tracking'] == 1) { ?>
-		<li><a href="<?php echo url::base(); ?>feedback/track/<?php echo $user['id']; ?>" class="block">Track <?php echo $user['username']; ?>'s activity :)</a></li>
+		<li><a style="-webkit-border-top-left-radius: 5px; -webkit-border-top-right-radius: 5px; -moz-border-radius-topleft: 5px; -moz-border-radius-topright: 5px; border-top-left-radius: 5px; border-top-right-radius: 5px; position: relative; top: 8px;" href="<?php echo url::base(); ?>feedback/track/<?php echo $user['id']; ?>" class="block"><img src="<?php echo url::base(); ?>images/icons/newspaper_link.png" class="icon" alt="Updates" /> Track activity</a></li>
 		<?php } ?>
 <?php } ?>
-		<li style="margin: 0px;"><a href="<?php echo url::base(); ?>profiles/projects/<?php echo $user['id']; ?>" class="block">View <?php echo $user['username']; ?>'s Projects</a></li>
+		<li style="margin: 0px;">
+<a style="background-image: linear-gradient(bottom, rgb(51,51,51) 0%, rgb(102,102,102) 100%); background-image: -o-linear-gradient(bottom, rgb(51,51,51) 0%, rgb(102,102,102) 100%); background-image: -moz-linear-gradient(bottom, rgb(51,51,51) 0%, rgb(102,102,102) 100%); background-image: -webkit-linear-gradient(bottom, rgb(51,51,51) 0%, rgb(102,102,102) 100%); background-image: -ms-linear-gradient(bottom, rgb(51,51,51) 0%, rgb(102,102,102) 100%); background-image: -webkit-gradient( linear, left bottom, left top, color-stop(0, rgb(51,51,51)), color-stop(1, rgb(102,102,102))); -webkit-border-top-left-radius: 5px; -webkit-border-top-right-radius: 5px; -moz-border-radius-topleft: 5px; -moz-border-radius-topright: 5px; border-top-left-radius: 5px; border-top-right-radius: 5px; position: relative; top: 8px;" href="<?php echo url::base(); ?>profiles/view/<?php echo $user['username']; ?>" class="block"><img src="<?php echo url::base(); ?>images/icons/photos.png" class="icon" alt="Updates" /> View Latest WIPs</a>
+<a style="-webkit-border-top-left-radius: 5px; -webkit-border-top-right-radius: 5px; -moz-border-radius-topleft: 5px; -moz-border-radius-topright: 5px; border-top-left-radius: 5px; border-top-right-radius: 5px; position: relative; top: 8px;" href="<?php echo url::base(); ?>profiles/projects/<?php echo $user['id']; ?>" class="block"><img src="<?php echo url::base(); ?>images/icons/report_picture.png" class="icon" alt="Projects" /> Show by Project</a>
+</li>
 	</ul>
+
 
 	</div>
 	<?php } ?>
-<div style="clear: both; line-height: 25px; font-size: 12px; letter-spacing: 0px; color: #888; border-top: 1px solid #999; border-bottom: 1px solid #999; border-left: 0px; border-right: 0px; background-position: top; background-repeat: repeat-x; background-color: #EEE; padding: 8px; padding-top: 2px; padding-bottom: 0px; margin-bottom: 0px;">
-<div style="float: left;">
+<div style="width: 100%; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; clear: both; line-height: 25px; font-size: 12px; letter-spacing: 0px; color: #888; background-color: #333; padding: 8px; padding-top: 2px; padding-bottom: 0px; margin-bottom: 0px;">
+<div style="float: left; text-shadow: 0px 1px 0px #000; color: #CCC;">
 <?php if (!empty($age)) { ?>
 <?php if ($age == 'no') { ?>
 Some <?php } else { ?>
@@ -51,15 +55,15 @@ A sociopath who hasn't yet updated his profile information
 <?php if ($this->uid == $user['id']) { ?> <a href="<?php echo url::base(); ?>profiles/update/<?php echo $user['id']; ?>/"><img src="<?php echo url::base(); ?>images/icons/pencil.png" alt="" /></a><?php } ?></div>
 
 
-<div style="width: 150px; text-align: right; float: right; font-size: 10px; color: #AAA; letter-spacing: 0px; line-height: 25px;">Last active: <?php echo date('jS F', $user['lastactive']); ?></div>
+<div style="width: 150px; text-shadow: 0px 1px 0px #000; text-align: right; float: right; font-size: 10px; color: #AAA; letter-spacing: 0px; line-height: 25px;">Last alive: <?php echo date('jS F', $user['lastactive']); ?></div>
 
-<div style="clear: both; float: left; font-size: 12px; text-shadow: 0px 1px 0px #FFF; line-height: 15px;">
+<div style="clear: both; float: left; font-size: 12px; text-shadow: 0px 1px 0px #000; line-height: 15px;">
 <?php if (!empty($user['description'])) { ?>
 <span title="<?php echo html::specialchars($user['description']); ?>"><?php echo text::limit_words($user['description'], 17, '...'); ?></span>
 <?php } ?>
 </div>
 
-	<div style="text-align: right; float: right; height: 25px; line-height: 25px; font-size: 12px; letter-spacing: 0px; color: #888;">
+	<div style="text-align: right; float: right; height: 25px; line-height: 25px; font-size: 12px; letter-spacing: 0px; color: #888; text-shadow: 0px 1px 0px #000;">
 <?php if(!empty($user['email']) && $user['email_public'] == 1) { ?><a href="mailto:<?php echo $user['email']; ?>"><img src="<?php echo url::base(); ?>images/icons/email.png" /></a>&nbsp;<?php } ?>
 <?php if(!empty($user['website'])) { ?><a href="<?php echo $user['website']; ?>"><img src="<?php echo url::base(); ?>images/icons/world_link.png" /></a>&nbsp;<?php } ?>
 <?php if(!empty($user['msn'])) { ?><img src="<?php echo url::base(); ?>images/icons/msn.png" title="<?php echo $user['msn']; ?>" alt="MSN" />&nbsp;<?php } ?>

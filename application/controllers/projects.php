@@ -61,6 +61,7 @@ class Projects_Controller extends Core_Controller {
 
 		// This is the view in which project updates are shown.
 		$project_view = new View('project');
+		$project_view->tracking = $track_model->check_track_owner($uid, $this->uid);
 
 		// Reset special uid options for sorting results.
 		if ($uid == 'a') {
@@ -294,12 +295,12 @@ class Projects_Controller extends Core_Controller {
 
                 // Build the markup.
 				if ($markup_count % 3 == 0) {
-					$markup = $markup .'<div style="float: left; height: 300px; width: 260px; border: 0px solid #F00; margin: 0px;">';
+					$markup = $markup .'<div style="float: left; height: 300px; width: 260px; margin: 0px;">';
 				} else {
-					$markup = $markup .'<div style="float: left; height: 295px; border: 0px solid #F00; margin-right: 19px;">';
+					$markup = $markup .'<div style="float: left; height: 295px; margin-right: 30px;">';
 				}
 				$markup = $markup .'<div style="height: 20px; width: 262px; margin-bottom: 5px; background-color: #1c1b19; background-repeat: repeat-x; background-image: url(\''. url::base() .'images/timebar.png\'); padding: 2px; font-size: 10px; font-family: Arial; color: #FFF; text-shadow: 0px 1px 0px #000; line-height: 20px; padding-left: 0px;"><span style="padding-left: 5px;"><div style="float: left; position: relative; top: 3px; left: 5px; background-image: url(\''. url::base() .'images/star.png\'); width: '. $star_width .'px; height: 12px;"></div><a href="'. url::base() .'projects/view/'. $row->uid .'/'. $row->pid .'/" style="text-decoration: none; color: #FFF;">'. $project_name .'</a></span><span style="float: right; padding-right: 5px;">'. date($datestring, strtotime($row->logtime)) .'</span></div>';
-                $markup = $markup .'<div style="width: 260px; margin: 0px; height: 200px; border: 0px solid #F00;">';
+                $markup = $markup .'<div style="width: 260px; margin: 0px; height: 200px;">';
 				$markup = $markup .'<p><a href="'. url::base() .'updates/view/'. $row->id .'/"><img style="vertical-align: middle; border: 1px solid #999; padding: 1px; background: url('. $icon .'); background-repeat: no-repeat; background-position: 1px 1px; width: 260px; height: 200px;" src="'. url::base() .'images/crop_overlay.png" alt="update icon" /></a></p>';
 				$markup = $markup .'<cite style="background-color: #D8D8D8; background-image: url(\''. url::base() .'/images/formbg.gif\'); background-repeat: repeat-x; -moz-opacity:.55; filter:alpha(opacity=55); opacity: .55; color: #000; position: relative; display: none; margin-left: auto; margin-right: auto; left: 2px; top: -63px; height: 30px; width: 240px; padding: 10px; border-top: 1px solid #888; font-weight: bold;"><span style="font-weight: 100; font-size: 9px; float: right; position: relative; top: -2px; text-align: right;"></span></cite>';
 				$markup = $markup .'<div style="color: #000; font-family: \'Georgia\', serif; font-size: 15px; font-style: italic; width: 260px; text-shadow: 0px 1px 0px #AAA; margin-bottom: 5px; margin-left: 8px; word-wrap: break-word;">'. $row->summary .'<br />';

@@ -138,16 +138,6 @@ class Updates_Controller extends Core_Controller {
 			}
 		}
 
-		// Check if we can feature this update's project.
-		if ($this->uid == $update_information['uid'] && $update_information['uid'] != 1) {
-			if (isset($update_view->display0) && $update_view->display0 == 'image') {
-				list($width, $height, $type, $attr) = getimagesize(DOCROOT .'uploads/files/'. $update_information['filename0'] .'.'. $update_information['ext0']);
-				if ($width >= 808) {
-					$update_view->feature = TRUE;
-				}
-			}
-		}
-
 		// Let's create the project carousel view.
 		$project_view = new View('projects');
 		$pid = $update_information['pid'];
@@ -194,10 +184,9 @@ class Updates_Controller extends Core_Controller {
 		$mini_opacity = 90;
 		foreach ($mini as $row) {
 			$icon = Updates_Controller::_file_icon($row->filename0, $row->ext0);
-			$mini_markup = $mini_markup .'<div class="mini" style="-moz-opacity:.'. $mini_opacity .'; filter:alpha(opacity='. $mini_opacity .'); opacity: .'. $mini_opacity .'; background-image: url('. url::base() .'images/mini_icon.png); background-position: 2px; 2px; background-repeat: no-repeat;">';
-			$mini_markup = $mini_markup .'<div style="padding: 1px; border: 1px solid #CCC;"><a href="'. url::base() .'/updates/view/'. $row->id .'/"><img style="vertical-align: middle; background-image: url('. $icon .');" src="'. url::base() .'images/mini_overlay.png" alt="update icon" /></a></div>';
+			$mini_markup = $mini_markup .'<div class="mini" style="-moz-opacity:.6; filter:alpha(opacity=60); opacity: .60; background-image: url('. url::base() .'images/mini_icon.png); background-position: 2px; 2px; background-repeat: no-repeat;">';
+			$mini_markup = $mini_markup .'<div><a href="'. url::base() .'/updates/view/'. $row->id .'/"><img style="-webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; vertical-align: middle; background-image: url('. $icon .');" src="'. url::base() .'images/mini_overlay.png" alt="update icon" /></a></div>';
 			$mini_markup = $mini_markup .'</div>';
-			$mini_opacity = $mini_opacity - 20;
 		}
 
 		$project_view->mini_markup = $mini_markup;
@@ -585,36 +574,6 @@ class Updates_Controller extends Core_Controller {
 		$content[] = $comment_form_view;
 		$this->template->pid = $pid;
 		$this->template->content = $content;
-	}
-
-	/**
-	 * Features an update.
-	 *
-	 * @param int $uid The uid to feature.
-	 *
-	 * @return null
-	 */
-	public function feature($uid)
-	{
-		$this->restrict_access();
-
-		// Load necessary models.
-		$update_model = new Update_Model;
-		$user_model = new User_Model;
-
-		// Check if we can feature this update's project.
-		$update_information = $update_model->update_information($uid);
-		if ($this->uid == $update_information['uid'] && $update_information['uid'] != 1) {
-			if ($update_information['ext0'] == 'jpg' || $update_information['ext0'] == 'png' || $update_information['ext0'] == 'gif') {
-				list($width, $height, $type, $attr) = getimagesize(DOCROOT .'uploads/files/'. $update_information['filename0'] .'.'. $update_information['ext0']);
-				if ($width >= 808) {
-					// Yep, we can feature it!
-					$user_model->feature($update_information['uid'], $update_information['id']);
-					$feature_view = new View('feature');
-					$this->template->content = array($feature_view);
-				}
-			}
-		}
 	}
 
 	/**
@@ -1315,7 +1274,7 @@ class Updates_Controller extends Core_Controller {
 		}
 
 		// Redirect to the update's parent project.
-		$this->session->set('notification', 'Begone! Arrr! Yep, thar be no more longer walkin\' here Earth.');
+		$this->session->set('notification', 'Why yes. I do believe your update has been ... terminated.');
 		url::redirect(url::base() .'projects/view/'. $fileinfo['uid'] .'/'. $fileinfo['pid'] .'/');
 	}
 

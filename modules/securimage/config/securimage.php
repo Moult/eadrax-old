@@ -54,13 +54,13 @@ $config['charset'] = 'ABCDEFGHKLMNPRSTUVWYZ23456789';
 $config['use_wordlist'] = false;
  
 //啟用GD字型來替代TTF字型
-$config['use_gd_font'] = true;
+$config['use_gd_font'] = false;
  
 //GD字型的大小
 $config['gd_font_size'] = 20;
  
 //字型大小
-$config['font_size'] = 24;
+$config['font_size'] = 26;
  
 //傾斜的最小角度
 $config['text_angle_minimum'] = -20;

@@ -22,6 +22,38 @@
         <link rel="stylesheet" type="text/css" href="<?php echo url::base(); ?>css/stylesheet.css" />
 		<!-- Let's load JQuery! -->
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+
+		<!-- Tooltip support -->
+		<script src="http://cdn.jquerytools.org/1.2.3/full/jquery.tools.min.js"></script>
+
+		<style>
+		.tooltip {
+			background-color:#000;
+			border:1px solid #fff;
+			padding:10px 15px;
+			width:300px;
+			display:none;
+			color:#fff;
+			text-align:left;
+			font-size:12px;
+
+			/* outline radius for mozilla/firefox/css3-complaint only */
+			-moz-box-shadow:0 0 10px #000;
+			-webkit-box-shadow:0 0 10px #000;
+			box-shadow:0 0 10px #000;
+		}
+		</style>
+
+		<script>
+		$(function() {
+			$("span[title]").tooltip({
+				position: "bottom center",
+				offset: [10, 0],
+				effect: "fade",
+				opacity: 0.8
+			});
+		});
+		</script>
 <?php
 // If we are viewing an update, we need a couple more fancy stuff.
 if ($this->uri->segment(1) == 'updates' && ($this->uri->segment(2) == 'view' || $this->uri->segment(2) == 'random')) {
@@ -118,17 +150,6 @@ if ($this->uri->segment(1) == 'profiles') {
 			box-shadow:0 0 10px #000;
 		}
 		</style>
-
-		<script>
-		$(function() {
-			$("span[title]").tooltip({
-				position: "bottom center",
-				offset: [10, 0],
-				effect: "fade",
-				opacity: 0.8
-			});
-		});
-		</script>
 <?php } }
 // Certain forms need some BBCode fun!
 if (($this->uri->segment(1) == 'updates' && $this->uri->segment(2) == 'add') || ($this->uri->segment(1) == 'projects' && $this->uri->segment(2) == 'add') || ($this->uri->segment(1) == 'users' && ($this->uri->segment(2) == 'register' || $this->uri->segment(2) == 'login' || $this->uri->segment(2) == 'rpx'))) {
@@ -233,10 +254,10 @@ if (($this->uri->segment(1) == 'updates' && $this->uri->segment(2) == 'add') || 
 <?php $notification = $this->session->get_once('notification'); if (!empty($notification)) { ?>
 		<script type="text/javascript">
 		$(document).ready(function() {
-			$("body").css("backgroundPosition", "0px 41px");
+			$("html").css("backgroundPosition", "0px 41px");
 			$("#notifyclose").click(function(){
 				$("#notification").css("display", "none");
-				$("body").css("backgroundPosition", "0px 0px");
+				$("html").css("backgroundPosition", "0px 0px");
 			});
 		});
 		</script>
@@ -246,25 +267,32 @@ if (($this->uri->segment(1) == 'updates' && $this->uri->segment(2) == 'add') || 
 
         <div id="container">
             <h1>
-                <a href="<?php echo url::base(); ?>"><img src="<?php echo url::base(); ?>images/wipup.png" width="221" height="87" alt="WIPUP" /></a>
+                <a href="<?php echo url::base(); ?>"><img src="<?php echo url::base(); ?>images/wipup.png" width="165" height="55" alt="WIPUP" /></a>
             </h1>
 
-			<ul id="icon-navigation">
-				<li><a href="<?php if ($this->logged_in == TRUE) { echo url::base() .'profiles/view/'. $this->username; } else { echo url::base() .'users/login/'; } ?>" onmouseover="javascript:getElementById('navtext1').style.display = 'inline';" onmouseout="javascript:getElementById('navtext1').style.display = 'none';"><img src="<?php echo url::base(); ?>images/profile.png" width="40" height="87" alt="Latest WIPs" title="Latest WIPs" /></a></li><li><img src="<?php echo url::base(); ?>images/navspace1.png" width="11" height="87" /></li><li><a href="<?php echo url::base(); ?>updates/add/" onmouseover="javascript:getElementById('navtext2').style.display = 'inline';" onmouseout="javascript:getElementById('navtext2').style.display = 'none';"><img src="<?php echo url::base(); ?>images/update.png" width="40" height="87" alt="Add WIP" title="Add WIP" /></a></li><li><img src="<?php echo url::base(); ?>images/navspace2.png" width="10" height="87" /></li><li><a href="<?php echo url::base(); ?>updates/random/" onmouseover="javascript:getElementById('navtext3').style.display = 'inline';" onmouseout="javascript:getElementById('navtext3').style.display = 'none';"><img src="<?php echo url::base(); ?>images/random.png" width="41" height="87" alt="Discover WIPs" title="Discover WIPs" /></a></li>
-			</ul>
+			<ul id="text-navigation" <?php if ($this->logged_in == TRUE) { ?>style="width: 525px"<?php } ?>>
+				<li><div>Seen Moult's 3D animated film <a href="#">The ThoughtScore Project</a>?
 
-            <ul id="text-navigation">
-				<li id="navtext1" style="color: #AAA; display: none;">My WIPSpace</li>
-				<li id="navtext2" style="color: #AAA; display: none;">Add WIP</li>
-				<li id="navtext3" style="color: #AAA; display: none;">Discover WIPs</li>
-				<li style="float: right;"><?php if ($this->logged_in == TRUE) { ?>Hey <?php echo $this->username; ?> (<a href="<?php echo url::base(); ?>dashboard/">Dashboard</a>) <a href="<?php echo url::base(); ?>users/logout/"><img src="<?php echo url::base(); ?>images/icons/logout.png" alt="Logout" title="Logout" /></a><?php } else {?><a href="<?php echo url::base(); ?>users/login/">Login/Register</a> - <a href="<?php echo url::base(); ?>projects/view/2/3/">What is WIPUP?</a><?php } ?></li>
+				<a href="<?php echo url::base(); ?>updates/random/">Discover more <img src="<?php echo url::base(); ?>images/random.png" class="icon" title="Go to random WIP" alt="Go to random WIP" /></a>
+
+<span style="float: right;">
+<?php if ($this->logged_in == TRUE) { ?><a href="<?php echo url::base(); ?>users/logout/">Logout <img src="<?php echo url::base(); ?>images/icons/logout.png" alt="Logout" title="Logout" class="icon" /></a><?php } ?>
+</span>
+				</div></li>
             </ul>
+
+			<ul id="icon-navigation">
+			<?php if ($this->logged_in == TRUE) { ?><li><img src="<?php echo url::base(); ?>images/navspace1.png" width="14" height="55" /></li><li><a href="<?php echo url::base(); ?>dashboard/"><img src="<?php echo url::base(); ?>images/dashboard.png" width="44" height="55" alt="WIP Stats" title="WIP Stats" /></a></li><li><img src="<?php echo url::base(); ?>images/navspace2.png" width="5" height="55" /></li><?php } else { ?><li><img src="<?php echo url::base(); ?>images/navspace1.png" width="14" height="55" /></li><?php } ?><li><a href="<?php echo url::base(); ?>updates/add/"><img src="<?php echo url::base(); ?>images/update.png" width="44" height="55" alt="Add WIP" title="Add WIP" /></a></li><li><img src="<?php echo url::base(); ?>images/navspace2.png" width="5" height="55" /></li><li><a href="<?php if ($this->logged_in == TRUE) { echo url::base() .'profiles/view/'. $this->username; } else { echo url::base() .'users/login/'; } ?>"><img src="<?php echo url::base(); ?>images/profile.png" width="44" height="55" alt="My WIPs" title="My WIPs" /></a></li><li><img src="<?php echo url::base(); ?>images/navspace3.png" width="18" height="55" /></li>
+			</ul>
 		</div>
 
 		<div id="content-top">
-			<div id="content-left"></div>
-			<div id="global-message">Share, critique, and track projects</div>
-			<div id="content-right"></div>
+			<div id="global-message"><?php if ($this->logged_in == TRUE) { ?>Hey <?php echo $this->username; ?>, be ambitious<?php } else { ?>Be ambitious<?php } ?>
+<?php if ($this->uri->string() == 'site' && $this->logged_in == FALSE) { ?>
+			<img style="float: right;" src="<?php echo url::base(); ?>images/try.png" alt="Try WIPUP now!" title="Try WIPUP now!" /></div>
+<?php } else { ?>
+			<img style="float: right;" src="<?php echo url::base(); ?>images/show.png" alt="Show us a WIP!" title="Show us a WIP!" /></div>
+<?php } ?>
 		</div>
 
         <div id="content">

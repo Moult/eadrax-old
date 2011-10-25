@@ -53,6 +53,7 @@ class Profiles_Controller extends Core_Controller {
 		$user_model		= new User_Model;
 		$kudos_model	= new Kudos_Model;
 		$comment_model	= new Comment_Model;
+		$track_model	= new Track_Model;
 
 		// Load the main profile view.
 		$project_top_view = new View('project_top');
@@ -76,35 +77,16 @@ class Profiles_Controller extends Core_Controller {
 
 		$project_top_view->age = $age;
 
-		// Parse featured update.
-		if ($user_information['featured'] != 0)
-		{
-			$featured_information = $update_model->update_information($user_information['featured']);
-			list($width, $height, $type, $attr) = getimagesize(DOCROOT .'uploads/files/'. $featured_information['filename0'] .'.'. $featured_information['ext0']);
-
-			if ($width > 850) {
-				$featured_filename = $featured_information['filename0'] .'_fit.jpg';
-			} else {
-				$featured_filename = $featured_information['filename0'] .'.'. $featured_information['ext0'];
-			}
-
-			if ($height > 250) {
-				$featured_height = $height/15;
-			} else {
-				$featured_height = 0;
-			}
-
-			$project_top_view->featured_filename = $featured_filename;
-			$project_top_view->featured_height = $featured_height;
-			$project_top_view->featured_project_information = $project_model->project_information($featured_information['pid']);
-		}
-
 		$project_top_view->uid = $uid;
 		$project_top_view->browseby = $this->uri->segment(2);
+
+		$project_top_view->update_count = count($update_model->updates($uid));
 
 		foreach ($project_model->projects($uid) as $pid => $p_name) {
 			$pid_array[] = $pid;
 		}
+
+		$project_top_view->tracking = $track_model->check_track_owner($uid, $this->uid);
 
 		$project_top_view->pid_array = $pid_array;
 
@@ -164,13 +146,11 @@ class Profiles_Controller extends Core_Controller {
 			$mini = $update_model->updates($uid, $pid, 'DESC', 5);
 			$mini_markup = '';
 
-			$mini_opacity = 90;
 			foreach ($mini as $row) {
 				$icon = Updates_Controller::_file_icon($row->filename0, $row->ext0);
-				$mini_markup = $mini_markup .'<div class="mini" style="-moz-opacity:.'. $mini_opacity .'; filter:alpha(opacity='. $mini_opacity .'); opacity: .'. $mini_opacity .'; background-image: url('. url::base() .'images/mini_icon.png); background-position: 2px; 2px; background-repeat: no-repeat;">';
-				$mini_markup = $mini_markup .'<div style="padding: 1px; border: 1px solid #CCC;"><a href="'. url::base() .'/updates/view/'. $row->id .'/"><img style="vertical-align: middle; background-image: url('. $icon .');" src="'. url::base() .'images/mini_overlay.png" alt="update icon" /></a></div>';
+				$mini_markup = $mini_markup .'<div class="mini" style="-moz-opacity:.6; filter:alpha(opacity=60); opacity: .60; background-image: url('. url::base() .'images/mini_icon.png); background-position: 2px; 2px; background-repeat: no-repeat;">';
+				$mini_markup = $mini_markup .'<div><a href="'. url::base() .'/updates/view/'. $row->id .'/"><img style="-webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; vertical-align: middle; background-image: url('. $icon .');" src="'. url::base() .'images/mini_overlay.png" alt="update icon" /></a></div>';
                 $mini_markup = $mini_markup .'</div>';
-				$mini_opacity = $mini_opacity - 20;
 			}
 
 			$$project_view->mini_markup = $mini_markup;

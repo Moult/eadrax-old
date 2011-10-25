@@ -52,7 +52,7 @@ $(document).ready(function() {
 		</div>
 		<div style="clear: both;"></div>
 	</div>
-		<cite class="single_cite" style="width: 794px; text-shadow: none; bottom: 27px; padding-bottom: 15px; padding-top: 0px; font-size: 12px; letter-spacing: 0px; text-align: center;">Not seeing much? Try being a little bit more active.</cite>
+		<cite class="single_cite" style="width: 814px; text-shadow: none; bottom: 27px; padding-bottom: 15px; padding-top: 0px; font-size: 12px; letter-spacing: 0px; text-align: center;">Not seeing much? Try being a little bit more active.</cite>
 	<div style="width: 7px; height: 7px; background-color: #E0632D; float: left;"></div>
 	<span style="float: left; font-size: 11px; line-height: 8px; letter-spacing: 0px; margin-left: 5px; margin-right: 10px;">UPDATES</span>
 	<div style="width: 7px; height: 7px; background-color: #2E97E0; float: left;"></div>

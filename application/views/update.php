@@ -36,7 +36,7 @@ By <?php if ($uid != 1) { ?><a href="<?php echo url::base(); ?>profiles/view/<?p
 
 	</div>
 
-	<div style="float: right; letter-spacing: 0px; color: #999; font-size: 10px; font-weight: 0; margin-top: 30px;">
+	<div style="float: right; letter-spacing: 0px; color: #333; font-size: 12px; font-weight: 0; margin-top: 30px;">
 		<?php echo date('jS F Y', strtotime($logtime)); ?>
 	</div>
 </h2>
@@ -60,7 +60,7 @@ By <?php if ($uid != 1) { ?><a href="<?php echo url::base(); ?>profiles/view/<?p
 	<div id="tabs">
 		<ul>
 <?php for ($i=0; $i<5; $i++) { if(!empty(${'filename'. $i})) { ?>
-			<li><a href="#fragment-<?php echo $i; ?>"><img src="<?php echo ${'filename_icon'. $i}; ?>" <?php if (${'display'. $i} == 'image' || ${'display'. $i} == 'video') { ?>style="-moz-box-shadow: 1px 1px 3px #555; -webkit-box-shadow: 1px 1px 3px #555; box-shadow: 1px 1px 3px #555; padding: 2px;" <?php } ?>alt="attachment<?php echo $i; ?>" /></a></li>
+			<li><a href="#fragment-<?php echo $i; ?>"><img src="<?php echo ${'filename_icon'. $i}; ?>" <?php if (${'display'. $i} == 'image' || ${'display'. $i} == 'video') { ?>style="-moz-box-shadow: 1px 1px 3px #555; -webkit-box-shadow: 1px 1px 3px #555; box-shadow: 1px 1px 3px #555; padding: 2px; background-color: #FFF;" <?php } ?>alt="attachment<?php echo $i; ?>" /></a></li>
 <?php } } ?>
 		</ul>
 <?php } ?>
@@ -194,5 +194,7 @@ if (isset($last)) {
         </li>
 <?php } ?>
     </ul>
+<br />
+<br />
 </div>
 

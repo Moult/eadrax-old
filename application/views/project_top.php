@@ -1,18 +1,38 @@
 <?php if (!empty($user['avatar'])) { ?>
-<img src="<?php echo url::base(); ?>uploads/avatars/<?php echo $user['avatar']; ?>_small.jpg" class="icon" alt="" style="border: 1px solid #999; padding: 1px; float: left;" />
+<img src="<?php echo url::base(); ?>uploads/avatars/<?php echo $user['avatar']; ?>_small.jpg" class="icon" alt="" style="float: left; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; position: relative; top: 1px; border: 1px solid #333;" />
 <?php } else { ?>
-<img src="<?php echo url::base(); ?>images/icons/app_48.png" class="icon" alt="" style="padding: 1px; float: left;" />
+<img src="<?php echo url::base(); ?>images/noprojecticon.png" class="icon" alt="" style="float: left; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; position: relative; top: 1px; border: 1px solid #333;" />
 <?php } ?>
 
-<h2 style="margin-left: 6px; float: left; height: 50px; width: 770px;">
+<h2 style="margin-left: 6px; float: left; height: 50px; width: 775px;">
 	<div style="float: left; height: 30px;"><?php echo $user['username']; ?>'s Projects</div>
 	<?php if (!empty($browseby)) { ?>
 
 	<div id="filter" style="margin: none; clear: none; float: right; text-shadow: none; font-size: 10px; letter-spacing: 0px;">
 	<ul class="block_links" style="float: left;">
-	<li style="margin: 0px;"><a href="<?Php echo url::base(); ?>profiles/view/<?php echo $user['username']; ?>/" class="block">Back to <?php echo $user['username']; ?>'s WIPSpace</a></li>
+<?php if ($uid != 1 && isset($tracking)) { ?>
+		<?php if ($tracking == TRUE) { ?>
+		<li><a style="-webkit-border-top-left-radius: 5px; -webkit-border-top-right-radius: 5px; -moz-border-radius-topleft: 5px; -moz-border-radius-topright: 5px; border-top-left-radius: 5px; border-top-right-radius: 5px; position: relative; top: 8px;" href="<?php echo url::base(); ?>feedback/untrack/<?php echo $user['id']; ?>" class="block"><img src="<?php echo url::base(); ?>images/icons/newspaper_link.png" class="icon" alt="Updates" /> Untrack activity</a></li>
+		<?php } elseif ($tracking == FALSE && $uid != $this->uid && $user['enable_tracking'] == 1) { ?>
+		<li><a style="-webkit-border-top-left-radius: 5px; -webkit-border-top-right-radius: 5px; -moz-border-radius-topleft: 5px; -moz-border-radius-topright: 5px; border-top-left-radius: 5px; border-top-right-radius: 5px; position: relative; top: 8px;" href="<?php echo url::base(); ?>feedback/track/<?php echo $user['id']; ?>" class="block"><img src="<?php echo url::base(); ?>images/icons/newspaper_link.png" class="icon" alt="Updates" /> Track activity</a></li>
+		<?php } ?>
+<?php } ?>
+
+
+		<li style="margin: 0px;">
+<a style="-webkit-border-top-left-radius: 5px; -webkit-border-top-right-radius: 5px; -moz-border-radius-topleft: 5px; -moz-border-radius-topright: 5px; border-top-left-radius: 5px; border-top-right-radius: 5px; position: relative; top: 8px;" href="<?php echo url::base(); ?>profiles/view/<?php echo $user['username']; ?>" class="block"><img src="<?php echo url::base(); ?>images/icons/photos.png" class="icon" alt="Updates" /> View Latest WIPs</a>
+<a style="background-image: linear-gradient(bottom, rgb(51,51,51) 0%, rgb(102,102,102) 100%); background-image: -o-linear-gradient(bottom, rgb(51,51,51) 0%, rgb(102,102,102) 100%); background-image: -moz-linear-gradient(bottom, rgb(51,51,51) 0%, rgb(102,102,102) 100%); background-image: -webkit-linear-gradient(bottom, rgb(51,51,51) 0%, rgb(102,102,102) 100%); background-image: -ms-linear-gradient(bottom, rgb(51,51,51) 0%, rgb(102,102,102) 100%); background-image: -webkit-gradient( linear, left bottom, left top, color-stop(0, rgb(51,51,51)), color-stop(1, rgb(102,102,102))); -webkit-border-top-left-radius: 5px; -webkit-border-top-right-radius: 5px; -moz-border-radius-topleft: 5px; -moz-border-radius-topright: 5px; border-top-left-radius: 5px; border-top-right-radius: 5px; position: relative; top: 8px;" href="<?php echo url::base(); ?>profiles/projects/<?php echo $user['id']; ?>" class="block"><img src="<?php echo url::base(); ?>images/icons/report_picture.png" class="icon" alt="Projects" /> Show by Project</a>
+		</li>
 	</ul>
 	</div>
+
+<div style="width: 100%; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; clear: both; line-height: 25px; font-size: 12px; letter-spacing: 0px; color: #888; background-color: #333; padding: 8px; padding-top: 2px; padding-bottom: 0px; margin-bottom: 0px; position: relative; top: -5px;">
+<div style="float: left; text-shadow: 0px 1px 0px #000; color: #CCC;">
+<strong><?php echo $user['username']; ?></strong> has made <strong><?php echo $update_count; ?></strong> updates across <strong><?php echo count($pid_array); ?></strong> projects.
+</div>
+	<div style="clear:both;"></div>
+</div>
+
 	<?php } else { ?>
 	<div style="float: right; margin-top: -5px;">
 	<img src="<?php echo url::base(); ?>images/icons/photos.png" alt="" />
@@ -27,50 +47,7 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
-	$("#content_top").css({'min-height': '60px'});
-	$("#content_top").animate({height: '60px'});
-	$("#section_divider").css({'background-color': '#E3F8FF'});
-	$("#content_top_left").animate({height: '60px'});
-	$("#content_top_right").animate({height: '60px'});
+	$("#content_top").css({'min-height': '70px'});
+	$("#content_top").animate({height: '70px'});
 });
 </script>
-
-<?php if (!empty($pid_array)) { ?>
-<script type="text/javascript">
-$(document).ready(function() {
-	$("#expand").click(function(){
-<?php foreach ($pid_array as $pid) { ?>
-		if ($("#expand").hasClass('expand')) {
-			$("#section_top<?php echo $pid; ?>").css({'height': ''});
-			$("#section_divider<?php echo $pid; ?>").css("background-color", "white");
-			$("#section_divider<?php echo $pid; ?>").animate({height: '24px'});
-			$("#section_top_right<?php echo $pid; ?>").animate({height: '230px'});
-			if (!$("#section_top_left<?php echo $pid; ?>").hasClass('tall')) {
-				$("#section_top_left<?php echo $pid; ?>").animate({height: '230px'}).addClass('tall');
-				$("#slider<?php echo $pid; ?>").slideToggle("slow");
-			}
-		} else {
-			$("#section_top<?php echo $pid; ?>").css({'min-height': '50px'});
-			$("#section_top<?php echo $pid; ?>").animate({height: '50px'});
-			$("#section_divider<?php echo $pid; ?>").css("background-color", "#E3F8FF");
-			$("#section_divider<?php echo $pid; ?>").animate({height: '18px'});
-			$("#section_top_right<?php echo $pid; ?>").animate({height: '60px'});
-			if ($("#section_top_left<?php echo $pid; ?>").hasClass('tall')) {
-				$("#section_top_left<?php echo $pid; ?>").animate({height: '60px'}).removeClass('tall');
-				$("#slider<?php echo $pid; ?>").slideToggle("slow");
-			}
-		}
-<?php } ?>
-		if ($("#expand").hasClass('expand')) {
-			$("#expand").attr("src","<?php echo url::base(); ?>images/collapse.png").removeClass('expand');
-		} else {
-			$("#expand").attr("src","<?php echo url::base(); ?>images/expand.png").addClass('expand');
-		}
-	});
-});
-</script>
-
-<div style="text-align: center; position: absolute; left: 130px; bottom: 0px;">
-<img src="<?php echo url::base(); ?>images/expand.png" id="expand" class="expand" alt="expand all projects" style="position: relative; top: 19px;" />
-</div>
-<?php } ?>

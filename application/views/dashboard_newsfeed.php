@@ -1,12 +1,8 @@
 <div class="left">
 	<h2>
 		<img src="<?php echo url::base(); ?>images/icons/newspaper_48.png" class="icon" alt="" />
-		Your Newsreel
+		Newsfeed
 	</h2>
-
-	<p>
-		Your newsfeed displays updates on your own submissions, as well as those of users whom you have tracked or individual projects which you have subscribed to.
-	</p>
 
 	<?php if (empty($newsfeed)) { ?>
 	<p>

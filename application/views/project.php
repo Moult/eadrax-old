@@ -1,19 +1,57 @@
 <?php if (empty($uid) && empty($project['icon'])) { ?>
-<div style="margin-bottom: 15px; text-align: center;">
-<span style="font-size: 20px; color: #333; font-weight: bold; letter-spacing: -1px;">We're that place you're looking for to document your long-term projects.<br />Share your ambition today.</span>
+
+<?php if ($this->logged_in == FALSE) { ?>
+<div style="width: 510px; float: left;">
+<div id="slogan1"></div>
+<div id="slogan2"></div>
+</div>
+<div style="float: left; width: 340px;">
+<img style="float: left;" src="<?php echo url::base(); ?>images/heart.png" alt="" />
+<p style="font-weight: bold; color: #222; margin-bottom: 20px; float: left; width: 280px; margin-top: 4px; margin-left: 10px;">
+100% Free. FOSS. No upload restrictions.<br />
+Project categorisation. Stats. 1-click updates.
+</p>
+
+	<div class="form" style="clear: both;">
+		<form action="<?php echo url::base(); ?>users/login/" method="post">
+			<fieldset>
+				<legend>
+					<img src="<?php echo url::base(); ?>images/icons/drive_user.png" alt="" width="16" height="16" class="icon" />
+					Log in or Register
+				</legend>
+				<div class="elements">
+					<p>
+						<label for="openid_identifier" title="WIPUP allows you to use OpenID-enabled accounts to sign in, such as Google, Facebook, Twitter, and Wordpress. Just click the OpenID icon to get started.">Username:
+							<a class="rpxnow" onclick="return false;" href="https://wipup.rpxnow.com/openid/v2/signin?token_url=http%3A%2F%2F<?php echo substr(url::base(), 7); ?>users%2Frpx%2F"><img src="<?php echo url::base(); ?>images/icons/openid.gif" class="icon" /></a>
+						</label>
+						<input type="text" id="openid_identifier" name="openid_identifier" <?php if (isset($errors['openid_identifier'])) { echo 'class="error"'; } ?> />
+					</p>
+
+					<p>
+						<label for="password">Password:</label>
+						<input type="password" id="password" name="password" />
+					</p>
+
+					<p>
+						<label for="remember">Remember:</label>
+						<input type="checkbox" id="remember" name="remember" />
+					</p>
+
+					<p class="submit">
+						<input type="submit" name="submit" class="submit" value="Start sharing my WIPs" />
+					</p>
+
+					<p style="float: right; font-size: 11px;">
+						<span title="WIP means work-in-progress. On WIPUP, you can share updates on your projects as simple as a Tweet or as complicated as embedded video."><a href="#"><strong>What is a WIP?</strong></a></span> - <a href="<?php echo url::base() .'site/legal/'; ?>">Terms of service</a>
+					</p>
+					<br style="clear: both;" />
+				</div>
+			</fieldset>
+		</form>
+	</div>
 </div>
 
-<div id="filter" style="overflow: hidden;">
-<ul class="block_links" style="float: left;">
-<li><a href="<?php echo url::base(); ?>" class="block" <?php if ($filter == 'l') { echo 'style="background-color: #FF6500;" '; } ?>>Latest</a></li>
-<li><a href="<?php echo url::base(); ?>projects/view/a/" class="block" <?php if ($filter == 'a') { echo 'style="background-color: #FF6500;" '; } ?>>Awesomest</a></li>
-<li><a href="<?php echo url::base(); ?>projects/view/r/" class="block" <?php if ($filter == 'r') { echo 'style="background-color: #FF6500;" '; } ?>>Randomest</a></li>
-</ul>
-
-<ul class="block_links" style="float: right;">
-<li style="margin: 0px;"><a href="<?php echo url::base(); ?>projects/view/2/9/" class="block" style="background-color: #444;">Featured: The ThoughtScore Project</a></li>
-</ul>
-</div>
+<?php } ?>
 
 <?php } elseif (!isset($join)) { ?>
 <?php if (empty($project)) { ?>
@@ -24,14 +62,14 @@
 	<?php if (isset($category_name)) { ?>
 	<img src="<?php echo url::base(); ?>images/icons/folder_48.png" class="icon" alt="" />
 	<?php } elseif (!empty($project['icon'])) { ?>
-	<img src="<?php echo url::base(); ?>uploads/icons/<?php echo $project['icon']; ?>" class="icon" alt="" style="border: 1px solid #999; padding: 1px;" />
+	<img src="<?php echo url::base(); ?>uploads/icons/<?php echo $project['icon']; ?>" class="icon" alt="" style="-webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; position: relative; top: 1px; border: 1px solid #333;" />
 	<?php } else { ?>
 	<img src="<?php echo url::base(); ?>images/icons/folder_48.png" class="icon" alt="" />
 	<?php } ?>
 	<?php if (isset($category_name)) { ?>
-	<?php echo $category_name; ?> Updates
+	<?php echo $category_name; ?>
 	<?php } elseif (!empty($uid)) { ?>
-		<?php if (empty($project)) { echo $u_name; } else { echo $project['name']; } ?>'s Updates <?php if ($project['uid'] == $this->uid && $project['uid'] != 1) { ?><a href="<?php echo url::base(); ?>projects/add/<?php echo $project['id']; ?>/"><img src="<?php echo url::base(); ?>images/icons/pencil.png" class="icon" alt="Edit" /></a><?php } ?>
+		<?php if (empty($project)) { echo $u_name; } else { echo $project['name']; } ?> <?php if ($project['uid'] == $this->uid && $project['uid'] != 1) { ?><a href="<?php echo url::base(); ?>projects/add/<?php echo $project['id']; ?>/"><img src="<?php echo url::base(); ?>images/icons/pencil.png" class="icon" alt="Edit" /></a><?php } ?>
 		<div style="float: right; text-shadow: none; font-size: 10px; letter-spacing: 0px;">
 
 <div id="filter" style="overflow: hidden; margin-top: 10px;">
@@ -40,16 +78,14 @@
 	<?php if ($project['id'] != 1) { ?>
         <li style="width: 70px; display: inline;">
 			<?php if ($subscribed == TRUE) { ?>
-			<li><a href="<?php echo url::base(); ?>feedback/unsubscribe/<?php echo $project['id'];?>/" class="block">Unsubscribe :(</a></li>
+			<li><a href="<?php echo url::base(); ?>feedback/unsubscribe/<?php echo $project['id'];?>/" class="block">Unsubscribe</a></li>
 			<?php } elseif ($tracking == FALSE && $uid != $this->uid ) { ?>
-			<li><a href="<?php echo url::base(); ?>feedback/subscribe/<?php echo $project['id'];?>/" class="block">Subscribe :)</a></li>
+			<li><a href="<?php echo url::base(); ?>feedback/subscribe/<?php echo $project['id'];?>/" class="block">Subscribe</a></li>
 			<?php } ?>
 	<?php } ?>
 <?php } ?>
 
 </ul></div>
-
-
 
 		</div>
 	<?php } else { ?>
