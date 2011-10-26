@@ -21,9 +21,9 @@
 
 			<div style="float: left;">
 				<?php if (!empty($news['avatar'])) { ?>
-				<a href="<?php echo url::base(); ?>profiles/view/<?php echo $news['user']; ?>/"><img src="<?php echo url::base(); ?>uploads/avatars/<?php echo $news['avatar']; ?>_small.jpg" class="icon" alt="" style="border: 1px solid #999; padding: 1px; float: left;" /></a>
+				<a href="<?php echo url::base(); ?>profiles/view/<?php echo $news['user']; ?>/"><img src="<?php echo url::base(); ?>uploads/avatars/<?php echo $news['avatar']; ?>_small.jpg" class="icon" alt="" style="float: left; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; border: 1px solid #555;" /></a>
 				<?php } else { ?>
-				<a href="<?php echo url::base(); ?>profiles/view/<?php echo $news['user']; ?>/"><img src="<?php echo url::base(); ?>images/noprojecticon.png" class="icon" alt="" style="border: 1px solid #999; padding: 1px; float: left;" /></a>
+				<a href="<?php echo url::base(); ?>profiles/view/<?php echo $news['user']; ?>/"><img src="<?php echo url::base(); ?>images/noprojecticon.png" class="icon" alt="" style="float: left; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; border: 1px solid #555;" /></a>
 				<?php } ?>
 			</div>
 
@@ -32,7 +32,7 @@
 				<strong><a href="<?php echo url::base(); ?>profiles/view/<?php echo $news['user']; ?>/" style="text-decoration: none;"><?php echo $news['user']; ?></a></strong> <?php echo $news['text']; ?>
 				</p>
 				<?php
-					if (!strpos($news['picture'], 'images/icons') || strpos($news['picture'], 'images/noprojecticon.png')) { $style = '-moz-box-shadow: 1px 1px 3px #555; -webkit-box-shadow: 1px 1px 3px #555; box-shadow: 1px 1px 3px #555; padding: 2px;'; } else { $style = ''; }
+					if (!strpos($news['picture'], 'images/icons') || strpos($news['picture'], 'images/noprojecticon.png')) { $style = 'background-color: #FFF; -moz-box-shadow: 1px 1px 3px #555; -webkit-box-shadow: 1px 1px 3px #555; box-shadow: 1px 1px 3px #555; padding: 2px;'; } else { $style = ''; }
 					echo '<p style="float: left;"><a href="'. $news['picture_url'] .'"><img style="vertical-align: middle; '. $style .'" src="'. $news['picture'] .'" alt="update icon" /></a></p>';
 				?>
 
@@ -111,7 +111,7 @@
 				}
 			?>
 			<div style="float: left; <?php echo $markup; ?>">
-			<a href="<?php echo url::base(); ?>profiles/view/<?php echo $value[1]; ?>/"><img src="<?php echo $value[2]; ?>" style="border: 1px solid #999; padding: 1px;" title="<?php echo $value[1]; ?>" alt="<?php echo $value[1]; ?>" /></a>
+			<a href="<?php echo url::base(); ?>profiles/view/<?php echo $value[1]; ?>/"><img src="<?php echo $value[2]; ?>" style="-webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; border: 1px solid #555;" title="<?php echo $value[1]; ?>" alt="<?php echo $value[1]; ?>" /></a>
 			</div>
 			<?php } ?>
 			<?php if ($track_total == 0) { ?>
@@ -145,7 +145,7 @@
 				}
 			?>
 			<div style="float: left; margin-bottom: 10px; <?php echo $markup; ?>">
-			<a href="<?php echo url::base(); ?>profiles/view/<?php echo $value[1]; ?>/"><img src="<?php echo $value[2]; ?>" style="border: 1px solid #999; padding: 1px;" title="<?php echo $value[1]; ?>" alt="<?php echo $value[1]; ?>" /></a>
+			<a href="<?php echo url::base(); ?>profiles/view/<?php echo $value[1]; ?>/"><img src="<?php echo $value[2]; ?>" style="-webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; border: 1px solid #555;" title="<?php echo $value[1]; ?>" alt="<?php echo $value[1]; ?>" /></a>
 			</div>
 			<?php } ?>
 			<?php } ?>

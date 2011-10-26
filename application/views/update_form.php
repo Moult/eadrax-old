@@ -126,11 +126,11 @@ if (isset($uid)) {
 						If you were logged in, we won't ask you silly questions like in primary school.
 					</p>
 					<p>
-						<label for="captcha">Eye test:</label>
-						<input type="text" id="captcha" name="captcha" <?php if (isset($errors['captcha'])) { echo 'class="error"'; } ?> /><br /><br />
+						<em>What is the colour of King George's favourite black horse?</em>
 					</p>
 					<p>
-						<img src="<?php echo url::base(); ?>image/securimage/" alt="captcha" />
+						<label for="captcha">Answer:</label>
+						<input type="text" id="captcha" name="captcha" <?php if (isset($errors['captcha'])) { echo 'class="error"'; } ?> /><br /><br />
 					</p>
 					<?php } ?>
 

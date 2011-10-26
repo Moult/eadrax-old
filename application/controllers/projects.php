@@ -308,7 +308,7 @@ class Projects_Controller extends Core_Controller {
 					$markup = $markup .'<span style="text-shadow: none; font-size: 10px; font-family: \'Arial\', sans-serif; color: #555;">'. $row->views .' Views, '. $kudos_model->kudos($row->id) .' Kudos, '. $comment_model->comment_update_number($row->id) .' Comments</span>';
 				} else {
 					$markup = $markup .'<span style="font-size: 10px; font-family: \'Arial\', sans-serif;">By <a href="'. url::base() .'profiles/view/'. $update_name.'/">'. $update_name .'</a></span>';
-					$markup = $markup .'<span style="text-shadow: none; font-size: 10px; font-family: \'Arial\', sans-serif; color: #666;"> ('. $row->views .'V, '. $kudos_model->kudos($row->id) .'K, '. $comment_model->comment_update_number($row->id) .'C)</span>';
+					$markup = $markup .'<span style="text-shadow: none; font-size: 10px; font-family: \'Arial\', sans-serif; color: #666;"> '. $row->views .' <img src="'. url::base() .'images/v.png" alt="V" /> '. $kudos_model->kudos($row->id) .' <img src="'. url::base() .'images/k.png" alt="K" /> '. $comment_model->comment_update_number($row->id) .' <img src="'. url::base() .'images/c.png" alt="C" /></span>';
 				}
 				$markup = $markup .'</div>';
                 $markup = $markup .'</div>';

@@ -198,6 +198,10 @@ class Updates_Controller extends Core_Controller {
 		// Let's deal with comment submits first.
 		if ($this->input->post())
 		{
+			if ( time() - $this->session->get('form_generate', 0) < 5) {
+				die();
+			}
+
 			$comment = $this->input->post('comment');
 			$also_subscribe = $this->input->post('subscribe', FALSE);
 			$also_kudos = $this->input->post('kudos', FALSE);
@@ -299,6 +303,9 @@ class Updates_Controller extends Core_Controller {
 		}
 		else
 		{
+			// Generate a starting time to prevent against spambots.
+			$this->session->set('form_generate', time());
+
 			$comment_form_view->form = array(
 				'comment' => ''
 			);
@@ -624,6 +631,11 @@ class Updates_Controller extends Core_Controller {
 
 		if ($this->input->post())
 		{
+			// Protect against spambots
+			if ( time() - $this->session->get('form_generate', 0) < 5) {
+				die();
+			}
+
 			$summary	= $this->input->post('summary');
 			$detail		= $this->input->post('detail');
 			$syntax		= $this->input->post('syntax');
@@ -1130,6 +1142,9 @@ class Updates_Controller extends Core_Controller {
 		}
 		else
 		{
+			// Generate a starting time to prevent against spambots.
+			$this->session->set('form_generate', time());
+
 			// Load the necessary view.
 			$update_form_view = new View('update_form');
 
@@ -1288,10 +1303,8 @@ class Updates_Controller extends Core_Controller {
 	 */
 	public function _validate_captcha(Validation $array, $field)
 	{
-		$this->securimage = new Securimage;
-
-		if ($this->securimage->check($array[$field]) == FALSE)
-		{
+		$answer = strtolower(trim($array[$field]));
+		if ($answer != 'black') {
 			$array->add_error($field, 'captcha');
 		}
 	}
