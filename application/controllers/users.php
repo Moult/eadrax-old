@@ -260,8 +260,18 @@ class Users_Controller extends Core_Controller {
 				$this->uid			= $this->authlite->get_user()->id;
 				$this->logged_in	= TRUE;
 
+				// Custom login messages
+				$user_model = new User_Model;
+				$user_information = $user_model->user_information($this->uid);
+				if ($user_information['lastactive'] == 0) {
+					$this->session->set('notification', 'Welcome to WIPUP, '. $this->username .'. Time to share your passions with the world.');
+				} elseif (time() - $user_information['lastactive'] > 30) {
+					$this->session->set('notification', 'Welcome back, '. $this->username .'. We really, really missed you. Seriously.');
+				} else {
+					$this->session->set('notification', 'Hey there, '. $this->username .'. Got any awesome updates to share?');
+				}
+
 				// Redirect to the dashboard.
-				$this->session->set('notification', 'Welcome back, '. $this->username .'. We really, really missed you. Seriously.');
 				url::redirect(url::base() .'dashboard/');
 			}
 		}
@@ -275,8 +285,18 @@ class Users_Controller extends Core_Controller {
 				$this->uid			= $this->authlite->get_user()->id;
 				$this->logged_in	= TRUE;
 
+				// Custom login messages
+				$user_model = new User_Model;
+				$user_information = $user_model->user_information($this->uid);
+				if ($user_information['lastactive'] == 0) {
+					$this->session->set('notification', 'Welcome to WIPUP, '. $this->username .'. Time to share your passions with the world.');
+				} elseif (time() - $user_information['lastactive'] > 30) {
+					$this->session->set('notification', 'Welcome back, '. $this->username .'. We really, really missed you. Seriously.');
+				} else {
+					$this->session->set('notification', 'Hey there, '. $this->username .'. Got any awesome updates to share?');
+				}
+
 				// Redirect to the dashboard.
-				$this->session->set('notification', 'Welcome back, '. $this->username .'. We really, really missed you. Seriously.');
 				url::redirect(url::base() .'updates/add/');
 			} else {
 				// The account doesn't exist, let's register them instead.
