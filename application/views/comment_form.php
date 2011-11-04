@@ -27,9 +27,9 @@ $comment_user_info = $$comment_var_name;
 
 		<div style="float: left;">
 			<?php if (!empty($comment_user_info['avatar'])) { ?>
-			<img src="<?php echo url::base(); ?>uploads/avatars/<?php echo $comment_user_info['avatar']; ?>_small.jpg" class="icon" alt="" style="border: 1px solid #999; padding: 1px; float: left;" />
+			<img src="<?php echo url::base(); ?>uploads/avatars/<?php echo $comment_user_info['avatar']; ?>_small.jpg" class="icon" alt="" style="float: left; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; position: relative; top: 1px; border: 1px solid #333;" />
 			<?php } else { ?>
-			<img src="<?php echo url::base(); ?>images/noprojecticon.png" class="icon" alt="" style="border: 1px solid #999; padding: 1px; float: left;" />
+			<img src="<?php echo url::base(); ?>images/noprojecticon.png" class="icon" alt="" style="float: left; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; position: relative; top: 1px; border: 1px solid #333;" />
 			<?php } ?>
 		</div>
 

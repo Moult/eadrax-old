@@ -271,7 +271,31 @@ if (($this->uri->segment(1) == 'updates' && $this->uri->segment(2) == 'add') || 
             </h1>
 
 			<ul id="text-navigation" <?php if ($this->logged_in == TRUE) { ?>style="width: 525px"<?php } ?>>
-				<li><div>Seen Moult's 3D animated film <a href="#">The ThoughtScore Project</a>?
+				<li><div style="font-size: 10px;">
+				<span title="Moult is working on a 3D animated film called The ThoughtScore Project using nothing but open-source software">
+				<a href="<?php echo url::base(); ?>projects/view/2/9/">
+				<img src="<?php echo url::base(); ?>images/featured1.png" alt="The ThoughtScore Project" class="icon" />
+				</a></span>
+
+				<span title="harishankar is developing The Adventures of Butaba, a 2D RPG game made with Python's pygame">
+				<a href="<?php echo url::base(); ?>projects/view/152/79/">
+				<img src="<?php echo url::base(); ?>images/featured2.png" alt="Adventures of Butaba" class="icon" />
+				</a></span>
+
+				<span title="Cobramilk has worked on a short 3D film as well as sculpting in ZBrush">
+				<a href="<?php echo url::base(); ?>profiles/view/Cobramilk/">
+				<img src="<?php echo url::base(); ?>images/featured3.png" alt="Cobramilk" class="icon" />
+				</a></span>
+
+				<span title="Moult composed a short piano piece for his cousin's wedding. He's working on a new composition right now">
+				<a href="<?php echo url::base(); ?>projects/view/2/2/">
+				<img src="<?php echo url::base(); ?>images/featured4.png" alt="Evan Composition" class="icon" />
+				</a></span>
+
+				<span title="KDE.org, home of the most popular desktop environment for Linux,  got very clunky and full of text. The team is redesigning it to speak better to users">
+				<a href="<?php echo url::base(); ?>projects/view/2/6/">
+				<img src="<?php echo url::base(); ?>images/featured5.png" alt="KDE.org Redesign" class="icon" />
+				</a></span>
 
 				<a href="<?php echo url::base(); ?>updates/random/">Discover more <img src="<?php echo url::base(); ?>images/random.png" class="icon" title="Go to random WIP" alt="Go to random WIP" /></a>
 
@@ -287,7 +311,21 @@ if (($this->uri->segment(1) == 'updates' && $this->uri->segment(2) == 'add') || 
 		</div>
 
 		<div id="content-top">
-			<div id="global-message"><?php if ($this->logged_in == TRUE) { ?>Hey <?php echo $this->username; ?>, be ambitious<?php } else { ?>Be ambitious<?php } ?>
+			<div id="global-message"><?php if ($this->logged_in == TRUE) { ?>Hey <?php echo $this->username; ?>, <?php
+			$ambitious_message = array(
+				'be ambitious',
+				'create something amazing',
+				'be proud of what you do',
+				'be happy',
+				'share the love',
+				'invent something',
+				'change the world',
+				'spread your knowledge',
+				'create to help, not hinder',
+				'I forgot'
+			);
+		echo $ambitious_message[rand(0,count($ambitious_message)-1)];
+?><?php } else { ?>Be ambitious<?php } ?>
 <?php if ($this->uri->string() == 'site' && $this->logged_in == FALSE) { ?>
 			<img style="float: right;" src="<?php echo url::base(); ?>images/try.png" alt="Try WIPUP now!" title="Try WIPUP now!" /></div>
 <?php } else { ?>

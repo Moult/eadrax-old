@@ -265,7 +265,7 @@ class Users_Controller extends Core_Controller {
 				$user_information = $user_model->user_information($this->uid);
 				if ($user_information['lastactive'] == 0) {
 					$this->session->set('notification', 'Welcome to WIPUP, '. $this->username .'. Time to share your passions with the world.');
-				} elseif (time() - $user_information['lastactive'] > 30) {
+				} elseif (time() - $user_information['lastactive'] > 604800) {
 					$this->session->set('notification', 'Welcome back, '. $this->username .'. We really, really missed you. Seriously.');
 				} else {
 					$this->session->set('notification', 'Hey there, '. $this->username .'. Got any awesome updates to share?');
@@ -290,7 +290,7 @@ class Users_Controller extends Core_Controller {
 				$user_information = $user_model->user_information($this->uid);
 				if ($user_information['lastactive'] == 0) {
 					$this->session->set('notification', 'Welcome to WIPUP, '. $this->username .'. Time to share your passions with the world.');
-				} elseif (time() - $user_information['lastactive'] > 30) {
+				} elseif (time() - $user_information['lastactive'] > 604800) {
 					$this->session->set('notification', 'Welcome back, '. $this->username .'. We really, really missed you. Seriously.');
 				} else {
 					$this->session->set('notification', 'Hey there, '. $this->username .'. Got any awesome updates to share?');
