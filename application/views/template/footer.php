@@ -73,7 +73,7 @@
 			<a href="<?php echo url::base(); ?>site/tour/">What is WIPUP?</a> - <a href="<?php echo url::base(); ?>site/sponsor/">Sponsor</a> - <a href="<?php echo url::base(); ?>site/development/">Development</a> - <a href="<?php echo url::base(); ?>site/search/">Search</a> - <a href="<?php echo url::base() .'site/legal/'; ?>">Legal Information</a>
         </div>
         <!-- </FOOTER> -->
-<?php if ($this->uri->segment(1) == 'users' && ($this->uri->segment(2) == 'register' || $this->uri->segment(2) == 'login' || $this->uri->segment(2) == 'rpx')) { ?>
+<?php if (($this->uri->segment(1) == 'users' && ($this->uri->segment(2) == 'register' || $this->uri->segment(2) == 'login' || $this->uri->segment(2) == 'rpx')) || $this->uri->string() == 'site' ) { ?>
 		<script type="text/javascript">
 		  var rpxJsHost = (("https:" == document.location.protocol) ? "https://" : "http://static.");
 		  document.write(unescape("%3Cscript src='" + rpxJsHost +

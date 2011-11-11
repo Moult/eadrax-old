@@ -54,6 +54,17 @@
 			});
 		});
 		</script>
+
+		<script>
+		$(function() {
+			$("label[title]").tooltip({
+				position: "bottom center",
+				offset: [10, 0],
+				effect: "fade",
+				opacity: 0.8
+			});
+		});
+		</script>
 <?php
 // If we are viewing an update, we need a couple more fancy stuff.
 if ($this->uri->segment(1) == 'updates' && ($this->uri->segment(2) == 'view' || $this->uri->segment(2) == 'random')) {
@@ -154,38 +165,6 @@ if ($this->uri->segment(1) == 'profiles') {
 // Certain forms need some BBCode fun!
 if (($this->uri->segment(1) == 'updates' && $this->uri->segment(2) == 'add') || ($this->uri->segment(1) == 'projects' && $this->uri->segment(2) == 'add') || ($this->uri->segment(1) == 'users' && ($this->uri->segment(2) == 'register' || $this->uri->segment(2) == 'login' || $this->uri->segment(2) == 'rpx'))) {
 ?>
-		<!-- Tooltip support -->
-		<script src="http://cdn.jquerytools.org/1.2.3/full/jquery.tools.min.js"></script>
-
-		<style>
-		.tooltip {
-			background-color:#000;
-			border:1px solid #fff;
-			padding:10px 15px;
-			width:200px;
-			display:none;
-			color:#fff;
-			text-align:left;
-			font-size:12px;
-
-			/* outline radius for mozilla/firefox/css3-complaint only */
-			-moz-box-shadow:0 0 10px #000;
-			-webkit-box-shadow:0 0 10px #000;
-			box-shadow:0 0 10px #000;
-		}
-		</style>
-
-		<script>
-		$(function() {
-			$("label[title]").tooltip({
-				position: "bottom center",
-				offset: [10, 0],
-				effect: "fade",
-				opacity: 0.8
-			});
-		});
-		</script>
-
 		<!-- BBCode support -->
         <script type="text/javascript" src="<?php echo url::base(); ?>js/ed.js"></script>
 

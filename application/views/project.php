@@ -42,7 +42,7 @@ Project categorisation. Stats. 1-click updates.
 					</p>
 
 					<p style="float: right; font-size: 11px;">
-						<span title="WIP means work-in-progress. On WIPUP, you can share updates on your projects as simple as a Tweet or as complicated as embedded video."><a href="#"><strong>What is a WIP?</strong></a></span> - <a href="<?php echo url::base() .'site/legal/'; ?>">Terms of service</a>
+						<span title="WIP means work-in-progress. A WIP update can be anything from a single sentence to downloadable files with embedded videos."><a href="#"><strong>What is a WIP?</strong></a></span> - <a href="<?php echo url::base() .'site/legal/'; ?>">Terms of service</a>
 					</p>
 					<br style="clear: both;" />
 				</div>
