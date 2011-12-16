@@ -2,16 +2,16 @@
 
 <?php if ($this->logged_in == FALSE) { ?>
 <div style="width: 510px; float: left;">
-<div id="slogan1"></div>
-<div id="slogan2"></div>
-</div>
-<div style="float: left; width: 340px;">
+<div style="font-family: 'Signika'; font-size: 40px; color: #333; font-weight: 600; letter-spacing: -3px; margin-bottom: 25px;"><span style="font-size: 50px;">Share. Critique. Track.</span><br />Show us what you're working on</div>
 <img style="float: left;" src="<?php echo url::base(); ?>images/heart.png" alt="" />
-<p style="font-weight: bold; color: #222; margin-bottom: 20px; float: left; width: 280px; margin-top: 4px; margin-left: 10px;">
-100% Free. FOSS. No upload restrictions.<br />
-Project categorisation. Stats. 1-click updates.
+<p style="font-weight: bold; color: #222; margin-bottom: 20px; float: left; margin-top: 4px; margin-left: 10px;">
+Completely free, forever. No upload restrictions. Track interesting projects.<br />
+Personal profile. Statistics. Collaborative projects. Versioned pastebins.
 </p>
 
+</div>
+
+<div style="float: left; width: 340px;">
 	<div class="form" style="clear: both;">
 		<form action="<?php echo url::base(); ?>users/login/" method="post">
 			<fieldset>
@@ -32,19 +32,18 @@ Project categorisation. Stats. 1-click updates.
 						<input type="password" id="password" name="password" />
 					</p>
 
-					<p>
-						<label for="remember">Remember:</label>
-						<input type="checkbox" id="remember" name="remember" />
-					</p>
+
 
 					<p class="submit">
 						<input type="submit" name="submit" class="submit" value="Start sharing my WIPs" />
 					</p>
 
-					<p style="float: right; font-size: 11px;">
-						<span title="WIP means work-in-progress. A WIP update can be anything from a single sentence to downloadable files with embedded videos."><a href="#"><strong>What is a WIP?</strong></a></span> - <a href="<?php echo url::base() .'site/legal/'; ?>">Terms of service</a>
+					<p style="font-size: 11px; margin-bottom: 0px; margin-top: 15px;">
+						<input type="checkbox" id="remember" name="remember" /> Keep me signed in
+						<span style="float: right;">
+						<span title="WIP means work-in-progress. A WIP update can be anything from a single sentence to downloadable files with embedded videos."><a href="#"><strong>What is a WIP?</strong></a></span> - <a href="<?php echo url::base() .'site/legal/'; ?>">Boring legal stuff</a>
+						</span>
 					</p>
-					<br style="clear: both;" />
 				</div>
 			</fieldset>
 		</form>

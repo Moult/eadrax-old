@@ -44,14 +44,6 @@ class Site_Controller extends Core_Controller {
 		Projects_Controller::view();
 	}
 
-	public function tour()
-	{
-		$introduction_view = new View('introduction');
-		$tour_view = new View('tour');
-
-		$this->template->content = array($introduction_view, $tour_view);
-	}
-
 	/**
 	 * Page that shows legal information.
 	 *

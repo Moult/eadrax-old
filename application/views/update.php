@@ -11,11 +11,9 @@
 <h2>
 	<div style="float: left;">
 		<img src="<?php echo url::base(); ?>images/icons/spanner_48.png" width="48" height="48" class="icon" alt="" />
-<!--
 		<?php $icon = Updates_Controller::_file_icon($filename0, $ext0); ?>
 		<?php if (!strpos($icon, 'images/icons')) { $markup_add = '-moz-box-shadow: 1px 1px 3px #555; -webkit-box-shadow: 1px 1px 3px #555; box-shadow: 1px 1px 3px #555; padding: 2px; background-color: #FFF;'; } else { $markup_add = ''; } ?>
 		<?php echo '<a href="'. url::base() .'updates/view/'. $id .'/"><img style="vertical-align: middle; '. $markup_add .'" src="'. $icon .'" alt="update icon" /></a></p>'; ?>
-	-->
 	</div>
 
 	<div style="float: left; margin-left: 5px;">
@@ -46,7 +44,7 @@ By <?php if ($uid != 1) { ?><a href="<?php echo url::base(); ?>profiles/view/<?p
 <div style="display: none;"><div id="data"><?php echo $share; ?></div></div>
 
 <?php if (!empty($detail)) { ?>
-<div style="clear: both; background-color: #FFF; border-top: 1px solid #888; padding: 10px; margin-bottom: 10px; padding-bottom: 1px; background-image: url('<?php echo url::base(); ?>images/comment_divide.png'); background-repeat: repeat-x; background-position: bottom;">
+<div style="clear: both; background-color: #FFF; background-color: rgba(255, 255, 255, 0.5); border-top: 1px solid #AAA; padding: 10px; margin-bottom: 10px; padding-bottom: 1px; background-image: url('<?php echo url::base(); ?>images/comment_divide.png'); background-repeat: repeat-x; background-position: bottom;">
 	<?php echo $detail; ?>
 </div>
 <?php } ?>
@@ -82,7 +80,6 @@ for ($i=0; $i<5; $i++)
 			if (file_exists(DOCROOT .'uploads/files/'. ${'filename'. $i} .'_fit.jpg'))
 			{
 ?>
-
 <script type="text/javascript">
 $(document).ready(function() {
 	$("#single_image<?php echo $i; ?>").mouseenter(function(){
@@ -95,7 +92,7 @@ $(document).ready(function() {
 </script>
 <?php
 			echo '<cite id="single_cite'. $i .'" style="-webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; background-color: #000; color: #FFF; position: relative; margin-left: auto; margin-right: auto; top: 40px; height: 15px; padding: 10px; font-weight: bold; opacity: 0; z-index: 1;">This image has been scaled down, click to view the image full size.</cite>';
-			echo '<a id="single_image'. $i .'" class="single_image" href="'. url::base() .'uploads/files/'. ${'filename'. $i} .'.'. ${'ext'. $i} .'"><img style="vertical-align: middle; border: 1px solid #999; padding: 1px;" src="'. url::base() .'uploads/files/'. ${'filename'. $i} .'_fit.jpg" alt="'. $summary .' (attachment #'. ($i + 1) .')" title="'. $summary .'" /></a>';
+			echo '<a id="single_image'. $i .'" class="single_image" href="'. url::base() .'uploads/files/'. ${'filename'. $i} .'.'. ${'ext'. $i} .'"><img style="vertical-align: middle; -webkit-box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.5); -moz-box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.5); box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.5);" src="'. url::base() .'uploads/files/'. ${'filename'. $i} .'_fit.jpg" alt="'. $summary .' (attachment #'. ($i + 1) .')" title="'. $summary .'" /></a>';
 			}
 			else
 			{

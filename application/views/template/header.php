@@ -211,7 +211,17 @@ if (($this->uri->segment(1) == 'updates' && $this->uri->segment(2) == 'add') || 
 <?php } ?>
         <!-- Favicon -->
         <link rel="icon" type="image/png" href="<?php echo url::base(); ?>images/favicon.png" />
-        <title>WIPUP</title>
+        <title>WIPUP: Document and share your works-in-progresses</title>
+
+		<!-- Web fonts -->
+		<link href='http://fonts.googleapis.com/css?family=Signika:600' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600' rel='stylesheet' type='text/css'>
+
+		<!-- Meta tags -->
+		<link rev="made" href="mailto:dion@thinkmoult.com">
+		<meta name="keywords" content="wipup wip document share progress">
+		<meta name="description" content="WIPUP is a free way you can document, share and show us what you're working on.">
+		<meta name="author" content="Dion Moult">
 
 		<!-- Google Analytics -->
 		<script type="text/javascript">
@@ -251,32 +261,8 @@ if (($this->uri->segment(1) == 'updates' && $this->uri->segment(2) == 'add') || 
 
 			<ul id="text-navigation" <?php if ($this->logged_in == TRUE) { ?>style="width: 525px"<?php } ?>>
 				<li><div style="font-size: 10px;">
-				<span title="Moult is working on a 3D animated film called The ThoughtScore Project using nothing but open-source software">
-				<a href="<?php echo url::base(); ?>projects/view/2/9/">
-				<img src="<?php echo url::base(); ?>images/featured1.png" alt="The ThoughtScore Project" class="icon" />
-				</a></span>
-
-				<span title="harishankar is developing The Adventures of Butaba, a 2D RPG game made with Python's pygame">
-				<a href="<?php echo url::base(); ?>projects/view/152/79/">
-				<img src="<?php echo url::base(); ?>images/featured2.png" alt="Adventures of Butaba" class="icon" />
-				</a></span>
-
-				<span title="Cobramilk has worked on a short 3D film as well as sculpting in ZBrush">
-				<a href="<?php echo url::base(); ?>profiles/view/Cobramilk/">
-				<img src="<?php echo url::base(); ?>images/featured3.png" alt="Cobramilk" class="icon" />
-				</a></span>
-
-				<span title="Moult composed a short piano piece for his cousin's wedding. He's working on a new composition right now">
-				<a href="<?php echo url::base(); ?>projects/view/2/2/">
-				<img src="<?php echo url::base(); ?>images/featured4.png" alt="Evan Composition" class="icon" />
-				</a></span>
-
-				<span title="KDE.org, home of the most popular desktop environment for Linux,  got very clunky and full of text. The team is redesigning it to speak better to users">
-				<a href="<?php echo url::base(); ?>projects/view/2/6/">
-				<img src="<?php echo url::base(); ?>images/featured5.png" alt="KDE.org Redesign" class="icon" />
-				</a></span>
-
-				<a href="<?php echo url::base(); ?>updates/random/">Discover more <img src="<?php echo url::base(); ?>images/random.png" class="icon" title="Go to random WIP" alt="Go to random WIP" /></a>
+				<input type="text" style="float: left; margin-right: 5px; margin-top: 10px; background-color: #333; background-image: none; border-color: #555; color: #888; font-size: 11px;" value="Search..." /></li>
+				<span style="color: #777;">or</span> <a href="<?php echo url::base(); ?>updates/random/">Discover<img src="<?php echo url::base(); ?>images/random.png" class="icon" title="Go to random WIP" alt="Go to random WIP" /></a>
 
 <span style="float: right;">
 <?php if ($this->logged_in == TRUE) { ?><a href="<?php echo url::base(); ?>users/logout/">Logout <img src="<?php echo url::base(); ?>images/icons/logout.png" alt="Logout" title="Logout" class="icon" /></a><?php } ?>
