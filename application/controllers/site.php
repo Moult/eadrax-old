@@ -61,16 +61,11 @@ class Site_Controller extends Core_Controller {
 		$this->template->content = array($version_view);
 	}
 
-	public function sponsor()
-	{
-		$sponsor_view = new View('sponsor');
-		$this->template->content = array($sponsor_view);
-	}
-
 	public function development()
 	{
+		$sponsor_view = new View('sponsor');
 		$development_view = new View('development');
-		$this->template->content = array($development_view);
+		$this->template->content = array($sponsor_view, $development_view);
 	}
 
 	public function search()

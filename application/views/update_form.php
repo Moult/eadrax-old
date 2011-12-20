@@ -63,7 +63,7 @@
 					<p>
 						<label for="detail" style="height: 20px;">Detail:</label>
 						<script type="text/javascript">edToolbar('detail'); </script>
-						<textarea name="detail" id="detail" cols="40" rows="6" class="resizable" <?php if (isset($errors['detail'])) { echo 'class="error"'; } ?>><?php echo $form['detail']; ?></textarea>
+						<textarea name="detail" style="clear: both; margin-left: 100px;" id="detail" cols="40" rows="6" class="resizable" <?php if (isset($errors['detail'])) { echo 'class="error"'; } ?>><?php echo $form['detail']; ?></textarea>
 					</p>
 
 					<p>

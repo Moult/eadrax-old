@@ -2,8 +2,8 @@
 
 <?php if ($this->logged_in == FALSE) { ?>
 <div style="width: 510px; float: left;">
-<div style="font-family: 'Signika'; font-size: 40px; color: #333; font-weight: 600; letter-spacing: -3px; margin-bottom: 25px;"><span style="font-size: 50px;">Share. Critique. Track.</span><br />Show us what you're working on</div>
-<img style="float: left;" src="<?php echo url::base(); ?>images/heart.png" alt="" />
+<div style="font-family: 'Signika'; font-size: 40px; color: #333; font-weight: 600; letter-spacing: -3px; margin-bottom: 25px;"><span style="font-size: 50px;">Share. Critique. Track.</span><br />Show us what <span style="color: #2c7994;">you're</span> working on</div>
+<img style="float: left;" src="<?php echo url::base(); ?>images/heart.png" alt="5 Reasons to love" />
 <p style="font-weight: bold; color: #222; margin-bottom: 20px; float: left; margin-top: 4px; margin-left: 10px;">
 Completely free, forever. No upload restrictions. Track interesting projects.<br />
 Personal profile. Statistics. Collaborative projects. Versioned pastebins.

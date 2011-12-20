@@ -47,7 +47,7 @@
 				Running on <a href="<?php echo url::base(); ?>site/version/">live.WIPUP</a> - 
 				The Eadrax Team &copy; 2011
 				<br /><br />
-				<a href="<?php echo url::base(); ?>site/sponsor/">Help keep WIPUP running</a> - <a href="<?php echo url::base(); ?>site/development/">Contribute to development</a> - <a href="<?php echo url::base(); ?>site/search/">Search</a> - <a href="<?php echo url::base() .'site/legal/'; ?>">Legal Information</a>
+				<a href="<?php echo url::base(); ?>site/development/">Give back to WIPUP</a> - <a href="<?php echo url::base(); ?>site/search/">Search</a> - <a href="<?php echo url::base() .'site/legal/'; ?>">Legal Information</a>
 			</div>
         </div>
 
