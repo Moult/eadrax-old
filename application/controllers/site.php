@@ -80,7 +80,7 @@ class Site_Controller extends Core_Controller {
 
 			$validate = new Validation($this->input->post());
 			$validate->pre_filter('trim');
-			$validate->add_rules('keywords', 'required', 'length[5, 50]', 'standard_text');
+			$validate->add_rules('keywords', 'required', 'length[2, 50]', 'standard_text');
 
 			if ($validate->validate())
 			{

@@ -8,9 +8,15 @@
 <meta property="og:image" content="<?php echo substr($filename_icon0, 0, -4) .'_crop.jpg'; ?>" />
 <?php } ?>
 </head>
+<?php if (isset($previous)) { ?>
+<a href="<?php echo url::base() .'updates/view/'. $previous .'/'; ?>" class="prev-mini" style="position: absolute; float: left; left: -82px;"></a>
+<?php } ?>
+<?php if (isset($next)) { ?>
+<a href="<?php echo url::base() .'updates/view/'. $next .'/'; ?>" class="next-mini" style="position: absolute; float: right; right: -80px;"></a>
+<?php } ?>
+
 <h2>
 	<div style="float: left;">
-		<img src="<?php echo url::base(); ?>images/icons/spanner_48.png" width="48" height="48" class="icon" alt="" />
 		<?php $icon = Updates_Controller::_file_icon($filename0, $ext0); ?>
 		<?php if (!strpos($icon, 'images/icons')) { $markup_add = '-moz-box-shadow: 1px 1px 3px #555; -webkit-box-shadow: 1px 1px 3px #555; box-shadow: 1px 1px 3px #555; padding: 2px; background-color: #FFF;'; } else { $markup_add = ''; } ?>
 		<?php echo '<a href="'. url::base() .'updates/view/'. $id .'/"><img style="vertical-align: middle; '. $markup_add .'" src="'. $icon .'" alt="update icon" /></a></p>'; ?>
@@ -44,15 +50,13 @@ By <?php if ($uid != 1) { ?><a href="<?php echo url::base(); ?>profiles/view/<?p
 <div style="display: none;"><div id="data"><?php echo $share; ?></div></div>
 
 <?php if (!empty($detail)) { ?>
-<div style="clear: both; background-color: #FFF; background-color: rgba(255, 255, 255, 0.5); border-top: 1px solid #AAA; padding: 10px; margin-bottom: 10px; padding-bottom: 1px; background-image: url('<?php echo url::base(); ?>images/comment_divide.png'); background-repeat: repeat-x; background-position: bottom;">
+<div style="clear: both; background-color: #FFF; background-color: rgba(255, 255, 255, 0.5); border-radius: 5px; border-top: 1px solid #AAA; padding: 10px; margin-bottom: 10px; padding-bottom: 1px; background-image: url('<?php echo url::base(); ?>images/comment_divide.png'); background-repeat: repeat-x; background-position: bottom;">
 	<?php echo $detail; ?>
 </div>
 <?php } ?>
 
 <?php if ($no_of_files == 0 && (empty($detail))) { ?>
-<div class="error_message">
-	This update contains no further description or attachments. Don't worry, there's nothing wrong with that!
-</div>
+
 <?php } elseif ($no_of_files > 1) { ?>
 <div id="file-wrap">
 	<div id="tabs">
@@ -159,39 +163,4 @@ $(document).ready(function() {
 <?php if ($no_of_files > 1) { ?>
 </div></div>
 <?php } ?>
-
-<div style="text-align: center; margin-top: 10px;">
-    <ul style="display: inline; margin: 0px;">
-<?php
-if (isset($first)) {
-?>
-        <li style="width: 50px; display: inline;">
-            <input style="width: 50px;" type="button" onclick="parent.location='<?php echo url::base() .'updates/view/'. $first .'/'; ?>'" value="&lt;&lt;" />
-        </li>
-<?php } ?>
-<?php
-if (isset($previous)) {
-?>
-        <li style="width: 50px; display: inline;">
-            <input style="width: 50px;" type="button" onclick="parent.location='<?php echo url::base() .'updates/view/'. $previous .'/'; ?>'" value="&lt;" />
-        </li>
-<?php } ?>
-<?php
-if (isset($next)) {
-?>
-        <li style="width: 50px; display: inline;">
-            <input style="width: 50px;" type="button" onclick="parent.location='<?php echo url::base() .'updates/view/'. $next .'/'; ?>'" value="&gt;" />
-        </li>
-<?php } ?>
-<?php
-if (isset($last)) {
-?>
-        <li style="width: 50px; display: inline;">
-            <input style="width: 50px;" type="button" onclick="parent.location='<?php echo url::base() .'updates/view/'. $last .'/'; ?>'" value="&gt;&gt;" />
-        </li>
-<?php } ?>
-    </ul>
 <br />
-<br />
-</div>
-

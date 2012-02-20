@@ -2,7 +2,7 @@
 
 <?php if ($this->logged_in == FALSE) { ?>
 <div style="width: 510px; float: left;">
-<div style="font-family: 'Signika'; font-size: 40px; color: #333; font-weight: 600; letter-spacing: -3px; margin-bottom: 25px;"><span style="font-size: 50px;">Share. Critique. Track.</span><br />Show us what <span style="color: #2c7994;">you're</span> working on</div>
+<div style="font-family: 'Signika'; font-size: 40px; color: #333; font-weight: 600; letter-spacing: -3px; margin-bottom: 25px;"><span style="font-size: 50px;">Share. Critique. Track.</span><br />Show us what <span style="color: #FF7600;">you're</span> working on</div>
 <img style="float: left;" src="<?php echo url::base(); ?>images/heart.png" alt="5 Reasons to love" />
 <p style="font-weight: bold; color: #222; margin-bottom: 20px; float: left; margin-top: 4px; margin-left: 10px;">
 Completely free, forever. No upload restrictions. Track interesting projects.<br />
@@ -11,7 +11,7 @@ Personal profile. Statistics. Collaborative projects. Versioned pastebins.
 
 </div>
 
-<div style="float: left; width: 340px;">
+<div style="float: left; width: 340px; padding-top: 1px;">
 	<div class="form" style="clear: both;">
 		<form action="<?php echo url::base(); ?>users/login/" method="post">
 			<fieldset>
@@ -123,11 +123,11 @@ in <em><?php echo $categories[$project['cid']]; ?></em> <?php if (!empty($projec
 
 <?php } else { ?>
 <?php if ($this->uri->segment(1) == 'profiles' && $this->uri->segment(2) == 'view') { ?>
-<div style="clear: both; overflow: hidden; border-bottom: 1px dotted #AAA; padding-bottom: 5px; background-position: top; background-repeat: repeat-x;">
+<div style="clear: both; border-bottom: 1px dotted #AAA; padding-bottom: 5px; background-position: top; background-repeat: repeat-x;">
 <?php } else { ?>
-<div style="clear: both; overflow: hidden; border: 0px dotted #AAA; padding-bottom: 5px; background-position: top; background-repeat: repeat-x; border-left: 0px; border-right: 0px;">
+<div style="clear: both; border: 0px dotted #AAA; padding-bottom: 5px; background-position: top; background-repeat: repeat-x; border-left: 0px; border-right: 0px;">
 <?php } ?>
-	<div style="overflow: hidden; margin-right: auto; margin-left: auto;">
+	<div style="margin-right: auto; margin-left: auto;">
 		<?php echo $markup; ?>
 	</div>
 </div>

@@ -775,6 +775,7 @@ class Updates_Controller extends Core_Controller {
 							if ($this->logged_in == TRUE)
 							{
 								$size_limit = Kohana::config('updates.user_upload_limit');
+								$size_limit = '100M';
 							}
 							else
 							{
@@ -953,7 +954,8 @@ class Updates_Controller extends Core_Controller {
 										$src_ar = 44100;
 
 										// Do the encoding!
-										exec($ffmpeg_path ." -i ". escapeshellarg($src_file) ." -ar ". $src_ar ." -ab ". $src_ab ." -f flv -s ". $src_width ."x". $src_height ." ". escapeshellarg($dest_file));
+										//exec($ffmpeg_path ." -i ". escapeshellarg($src_file) ." -ar ". $src_ar ." -ab ". $src_ab ." -f flv -s ". $src_width ."x". $src_height ." ". escapeshellarg($dest_file));
+										exec($ffmpeg_path ." -i ". escapeshellarg($src_file) ." -ar 22050 -s ". $src_width ."x". $src_height ." -qscale .1 ". escapeshellarg($dest_file));
 
 										// Now our filetype extension has changed!
 										$extension = 'flv';

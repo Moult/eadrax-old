@@ -254,21 +254,24 @@ if (($this->uri->segment(1) == 'updates' && $this->uri->segment(2) == 'add') || 
 		<div id="notification"><?php echo $notification; ?><img src="<?php echo url::base(); ?>images/fancy_close.png" class="icon" id="notifyclose" alt="close" /></div>
 <?php } ?>
 
-        <div id="container">
-            <h1>
-                <a href="<?php echo url::base(); ?>"><img src="<?php echo url::base(); ?>images/wipup.png" width="165" height="55" alt="WIPUP" /></a>
-            </h1>
+		<div id="container">
+			<h1>
+				<a href="<?php echo url::base(); ?>"><img src="<?php echo url::base(); ?>images/wipup.png" width="165" height="55" alt="WIPUP" /></a>
+			</h1>
 
 			<ul id="text-navigation" <?php if ($this->logged_in == TRUE) { ?>style="width: 525px"<?php } ?>>
 				<li><div style="font-size: 10px;">
-				<input type="text" style="float: left; margin-right: 5px; margin-top: 10px; background-color: #333; background-image: none; border-color: #555; color: #888; font-size: 11px;" value="Search..." /></li>
+				<form action="<?php echo url::base(); ?>site/search/" method="post">
+				<input type="hidden" value="updates" name="search" />
+				<input type="text" name="keywords" id="search" value="Search..." onclick="this.value='';" /></li>
+				</form>
 				<span style="color: #777;">or</span> <a href="<?php echo url::base(); ?>updates/random/">Discover<img src="<?php echo url::base(); ?>images/random.png" class="icon" title="Go to random WIP" alt="Go to random WIP" /></a>
 
 <span style="float: right;">
 <?php if ($this->logged_in == TRUE) { ?><a href="<?php echo url::base(); ?>users/logout/">Logout <img src="<?php echo url::base(); ?>images/icons/logout.png" alt="Logout" title="Logout" class="icon" /></a><?php } ?>
 </span>
 				</div></li>
-            </ul>
+			</ul>
 
 			<ul id="icon-navigation">
 			<?php if ($this->logged_in == TRUE) { ?><li><img src="<?php echo url::base(); ?>images/navspace1.png" width="14" height="55" /></li><li><a href="<?php echo url::base(); ?>dashboard/"><img src="<?php echo url::base(); ?>images/dashboard.png" width="44" height="55" alt="WIP Stats" title="WIP Stats" /></a></li><li><img src="<?php echo url::base(); ?>images/navspace2.png" width="5" height="55" /></li><?php } else { ?><li><img src="<?php echo url::base(); ?>images/navspace1.png" width="14" height="55" /></li><?php } ?><li><a href="<?php echo url::base(); ?>updates/add/"><img src="<?php echo url::base(); ?>images/update.png" width="44" height="55" alt="Add WIP" title="Add WIP" /></a></li><li><img src="<?php echo url::base(); ?>images/navspace2.png" width="5" height="55" /></li><li><a href="<?php if ($this->logged_in == TRUE) { echo url::base() .'profiles/view/'. $this->username; } else { echo url::base() .'users/login/'; } ?>"><img src="<?php echo url::base(); ?>images/profile.png" width="44" height="55" alt="My WIPs" title="My WIPs" /></a></li><li><img src="<?php echo url::base(); ?>images/navspace3.png" width="18" height="55" /></li>
@@ -298,6 +301,6 @@ if (($this->uri->segment(1) == 'updates' && $this->uri->segment(2) == 'add') || 
 <?php } ?>
 		</div>
 
-        <div id="content">
-            <div id="content_container">
-                <!-- <CONTENT> -->
+		<div id="content">
+			<div id="content_container">
+				<!-- <CONTENT> -->

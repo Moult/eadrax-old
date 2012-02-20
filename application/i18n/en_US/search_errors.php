@@ -25,7 +25,7 @@
 $lang = array(
 	'keywords' => array(
 		'required'		=> 'You must specify some keywords.',
-		'length'		=> 'Keywords must be between 5-50 characters.',
+		'length'		=> 'Keywords must be between 2-50 characters.',
 		'standard_text'	=> 'There are illegal characters in the comment.'
 	)
 );
