@@ -2,10 +2,10 @@
 
 <?php if ($this->logged_in == FALSE) { ?>
 <div style="width: 510px; float: left;">
-<div style="font-family: 'Signika'; font-size: 40px; color: #333; font-weight: 600; letter-spacing: -3px; margin-bottom: 25px;"><span style="font-size: 50px;">Ambitious projects from start to finish.</span><br />What are <span style="color: #FF7600;">you</span> creating?</div>
+<div style="font-family: 'Signika'; font-size: 40px; color: #333; font-weight: 600; letter-spacing: -3px; margin-bottom: 25px;"><span style="font-size: 50px;">WIPUP tracks your <span style="color: #FF7600;">ambitious</span> projects from start to finish.</span><br /></div>
 <img style="float: left;" src="<?php echo url::base(); ?>images/heart.png" alt="Why WIPUP?" />
 <p style="font-weight: bold; color: #222; margin-bottom: 20px; float: left; margin-top: 0px; margin-left: 10px;">
-Showcase meaningful projects for people who make a difference.<br />
+213 users showing 445 WIPs for 71 projects. All worth a look.<br />
 Upload anything. Visualise your progress. Discover interesting projects.<br />
 </p>
 
@@ -45,9 +45,9 @@ Upload anything. Visualise your progress. Discover interesting projects.<br />
 
 
 					<p style="font-size: 11px; margin-bottom: 0px; margin-top: 15px;">
-						<input type="checkbox" id="remember" name="remember" /> Keep me signed in
+						<input type="checkbox" id="remember" name="remember" checked="checked" /> Stay signed in
 						<span style="float: right;">
-						<span title="WIP means work-in-progress. A WIP update can be anything from a single sentence to downloadable files with embedded videos."><a href="#"><strong>What is a WIP?</strong></a></span> - <a href="<?php echo url::base() .'site/legal/'; ?>">Boring legal stuff</a>
+						<span title="WIP means work-in-progress. A WIP update can be anything from a single sentence to downloadable files with embedded videos."><a href="#"><strong>What is a WIP?</strong></a></span> - <a href="<?php echo url::base() .'site/legal/'; ?>">ToS</a>
 						</span>
 					</p>
 				</div>
