@@ -2,11 +2,11 @@
 
 <?php if ($this->logged_in == FALSE) { ?>
 <div style="width: 510px; float: left;">
-<div style="font-family: 'Signika'; font-size: 40px; color: #333; font-weight: 600; letter-spacing: -3px; margin-bottom: 25px;"><span style="font-size: 50px;">Share. Critique. Track.</span><br />Show us what <span style="color: #FF7600;">you're</span> working on</div>
-<img style="float: left;" src="<?php echo url::base(); ?>images/heart.png" alt="5 Reasons to love" />
-<p style="font-weight: bold; color: #222; margin-bottom: 20px; float: left; margin-top: 4px; margin-left: 10px;">
-Completely free, forever. No upload restrictions. Track interesting projects.<br />
-Personal profile. Statistics. Collaborative projects. Versioned pastebins.
+<div style="font-family: 'Signika'; font-size: 40px; color: #333; font-weight: 600; letter-spacing: -3px; margin-bottom: 25px;"><span style="font-size: 50px;">Ambitious projects from start to finish.</span><br />What are <span style="color: #FF7600;">you</span> creating?</div>
+<img style="float: left;" src="<?php echo url::base(); ?>images/heart.png" alt="Why WIPUP?" />
+<p style="font-weight: bold; color: #222; margin-bottom: 20px; float: left; margin-top: 0px; margin-left: 10px;">
+Showcase meaningful projects for people who make a difference.<br />
+Upload anything. Visualise your progress. Discover interesting projects.<br />
 </p>
 
 </div>
@@ -17,7 +17,7 @@ Personal profile. Statistics. Collaborative projects. Versioned pastebins.
 			<fieldset>
 				<legend>
 					<img src="<?php echo url::base(); ?>images/icons/drive_user.png" alt="" width="16" height="16" class="icon" />
-					Log in or Register
+					Log in or Register - FREE forever
 				</legend>
 				<div class="elements">
 					<p>
@@ -35,8 +35,14 @@ Personal profile. Statistics. Collaborative projects. Versioned pastebins.
 
 
 					<p class="submit">
-						<input type="submit" name="submit" class="submit" value="Start sharing my WIPs" />
+						<input type="submit" name="submit" class="submit" value="Let me upload my WIPs" />
 					</p>
+
+					<p class="submit">
+						I don't want an account:<br />
+						<input type="button" onclick="window.location='<?php echo url::base(); ?>updates/add/'" class="submit" value="Share my WIP as a guest" />
+					</p>
+
 
 					<p style="font-size: 11px; margin-bottom: 0px; margin-top: 15px;">
 						<input type="checkbox" id="remember" name="remember" /> Keep me signed in
