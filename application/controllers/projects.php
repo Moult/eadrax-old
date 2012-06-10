@@ -297,7 +297,7 @@ class Projects_Controller extends Core_Controller {
 				if ($markup_count % 3 == 0) {
 					$markup = $markup .'<div style="float: left; height: 300px; width: 260px; margin: 0px;">';
 				} else {
-					$markup = $markup .'<div style="float: left; height: 295px; margin-right: 35px;">';
+					$markup = $markup .'<div style="float: left; height: 295px; width: 260px; margin-right: 35px;">';
 				}
 				$markup = $markup .'<div style="height: 20px; width: 258px; margin-bottom: 5px; background-color: #1c1b19; background-repeat: repeat-x; background-image: url(\''. url::base() .'images/timebar.png\'); padding: 2px; font-size: 10px; color: #FFF; text-shadow: 0px 1px 0px #000; line-height: 20px; padding-left: 0px;"><span style="padding-left: 5px;"><div style="float: left; position: relative; top: 3px; left: 5px; background-image: url(\''. url::base() .'images/star.png\'); width: '. $star_width .'px; height: 12px;"></div><a href="'. url::base() .'projects/view/'. $row->uid .'/'. $row->pid .'/" style="text-decoration: none; color: #FFF; font-weight: bold;">'. $project_name .'</a></span><span style="float: right; padding-right: 5px;">'. date($datestring, strtotime($row->logtime)) .'</span></div>';
                 $markup = $markup .'<div style="width: 260px; margin: 0px; margin-top: -5px; height: 200px; -webkit-box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.5); -moz-box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.5); box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.5);">';

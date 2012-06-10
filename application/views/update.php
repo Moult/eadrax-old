@@ -105,48 +105,57 @@ $(document).ready(function() {
 			echo '</div>';
 		} elseif (${'display'. $i} == 'video') {
 ?>
-<div style="margin: 10px; text-align: center;">
-	<script type='text/javascript' src='<?php echo url::base(); ?>js/swfobject.js'></script>
-		<div id='mediaspace'>This div will be replaced</div>
-		<script type='text/javascript'>
-		var s1 = new SWFObject('<?php echo url::base(); ?>player.swf','ply','470','320','9','#ffffff');
-		s1.addParam('allowfullscreen','true');
-		s1.addParam('allowscriptaccess','always');
-		s1.addParam('wmode','opaque');
-		s1.addParam('flashvars','file=<?php echo url::base(); ?>uploads/files/<?php echo ${'filename'. $i}; ?>.<?php echo ${'ext'. $i};?>');
-		s1.write('mediaspace');
-	</script>
+<div style="margin: 10px; width: 570px; margin-left: auto; margin-right: auto;">
+<script type='text/javascript' src='<?php echo url::base(); ?>js/jwplayer.js'></script>
+<div id='mediaspace'>Please turn on JavaScript</div>
+<script type='text/javascript'>
+  jwplayer('mediaspace').setup({
+	'flashplayer': '<?php echo url::base(); ?>player.swf',
+    'duration': '34',
+    'file': '<?php echo url::base(); ?>uploads/files/<?php echo ${'filename'. $i}; ?>.<?php echo ${'ext'. $i};?>',
+	'image': '<?php echo substr($filename_icon0, 0, -4) .'_crop.jpg'; ?>',
+    'backcolor': '333333',
+    'frontcolor': 'EEEEEE',
+    'lightcolor': 'CCCCCC',
+    'controlbar': 'over',
+    'width': '570',
+    'height': '320'
+  });
+</script>
 </div>
 <?php
 	} elseif (${'display'. $i} == 'sound') {
 ?>
-<div style="margin: 10px; text-align: center;">
-	<script type='text/javascript' src='<?php echo url::base(); ?>js/swfobject.js'></script>
-		<div id='mediaspace'>This div will be replaced</div>
-		<script type='text/javascript'>
-		var s1 = new SWFObject('<?php echo url::base(); ?>player.swf','ply','470','20','9','#ffffff');
-		s1.addParam('allowfullscreen','true');
-		s1.addParam('allowscriptaccess','always');
-		s1.addParam('wmode','opaque');
-		s1.addParam('flashvars','file=<?php echo url::base(); ?>uploads/files/<?php echo ${'filename'. $i}; ?>.<?php echo ${'ext'. $i};?>');
-		s1.write('mediaspace');
-	</script>
+<div style="margin: 10px; width: 570px; margin-left: auto; margin-right: auto;">
+<script type='text/javascript' src='<?php echo url::base(); ?>js/jwplayer.js'></script>
+<div id='mediaspace'>Please turn on JavaScript</div>
+<script type='text/javascript'>
+  jwplayer('mediaspace').setup({
+	'flashplayer': '<?php echo url::base(); ?>player.swf',
+    'duration': '34',
+    'file': '<?php echo url::base(); ?>uploads/files/<?php echo ${'filename'. $i}; ?>.<?php echo ${'ext'. $i};?>',
+    'backcolor': '333333',
+    'frontcolor': 'EEEEEE',
+    'lightcolor': 'CCCCCC',
+    'controlbar': 'bottom',
+    'width': '570',
+    'height': '24'
+  });
+</script>
 </div>
 <?php } ?>
 
 <?php if (${'display'. $i} == 'download' || ${'display'. $i} == 'video' || ${'display'. $i} == 'sound') { ?>
-<div style="border: 1px solid #88AAFF; margin-left: auto; margin-right: auto; margin-top: 10px; background-color: #DDEEFF; padding: 10px;">
-		<div style="float: left; width: 100px;">
-			<p style="font-size: 18px; margin-bottom: 0px; line-height: 63px;">
+<div style="width: 300px; border: 1px solid #88AAFF; margin-left: auto; margin-right: auto; margin-top: 10px; background-color: #DDEEFF; padding: 10px;">
+		<div style="float: left; width: 100px; text-align: center;">
+			<p style="margin-bottom: 0px; line-height: 63px;">
 				<img src="<?php echo ${'filename_icon'. $i}; ?>" class="icon" alt="" <?php if (!strpos(${'filename_icon'. $i}, 'images/icons')) { echo 'style="-moz-box-shadow: 1px 1px 3px #555; -webkit-box-shadow: 1px 1px 3px #555; box-shadow: 1px 1px 3px #555; padding: 2px; background-color: #FFF;"'; } ?> />
 			</p>
         </div>
 
         <div style="float: left;">
-			<p style="font-size: 18px; margin-top: 5px; margin-bottom: 5px;">
-				<a href="<?php echo url::base(); ?>updates/view/<?php echo $id; ?>/<?php echo $i; ?>/"><strong>Download</strong> <?php echo substr(${'filename'. $i}, 10) .'.'. ${'ext'. $i}; ?></a>
-			</p>
             <p style="color: #555; margin-bottom: 0;">
+				<a href="<?php echo url::base(); ?>updates/view/<?php echo $id; ?>/<?php echo $i; ?>/"><strong>Download</strong> <?php echo substr(${'filename'. $i}, 10) .'.'. ${'ext'. $i}; ?></a><br />
                 Size: <?php echo ${'file_size'. $i}; ?><br />
                 Date: <?php echo date('jS F Y', strtotime($logtime)); ?><br />
             </p>
