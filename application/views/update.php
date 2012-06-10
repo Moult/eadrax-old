@@ -111,7 +111,6 @@ $(document).ready(function() {
 <script type='text/javascript'>
   jwplayer('mediaspace').setup({
 	'flashplayer': '<?php echo url::base(); ?>player.swf',
-    'duration': '34',
     'file': '<?php echo url::base(); ?>uploads/files/<?php echo ${'filename'. $i}; ?>.<?php echo ${'ext'. $i};?>',
 	'image': '<?php echo substr($filename_icon0, 0, -4) .'_crop.jpg'; ?>',
     'backcolor': '333333',
@@ -132,7 +131,6 @@ $(document).ready(function() {
 <script type='text/javascript'>
   jwplayer('mediaspace').setup({
 	'flashplayer': '<?php echo url::base(); ?>player.swf',
-    'duration': '34',
     'file': '<?php echo url::base(); ?>uploads/files/<?php echo ${'filename'. $i}; ?>.<?php echo ${'ext'. $i};?>',
     'backcolor': '333333',
     'frontcolor': 'EEEEEE',
