@@ -62,7 +62,7 @@ The most recent packages are recommended.
 # Installing Eadrax
 
 1. You can grab the latest copy of Eadrax project from http://github.com/Moult/Eadrax
-    * **master** - latest "live" stable version (used by live.wipup.org)
+    * **master** - latest "live" stable version (used by http://live.wipup.org)
     * **v3** - unstable rewrite
 
 2. Upload a copy of Eadrax to your webserver. It is possible to install Eadrax
@@ -76,9 +76,7 @@ in a subdirectory.
 
 5. Edit configuration files.
     * .htaccess
-    * application/config/config.php
-    * application/config/database.php
-    * application/config/authlite.php
+    * application/bootstrap.php
 
 6. Read KO docs for extra recommended procedures for public deployment
 
