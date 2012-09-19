@@ -28,7 +28,7 @@ trait Context_User_Register_Guest_Interaction
      */
     public function authorise_registration()
     {
-        if ($this->module_auth->logged_in() !== NULL)
+        if ($this->module_auth->logged_in())
         {
             throw new Exception_Authorisation('Logged in users cannot register new accounts.');
         }
@@ -60,7 +60,7 @@ trait Context_User_Register_Guest_Interaction
         }
         else
         {
-            throw new Exception_Validation($validation->errors());
+            throw new Exception_Validation($validation->errors('context/user/register/errors'));
         }
     }
 

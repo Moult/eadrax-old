@@ -48,7 +48,7 @@ I was guilty of code rot.
 
 # System Requirements
 
- * PHP >= 5.3
+ * PHP >= 5.4
 
 The following are unconfirmed requirements for the v3 branch. If you encounter
 bugs, ensure you satisfy these.

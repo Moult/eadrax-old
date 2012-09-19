@@ -14,4 +14,18 @@ class DescribeContextUserRegisterFactory extends \PHPSpec\Context
         $context = $factory->fetch();
         $this->spec($context)->should->beAnInstanceOf('Context_User_Register');
     }
+
+    public function itShouldAutoAllocateDataToModels()
+    {
+        $factory = new Context_User_Register_Factory(array(
+            'username' => 'username',
+            'password' => 'password',
+            'email'    => 'email'
+        ));
+
+        $model_user = $factory->model_user();
+        $this->spec($model_user->username)->should->be('username');
+        $this->spec($model_user->password)->should->be('password');
+        $this->spec($model_user->email)->should->be('email');
+    }
 }

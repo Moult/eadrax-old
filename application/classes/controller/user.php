@@ -28,9 +28,8 @@ class Controller_User extends Controller_Core
     {
         if ($this->request->method() === HTTP_Request::POST)
         {
-            $factory = $this->factory();
+            $factory = $this->factory(NULL, $this->request->post());
             $context = $factory->fetch();
-            $context->data($this->request->post());
             $context_result = $context->execute();
 
             if ($context_result['status'] == 'failure'

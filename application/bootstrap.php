@@ -22,7 +22,7 @@ else
  * @link http://kohanaframework.org/guide/using.configuration
  * @link http://www.php.net/manual/timezones
  */
-date_default_timezone_set('America/Chicago');
+date_default_timezone_set('Australia/Sydney');
 
 /**
  * Set the default locale.
@@ -119,3 +119,14 @@ Route::set('default', '(<controller>(/<action>(/<id>)))')
 		'controller' => 'welcome',
 		'action'     => 'index',
 	));
+
+Route::set('user dashboard', 'user/dashboard')
+    ->defaults(array(
+        'controller' => 'user',
+        'action'     => 'dashboard'
+    ));
+
+/**
+ * Salt used for storing cookies for sessions
+ */
+Cookie::$salt = 'pleasechangethis';

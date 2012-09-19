@@ -41,13 +41,15 @@ class DescribeControllerUser extends \PHPSpec\Context
         $request = Mockery::mock('request', array(
             'method' => 'POST',
             'redirect' => NULL,
-            'post' => array('foo' => 'bar')
+            'post' => array('username' => 'username',
+                'password' => 'password',
+                'email' => 'email'
+            )
         ));
         $response = new Response;
 
-        $context = Mockery::mock('Context_User_Register[execute,data]');
+        $context = Mockery::mock('Context_User_Register[execute]');
         $context->shouldReceive('execute')->andReturn(array('status' => 'success'))->once();
-        $context->shouldReceive('data')->andReturn(NULL)->once();
 
         $factory = Mockery::mock('Context_User_Register_Factory[fetch]');
         $factory->shouldReceive('fetch')->andReturn($context)->once();
@@ -66,17 +68,19 @@ class DescribeControllerUser extends \PHPSpec\Context
         $request = Mockery::mock('request', array(
             'method' => 'POST',
             'redirect' => NULL,
-            'post' => array('foo' => 'bar')
+            'post' => array('username' => 'username',
+                'password' => 'password',
+                'email' => 'email'
+            )
         ));
         $response = new Response;
 
-        $context = Mockery::mock('Context_User_Register[execute,data]');
+        $context = Mockery::mock('Context_User_Register[execute]');
         $context->shouldReceive('execute')->andReturn(array(
             'status' => 'failure',
             'type' => 'authorisation',
             'errors' => array('authorisation' => 'Foo')
         ))->once();
-        $context->shouldReceive('data')->andReturn(NULL)->once();
 
         $factory = Mockery::mock('Context_User_Register_Factory[fetch]');
         $factory->shouldReceive('fetch')->andReturn($context)->once();
@@ -94,11 +98,14 @@ class DescribeControllerUser extends \PHPSpec\Context
     {
         $request = Mockery::mock('request', array(
             'method' => 'POST',
-            'post' => array('foo' => 'bar')
+            'post' => array('username' => 'username',
+                'password' => 'password',
+                'email' => 'email'
+            )
         ));
         $response = new Response;
 
-        $context = Mockery::mock('Context_User_Register[execute,data]');
+        $context = Mockery::mock('Context_User_Register[execute]');
         $context->shouldReceive('execute')->andReturn(array(
             'status' => 'failure',
             'errors' => array(
@@ -106,7 +113,6 @@ class DescribeControllerUser extends \PHPSpec\Context
                 'bar' => 'bar'
             )
         ))->once();
-        $context->shouldReceive('data')->andReturn(NULL)->once();
 
         $factory = Mockery::mock('Context_User_Register_Factory[fetch]');
         $factory->shouldReceive('fetch')->andReturn($context)->once();
@@ -123,13 +129,16 @@ class DescribeControllerUser extends \PHPSpec\Context
 
     public function itHasToPassErrorsOntoTheViewForActionRegister()
     {
-        $request = Mockery::mock('request[method]', array(
+        $request = Mockery::mock('request', array(
             'method' => 'POST',
-            'post' => array('foo' => 'bar')
+            'post' => array('username' => 'username',
+                'password' => 'password',
+                'email' => 'email'
+            )
         ));
         $response = Mockery::mock('response[body]');
 
-        $context = Mockery::mock('Context_User_Register[execute,data]');
+        $context = Mockery::mock('Context_User_Register[execute]');
         $context->shouldReceive('execute')->andReturn(array(
             'status' => 'failure',
             'errors' => array(
@@ -137,7 +146,6 @@ class DescribeControllerUser extends \PHPSpec\Context
                 'bar' => 'bar'
             )
         ))->once();
-        $context->shouldReceive('data')->once();
 
         $factory = Mockery::mock('Context_User_Register_Factory[fetch]');
         $factory->shouldReceive('fetch')->andReturn($context)->once();

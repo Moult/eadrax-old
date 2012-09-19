@@ -22,7 +22,7 @@ class Gateway_Mysql_User {
      * Database table name
      * @var string
      */
-    private $table;
+    private $table = 'users';
 
     /**
      * Inserts a new row.
@@ -31,7 +31,7 @@ class Gateway_Mysql_User {
      */
     public function insert($data)
     {
-        $query = DB::insert($table, array(
+        $query = DB::insert($this->table, array(
             'username',
             'password',
             'email'

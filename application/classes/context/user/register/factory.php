@@ -20,6 +20,26 @@ defined('SYSPATH') OR die('No direct script access.');
 class Context_User_Register_Factory
 {
     /**
+     * Model_User_Array
+     * @var array
+     */
+    private $model_user_array;
+
+    /**
+     * Converts raw data into models
+     *
+     * @return void
+     */
+    public function __construct($data)
+    {
+        $this->model_user_array = array(
+            'username' => $data['username'],
+            'password' => $data['password'],
+            'email'    => $data['email']
+        );
+    }
+
+    /**
      * Loads the context
      *
      * @return Context_User_Register
@@ -39,7 +59,7 @@ class Context_User_Register_Factory
      */
     public function model_user()
     {
-        return new Model_User;
+        return new Model_User($this->model_user_array);
     }
 
     /**

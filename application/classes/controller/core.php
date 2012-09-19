@@ -27,19 +27,27 @@ abstract class Controller_Core extends Controller
      *
      * @return Context_Core A "Context_Core" subclass object.
      */
-    public function factory($factory = NULL)
+    public function factory($factory = NULL, $data = NULL)
     {
-        if ($factory !== NULL)
+        if ($factory === NULL)
         {
-            return $this->_factory($factory);
+            return $this->_factory($this->_guess_factory_name_from_uri(), $data);
         }
         else
         {
-            // Create a factory name from the URI.
-            list($controller, $function) = explode('/', $this->request->uri());
-            $factory = 'Context_'.ucfirst($controller).'_'.ucfirst($function).'_Factory';
-            return $this->_factory($factory);
+            return $this->_factory($factory, $data);
         }
+    }
+
+    /**
+     * Guesses the factory name from the URI.
+     *
+     * @return string
+     */
+    private function _guess_factory_name_from_uri()
+    {
+        list($controller, $function) = explode('/', $this->request->uri());
+        return 'Context_'.ucfirst($controller).'_'.ucfirst($function).'_Factory';
     }
 
     /**
@@ -49,13 +57,13 @@ abstract class Controller_Core extends Controller
      *
      * @return Factory depending on param $factory
      */
-    private function _factory($factory)
+    private function _factory($factory, $data)
     {
         if ( ! class_exists($factory))
         {
             throw New HTTP_Exception_404('Factory '.$factory.' not found.');
         }
 
-        return new $factory;
+        return new $factory($data);
     }
 }
