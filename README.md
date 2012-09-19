@@ -48,8 +48,12 @@ I was guilty of code rot.
 
 # System Requirements
 
- * Apache >= 2.2
  * PHP >= 5.3
+
+The following are unconfirmed requirements for the v3 branch. If you encounter
+bugs, ensure you satisfy these.
+
+ * Apache >= 2.2
  * MySQL >= 5.0
  * ffmpeg >= 0.6 (needed for video features)
  * ffmpeg-php >= 0.6 (needed for video features)
@@ -77,6 +81,7 @@ in a subdirectory.
 5. Edit configuration files.
     * .htaccess
     * application/bootstrap.php
+    * application/config/database.php
 
 6. Read KO docs for extra recommended procedures for public deployment
 

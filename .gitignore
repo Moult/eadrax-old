@@ -1,0 +1,4 @@
+*~
+*.sw*
+application/logs/*
+application/tmp/*
