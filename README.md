@@ -29,6 +29,10 @@ This might help define WIPUP's new audience:
 >  * Want to visualise your process and progress
 >  * Prefer open-source software
 
+## Switch to ISC license
+
+More permissive and doesn't make your brain explode.
+
 ## Switch from KO2 to KO3
 
 KO2 is nice, but no longer supported, and the recommended method to start new
@@ -45,7 +49,7 @@ I was guilty of code rot.
 # System Requirements
 
  * Apache >= 2.2
- * PHP >= 5.x (4.x is not supported)
+ * PHP >= 5.3
  * MySQL >= 5.0
  * ffmpeg >= 0.6 (needed for video features)
  * ffmpeg-php >= 0.6 (needed for video features)
@@ -67,9 +71,6 @@ in a subdirectory.
 3. Make sure the following directories are writeable by your webserver:
     * application/cache/
     * application/logs/
-    * application/tmp/
-    * uploads/
-    * uploads/\*/ (ie. any subdirectory within uploads)
 
 4. Use the schema in DATABASE to create a new MySQL database
 
