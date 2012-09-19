@@ -1,0 +1,6 @@
+[submodule "modules/kostache"]
+	path = modules/kostache
+	url = https://github.com/zombor/KOstache.git
+[submodule "system"]
+	path = system
+	url = https://github.com/kohana/core.git
