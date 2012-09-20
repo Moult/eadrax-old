@@ -37,6 +37,7 @@ class Controller_User extends Controller_Core
             {
                 $view = new View_User_Register;
                 $view->errors = $context_result['errors'];
+                $view->post_data = $this->request->post();
                 $this->response->body($view);
             }
             else

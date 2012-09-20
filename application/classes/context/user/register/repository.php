@@ -23,7 +23,7 @@ class Context_User_Register_Repository
      * For MySQL user table interactions.
      * @var Gateway_User
      */
-    public $gateway_user;
+    public $gateway_mysql_user;
 
     /**
      * Sets up DAOs

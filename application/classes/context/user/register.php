@@ -22,14 +22,14 @@ class Context_User_Register extends Context_Core
      * Guest role
      * @var Guest
      */
-    private $guest;
+    public $guest;
 
     /**
      * Casts data models into roles, and makes each role aware of necessary 
      * dependencies.
      *
-     * @param Model_User      $model_user      User data object
-     * @param Module_Auth     $module_auth     Authentication system
+     * @param Model_User  $model_user  User data object
+     * @param Module_Auth $module_auth Authentication system
      *
      * @return void
      */
@@ -123,7 +123,7 @@ abstract class Cast_Guest extends Model_User implements Guest_Requirements
 /**
  * Defines the guest role and injects its interactions
  *
- * @package  Context
+ * @package    Context
  * @subpackage Role
  */
 class Guest extends Cast_Guest

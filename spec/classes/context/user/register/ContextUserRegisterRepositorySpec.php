@@ -2,11 +2,6 @@
 
 class DescribeContextUserRegisterRepository extends \PHPSpec\Context
 {
-    public function before()
-    {
-        $this->_subject = new Context_User_Register_Repository;
-    }
-
     public function itRegistersAUser()
     {
         $gateway_mysql_user = Mockery::mock('Gateway_Mysql_User');
@@ -21,7 +16,8 @@ class DescribeContextUserRegisterRepository extends \PHPSpec\Context
         $model_user->password = 'password';
         $model_user->email = 'dion@thinkmoult.com';
 
-        $this->_subject->gateway_mysql_user = $gateway_mysql_user;
-        $this->_subject->register($model_user);
+        $repository = Mockery::mock('Context_User_Register_Repository[]');
+        $repository->gateway_mysql_user = $gateway_mysql_user;
+        $repository->register($model_user);
     }
 }

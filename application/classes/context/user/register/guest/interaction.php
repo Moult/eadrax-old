@@ -52,6 +52,7 @@ trait Context_User_Register_Guest_Interaction
             ->rule('username', 'regex', array(':value', '/^[a-z_.]++$/iD'))
             ->rule('username', 'min_length', array(':value', '4'))
             ->rule('username', 'max_length', array(':value', '15'))
+            ->rule('username', array($this, 'is_unique_username'))
             ->rule('password', 'not_empty')
             ->rule('password', 'min_length', array(':value', '6'))
             ->rule('email', 'not_empty')
@@ -64,6 +65,18 @@ trait Context_User_Register_Guest_Interaction
         {
             throw new Exception_Validation($validation->errors('context/user/register/errors'));
         }
+    }
+
+    /**
+     * Checks whether or not a username is unique.
+     *
+     * @param string $username The username to check.
+     *
+     * @return bool
+     */
+    public function is_unique_username($username)
+    {
+        return $this->repository->is_unique_username($username);
     }
 
     /**
