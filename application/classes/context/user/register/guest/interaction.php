@@ -50,6 +50,8 @@ trait Context_User_Register_Guest_Interaction
         $validation = Validation::factory(get_object_vars($this))
             ->rule('username', 'not_empty')
             ->rule('username', 'regex', array(':value', '/^[a-z_.]++$/iD'))
+            ->rule('username', 'min_length', array(':value', '4'))
+            ->rule('username', 'max_length', array(':value', '15'))
             ->rule('password', 'not_empty')
             ->rule('password', 'min_length', array(':value', '6'))
             ->rule('email', 'not_empty')

@@ -37,8 +37,25 @@ class Exception_Multiple extends Exception
      */
     public function __construct(array $errors)
     {
-        parent::__construct('Multiple exceptions thrown.');
+        parent::__construct('Multiple exceptions thrown: '.$this->_errors_as_list($errors));
         $this->errors = $errors;
+    }
+
+    /**
+     * Converts error array to a string list of error array keys
+     *
+     * @param array $errors An array of exception messages
+     *
+     * @return string
+     */
+    private function _errors_as_list(array $errors)
+    {
+        $error_keys = '';
+        foreach ($errors as $error_key => $error_message)
+        {
+            $error_keys .= $error_key .', ';
+        }
+        return substr($error_keys, 0, -2);
     }
 
     /**

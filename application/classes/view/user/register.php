@@ -21,7 +21,7 @@ class View_User_Register extends View_Layout {
      * Holds error information from registration forms
      * @var array
      */
-    public $errors;
+    public $errors = array();
 
     /**
      * Converts multidimensional error array into one-dimensional array for 

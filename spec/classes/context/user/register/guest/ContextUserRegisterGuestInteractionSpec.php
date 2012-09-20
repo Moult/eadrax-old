@@ -19,16 +19,73 @@ class DescribeContextUserRegisterGuestInteraction extends \PHPSpec\Context
         })->should->throwException('Exception_Authorisation');
     }
 
-    public function itValidatesUserData()
+    public function itValidatesUsernames()
     {
-        $this->username = 'bad username';
-        $this->password = '';
-        $this->email = 'not an email';
+        $this->username = ''; // No username
+        $this->password = 'goodpassword';
+        $this->email = 'good@email.com';
 
         $this->spec(function() {
             $this->validate_information();
-        })->should->throwException('Exception_Validation');
+        })->should->throwException('Exception_Validation', 'Multiple exceptions thrown: username');
 
+        $this->username = 'asdf *!@#$%'; // Funny chars
+
+        $this->spec(function() {
+            $this->validate_information();
+        })->should->throwException('Exception_Validation', 'Multiple exceptions thrown: username');
+
+        $this->username = 'x'; // Too short
+
+        $this->spec(function() {
+            $this->validate_information();
+        })->should->throwException('Exception_Validation', 'Multiple exceptions thrown: username');
+
+        $this->username = 'once_upon_a_time_there_was_a_long_username'; // Too long
+
+        $this->spec(function() {
+            $this->validate_information();
+        })->should->throwException('Exception_Validation', 'Multiple exceptions thrown: username');
+
+        $this->pending('Test for existing usernames');
+    }
+
+    public function itValidatesPasswords()
+    {
+        $this->username = 'good_username';
+        $this->password = ''; // No password
+        $this->email = 'good@email.com';
+
+        $this->spec(function() {
+            $this->validate_information();
+        })->should->throwException('Exception_Validation', 'Multiple exceptions thrown: password');
+
+        $this->password = '12345'; // < 6 chars
+
+        $this->spec(function() {
+            $this->validate_information();
+        })->should->throwException('Exception_Validation', 'Multiple exceptions thrown: password');
+    }
+
+    public function itValidatesEmails()
+    {
+        $this->username = 'good_username';
+        $this->password = 'goodpassword';
+        $this->email = ''; // No email
+
+        $this->spec(function() {
+            $this->validate_information();
+        })->should->throwException('Exception_Validation', 'Multiple exceptions thrown: email');
+
+        $this->email = 'fake email'; // Not an email address
+
+        $this->spec(function() {
+            $this->validate_information();
+        })->should->throwException('Exception_Validation', 'Multiple exceptions thrown: email');
+    }
+
+    public function itRegistersValidData()
+    {
         $guest = Mockery::mock('DescribeContextUserRegisterGuestInteraction[register]');
         $guest->username = 'username';
         $guest->password = 'password';
