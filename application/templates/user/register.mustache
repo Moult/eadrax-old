@@ -1,7 +1,8 @@
-Register
+{{#i18n}}Register{{/i18n}}<br /><br />
 
-{{errors}}
-
+{{#errors}}
+- {{#i18n}}{{.}}{{/i18n}}<br />
+{{/errors}}
 
 <form action="" method="post">
     Username: <input type="text" name="username">

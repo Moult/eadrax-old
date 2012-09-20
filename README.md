@@ -42,6 +42,10 @@ projects is by using KO3.
 
 BDD, stricter coding style, templating, improved docs ...
 
+## I81n support
+
+It never really required it, but it would be nice.
+
 ## Refactor
 
 I was guilty of code rot.

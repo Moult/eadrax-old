@@ -31,8 +31,11 @@ class View_User_Register extends View_Layout {
      */
     public function errors()
     {
-        // TODO
-        print_r($this->errors);
-        return 'todo';
+        $errors = array();
+        foreach ($this->errors as $error)
+        {
+            $errors[] = $error;
+        }
+        return $errors;
     }
 }

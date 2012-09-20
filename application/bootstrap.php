@@ -130,3 +130,8 @@ Route::set('user dashboard', 'user/dashboard')
  * Salt used for storing cookies for sessions
  */
 Cookie::$salt = 'pleasechangethis';
+
+/**
+ * Change the default global language.
+ */
+//I18n::lang('sample');

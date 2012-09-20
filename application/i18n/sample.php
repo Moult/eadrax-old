@@ -1,8 +1,8 @@
 <?php
 /**
- * Eadrax application/messages/context/user/register/errors.php
+ * Eadrax application/i18n/sample.php
  *
- * @package   Messages
+ * @package   I18n
  * @author    Dion Moult <dion@thinkmoult.com>
  * @copyright (c) 2012 Dion Moult
  * @license   ISC http://opensource.org/licenses/isc-license.txt
@@ -12,7 +12,6 @@
 defined('SYSPATH') or die('No direct script access.');
 
 return array(
-    'username' => array(
-        'not_empty' => 'A username is required.',
-    ),
+    'Register' => 'Replacement string',
+    'A username is required.' => 'Replacement string'
 );
