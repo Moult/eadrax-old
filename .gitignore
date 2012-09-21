@@ -2,3 +2,6 @@
 *.sw*
 application/logs/*
 application/tmp/*
+bin/*
+composer.phar
+vendor/*
