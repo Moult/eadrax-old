@@ -42,4 +42,19 @@ class Gateway_Mysql_User {
         ));
         $query->execute();
     }
+
+    /**
+     * Checks whether such a row exists.
+     *
+     * @return bool
+     */
+    public function exists($data)
+    {
+        $query = DB::select('id')->from($this->table)->limit(1);
+        foreach ($data as $field => $value)
+        {
+            $query->where($field, '=', $value);
+        }
+        return (bool) $query->execute()->count();
+    }
 }

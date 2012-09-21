@@ -50,4 +50,18 @@ class Context_User_Register_Repository
             'email' => $model_user->email
         ));
     }
+
+    /**
+     * Checks whether or not a username is unique
+     *
+     * @param string $username The username to check
+     *
+     * @return bool
+     */
+    public function is_unique_username($username)
+    {
+        return ! $this->gateway_mysql_user->exists(array(
+            'username' => $username
+        ));
+    }
 }
