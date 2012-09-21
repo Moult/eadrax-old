@@ -47,8 +47,7 @@ class Controller_User extends Controller_Core
         }
         else
         {
-            $view = new View_User_Register;
-            $this->response->body($view);
+            $this->response->body(new View_User_Register);
         }
     }
 
@@ -59,5 +58,6 @@ class Controller_User extends Controller_Core
      */
     public function action_dashboard()
     {
+        $this->response->body(new View_User_Dashboard);
     }
 }

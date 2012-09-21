@@ -24,6 +24,12 @@ class View_User_Register extends View_Layout {
     public $errors = array();
 
     /**
+     * Holds post data that has been sent.
+     * @var array
+     */
+    public $post_data = array();
+
+    /**
      * Converts multidimensional error array into one-dimensional array for 
      * easier display
      *
