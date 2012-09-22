@@ -53,7 +53,7 @@ class Exception_Multiple extends Exception
         $error_keys = '';
         foreach ($errors as $error_key => $error_message)
         {
-            $error_keys .= $error_key .', ';
+            $error_keys .= $error_key.', ';
         }
         return substr($error_keys, 0, -2);
     }

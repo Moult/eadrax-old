@@ -88,15 +88,15 @@ interface Guest_Requirements
     /** @ignore */
     public function get_username();
     /** @ignore */
-    public function set_username($x);
+    public function set_username($username);
     /** @ignore */
     public function get_password();
     /** @ignore */
-    public function set_password($x);
+    public function set_password($password);
     /** @ignore */
     public function get_email();
     /** @ignore */
-    public function set_email($x);
+    public function set_email($email);
 }
 
 /**

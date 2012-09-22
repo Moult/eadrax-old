@@ -1,4 +1,15 @@
-<?php defined('SYSPATH') or die('No direct script access.');
+<?php
+/**
+ * Eadrax application/bootstrap.php
+ *
+ * @package   Bootstrap
+ * @author    Dion Moult <dion@thinkmoult.com>
+ * @copyright (c) 2012 Dion Moult
+ * @license   ISC http://opensource.org/licenses/isc-license.txt
+ * @link      http://wipup.org/
+ */
+
+defined('SYSPATH') OR die('No direct script access.');
 
 // -- Environment setup --------------------------------------------------------
 
@@ -134,4 +145,4 @@ Cookie::$salt = 'pleasechangethis';
 /**
  * Change the default global language.
  */
-//I18n::lang('sample');
+// I18n::lang('sample');

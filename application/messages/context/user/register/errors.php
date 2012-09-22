@@ -9,7 +9,7 @@
  * @link      http://wipup.org/
  */
 
-defined('SYSPATH') or die('No direct script access.');
+defined('SYSPATH') OR die('No direct script access.');
 
 return array(
     'username' => array(
