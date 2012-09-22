@@ -3,5 +3,6 @@
 application/logs/*
 application/tmp/*
 bin/*
+build/*
 composer.phar
 vendor/*

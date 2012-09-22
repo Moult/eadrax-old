@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Eadrax" default="main">
+    <property name="basedir" value="${project.basedir}" />
+    <property name="appdir" value="${basedir}/application" />
+    <property name="builddir" value="${basedir}/build" />
+
+    <target name="clean" description="Prep project for CI">
+        <delete dir="${builddir}" />
+        <mkdir dir="${builddir}" />
+    </target>
+
+    <target name="phpspec" description="Run PHPSpec">
+        <exec command="bin/phpspec.php ${basedir}/spec/ -c --bootstrap ${basedir}/spec/bootstrap.php" passthru="true" />
+    </target>
+
+    <target name="phpcs" description="Run PHP_CodeSniffer">
+        <phpcodesniffer standard="Kohana">
+            <fileset dir="${appdir}">
+                <include name="**/*.php" />
+            </fileset>
+        </phpcodesniffer>
+    </target>
+
+    <target name="pdepend" description="Run pdepend">
+        <phpdepend>
+            <fileset dir="${appdir}">
+                <include name="**/*.php" />
+            </fileset>
+            <logger type="jdepend-xml" outfile="${builddir}/jdepend.xml" />
+            <logger type="jdepend-chart" outfile="${builddir}/dependencies.svg" />
+            <logger type="overview-pyramid" outfile="${builddir}/overview-pyramid.svg" />
+        </phpdepend>
+    </target>
+
+    <target name="phpmd" description="Run phpmd">
+        <exec command="phpmd ${appdir} text codesize,unusedcode,naming,design" passthru="true" />
+    </target>
+
+    <target name="phpcpd" description="Run phpcpd">
+        <phpcpd>
+            <fileset dir="${appdir}">
+                <include name="**/*.php" />
+            </fileset>
+        </phpcpd>
+    </target>
+
+    <target name="phpdcd" description="Run phpdcd">
+        <exec command="phpdcd ${appdir}" passthru="true" />
+    </target>
+
+    <target name="main" description="Run everything" depends="phpspec,phpcs,pdepend,phpmd,phpcpd,phpdcd">
+    </target>
+</project>
