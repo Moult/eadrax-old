@@ -1,5 +1,5 @@
 {
-    "hash": "82ab6e347f0bbec64dfa0ac3215456a3",
+    "hash": "d48ade05be20878934c6e22447ea8b29",
     "packages": [
         {
             "name": "behat/behat",
@@ -31,7 +31,7 @@
                 "behat/yii-extension": "for integration with Yii web framework",
                 "behat/mink-extension": "for integration with Mink testing framework"
             },
-            "time": "2012-09-04 14:59:18",
+            "time": "2012-09-03 18:59:18",
             "bin": [
                 "bin/behat"
             ],
@@ -88,7 +88,7 @@
                 "symfony/translation": "If you want to use Symfony2 translations adapter",
                 "symfony/config": "If you want to use Config component to manage resources"
             },
-            "time": "2012-08-03 13:25:15",
+            "time": "2012-08-02 17:25:15",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -149,7 +149,7 @@
                 "behat/mink-selenium2-driver": "to enable Selenium2 (webdriver support)",
                 "behat/mink-zombie-driver": "to enable Zombie.js support"
             },
-            "time": "2012-05-29 22:50:10",
+            "time": "2012-05-29 02:50:10",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -440,7 +440,7 @@
                 "php": ">=5.3.2",
                 "symfony/event-dispatcher": "2.1.*"
             },
-            "time": "2012-09-05 23:30:30",
+            "time": "2012-09-05 03:30:30",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -484,7 +484,7 @@
                 "guzzle/common": "self.version",
                 "guzzle/parser": "self.version"
             },
-            "time": "2012-09-02 19:01:34",
+            "time": "2012-09-01 23:01:34",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -523,7 +523,7 @@
             "require": {
                 "php": ">=5.3.2"
             },
-            "time": "2012-08-17 05:22:25",
+            "time": "2012-08-16 09:22:25",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -613,7 +613,7 @@
             "suggest": {
                 "Hamcrest": "1.0.0"
             },
-            "time": "2012-01-24 20:22:39",
+            "time": "2012-01-23 22:22:39",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -648,26 +648,90 @@
         },
         {
             "name": "phpspec/phpspec",
-            "version": "develop-dev",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "git://github.com/andho/phpspec.git",
-                "reference": "bugfix/composer-spec-only-works-in-phpspec-dir"
+                "url": "https://github.com/phpspec/phpspec",
+                "reference": "1.4.2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/phpspec/phpspec/zipball/1.4.2",
+                "reference": "1.4.2",
+                "shasum": ""
             },
             "require": {
                 "php": ">=5.3.2",
-                "mockery/mockery": "0.7.*"
+                "mockery/mockery": "0.7.*",
+                "sebastianbergmann/php-text-template": "1.1.1"
             },
+            "time": "1347110350",
             "bin": [
-                "scripts/phpspec-composer.php"
+                "scripts/phpspec.php"
             ],
             "type": "library",
             "installation-source": "source",
             "autoload": {
                 "psr-0": {
-                    "PHPSpec\\": "src/"
+                    "PHPSpec": "src/"
                 }
-            }
+            },
+            "license": [
+                "LGPL"
+            ],
+            "authors": [
+                {
+                    "name": "PHPSpec Team",
+                    "homepage": "https://github.com/phpspec/phpspec/contributors"
+                }
+            ],
+            "description": "PHPSpec: The BDD Specification Library",
+            "homepage": "http://phpspec.net",
+            "keywords": [
+                "BDD",
+                "test",
+                "spec"
+            ]
+        },
+        {
+            "name": "sebastianbergmann/php-text-template",
+            "version": "1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/MarcelloDuarte/php-text-template",
+                "reference": "1.1.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/MarcelloDuarte/php-text-template/zipball/1.1.1",
+                "reference": "1.1.1",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2.7"
+            },
+            "time": "2012-08-01 15:45:04",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-0": {
+                    "Text": ""
+                }
+            },
+            "license": [
+                "The BSD 3-Clause License"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastian Bergmann",
+                    "homepage": "http://sebastian-bergmann.de/"
+                }
+            ],
+            "description": "Text_Template: Simple template engine",
+            "homepage": "https://github.com/sebastianbergmann/php-text-template",
+            "keywords": [
+                "template"
+            ]
         },
         {
             "name": "symfony/browser-kit",
@@ -731,18 +795,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Config",
-                "reference": "v2.1.0-RC2"
+                "reference": "3168f7d2c77c5e8309b9f7ff8502315317a94f7c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/symfony/Config/zipball/v2.1.0-RC2",
-                "reference": "v2.1.0-RC2",
+                "url": "https://github.com/symfony/Config/zipball/3168f7d2c77c5e8309b9f7ff8502315317a94f7c",
+                "reference": "3168f7d2c77c5e8309b9f7ff8502315317a94f7c",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
-            "time": "1345643321",
+            "time": "1348209286",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -778,18 +842,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Console",
-                "reference": "v2.1.2"
+                "reference": "d27430931173cf54186816c3b92f3cfe92d38fce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/symfony/Console/zipball/v2.1.2",
-                "reference": "v2.1.2",
+                "url": "https://github.com/symfony/Console/zipball/d27430931173cf54186816c3b92f3cfe92d38fce",
+                "reference": "d27430931173cf54186816c3b92f3cfe92d38fce",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
-            "time": "1345643321",
+            "time": "1348207508",
             "type": "library",
             "extra": {
                 "branch-alias": {
