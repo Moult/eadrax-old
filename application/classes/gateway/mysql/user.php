@@ -31,13 +31,15 @@ class Gateway_Mysql_User {
      */
     public function insert($data)
     {
+        $auth_config = Kohana::$config->load('auth');
+        $password_hash = hash_hmac($auth_config->get('hash_method'), $data['password'], $auth_config->get('hash_key'));
         $query = DB::insert($this->table, array(
             'username',
             'password',
             'email'
         ))->values(array(
             $data['username'],
-            $data['password'],
+            $password_hash,
             $data['email']
         ));
         $query->execute();

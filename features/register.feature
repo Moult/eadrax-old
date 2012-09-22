@@ -16,7 +16,8 @@ Feature: register
         Then I should see "Dashboard"
 
     Scenario: Existing users should not see the register page
-        Given I am logged in
+        Given there is a user with username "username" in database
+        And I am logged in as "username"
         When I go to "user/register"
         Then I should see "Dashboard"
 

@@ -42,11 +42,25 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
     }
 
     /**
-     * @Given /^I am logged in$/
+     * @Given /^there is a user with username "([^"]*)" in database$/
      */
-    public function iAmLoggedIn()
+    public function thereIsAUserWithUsernameInDatabase($username)
     {
-        $login_attempt = Auth::instance()->login('username', 'password');
+        $this->thereIsNoUserWithUsernameInDatabase($username);
+        $gateway_mysql_user = new Gateway_Mysql_User;
+        $gateway_mysql_user->insert(array(
+            'username' => $username,
+            'password' => $username,
+            'email' => $username.'@'.$username.'.com'
+        ));
+    }
+
+    /**
+     * @Given /^I am logged in as "([^"]*)"$/
+     */
+    public function iAmLoggedInAs($username)
+    {
+        $login_attempt = Auth::instance()->login($username, $username);
         if ( ! $login_attempt)
         {
             throw new Exception('Could not log in user.');

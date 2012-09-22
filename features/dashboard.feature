@@ -4,7 +4,8 @@ Feature: dashboard
     I need to be able to view my dashboard
 
     Background:
-        Given I am logged in
+        Given there is a user with username "username" in database
+        And I am logged in as "username"
 
     Scenario: Visit my dashboard
         Given I am on "user/dashboard"
