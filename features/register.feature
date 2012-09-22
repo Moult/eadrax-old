@@ -14,3 +14,15 @@ Feature: register
             | email    | email@domain.com |
         And I press "Register"
         Then I should see "Dashboard"
+
+    Scenario: Existing users should not see the register page
+        Given I am logged in
+        When I go to "user/register"
+        Then I should see "Dashboard"
+
+    Scenario: Registration error with invalid credentials
+        Given I am on "user/register"
+        When I fill in "username" with "x"
+        And I press "Register"
+        Then I should see "Register"
+        And I should see "error"

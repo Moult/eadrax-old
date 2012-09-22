@@ -33,24 +33,32 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
         // Initialize your context here
     }
 
-//
-// Place your definition and hook methods here:
-//
-//    /**
-//     * @Given /^I have done something with "([^"]*)"$/
-//     */
-//    public function iHaveDoneSomethingWith($argument)
-//    {
-//        doSomethingWith($argument);
-//    }
-//
-
     /**
      * @Given /^there is no user with username "([^"]*)" in database$/
      */
     public function thereIsNoUserWithUsernameInDatabase($username)
     {
         DB::delete('users')->where('username', '=', $username)->execute();
+    }
+
+    /**
+     * @Given /^I am logged in$/
+     */
+    public function iAmLoggedIn()
+    {
+        $login_attempt = Auth::instance()->login('username', 'password');
+        if ( ! $login_attempt)
+        {
+            throw new Exception('Could not log in user.');
+        }
+    }
+
+    /**
+     * @Given /^I am logged out$/
+     */
+    public function iAmLoggedOut()
+    {
+        Auth::instance()->logout();
     }
 
 }
