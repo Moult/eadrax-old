@@ -2,6 +2,12 @@
 
 class DescribeContextUserRegisterFactory extends \PHPSpec\Context
 {
+    public function itIsAFactory()
+    {
+        $factory = Mockery::mock('Context_User_Register_Factory');
+        $this->spec($factory)->should->beAnInstanceOf('Context_Factory');
+    }
+
     public function itShouldCreateAContext()
     {
         $factory = Mockery::mock('Context_User_Register_Factory[model_user,module_auth]');
@@ -17,13 +23,12 @@ class DescribeContextUserRegisterFactory extends \PHPSpec\Context
     {
         $factory = new Context_User_Register_Factory(array(
             'username' => 'username',
-            'password' => 'password',
-            'email'    => 'email'
+            'password' => 'password'
         ));
 
         $model_user = $factory->model_user();
         $this->spec($model_user->username)->should->be('username');
         $this->spec($model_user->password)->should->be('password');
-        $this->spec($model_user->email)->should->be('email');
+        $this->spec($model_user->email)->should->be(NULL);
     }
 }
