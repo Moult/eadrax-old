@@ -18,6 +18,14 @@
             <fileset dir="${appdir}">
                 <include name="**/*.php" />
             </fileset>
+        </phpcodesniffer>
+    </target>
+
+    <target name="phpcs-log" description="Run PHP_CodeSniffer with CI log">
+        <phpcodesniffer standard="Kohana">
+            <fileset dir="${appdir}">
+                <include name="**/*.php" />
+            </fileset>
             <formatter type="checkstyle" outfile="${builddir}/checkstyle-result.xml" />
         </phpcodesniffer>
     </target>
@@ -34,10 +42,22 @@
     </target>
 
     <target name="phpmd" description="Run phpmd">
+        <exec command="phpmd ${appdir} text codesize,unusedcode,naming,design" passthru="true" />
+    </target>
+
+    <target name="phpmd-log" description="Run phpmd with CI log">
         <exec command="phpmd ${appdir} text codesize,unusedcode,naming,design --reportfile ${builddir}/pmd.xml" passthru="true" />
     </target>
 
     <target name="phpcpd" description="Run phpcpd">
+        <phpcpd>
+            <fileset dir="${appdir}">
+                <include name="**/*.php" />
+            </fileset>
+        </phpcpd>
+    </target>
+
+    <target name="phpcpd-log" description="Run phpcpd with CI log">
         <phpcpd>
             <fileset dir="${appdir}">
                 <include name="**/*.php" />
@@ -50,6 +70,9 @@
         <exec command="phpdcd ${appdir}" passthru="true" />
     </target>
 
-    <target name="main" description="Run everything" depends="phpspec,phpcs,pdepend,phpmd,phpcpd,phpdcd">
+    <target name="main" description="Run everything" depends="clean,phpspec,phpcs,pdepend,phpmd,phpcpd,phpdcd">
+    </target>
+
+    <target name="main-log" description="Run everything with CI logs" depends="clean,phpspec,phpcs-log,pdepend,phpmd-log,phpcpd-log,phpdcd">
     </target>
 </project>
