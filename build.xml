@@ -71,7 +71,7 @@
     </target>
 
     <target name="phpdcd" description="Run phpdcd">
-        <exec command="phpdcd ${appdir}" passthru="true" />
+        <exec command="phpdcd --exclude ${appdir}/classes/auth/ ${appdir}" passthru="true" />
     </target>
 
     <target name="main" description="Run tests - minimum requirement for a push">

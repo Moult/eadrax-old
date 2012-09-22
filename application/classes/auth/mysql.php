@@ -67,6 +67,10 @@ class Auth_Mysql extends Auth
                         $data['expires'],
                         $data['user_agent']
                     ))->execute();
+                    $insert_id = $query[0];
+
+                    $query = DB::select('token')->from('user_tokens')->where('id', '=', $insert_id)->limit(1)->as_object()->execute();
+                    $token = $query->current();
 
                     // Set the autologin cookie
                     Cookie::set('authautologin', $token->token, $this->_config['lifetime']);
