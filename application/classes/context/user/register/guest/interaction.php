@@ -87,5 +87,16 @@ trait Context_User_Register_Guest_Interaction
     public function register()
     {
         $this->repository->register($this);
+        $this->login();
+    }
+
+    /**
+     * Logs the guest into the system.
+     *
+     * @return void
+     */
+    public function login()
+    {
+        $this->module_auth->login($this->username, $this->password);
     }
 }

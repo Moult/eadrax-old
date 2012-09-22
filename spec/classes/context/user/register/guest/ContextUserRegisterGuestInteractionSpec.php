@@ -69,6 +69,18 @@ class DescribeContextUserRegisterGuestInteraction extends \PHPSpec\Context
         })->should->throwException('Exception_Validation', 'Multiple exceptions thrown: username');
     }
 
+    public function itCanCheckForUniqueUsernames()
+    {
+        $interaction = Mockery::mock('DescribeContextUserRegisterGuestInteraction[]');
+
+        $repository = Mockery::mock('Repository');
+        $repository->shouldReceive('is_unique_username')->with('username')->once();
+
+        $interaction->repository = $repository;
+
+        $interaction->is_unique_username('username');
+    }
+
     public function itValidatesPasswords()
     {
         $repository = Mockery::mock('Repository');
@@ -136,7 +148,8 @@ class DescribeContextUserRegisterGuestInteraction extends \PHPSpec\Context
 
     public function itCanRegister()
     {
-        $interaction = Mockery::mock('DescribeContextUserRegisterGuestInteraction[]');
+        $interaction = Mockery::mock('DescribeContextUserRegisterGuestInteraction[login]');
+        $interaction->shouldReceive('login')->once();
 
         $repository = Mockery::mock('Repository');
         $repository->shouldReceive('register')->with($interaction)->once();
@@ -146,15 +159,16 @@ class DescribeContextUserRegisterGuestInteraction extends \PHPSpec\Context
         $interaction->register();
     }
 
-    public function itCanCheckForUniqueUsernames()
+    public function itLogsTheGuestInSuccessfully()
     {
+        $module_auth = Mockery::mock('Module_Auth');
+        $module_auth->shouldReceive('login')->with('username', 'password')->andReturn(TRUE)->once();
+
         $interaction = Mockery::mock('DescribeContextUserRegisterGuestInteraction[]');
+        $interaction->username = 'username';
+        $interaction->password = 'password';
+        $interaction->module_auth = $module_auth;
 
-        $repository = Mockery::mock('Repository');
-        $repository->shouldReceive('is_unique_username')->with('username')->once();
-
-        $interaction->repository = $repository;
-
-        $interaction->is_unique_username('username');
+        $interaction->login();
     }
 }
