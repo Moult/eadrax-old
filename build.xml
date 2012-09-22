@@ -13,6 +13,10 @@
         <exec command="bin/phpspec.php ${basedir}/spec/ -c --bootstrap ${basedir}/spec/bootstrap.php" passthru="true" />
     </target>
 
+    <target name="behat" description="Run Behat">
+        <exec command="bin/behat -f progress --ansi" passthru="true" />
+    </target>
+
     <target name="phpcs" description="Run PHP_CodeSniffer">
         <phpcodesniffer standard="Kohana">
             <fileset dir="${appdir}">
@@ -70,9 +74,28 @@
         <exec command="phpdcd ${appdir}" passthru="true" />
     </target>
 
-    <target name="main" description="Run everything" depends="clean,phpspec,phpcs,pdepend,phpmd,phpcpd,phpdcd">
+    <target name="main" description="Run tests - minimum requirement for a push">
+        <phingcall target="phpspec" />
+        <phingcall target="behat" />
     </target>
 
-    <target name="main-log" description="Run everything with CI logs" depends="clean,phpspec,phpcs-log,pdepend,phpmd-log,phpcpd-log,phpdcd">
+    <target name="all" description="Run everything" depends="clean">
+        <phingcall target="phpspec" />
+        <phingcall target="behat" />
+        <phingcall target="phpcs" />
+        <phingcall target="pdepend" />
+        <phingcall target="phpmd" />
+        <phingcall target="phpcpd" />
+        <phingcall target="phpdcd" />
+    </target>
+
+    <target name="all-log" description="Run everything with CI logs" depends="clean">
+        <phingcall target="phpspec" />
+        <phingcall target="behat" />
+        <phingcall target="phpcs-log" />
+        <phingcall target="pdepend" />
+        <phingcall target="phpmd-log" />
+        <phingcall target="phpcpd-log" />
+        <phingcall target="phpdcd" />
     </target>
 </project>
