@@ -25,8 +25,13 @@ abstract class Controller_Core extends Controller
      *
      * @param string $factory The name of the factory to use, if not given, a 
      *                        factory name is guessed
-     * @param string $data    The data to send to the factory
-     * @return array The results of the context execution
+     * @param  array $data    The data to send to the factory
+     * @return array The results of the context execution in the format of:
+     *               array(
+     *                   'status' => 'success' / 'failure',
+     *                   'type' => optional string denoting type of status,
+     *                   'data' => optional array of relevant data,
+     *               )
      */
     protected function execute_context($factory = NULL, $data = NULL)
     {
@@ -35,7 +40,7 @@ abstract class Controller_Core extends Controller
     }
 
     /**
-     * Displays the View_User_Register view
+     * Displays a view
      *
      * @param string $view_name The name of the view to load
      * @param array  $data      The data to send to the view class
@@ -55,7 +60,7 @@ abstract class Controller_Core extends Controller
      * @param array  $data  The data to give it
      * @return void
      */
-    protected function assign_view_data( & $view, $data)
+    private function assign_view_data( & $view, $data)
     {
         foreach ($data as $key => $value)
             $view->$key = $value;
@@ -102,5 +107,4 @@ abstract class Controller_Core extends Controller
 
         return new $factory($data);
     }
-
 }
