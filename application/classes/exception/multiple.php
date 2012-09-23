@@ -32,7 +32,6 @@ class Exception_Multiple extends Exception
      * Stores the array of exception messages
      *
      * @param array $errors An array of exception messages
-     *
      * @return void
      */
     public function __construct(array $errors)
@@ -45,7 +44,6 @@ class Exception_Multiple extends Exception
      * Converts error array to a string list of error array keys
      *
      * @param array $errors An array of exception messages
-     *
      * @return string
      */
     private function _errors_as_list(array $errors)

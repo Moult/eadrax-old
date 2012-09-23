@@ -31,7 +31,6 @@ class Model_User extends Model_Core
      * $model_user = new Model_User(array('username' => 'foobar'));
      *
      * @param array $properties The list of properties to preset
-     *
      * @return void
      */
     public function __construct(Array $properties = array())

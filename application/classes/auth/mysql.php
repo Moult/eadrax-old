@@ -30,7 +30,6 @@ class Auth_Mysql extends Auth
      * @param string $username The username to check
      * @param string $password The password to check
      * @param string $remember Enable autologin
-     *
      * @return bool
      */
     protected function _login($username, $password, $remember)
@@ -93,7 +92,6 @@ class Auth_Mysql extends Auth
      * Return the password for the username.
      *
 	 * @param string $username The username to check
-     *
      * @return string
      */
     public function password($username)
@@ -110,7 +108,6 @@ class Auth_Mysql extends Auth
      * the session. Only implemented to satisfy the driver interface.
      *
 	 * @param string $password The password to check
-     *
      * @return bool
      */
     public function check_password($password)
@@ -123,7 +120,6 @@ class Auth_Mysql extends Auth
      *
      * @param string $role Deprecated in our auth driver - implemented purely to 
      *                     satisfy the auth driver interface
-     *
      * @return bool
      */
     public function logged_in($role = NULL)
@@ -141,7 +137,6 @@ class Auth_Mysql extends Auth
      * Get the logged in user, or return the $default if a user is not found
      *
 	 * @param mixed $default To return in case user isn't logged in
-     *
      * @return mixed
      */
     public function get_user($default = NULL)

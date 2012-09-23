@@ -26,7 +26,6 @@ abstract class Controller_Core extends Controller
      * @param string $factory The name of the factory to use, if not given, a 
      *                        factory name is guessed
      * @param string $data    The data to send to the factory
-     *
      * @return array The results of the context execution
      */
     protected function execute_context($factory = NULL, $data = NULL)
@@ -40,7 +39,6 @@ abstract class Controller_Core extends Controller
      *
      * @param string $view_name The name of the view to load
      * @param array  $data      The data to send to the view class
-     *
      * @return void
      */
     protected function display($view_name, $data = array())
@@ -55,7 +53,6 @@ abstract class Controller_Core extends Controller
      *
      * @param object $view The view to assign to
      * @param array  $data  The data to give it
-     *
      * @return void
      */
     protected function assign_view_data( & $view, $data)
@@ -69,7 +66,7 @@ abstract class Controller_Core extends Controller
      * Attempts to guess a factory to load either from URI or from param
      *
      * @param string $factory Name of factory to load.
-     *
+     * @param array  $data    The data to send to the factory
      * @return Context_Core A "Context_Core" subclass object.
      */
     private function factory($factory = NULL, $data = NULL)
@@ -95,7 +92,7 @@ abstract class Controller_Core extends Controller
      * Loads a factory.
      *
      * @param string $factory Name of the factory class.
-     *
+     * @param array  $data    The data to send to the factory
      * @return Factory depending on param $factory
      */
     private function _factory($factory, $data)

@@ -39,7 +39,6 @@ class Context_User_Register_Repository
      * Saves a user in the database
      *
      * @param Model_User $model_user The user to save
-     *
      * @return void
      */
     public function register($model_user)
@@ -55,7 +54,6 @@ class Context_User_Register_Repository
      * Checks whether or not a username is unique
      *
      * @param string $username The username to check
-     *
      * @return bool
      */
     public function is_unique_username($username)

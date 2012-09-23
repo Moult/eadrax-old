@@ -71,7 +71,6 @@ trait Context_User_Register_Guest_Interaction
      * Checks whether or not a username is unique.
      *
      * @param string $username The username to check.
-     *
      * @return bool
      */
     public function is_unique_username($username)

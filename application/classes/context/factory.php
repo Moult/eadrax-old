@@ -27,6 +27,7 @@ abstract class Context_Factory
     /**
      * Stores data the factory is given to be used during production
      *
+     * @param array $data The data to be used for production
      * @return void
      */
     public function __construct($data)
@@ -38,7 +39,6 @@ abstract class Context_Factory
      * Loads available data.
      *
      * @param string $key The key of the data item to retrieve
-     *
      * @return mixed
      */
     protected function get_data($key)

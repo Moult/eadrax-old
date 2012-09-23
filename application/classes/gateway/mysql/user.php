@@ -27,6 +27,7 @@ class Gateway_Mysql_User {
     /**
      * Inserts a new row.
      *
+     * @param array $data An array with keys for username, password, and email
      * @return void
      */
     public function insert($data)
@@ -48,6 +49,7 @@ class Gateway_Mysql_User {
     /**
      * Checks whether such a row exists.
      *
+     * @param array $data Holds search criteria in the form of $field => $value
      * @return bool
      */
     public function exists($data)

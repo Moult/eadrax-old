@@ -30,7 +30,6 @@ class Context_User_Register extends Context_Core
      *
      * @param Model_User  $model_user  User data object
      * @param Module_Auth $module_auth Authentication system
-     *
      * @return void
      */
     public function __construct($model_user, $module_auth)
@@ -117,6 +116,7 @@ abstract class Cast_Guest extends Model_User implements Guest_Requirements
      * Takes a data object and copies all of its properties
      *
      * @param Model_User $model_user Data object to copy
+     * @return void
      */
     public function __construct(Model_User $model_user)
     {
