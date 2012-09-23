@@ -74,6 +74,10 @@
         <exec command="phpdcd --exclude ${appdir}/classes/auth/ ${appdir}" passthru="true" />
     </target>
 
+    <target name="phpdoc2" description="Run phpDocumentor2">
+        <exec command="phpdoc --title=Eadrax -t ${basedir}/docs/ -d ${appdir}/classes/" passthru="true" />
+    </target>
+
     <target name="main" description="Run tests - minimum requirement for a push">
         <phingcall target="phpspec" />
         <phingcall target="behat" />
@@ -87,6 +91,7 @@
         <phingcall target="phpmd" />
         <phingcall target="phpcpd" />
         <phingcall target="phpdcd" />
+        <phingcall target="phpdoc2" />
     </target>
 
     <target name="all-log" description="Run everything with CI logs" depends="clean">
@@ -97,5 +102,6 @@
         <phingcall target="phpmd-log" />
         <phingcall target="phpcpd-log" />
         <phingcall target="phpdcd" />
+        <phingcall target="phpdoc2" />
     </target>
 </project>

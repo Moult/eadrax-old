@@ -5,4 +5,5 @@ application/tmp/*
 bin/*
 build/*
 composer.phar
+docs/*
 vendor/*
