@@ -17,6 +17,8 @@ defined('SYSPATH') OR die('No direct access allowed.');
  * This differs from the ORM auth driver in that:
  *  1. It does not use ORM. ORM is bloat.
  *  2. It does not understand roles.
+ *  3. It does not store the entire user model in the session, instead it only 
+ *     stores the id and username.
  *
  * @package Auth
  */
@@ -77,9 +79,8 @@ class Auth_Mysql extends Auth
                 }
 
                 // Finish the login
-                $this->complete_login($user);
-
-                return TRUE;
+                unset($user->password);
+                return $this->complete_login($user);
             }
         }
 
@@ -91,28 +92,22 @@ class Auth_Mysql extends Auth
     /**
      * Return the password for the username.
      *
-	 * @param mixed $user The username to check, or User_Model object
+	 * @param string $username The username to check
      *
      * @return string
      */
-    public function password($user)
+    public function password($username)
     {
-		if ( ! is_object($user))
-		{
-			$username = $user;
-
-			// Load the user
-            $query = DB::select('password')->from('users')->where('username', '=', $username)->limit(1)->execute();
-            return $query->get('password', FALSE);
-		}
-        else
-        {
-            return $user->password;
-        }
+        // Load the user
+        $query = DB::select('password')->from('users')->where('username', '=', $username)->limit(1)->execute();
+        return $query->get('password', FALSE);
     }
  
     /**
      * Check to see if the logged in user has the given password.
+     *
+     * This always returns FALSE. This driver does not store password data in 
+     * the session. Only implemented to satisfy the driver interface.
      *
 	 * @param string $password The password to check
      *
@@ -120,16 +115,14 @@ class Auth_Mysql extends Auth
      */
     public function check_password($password)
     {
-		$user = $this->get_user();
-
-		if ( ! $user)
-			return FALSE;
-
-		return ($this->hash($password) === $user->password);
+        return FALSE;
     }
  
     /**
      * Check to see if the user is logged in
+     *
+     * @param string $role Deprecated in our auth driver - implemented purely to 
+     *                     satisfy the auth driver interface
      *
      * @return bool
      */
@@ -194,7 +187,7 @@ class Auth_Mysql extends Auth
                 Cookie::set('authautologin', $token->token, $token->expires - time());
 
                 // Complete the login with the found data
-                $query = DB::select('id', 'username', 'password')->from('users')->where('id', '=', $token->uid)->limit(1)->as_object()->execute();
+                $query = DB::select('id', 'username')->from('users')->where('id', '=', $token->uid)->limit(1)->as_object()->execute();
                 $user = $query->current();
                 $this->complete_login($user);
 
