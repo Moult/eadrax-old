@@ -18,7 +18,6 @@ defined('SYSPATH') OR die('No direct script access.');
  */
 class Controller_User extends Controller_Core
 {
-
     /**
      * For people wanting to register an account
      * 
@@ -26,29 +25,16 @@ class Controller_User extends Controller_Core
      */
     public function action_register()
     {
-        if ($this->request->method() === HTTP_Request::POST)
-        {
-            $factory = $this->factory(NULL, $this->request->post());
-            $context = $factory->fetch();
-            $context_result = $context->execute();
+        $context_result = $this->execute_context($this->request->post());
 
-            if ($context_result['status'] == 'failure'
-            AND ! isset($context_result['errors']['authorisation']))
-            {
-                $view = new View_User_Register;
-                $view->errors = $context_result['errors'];
-                $view->post_data = $this->request->post();
-                $this->response->body($view);
-            }
-            else
-            {
-                $this->request->redirect(Route::get('user dashboard')->uri());
-            }
-        }
-        else
-        {
-            $this->response->body(new View_User_Register);
-        }
+        if ($this->request->method() !== HTTP_Request::POST)
+            $this->display('View_User_Register');
+        elseif ($context_result['status'] === 'success')
+            $this->request->redirect(Route::get('user dashboard')->uri());
+        elseif ($context_result['type'] === 'authorisation')
+            $this->request->redirect(Route::get('user dashboard')->uri());
+        elseif ($context_result['type'] === 'validation')
+            $this->display('View_User_Register', $context_result['data']);
     }
 
     /**

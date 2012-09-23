@@ -32,7 +32,7 @@ class DescribeContextUserRegister extends \PHPSpec\Context
 
         $this->spec($result['status'])->should->be('failure');
         $this->spec($result['type'])->should->be('validation');
-        $this->spec(array_key_exists('foo', $result['errors']))->should->beTrue();
+        $this->spec(array_key_exists('foo', $result['data']['errors']))->should->beTrue();
     }
 
     public function itReturnsSuccessWhenNoExceptionsThrown()

@@ -59,7 +59,9 @@ class Context_User_Register extends Context_Core
             return array(
                 'status' => 'failure',
                 'type'   => 'authorisation',
-                'errors' => array($e->getMessage())
+                'data'   => array(
+                    'errors' => array($e->getMessage())
+                )
             );
         }
         catch (Exception_Validation $e)
@@ -67,7 +69,9 @@ class Context_User_Register extends Context_Core
             return array(
                 'status' => 'failure',
                 'type'   => 'validation',
-                'errors' => $e->as_array()
+                'data'   => array(
+                    'errors' => $e->as_array()
+                )
             );
         }
 

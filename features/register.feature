@@ -8,6 +8,7 @@ Feature: register
 
     Scenario: Register a new valid account
         Given I am on "user/register"
+        And I should not see "error"
         When I fill in the following:
             | username | username         |
             | password | password         |
