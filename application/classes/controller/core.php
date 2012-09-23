@@ -21,13 +21,58 @@ defined('SYSPATH') OR die('No direct script access.');
 abstract class Controller_Core extends Controller
 {
     /**
+     * Sends data to a factory to produce a context and executes it
+     *
+     * @param string $factory The name of the factory to use, if not given, a 
+     *                        factory name is guessed
+     * @param string $data    The data to send to the factory
+     *
+     * @return array The results of the context execution
+     */
+    protected function execute_context($factory = NULL, $data = NULL)
+    {
+        $context = $this->factory($factory, $data)->fetch();
+        return $context->execute();
+    }
+
+    /**
+     * Displays the View_User_Register view
+     *
+     * @param string $view_name The name of the view to load
+     * @param array  $data      The data to send to the view class
+     *
+     * @return void
+     */
+    protected function display($view_name, $data = array())
+    {
+        $view = new $view_name;
+        $this->assign_view_data($view, $data);
+        $this->response->body($view);
+    }
+
+    /**
+     * Assigns data to a view
+     *
+     * @param object $view The view to assign to
+     * @param array  $data  The data to give it
+     *
+     * @return void
+     */
+    protected function assign_view_data( & $view, $data)
+    {
+        foreach ($data as $key => $value)
+            $view->$key = $value;
+        $view->post_data = $this->request->post();
+    }
+
+    /**
      * Attempts to guess a factory to load either from URI or from param
      *
      * @param string $factory Name of factory to load.
      *
      * @return Context_Core A "Context_Core" subclass object.
      */
-    public function factory($factory = NULL, $data = NULL)
+    private function factory($factory = NULL, $data = NULL)
     {
         if ($factory === NULL)
             return $this->_factory($this->guess_factory_name_from_uri(), $data);
@@ -61,44 +106,4 @@ abstract class Controller_Core extends Controller
         return new $factory($data);
     }
 
-    /**
-     * Sends data to a factory to produce a context and executes it
-     *
-     * @return array The results of the context execution
-     */
-    protected function execute_context($data = NULL)
-    {
-        $context = $this->factory(NULL, $data)->fetch();
-        return $context->execute();
-    }
-
-    /**
-     * Displays the View_User_Register view
-     *
-     * @param string $view_name The name of the view to load
-     * @param array  $data      The data to send to the view class
-     *
-     * @return void
-     */
-    protected function display($view_name, $data = array())
-    {
-        $view = new $view_name;
-        $this->assign_view_data($view, $data);
-        $this->response->body($view);
-    }
-
-    /**
-     * Assigns data to a view
-     *
-     * @param object &$view The view to assign to
-     * @param array  $data  The data to give it
-     *
-     * @return void
-     */
-    protected function assign_view_data(&$view, $data)
-    {
-        foreach ($data as $key => $value)
-            $view->$key = $value;
-        $view->post_data = $this->request->post();
-    }
 }

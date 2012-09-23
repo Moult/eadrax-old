@@ -13,18 +13,18 @@ defined('SYSPATH') OR die('No direct script access.');
 
 return array(
     'username' => array(
-        'not_empty'  => 'A username is required.',
+        'not_empty'  => 'Your username is required.',
         'regex'      => 'Your username contains illegal characters.',
         'min_length' => 'Your username should be more than 4 characters.',
         'max_length' => 'Your username should be less than 15 characters.',
         'is_unique_username' => 'An account with that username has already been registered in our system. Please pick another.'
     ),
     'password' => array(
-        'not_empty'  => 'A password is required.',
+        'not_empty'  => 'Your password is required.',
         'min_length' => 'Your password should be more than 6 characters.'
     ),
     'email' => array(
-        'not_empty' => 'An email is required.',
+        'not_empty' => 'Your email is required.',
         'email'     => 'Your email is not a real email.'
     )
 );

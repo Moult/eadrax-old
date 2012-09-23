@@ -26,4 +26,6 @@ Feature: register
         When I fill in "username" with "x"
         And I press "Register"
         Then I should see "Register"
-        And I should see "error"
+        And I should see "Your username should be more than 4 characters."
+        And I should see "Your password is required."
+        And I should see "Your email is required."

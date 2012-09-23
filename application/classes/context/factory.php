@@ -44,12 +44,8 @@ abstract class Context_Factory
     protected function get_data($key)
     {
         if (isset($this->data[$key]))
-        {
             return $this->data[$key];
-        }
         else
-        {
             return NULL;
-        }
     }
 }

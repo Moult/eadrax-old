@@ -25,16 +25,17 @@ class Controller_User extends Controller_Core
      */
     public function action_register()
     {
-        $context_result = $this->execute_context($this->request->post());
-
         if ($this->request->method() !== HTTP_Request::POST)
-            $this->display('View_User_Register');
-        elseif ($context_result['status'] === 'success')
-            $this->request->redirect(Route::get('user dashboard')->uri());
+            return $this->display('View_User_Register');
+
+        $context_result = $this->execute_context(NULL, $this->request->post());
+
+        if ($context_result['status'] === 'success')
+            return $this->request->redirect(Route::get('user dashboard')->uri());
         elseif ($context_result['type'] === 'authorisation')
-            $this->request->redirect(Route::get('user dashboard')->uri());
+            return $this->request->redirect(Route::get('user dashboard')->uri());
         elseif ($context_result['type'] === 'validation')
-            $this->display('View_User_Register', $context_result['data']);
+            return $this->display('View_User_Register', $context_result['data']);
     }
 
     /**
