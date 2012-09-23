@@ -3,7 +3,8 @@
 use Behat\Behat\Context\ClosuredContextInterface,
     Behat\Behat\Context\TranslatedContextInterface,
     Behat\Behat\Context\BehatContext,
-    Behat\Behat\Exception\PendingException;
+    Behat\Behat\Exception\PendingException,
+    Behat\Behat\Context\Step;
 use Behat\Gherkin\Node\PyStringNode,
     Behat\Gherkin\Node\TableNode;
 
@@ -60,11 +61,14 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
      */
     public function iAmLoggedInAs($username)
     {
-        $login_attempt = Auth::instance()->login($username, $username);
-        if ( ! $login_attempt)
-        {
-            throw new Exception('Could not log in user.');
-        }
+        return array(
+            new Step\Given('there is a user with username "'.$username.'" in database'),
+            new Step\Given('I am on "user/login"'),
+            new Step\Given('I fill in "username" with "'. $username .'"'),
+            new Step\Given('I fill in "password" with "'. $username .'"'),
+            new Step\When('I press "Login"'),
+            new Step\Then('I should see "Dashboard"')
+        );
     }
 
     /**
@@ -72,7 +76,11 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
      */
     public function iAmLoggedOut()
     {
-        Auth::instance()->logout();
+        return array(
+            new Step\Given('I am on "user/dashboard"'),
+            new Step\When('I follow "Logout"'),
+            new Step\Then('I should not see "Dashboard"')
+        );
     }
 
 }
