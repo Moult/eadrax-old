@@ -25,17 +25,20 @@ class Controller_User extends Controller_Core
      */
     public function action_register()
     {
-        if ($this->request->method() !== HTTP_Request::POST)
-            return $this->display('View_User_Register');
-
         $context_result = $this->execute_context(NULL, $this->request->post());
 
-        if ($context_result['status'] === 'success')
-            return $this->request->redirect(Route::get('user dashboard')->uri());
-        elseif ($context_result['type'] === 'authorisation')
+        if ($context_result['status'] === 'success'
+            OR $context_result['type'] === 'authorisation')
             return $this->request->redirect(Route::get('user dashboard')->uri());
         elseif ($context_result['type'] === 'validation')
-            return $this->display('View_User_Register', $context_result['data']);
+        {
+            if ($this->request->method() === HTTP_Request::POST)
+                return $this->display('View_User_Register', $context_result['data']);
+            else
+                return $this->display('View_User_Register');
+        }
+
+
     }
 
     /**
@@ -46,5 +49,26 @@ class Controller_User extends Controller_Core
     public function action_dashboard()
     {
         $this->response->body(new View_User_Dashboard);
+    }
+
+    /**
+     * For users to be able to login into the system.
+     *
+     * @return void
+     */
+    public function action_login()
+    {
+        $context_result = $this->execute_context(NULL, $this->request->post());
+
+        if ($context_result['status'] === 'success'
+            OR $context_result['type'] === 'authorisation')
+            return $this->request->redirect(Route::get('user dashboard')->uri());
+        elseif ($context_result['type'] === 'validation')
+        {
+            if ($this->request->method() === HTTP_Request::POST)
+                return $this->display('View_User_Login', $context_result['data']);
+            else
+                return $this->display('View_User_Login');
+        }
     }
 }
