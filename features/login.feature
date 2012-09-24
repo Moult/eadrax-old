@@ -26,3 +26,8 @@ Feature: login
         Then I should see "Login"
         And I should see "error"
         And I should see "No account with those user details exist"
+
+    Scenario: Existing users should not see the login page
+        Given I am logged in as "username"
+        When I go to "user/login"
+        Then I should see "Dashboard"
