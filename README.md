@@ -105,7 +105,7 @@ environment as follows:
 
 1. Get [Composer](http://getcomposer.org) `curl -s
    http://getcomposer.org/installer | php` and then run `php composer.phar
-   install`. This is needed to set up testing tools (installs into `bin/`.
+   install`. This is needed to set up testing tools (installs into `bin/`).
 2. Use [Phing](http://www.phing.info/) to run `phing all` in project root. This
    will run `phpspec`, `behat`, `phpcs`, `pdepend`, `phpmd`, `phpcpd`, `phpdcd`
    and `phpdoc2`. For more information, see `phing -projecthelp`
