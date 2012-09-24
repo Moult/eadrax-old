@@ -34,7 +34,7 @@ class Context_User_Register extends Context_Core
      */
     public function __construct($model_user, $module_auth)
     {
-        $this->guest = new Guest($model_user);
+        $this->guest = new Context_User_Register_Guest($model_user);
         $repository = new Context_User_Register_Repository;
         $this->guest->link(array(
             'repository' => $repository,
@@ -78,59 +78,4 @@ class Context_User_Register extends Context_Core
             'status' => 'success'
         );
     }
-}
-
-/**
- * Define data model prerequisites to play the Guest role
- *
- * @package    Context
- * @subpackage Role
- */
-interface Guest_Requirements
-{
-    /** @ignore */
-    public function get_username();
-    /** @ignore */
-    public function set_username($username);
-    /** @ignore */
-    public function get_password();
-    /** @ignore */
-    public function set_password($password);
-    /** @ignore */
-    public function get_email();
-    /** @ignore */
-    public function set_email($email);
-}
-
-/**
- * Allows model_user to be cast as a guest role
- *
- * @package    Context
- * @subpackage Role
- */ 
-abstract class Cast_Guest extends Model_User implements Guest_Requirements
-{
-    use Context_Interaction;
-
-    /**
-     * Takes a data object and copies all of its properties
-     *
-     * @param Model_User $model_user Data object to copy
-     * @return void
-     */
-    public function __construct(Model_User $model_user)
-    {
-        parent::__construct(get_object_vars($model_user));
-    }
-}
-
-/**
- * Defines the guest role and injects its interactions
- *
- * @package    Context
- * @subpackage Role
- */
-class Guest extends Cast_Guest
-{
-    use Context_User_Register_Guest_Interaction;
 }
