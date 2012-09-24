@@ -13,10 +13,10 @@ defined('SYSPATH') OR die('No direct script access.');
 
 return array(
     'username' => array(
-        'not_empty'  => 'Your username is required.',
-        'regex'      => 'Your username contains illegal characters.',
-        'min_length' => 'Your username should be more than 4 characters.',
-        'max_length' => 'Your username should be less than 15 characters.',
+        'not_empty'          => 'Your username is required.',
+        'regex'              => 'Your username contains illegal characters.',
+        'min_length'         => 'Your username should be more than 4 characters.',
+        'max_length'         => 'Your username should be less than 15 characters.',
         'is_unique_username' => 'An account with that username has already been registered in our system. Please pick another.'
     ),
     'password' => array(

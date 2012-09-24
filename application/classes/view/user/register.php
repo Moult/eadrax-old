@@ -16,18 +16,13 @@ defined('SYSPATH') OR die('No direct script access.');
  *
  * @package View
  */
-class View_User_Register extends View_Layout {
+class View_User_Register extends View_Layout
+{
     /**
-     * Holds error information from registration forms
+     * Holds error information from registration form
      * @var array
      */
     public $errors = array();
-
-    /**
-     * Holds post data that has been sent.
-     * @var array
-     */
-    public $post_data = array();
 
     /**
      * Converts multidimensional error array into one-dimensional array for 
