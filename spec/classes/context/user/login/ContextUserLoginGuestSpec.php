@@ -9,7 +9,7 @@ class DescribeContextUserLoginGuest extends \PHPSpec\Context
         $this->spec($role)->should->beAnInstanceOf('Model_User');
     }
 
-    public function itWillCastAGuestModelIntoAGuestRole()
+    public function itWillCastAUserModelIntoAGuestRole()
     {
         $model_user = new Model_User(array(
             'username' => 'username',
