@@ -28,6 +28,24 @@ abstract class View_Layout extends Kostache_Layout
     );
 
     /**
+     * Base url of website.
+     * @var string
+     */
+    public $baseurl;
+
+    /**
+     * Sets up useful sitewide variables.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->baseurl = URL::base();
+    }
+
+    /**
      * Returns core partials.
      *
      * @return array
