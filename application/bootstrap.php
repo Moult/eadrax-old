@@ -137,6 +137,12 @@ Route::set('user dashboard', 'user/dashboard')
         'action'     => 'dashboard'
     ));
 
+Route::set('homepage', '')
+    ->defaults(array(
+        'controller' => 'welcome',
+        'action'     => 'index'
+    ));
+
 /**
  * Salt used for storing cookies for sessions
  */

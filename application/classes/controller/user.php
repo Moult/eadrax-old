@@ -71,4 +71,17 @@ class Controller_User extends Controller_Core
                 return $this->display('View_User_Login');
         }
     }
+
+    /**
+     * To logout of the system
+     *
+     * @return void
+     */
+    public function action_logout()
+    {
+        $context_result = $this->execute_context(NULL);
+
+        if ($context_result['status'] === 'success')
+            return $this->request->redirect(Route::get('homepage')->uri());
+    }
 }
