@@ -39,7 +39,7 @@ class Context_User_Dashboard_Factory extends Context_Factory
      */
     public function model_user()
     {
-        return new Model_User();
+        return new Model_User;
     }
 
     /**

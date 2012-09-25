@@ -30,7 +30,7 @@ trait Context_User_Login_Guest_Interaction
         if ($this->module_auth->logged_in())
             throw new Exception_Authorisation('Logged in users don\'t need to login again.');
         else
-            $this->validate_information();
+            return $this->validate_information();
     }
 
     /**
@@ -46,7 +46,7 @@ trait Context_User_Login_Guest_Interaction
             ->rule('username', array($this, 'is_existing_account'), array(':validation', 'username', 'password'));
 
         if ($validation->check())
-            $this->login();
+            return $this->login();
         else
             throw new Exception_Validation($validation->errors('context/user/login/errors'));
     }

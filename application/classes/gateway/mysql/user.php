@@ -32,7 +32,6 @@ class Gateway_Mysql_User {
      */
     public function insert($data)
     {
-        $auth_config = Kohana::$config->load('auth');
         $password_hash = Auth::instance()->hash($data['password']);
         $query = DB::insert($this->table, array(
             'username',
@@ -58,7 +57,10 @@ class Gateway_Mysql_User {
         foreach ($data as $field => $value)
         {
             if ($field === 'password')
+            {
                 $value = Auth::instance()->hash($value);
+            }
+
             $query->where($field, '=', $value);
         }
         return (bool) $query->execute()->count();
