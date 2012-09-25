@@ -48,7 +48,12 @@ class Controller_User extends Controller_Core
      */
     public function action_dashboard()
     {
-        $this->response->body(new View_User_Dashboard);
+        $context_result = $this->execute_context(NULL);
+
+        if ($context_result['status'] === 'success')
+            return $this->display('View_User_Dashboard', $context_result['data']);
+        elseif ($context_result['type'] === 'authorisation')
+            return $this->request->redirect(Route::get('user login')->uri());
     }
 
     /**

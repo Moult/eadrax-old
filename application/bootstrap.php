@@ -137,6 +137,12 @@ Route::set('user dashboard', 'user/dashboard')
         'action'     => 'dashboard'
     ));
 
+Route::set('user login', 'user/login')
+    ->defaults(array(
+        'controller' => 'user',
+        'action'     => 'login'
+    ));
+
 Route::set('homepage', '')
     ->defaults(array(
         'controller' => 'welcome',
