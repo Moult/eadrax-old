@@ -9,16 +9,19 @@ Feature: login
     Scenario: Login succesfully
         Given I am on "user/login"
         And I should see "Login"
+        And I should not see a "#kohana_error" element
         When I fill in the following:
             | username | username |
             | password | username |
         And I press "Login"
         Then I should not see "Login"
+        And I should not see a "#kohana_error" element
 
     Scenario: Login with bad credentials
         Given there is no user with username "username" in database
         And I am on "user/login"
         And I should see "Login"
+        And I should not see a "#kohana_error" element
         When I fill in the following:
             | username | username |
             | password | username |
@@ -26,8 +29,10 @@ Feature: login
         Then I should see "Login"
         And I should see "error"
         And I should see "No account with those user details exist"
+        And I should not see a "#kohana_error" element
 
     Scenario: Existing users should not see the login page
         Given I am logged in as "username"
         When I go to "user/login"
         Then I should see "Dashboard"
+        And I should not see a "#kohana_error" element

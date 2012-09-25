@@ -10,6 +10,8 @@ Feature: logout
     Scenario: Logout succesfully
         Given I am on "user/dashboard"
         And I should see "Dashboard"
+        And I should not see a "#kohana_error" element
         When I follow "Logout"
         And I go to "user/dashboard"
         Then I should see "Login"
+        And I should not see a "#kohana_error" element
