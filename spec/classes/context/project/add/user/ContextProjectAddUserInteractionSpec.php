@@ -23,7 +23,7 @@ class DescribeContextProjectAddUserInteraction extends \PHPSpec\Context
         $module_auth->shouldReceive('logged_in')->andReturn('username')->once();
 
         $proposal = Mockery::mock('Proposal');
-        $proposal->shouldReceive('set_author')->with('Foo')->andReturn(TRUE)->once();
+        $proposal->shouldReceive('set_author')->with('DescribeContextProjectAddUserInteraction')->andReturn(TRUE)->once();
 
         $interaction = Mockery::mock('DescribeContextProjectAddUserInteraction[]');
         $interaction->module_auth = $module_auth;

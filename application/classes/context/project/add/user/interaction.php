@@ -28,7 +28,7 @@ trait Context_Project_Add_User_Interaction
     function authorise_project_add()
     {
         if ($this->module_auth->logged_in())
-            return $this->proposal->set_author($this->id);
+            return $this->proposal->set_author($this);
         else
             throw new Exception_Authorisation('Please login before you can add a new project.');
     }
