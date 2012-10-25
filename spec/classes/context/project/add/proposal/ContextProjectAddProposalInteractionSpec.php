@@ -8,11 +8,10 @@ class DescribeContextProjectAddProposalInteraction extends \PHPSpec\Context
     {
         $model_user = Mockery::mock('Model_User');
 
-        $interaction = Mockery::mock('DescribeContextProjectAddProposalInteraction[validate_information]');
+        $interaction = Mockery::mock('DescribeContextProjectAddProposalInteraction[set_author,validate_information]');
+        $interaction->shouldReceive('set_author')->with('Model_User')->once();
         $interaction->shouldReceive('validate_information')->once();
-        $interaction->set_author($model_user);
-
-        $this->spec($interaction->author)->should->beAnInstanceOf('Model_User');
+        $interaction->assign_author($model_user);
     }
 
     public function itValidatesIncomingData()
@@ -21,7 +20,7 @@ class DescribeContextProjectAddProposalInteraction extends \PHPSpec\Context
         $model_user = Mockery::mock('Model_User');
 
         $interaction->name = ''; // Empty name
-        $interaction->author = $model_user; // Already "validated" via set_author
+        $interaction->author = $model_user; // Already "validated" via assign_author
         $interaction->summary = ''; // Empty summary
 
         $this->spec(function() use ($interaction) {

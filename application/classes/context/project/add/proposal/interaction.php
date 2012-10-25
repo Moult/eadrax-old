@@ -25,9 +25,9 @@ trait Context_Project_Add_Proposal_Interaction
      * @param Model_User $model_user
      * @return void
      */
-    public function set_author(Model_User $model_user)
+    public function assign_author(Model_User $model_user)
     {
-        $this->author = $model_user;
+        $this->set_author($model_user);
         return $this->validate_information();
     }
 

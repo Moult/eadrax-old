@@ -32,5 +32,5 @@ interface Context_Project_Add_Proposal_Requirement
     /** @ignore */
     public function get_author();
     /** @ignore */
-    public function set_author($author);
+    public function set_author(Model_User $author);
 }
