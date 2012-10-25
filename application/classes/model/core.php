@@ -16,4 +16,22 @@ defined('SYSPATH') OR die('No direct script access.');
  *
  * @package Model
  */
-abstract class Model_Core extends Model {}
+abstract class Model_Core extends Model {
+    /**
+     * Every data structure should have a unique ID associated with it
+     * @var mixed
+     */
+    public $id;
+
+    /** @ignore */
+    public function get_id()
+    {
+        return $this->id;
+    }
+
+    /** @ignore */
+    public function set_id($id)
+    {
+        $this->id = $id;
+    }
+}
