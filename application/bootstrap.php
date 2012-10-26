@@ -150,6 +150,12 @@ Route::set('homepage', '')
         'action'     => 'index'
     ));
 
+Route::set('project view', 'project/view')
+    ->defaults(array(
+        'controller' => 'project',
+        'action'     => 'view'
+    ));
+
 /**
  * Salt used for storing cookies for sessions
  */
