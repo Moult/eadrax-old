@@ -35,21 +35,6 @@ class Model_Project extends Model_Core
     /** @ignore */
     public $last_updated;
 
-    /**
-     * Allows you to set properties whilst instantiating the object.
-     *
-     * $model_project = new Model_Project(array('name' => 'foobar'));
-     *
-     * @param array $properties The list of properties to preset
-     * @return void
-     */
-    public function __construct(Array $properties = array())
-    {
-        foreach ($properties as $property_name => $property_value) {
-            $this->{'set_'.$property_name}($property_value);
-        }
-    }
-
     /** @ignore */
     public function get_name()
     {

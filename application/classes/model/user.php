@@ -25,21 +25,6 @@ class Model_User extends Model_Core
     /** @ignore */
     public $email;
 
-    /**
-     * Allows you to set properties whilst instantiating the object.
-     *
-     * $model_user = new Model_User(array('username' => 'foobar'));
-     *
-     * @param array $properties The list of properties to preset
-     * @return void
-     */
-    public function __construct(Array $properties = array())
-    {
-        foreach ($properties as $property_name => $property_value) {
-            $this->{'set_'.$property_name}($property_value);
-        }
-    }
-
     /** @ignore */
     public function get_username()
     {
