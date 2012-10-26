@@ -25,11 +25,27 @@ trait Context_Project_Add_User_Interaction
      * @throws Exception_Authorisation if not logged in
      * @return void
      */
-    function authorise_project_add()
+    public function authorise_project_add()
     {
         if ($this->module_auth->logged_in())
-            return $this->proposal->assign_author($this);
+            return $this->load_authentication_details();
         else
             throw new Exception_Authorisation('Please login before you can add a new project.');
     }
+
+    /**
+     * Loads the authentication details of the currently logged in user into the 
+     * user data model.
+     *
+     * @return void
+     */
+    public function load_authentication_details()
+    {
+        $authenticated_user = $this->module_auth->get_user();
+        $this->set_username($authenticated_user->username);
+        $this->set_id($authenticated_user->id);
+
+        return $this->proposal->assign_author($this);
+    }
+
 }

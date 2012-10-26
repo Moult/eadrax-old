@@ -29,13 +29,12 @@ class DescribeContextProjectAddFactory extends \PHPSpec\Context
     public function itShouldAutoAllocateDataToModels()
     {
         $factory = new Context_Project_Add_Factory(array(
-            'id' => 'id',
             'name' => 'name',
             'summary' => 'summary'
         ));
 
         $model_user = $factory->model_user();
-        $this->spec($model_user->id)->should->be('id');
+        $this->spec($model_user)->should->beAnInstanceOf('Model_User');
 
         $model_project = $factory->model_project();
         $this->spec($model_project->name)->should->be('name');
