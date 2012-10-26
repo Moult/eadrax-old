@@ -43,9 +43,15 @@ class Context_Project_Add extends Context_Core
     {
         $this->user = new Context_Project_Add_User($model_user);
         $this->proposal = new Context_Project_Add_Proposal($model_project);
+        $repository = new Context_Project_Add_Repository;
+
         $this->user->link(array(
             'proposal' => $this->proposal,
             'module_auth' => $module_auth
+        ));
+
+        $this->proposal->link(array(
+            'repository' => $repository
         ));
     }
 
