@@ -46,7 +46,7 @@ class Context_Project_Add_Repository
         $this->gateway_mysql_project->insert(array(
             'name' => $model_project->name,
             'summary' => $model_project->summary,
-            'author' => $model_project->author->id
+            'uid' => $model_project->author->id
         ));
     }
 }

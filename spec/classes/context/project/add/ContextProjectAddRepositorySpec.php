@@ -8,7 +8,7 @@ class DescribeContextProjectAddRepository extends \PHPSpec\Context
         $gateway_mysql_project->shouldReceive('insert')->with(array(
             'name' => 'name',
             'summary' => 'summary',
-            'author' => 'foo'
+            'uid' => 'foo'
         ))->once();
 
         $model_user = Mockery::mock('Model_User');
