@@ -12,12 +12,13 @@ This branch aims to rewrite Eadrax with the following major changes.
  * A more distinctive visual aesthetic (clean and whimsical)
  * Optional donationware usage
  * Improved project privacy settings
+ * Separation from project and category assignments
  * Added "highlights" pick for updates
- * Better bulk update management
+ * Sortable WIPSpaces (to allow for many projects)
  * Away from just ambitious projects to just constant production
  * Remove the group blog idea
  * Revitalise the API to prepare for native apps
- * Improve visualisation of projects
+ * Improve visualisation of projects and timelines
  * Improved discover feature from random to feature
 
 This might help define WIPUP's new audience:
