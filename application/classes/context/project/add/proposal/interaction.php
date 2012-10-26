@@ -44,7 +44,7 @@ trait Context_Project_Add_Proposal_Interaction
         if ($validation->check())
             return $this->submit();
         else
-            throw new Exception_Validation($validation->errors());
+            throw new Exception_Validation($validation->errors('context/project/add/errors'));
     }
 
     /**
