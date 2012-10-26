@@ -40,7 +40,7 @@ class Context_Project_Add_Factory extends Context_Factory
      */
     public function model_user()
     {
-        return new Model_User();
+        return new Model_User;
     }
 
     /**

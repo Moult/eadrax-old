@@ -71,6 +71,6 @@ trait Context_User_Login_Guest_Interaction
      */
     public function login()
     {
-        $this->module_auth->login($this->username, $this->password);
+        return $this->module_auth->login($this->username, $this->password);
     }
 }

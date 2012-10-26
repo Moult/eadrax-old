@@ -48,7 +48,9 @@ abstract class Model_Core extends Model {
     private function set_property($property_name, $property_value)
     {
         if ( ! empty($property_value))
+        {
             $this->{'set_'.$property_name}($property_value);
+        }
     }
 
     /** @ignore */

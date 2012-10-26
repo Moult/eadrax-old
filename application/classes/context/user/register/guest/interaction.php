@@ -29,13 +29,9 @@ trait Context_User_Register_Guest_Interaction
     public function authorise_registration()
     {
         if ($this->module_auth->logged_in())
-        {
             throw new Exception_Authorisation('Logged in users cannot register new accounts.');
-        }
         else
-        {
-            $this->validate_information();
-        }
+            return $this->validate_information();
     }
 
     /**
@@ -57,14 +53,11 @@ trait Context_User_Register_Guest_Interaction
             ->rule('password', 'min_length', array(':value', '6'))
             ->rule('email', 'not_empty')
             ->rule('email', 'email');
+
         if ($validation->check())
-        {
-            $this->register();
-        }
+            return $this->register();
         else
-        {
             throw new Exception_Validation($validation->errors('context/user/register/errors'));
-        }
     }
 
     /**
@@ -86,7 +79,7 @@ trait Context_User_Register_Guest_Interaction
     public function register()
     {
         $this->repository->register($this);
-        $this->login();
+        return $this->login();
     }
 
     /**
@@ -96,6 +89,6 @@ trait Context_User_Register_Guest_Interaction
      */
     public function login()
     {
-        $this->module_auth->login($this->username, $this->password);
+        return $this->module_auth->login($this->username, $this->password);
     }
 }
