@@ -42,7 +42,7 @@ class Context_Project_Add extends Context_Core
     public function __construct($model_user, $model_project, $module_auth)
     {
         $this->user = new Context_Project_Add_User($model_user);
-        $this->proposal = new Context_Project_Add_Proposal($model_user);
+        $this->proposal = new Context_Project_Add_Proposal($model_project);
         $this->user->link(array(
             'proposal' => $this->proposal,
             'module_auth' => $module_auth
