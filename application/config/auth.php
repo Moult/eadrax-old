@@ -13,7 +13,7 @@ defined('SYSPATH') OR die('No direct access allowed.');
 
 return array(
 
-	'driver'       => 'mysql',
+	'driver'       => 'MySQL',
 	'hash_method'  => 'sha256',
 	'hash_key'     => 'please_change_this',
 	'lifetime'     => 1209600,
