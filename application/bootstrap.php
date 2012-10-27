@@ -14,17 +14,17 @@ defined('SYSPATH') OR die('No direct script access.');
 // -- Environment setup --------------------------------------------------------
 
 // Load the core Kohana class
-require SYSPATH.'classes/kohana/core'.EXT;
+require SYSPATH.'classes/Kohana/Core'.EXT;
 
-if (is_file(APPPATH.'classes/kohana'.EXT))
+if (is_file(APPPATH.'classes/Kohana'.EXT))
 {
 	// Application extends the core
-	require APPPATH.'classes/kohana'.EXT;
+	require APPPATH.'classes/Kohana'.EXT;
 }
 else
 {
 	// Load empty core extension
-	require SYSPATH.'classes/kohana'.EXT;
+	require SYSPATH.'classes/Kohana'.EXT;
 }
 
 /**
@@ -50,6 +50,14 @@ setlocale(LC_ALL, 'en_US.utf-8');
  * @link http://www.php.net/manual/function.spl-autoload-register
  */
 spl_autoload_register(array('Kohana', 'auto_load'));
+
+/**
+ * Optionally, you can enable a compatibility auto-loader for use with
+ * older modules that have not been updated for PSR-0.
+ *
+ * It is recommended to not enable this unless absolutely necessary.
+ */
+//spl_autoload_register(array('Kohana', 'auto_load_lowercase'));
 
 /**
  * Enable the Kohana auto-loader for unserialization.
@@ -116,6 +124,7 @@ Kohana::modules(array(
 	// 'codebench'  => MODPATH.'codebench',  // Benchmarking tool
 	'database'      => MODPATH.'database',   // Database access
 	// 'image'      => MODPATH.'image',      // Image manipulation
+	// 'minion'     => MODPATH.'minion',     // CLI Tasks
 	// 'orm'        => MODPATH.'orm',        // Object Relationship Mapping
 	// 'unittest'   => MODPATH.'unittest',   // Unit testing
 	// 'userguide'  => MODPATH.'userguide',  // User guide and API documentation
