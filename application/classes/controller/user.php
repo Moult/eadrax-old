@@ -29,7 +29,7 @@ class Controller_User extends Controller_Core
 
         if ($context_result['status'] === 'success'
             OR $context_result['type'] === 'authorisation')
-            return $this->request->redirect(Route::get('user dashboard')->uri());
+            return $this->redirect(Route::get('user dashboard')->uri());
         elseif ($context_result['type'] === 'validation')
         {
             if ($this->request->method() === HTTP_Request::POST)
@@ -53,7 +53,7 @@ class Controller_User extends Controller_Core
         if ($context_result['status'] === 'success')
             return $this->display('View_User_Dashboard', $context_result['data']);
         elseif ($context_result['type'] === 'authorisation')
-            return $this->request->redirect(Route::get('user login')->uri());
+            return $this->redirect(Route::get('user login')->uri());
     }
 
     /**
@@ -67,7 +67,7 @@ class Controller_User extends Controller_Core
 
         if ($context_result['status'] === 'success'
             OR $context_result['type'] === 'authorisation')
-            return $this->request->redirect(Route::get('user dashboard')->uri());
+            return $this->redirect(Route::get('user dashboard')->uri());
         elseif ($context_result['type'] === 'validation')
         {
             if ($this->request->method() === HTTP_Request::POST)
@@ -87,6 +87,6 @@ class Controller_User extends Controller_Core
         $context_result = $this->execute_context(NULL);
 
         if ($context_result['status'] === 'success')
-            return $this->request->redirect(Route::get('homepage')->uri());
+            return $this->redirect(Route::get('homepage')->uri());
     }
 }

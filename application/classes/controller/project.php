@@ -28,9 +28,9 @@ class Controller_Project extends Controller_Core
         $context_result = $this->execute_context(NULL, $this->request->post());
 
         if ($context_result['status'] === 'success')
-            return $this->request->redirect(Route::get('project view')->uri());
+            return $this->redirect(Route::get('project view')->uri());
         elseif ($context_result['type'] === 'authorisation')
-            return $this->request->redirect(Route::get('user login')->uri());
+            return $this->redirect(Route::get('user login')->uri());
         elseif ($context_result['type'] === 'validation')
         {
             if ($this->request->method() === HTTP_Request::POST)
