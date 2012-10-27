@@ -4,12 +4,15 @@
     },
     "require": {
         "php": ">=5.4.0",
-        "phpspec/phpspec": "dev-master",
         "behat/behat": "2.4.*@stable",
         "behat/mink": "1.4.*@stable",
         "behat/mink-extension": "*",
         "behat/mink-goutte-driver": "*",
         "behat/mink-selenium2-driver": "*"
     },
+    "require-dev": {
+        "phpspec/phpspec2": "*"
+    },
+    "autoload": {"psr-0": {"": "src"}},
     "minimum-stability": "dev"
 }
