@@ -50,6 +50,7 @@ setlocale(LC_ALL, 'en_US.utf-8');
  * @link http://www.php.net/manual/function.spl-autoload-register
  */
 spl_autoload_register(array('Kohana', 'auto_load'));
+spl_autoload_register(function($class) { Kohana::auto_load($class, 'vendor/Eadrax/src'); });
 
 /**
  * Optionally, you can enable a compatibility auto-loader for use with
