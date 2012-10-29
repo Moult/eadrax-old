@@ -3,52 +3,35 @@
 Eadrax is a diary for your creations. A instance of Eadrax can be found at
 http://wipup.org/
 
-# About Eadrax-v3
+You might like Eadrax if you:
+ * Love making stuff, and do it often
+ * Want a no-nonsense place to track and share your creations
+ * Work with different mediums: from images, video, music to code
+ * Have a project-oriented workflow
+ * Want to visualise your process and progress
+ * Prefer open-source software
+
+# About Eadrax-develop
 
 This branch aims to rewrite Eadrax with the following major changes.
 
-## Re-target WIPUP's audience
+## Feature updates
 
- * A more distinctive visual aesthetic (clean and whimsical)
- * Optional donationware usage
  * Improved project privacy settings
  * Separation from project and category assignments
  * Added "highlights" pick for updates
  * Sortable WIPSpaces (to allow for many projects)
- * Away from just ambitious projects to just constant production
- * Remove the group blog idea
- * Revitalise the API to prepare for native apps
- * Improve visualisation of projects and timelines
+ * Revitalise the API and separate delivery mechanism to prepare for native apps
  * Improved discover feature from random to feature
-
-This might help define WIPUP's new audience:
-
-> You might like WIPUP if you:
->  * Love making stuff, and do it often
->  * Want a no-nonsense place to track and share your creations
->  * Work with different mediums: from images, video, music to code
->  * Have a project-oriented workflow
->  * Want to visualise your process and progress
->  * Prefer open-source software
+ * Remove the group blog idea
+ * Remove collaborative projects (may return later)
+ * Remove OpenID signin (may return later)
 
 ## Switch to ISC license
 
 More permissive and doesn't make your brain explode.
 
-## Switch from KO2 to KO3
-
-KO2 is nice, but no longer supported, and the recommended method to start new
-projects is by using KO3.
-
 ## Use best practices
-
-BDD, stricter coding style, templating, improved docs ...
-
-## I81n support
-
-It never really required it, but it would be nice.
-
-## Refactor
 
 I was guilty of code rot.
 
@@ -56,8 +39,8 @@ I was guilty of code rot.
 
  * PHP >= 5.4
 
-The following are unconfirmed requirements for the v3 branch. If you encounter
-bugs, ensure you satisfy these.
+The following are unconfirmed requirements for the develop branch. If you
+encounter bugs, ensure you satisfy these.
 
  * Apache >= 2.2
  * MySQL >= 5.0
@@ -71,33 +54,18 @@ The most recent packages are recommended.
 
 # Installing Eadrax
 
-1. You can grab the latest copy of Eadrax project from
-   http://github.com/Moult/Eadrax
-    * **v3** - recommended but unstable. Clone head and then pull all git
-      submodules via `git submodule update --init --recursive` in project root.
-    * Alternatively, grab **master** - latest "live" stable version (used by
-      http://wipup.org).  Note that this is no longer supported - to install
-      master, please read their README instructions instead.
+You can grab the latest copy of Eadrax project from
+http://github.com/Moult/Eadrax
+  * **develop** - recommended but unstable. Clone head and then pull all git
+    submodules via `git submodule update --init --recursive` in project root.
+  * Alternatively, grab **master** - latest "live" stable version (used by
+    http://wipup.org).  Note that this is no longer supported - to install
+    master, please read their README instructions instead.
 
-2. Upload a copy of Eadrax to your webserver. It is possible to install Eadrax
-   in a subdirectory.
+Files in src/ are PSR-0 compatible.
 
-3. Make sure the following directories are writeable by your webserver:
-    * application/cache/
-    * application/logs/
-
-4. Use the schema in DATABASE to create a new MySQL database
-
-5. Edit configuration files.
-    * .htaccess
-    * application/bootstrap.php
-    * application/config/database.php
-
-6. Read KO docs for extra recommended procedures for public deployment
-
-If you did everything right, point your browser at the location you installed
-Eadrax into and everything should work. _As of writing Eadrax-v3 is still far
-from complete - you can see what has been implemented in `features/`_
+_As of writing Eadrax-develop is still far from complete. So if things are
+broken, it's probably because they actually are._
 
 # Developer Information
 
@@ -106,13 +74,13 @@ environment as follows:
 
 1. Get [Composer](http://getcomposer.org) `curl -s
    http://getcomposer.org/installer | php` and then run `php composer.phar
-   install`. This is needed to set up testing tools (installs into `bin/`).
+   install --dev`. This is needed to set up testing tools (installs into
+   `bin/`).
 2. Use [Phing](http://www.phing.info/) to run `phing all` in project root. This
-   will run `phpspec`, `behat`, `phpcs`, `pdepend`, `phpmd`, `phpcpd`, `phpdcd`
+   will run `phpspec`, `phpcs`, `pdepend`, `phpmd`, `phpcpd`, `phpdcd`
    and `phpdoc2`. For more information, see `phing -projecthelp`
-3. Start developing. Specs are in `spec/`, full-stack BDD tests are in
-   `features/`, documentation is in `docs/`. Any build logs generated by `phing
-   all-log` useful for CI can be found in `build/`. Finally, use `phing` as a
-   shorthand way to run all tests.
+3. Start developing. Specs are in `spec/`, documentation is in `docs/`. Any
+   build logs generated by `phing all-log` useful for CI can be found in
+   `build/`. Finally, use `phing` as a shorthand way to run all tests.
 
 That's it! Leave the codebase cleaner than when you found it.
