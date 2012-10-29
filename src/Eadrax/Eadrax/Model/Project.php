@@ -1,6 +1,6 @@
 <?php
 /**
- * Eadrax application/classes/Model/Project.php
+ * Eadrax Model/Project.php
  *
  * @package   Model
  * @author    Dion Moult <dion@thinkmoult.com>
@@ -9,14 +9,14 @@
  * @link      http://wipup.org/
  */
 
-defined('SYSPATH') OR die('No direct script access.');
+namespace Eadrax\Eadrax\Model;
 
 /**
  * This is a generic WIPUP project.
  *
  * @package Model
  */
-class Model_Project extends Model_Core
+class Project extends Core
 {
     /** @ignore */
     public $name;
@@ -66,7 +66,7 @@ class Model_Project extends Model_Core
     }
 
     /** @ignore */
-    public function set_author(Model_User $author)
+    public function set_author(User $author)
     {
         $this->author = $author;
     }
@@ -90,7 +90,7 @@ class Model_Project extends Model_Core
     }
 
     /** @ignore */
-    public function set_icon($icon)
+    public function set_icon(File $icon)
     {
         $this->icon = $icon;
     }
@@ -116,7 +116,7 @@ class Model_Project extends Model_Core
     /** @ignore */
     public function set_views($views)
     {
-        $this->views = $views;
+        $this->views = (int) $views;
     }
 
     /** @ignore */
@@ -128,6 +128,6 @@ class Model_Project extends Model_Core
     /** @ignore */
     public function set_last_updated($last_updated)
     {
-        $this->last_updated = $last_updated;
+        $this->last_updated = (int) $last_updated;
     }
 }

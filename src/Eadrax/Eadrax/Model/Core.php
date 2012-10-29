@@ -1,6 +1,6 @@
 <?php
 /**
- * Eadrax application/classes/Model/Core.php
+ * Eadrax Model/Core.php
  *
  * @package   Model
  * @author    Dion Moult <dion@thinkmoult.com>
@@ -9,14 +9,14 @@
  * @link      http://wipup.org/
  */
 
-defined('SYSPATH') OR die('No direct script access.');
+namespace Eadrax\Eadrax\Model;
 
 /**
  * All data model objects must extend this.
  *
  * @package Model
  */
-abstract class Model_Core extends Model {
+abstract class Core {
     /**
      * Every data structure should have a unique ID associated with it
      * @var mixed

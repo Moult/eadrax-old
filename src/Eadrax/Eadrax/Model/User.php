@@ -1,6 +1,6 @@
 <?php
 /**
- * Eadrax application/classes/Model/User.php
+ * Eadrax Model/User.php
  *
  * @package   Model
  * @author    Dion Moult <dion@thinkmoult.com>
@@ -9,14 +9,14 @@
  * @link      http://wipup.org/
  */
 
-defined('SYSPATH') OR die('No direct script access.');
+namespace Eadrax\Eadrax\Model;
 
 /**
  * This is a generic system user.
  *
  * @package Model
  */
-class Model_User extends Model_Core
+class User extends Core
 {
     /** @ignore */
     public $username;
