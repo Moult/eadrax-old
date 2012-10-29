@@ -1,6 +1,6 @@
 <?php
 /**
- * Eadrax application/classes/Auth/MySQL.php
+ * Eadrax Auth/MySQL.php
  *
  * @package   Auth
  * @author    Dion Moult <dion@thinkmoult.com>
@@ -9,7 +9,7 @@
  * @link      http://wipup.org/
  */
 
-defined('SYSPATH') OR die('No direct access allowed.');
+namespace Eadrax\Eadrax\Auth;
 
 /**
  * This is a driver for the KO3 auth module.
@@ -22,7 +22,7 @@ defined('SYSPATH') OR die('No direct access allowed.');
  *
  * @package Auth
  */
-class Auth_MySQL extends Auth
+class MySQL extends Auth
 {
     /**
      * Do username / password check

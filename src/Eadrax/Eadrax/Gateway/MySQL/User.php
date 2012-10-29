@@ -1,6 +1,6 @@
 <?php
 /**
- * Eadrax application/classes/Gateway/MySQL/User.php
+ * Eadrax Gateway/MySQL/User.php
  *
  * @package   Gateway
  * @author    Dion Moult <dion@thinkmoult.com>
@@ -9,7 +9,7 @@
  * @link      http://wipup.org/
  */
 
-defined('SYSPATH') OR die('No direct script access.');
+namespace Eadrax\Eadrax\Gateway\MySQL;
 
 /**
  * Handles MySQL interactions with the user table
@@ -17,7 +17,7 @@ defined('SYSPATH') OR die('No direct script access.');
  * @package    Gateway
  * @subpackage MySQL
  */
-class Gateway_MySQL_User {
+class User {
     /**
      * Database table name
      * @var string
