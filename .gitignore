@@ -1,7 +1,5 @@
 *~
 *.sw*
-application/logs/*
-application/tmp/*
 bin/*
 build/*
 composer.phar
