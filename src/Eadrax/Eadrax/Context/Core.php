@@ -1,6 +1,6 @@
 <?php
 /**
- * Eadrax application/classes/Context/Core.php
+ * Eadrax Context/Core.php
  *
  * @package   Context
  * @author    Dion Moult <dion@thinkmoult.com>
@@ -9,11 +9,11 @@
  * @link      http://wipup.org/
  */
 
-defined('SYSPATH') OR die('No direct script access.');
+namespace Eadrax\Eadrax\Context;
 
 /**
  * All contexts must extend this class.
  *
  * @package Context
  */
-abstract class Context_Core {}
+abstract class Core {}
