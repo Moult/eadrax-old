@@ -1,6 +1,6 @@
 <?php
 /**
- * Eadrax application/classes/Exception/Validation.php
+ * Eadrax Exception/Validation.php
  *
  * @package   Exception
  * @author    Dion Moult <dion@thinkmoult.com>
@@ -9,7 +9,7 @@
  * @link      http://wipup.org/
  */
 
-defined('SYSPATH') OR die('No direct script access.');
+namespace Eadrax\Eadrax\Exception;
 
 /**
  * When validation fails in a usecase execution
@@ -18,4 +18,4 @@ defined('SYSPATH') OR die('No direct script access.');
  *
  * @package Exception
  */
-class Exception_Validation extends Exception_Multiple {}
+class Validation extends Multiple {}

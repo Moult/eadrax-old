@@ -1,6 +1,6 @@
 <?php
 /**
- * Eadrax application/classes/Exception/Multiple.php
+ * Eadrax Exception/Multiple.php
  *
  * @package   Exception
  * @author    Dion Moult <dion@thinkmoult.com>
@@ -9,7 +9,7 @@
  * @link      http://wipup.org/
  */
 
-defined('SYSPATH') OR die('No direct script access.');
+namespace Eadrax\Eadrax\Exception;
 
 /**
  * For exceptions that need to log an array rather than a single message
@@ -21,7 +21,7 @@ defined('SYSPATH') OR die('No direct script access.');
  *
  * @package Exception
  */
-class Exception_Multiple extends Exception
+class Multiple extends \Exception
 {
     /**
      * Holds the array of exception error messages

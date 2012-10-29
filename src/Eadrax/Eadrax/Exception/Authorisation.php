@@ -1,6 +1,6 @@
 <?php
 /**
- * Eadrax application/classes/Exception/Authorisation.php
+ * Eadrax Exception/Authorisation.php
  *
  * @package   Exception
  * @author    Dion Moult <dion@thinkmoult.com>
@@ -9,11 +9,11 @@
  * @link      http://wipup.org/
  */
 
-defined('SYSPATH') OR die('No direct script access.');
+namespace Eadrax\Eadrax\Exception;
 
 /**
  * To be used when a use case is not authorised to be carried out.
  *
  * @package Exception
  */
-class Exception_Authorisation extends Exception {}
+class Authorisation extends \Exception {}
