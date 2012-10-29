@@ -1,6 +1,6 @@
 <?php
 /**
- * Eadrax application/classes/Context/Factory.php
+ * Eadrax Context/Factory.php
  *
  * @package   Context
  * @author    Dion Moult <dion@thinkmoult.com>
@@ -9,14 +9,14 @@
  * @link      http://wipup.org/
  */
 
-defined('SYSPATH') OR die('No direct script access.');
+namespace Eadrax\Eadrax\Context;
 
 /**
  * All context factories must extend this class.
  *
  * @package Context
  */
-abstract class Context_Factory
+abstract class Factory
 {
     /**
      * Stores input data the factory is given.
