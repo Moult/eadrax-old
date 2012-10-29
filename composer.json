@@ -3,12 +3,7 @@
         "bin-dir": "bin/"
     },
     "require": {
-        "php": ">=5.4.0",
-        "behat/behat": "2.4.*@stable",
-        "behat/mink": "1.4.*@stable",
-        "behat/mink-extension": "*",
-        "behat/mink-goutte-driver": "*",
-        "behat/mink-selenium2-driver": "*"
+        "php": ">=5.4.0"
     },
     "require-dev": {
         "phpspec/phpspec2": "*"
