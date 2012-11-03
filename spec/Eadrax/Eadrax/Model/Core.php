@@ -2,12 +2,17 @@
 
 namespace spec\Eadrax\Eadrax\Model;
 
-use PHPSpec2\ObjectBehavior;
-
-class Core extends ObjectBehavior
+trait Core
 {
-    function it_should_be_initializable()
+    function it_should_be_able_to_define_ids()
     {
-        // TODO not sure how to spec abstract objects yet
+        $this->set_id('foo');
+        $this->get_id()->shouldBe('foo');
+    }
+
+    function it_should_be_able_to_construct_attributes()
+    {
+        $this->beConstructedWith(array('id' => 'foo'));
+        $this->get_id()->shouldBe('foo');
     }
 }
