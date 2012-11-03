@@ -1,6 +1,6 @@
 <?php
 /**
- * Eadrax application/classes/Context/User/Dashboard/User.php
+ * Eadrax Context/User/Dashboard/User.php
  *
  * @package   Context
  * @author    Dion Moult <dion@thinkmoult.com>
@@ -12,6 +12,7 @@
 namespace Eadrax\Eadrax\Context\User\Dashboard;
 use Eadrax\Eadrax\Model;
 use Eadrax\Eadrax\Context;
+use Eadrax\Eadrax\Entity;
 
 /**
  * Allows model_user to be cast as a guest role
@@ -29,16 +30,23 @@ class User extends Model\User implements User\Requirement
      * @param Model_User $model_user Data object to copy
      * @return void
      */
-    public function __construct(Model\User $model_user = NULL)
+    public function __construct(Model\User $model_user = NULL, Entity\Auth $entity_auth = NULL)
     {
         if ($model_user !== NULL)
         {
-            parent::__construct(get_object_vars($model_user));
+            $this->assign_data($model_user);
+        }
+
+        if ($entity_auth !== NULL)
+        {
+            $this->link(array(
+                'entity_auth' => $entity_auth
+            ));
         }
     }
 
     public function assign_data(Model\User $model_user)
     {
-        $this->__construct($model_user);
+        parent::__construct(get_object_vars($model_user));
     }
 }

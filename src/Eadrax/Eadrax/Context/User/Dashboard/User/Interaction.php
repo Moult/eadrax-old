@@ -1,6 +1,6 @@
 <?php
 /**
- * Eadrax application/classes/Context/User/Dashboard/User/Interaction.php
+ * Eadrax Context/User/Dashboard/User/Interaction.php
  *
  * @package   Context
  * @author    Dion Moult <dion@thinkmoult.com>
@@ -9,7 +9,8 @@
  * @link      http://wipup.org/
  */
 
-defined('SYSPATH') OR die('No direct script access.');
+namespace Eadrax\Eadrax\Context\User\Dashboard\User;
+use Eadrax\Eadrax\Exception;
 
 /**
  * Defines what the user role is capable of.
@@ -17,7 +18,7 @@ defined('SYSPATH') OR die('No direct script access.');
  * @package    Context
  * @subpackage Interaction
  */
-trait Context_User_Dashboard_User_Interaction
+trait Interaction
 {
     /**
      * Prove that it is allowed to view a dashboard.
@@ -27,11 +28,11 @@ trait Context_User_Dashboard_User_Interaction
      */
     public function authorise_dashboard()
     {
-        if ($this->module_auth->logged_in())
+        if ($this->entity_auth->logged_in())
             return array(
-                'username' => $this->module_auth->get_user()->username
+                'username' => $this->entity_auth->get_user()->username
             );
         else
-            throw new Exception_Authorisation('Please login before you can view your dashboard.');
+            throw new Exception\Authorisation('Please login before you can view your dashboard.');
     }
 }

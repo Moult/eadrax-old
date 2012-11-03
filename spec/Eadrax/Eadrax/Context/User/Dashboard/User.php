@@ -2,15 +2,22 @@
 
 namespace spec\Eadrax\Eadrax\Context\User\Dashboard;
 
+require_once 'spec/Eadrax/Eadrax/Context/User/Dashboard/User/Interaction.php';
+
 use PHPSpec2\ObjectBehavior;
 
 class User extends ObjectBehavior
 {
-    function let($model_user)
+    use User\Interaction;
+
+    /**
+     * @param Eadrax\Eadrax\Entity\Auth $entity_auth
+     */
+    function let($entity_auth)
     {
         $model_user = new \Eadrax\Eadrax\Model\User;
         $model_user->username = 'username';
-        $this->beConstructedWith($model_user);
+        $this->beConstructedWith($model_user, $entity_auth);
     }
 
     function it_should_be_initializable()
