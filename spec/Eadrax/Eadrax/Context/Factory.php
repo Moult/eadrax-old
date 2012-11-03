@@ -2,12 +2,11 @@
 
 namespace spec\Eadrax\Eadrax\Context;
 
-use PHPSpec2\ObjectBehavior;
-
-class Factory extends ObjectBehavior
+trait Factory
 {
-    function it_should_be_initializable()
+    function it_should_be_able_to_store_and_retrive_data()
     {
-        // TODO
+        $this->beConstructedWith(array('foo' => 'bar'));
+        $this->get_data('foo')->shouldBe('bar');
     }
 }
