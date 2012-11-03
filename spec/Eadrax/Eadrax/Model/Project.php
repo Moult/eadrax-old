@@ -2,10 +2,14 @@
 
 namespace spec\Eadrax\Eadrax\Model;
 
+require_once 'spec/Eadrax/Eadrax/Model/Core.php';
+
 use PHPSpec2\ObjectBehavior;
 
 class Project extends ObjectBehavior
 {
+    use Core;
+
     function it_should_be_initializable()
     {
         $this->shouldHaveType('Eadrax\Eadrax\Model\Project');
@@ -27,7 +31,6 @@ class Project extends ObjectBehavior
         $this->set_summary('foo');
         $this->get_summary()->shouldBe('foo');
     }
-
 
     /**
      * @param Eadrax\Eadrax\Model\User $user
