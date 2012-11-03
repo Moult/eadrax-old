@@ -30,7 +30,7 @@ abstract class Factory
      * @param array $data The data to be used for production
      * @return void
      */
-    public function __construct($data)
+    public function __construct($data = NULL)
     {
         $this->data = $data;
     }
@@ -41,7 +41,7 @@ abstract class Factory
      * @param string $key The key of the data item to retrieve
      * @return mixed
      */
-    protected function get_data($key)
+    public function get_data($key)
     {
         if (isset($this->data[$key]))
             return $this->data[$key];
