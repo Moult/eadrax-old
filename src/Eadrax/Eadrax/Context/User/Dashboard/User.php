@@ -9,7 +9,9 @@
  * @link      http://wipup.org/
  */
 
-defined('SYSPATH') OR die('No direct script access.');
+namespace Eadrax\Eadrax\Context\User\Dashboard;
+use Eadrax\Eadrax\Model;
+use Eadrax\Eadrax\Context;
 
 /**
  * Allows model_user to be cast as a guest role
@@ -17,9 +19,9 @@ defined('SYSPATH') OR die('No direct script access.');
  * @package    Context
  * @subpackage Role
  */ 
-class Context_User_Dashboard_User extends Model_User implements Context_User_Dashboard_User_Requirement
+class User extends Model\User implements User\Requirement
 {
-    use Context_Interaction, Context_User_Dashboard_User_Interaction;
+    use Context\Interaction, User\Interaction;
 
     /**
      * Takes a data object and copies all of its properties
@@ -27,8 +29,16 @@ class Context_User_Dashboard_User extends Model_User implements Context_User_Das
      * @param Model_User $model_user Data object to copy
      * @return void
      */
-    public function __construct(Model_User $model_user)
+    public function __construct(Model\User $model_user = NULL)
     {
-        parent::__construct(get_object_vars($model_user));
+        if ($model_user !== NULL)
+        {
+            parent::__construct(get_object_vars($model_user));
+        }
+    }
+
+    public function assign_data(Model\User $model_user)
+    {
+        $this->__construct($model_user);
     }
 }
