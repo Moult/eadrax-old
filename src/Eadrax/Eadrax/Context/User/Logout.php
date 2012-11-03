@@ -1,6 +1,6 @@
 <?php
 /**
- * Eadrax application/classes/Context/User/Logout.php
+ * Eadrax Context/User/Logout.php
  *
  * @package   Context
  * @author    Dion Moult <dion@thinkmoult.com>
@@ -9,14 +9,15 @@
  * @link      http://wipup.org/
  */
 
-defined('SYSPATH') OR die('No direct script access.');
+namespace Eadrax\Eadrax\Context\User;
+use Eadrax\Eadrax\Context\Core;
 
 /**
  * Enacts the usecase for user logout.
  *
  * @package Context
  */
-class Context_User_Logout extends Context_Core
+class Logout extends Core
 {
     /**
      * Auth module. This context does not require a role.
