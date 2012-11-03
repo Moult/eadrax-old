@@ -2,6 +2,6 @@
 
 namespace Eadrax\Eadrax\Model;
 
-class File
+class File extends Core
 {
 }
