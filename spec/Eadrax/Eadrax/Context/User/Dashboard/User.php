@@ -3,12 +3,14 @@
 namespace spec\Eadrax\Eadrax\Context\User\Dashboard;
 
 require_once 'spec/Eadrax/Eadrax/Context/User/Dashboard/User/Interaction.php';
+require_once 'spec/Eadrax/Eadrax/Context/Interaction.php';
 
 use PHPSpec2\ObjectBehavior;
+use spec\Eadrax\Eadrax\Context;
 
 class User extends ObjectBehavior
 {
-    use User\Interaction;
+    use Context\Interaction, User\Interaction;
 
     /**
      * @param Eadrax\Eadrax\Entity\Auth $entity_auth

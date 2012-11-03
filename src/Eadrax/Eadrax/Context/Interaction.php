@@ -1,6 +1,6 @@
 <?php
 /**
- * Eadrax application/classes/Context/Interaction.php
+ * Eadrax Context/Interaction.php
  *
  * @package   Context
  * @author    Dion Moult <dion@thinkmoult.com>
@@ -9,7 +9,7 @@
  * @link      http://wipup.org/
  */
 
-defined('SYSPATH') OR die('No direct script access.');
+namespace Eadrax\Eadrax\Context;
 
 /**
  * Holds interactions that all roles should be capable of.
@@ -17,7 +17,7 @@ defined('SYSPATH') OR die('No direct script access.');
  * @package    Context
  * @subpackage Interaction
  */
-trait Context_Interaction
+trait Interaction
 {
     /**
      * Allows the role to speak to another role or object.
