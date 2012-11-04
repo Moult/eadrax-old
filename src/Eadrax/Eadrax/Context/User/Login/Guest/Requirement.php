@@ -1,6 +1,6 @@
 <?php
 /**
- * Eadrax application/classes/Context/User/Login/Guest/Requirement.php
+ * Eadrax Context/User/Login/Guest/Requirement.php
  *
  * @package   Context
  * @author    Dion Moult <dion@thinkmoult.com>
@@ -9,7 +9,7 @@
  * @link      http://wipup.org/
  */
 
-defined('SYSPATH') OR die('No direct script access.');
+namespace Eadrax\Eadrax\Context\User\Login\Guest;
 
 /**
  * Define data model prerequisites to play the Guest role
@@ -17,7 +17,7 @@ defined('SYSPATH') OR die('No direct script access.');
  * @package    Context
  * @subpackage Role
  */
-interface Context_User_Login_Guest_Requirement
+interface Requirement
 {
     /** @ignore */
     public function get_username();
