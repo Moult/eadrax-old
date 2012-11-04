@@ -1,6 +1,6 @@
 <?php
 /**
- * Eadrax application/classes/Context/User/Login/Factory.php
+ * Eadrax Context/User/Login/Factory.php
  *
  * @package   Context
  * @author    Dion Moult <dion@thinkmoult.com>
@@ -9,15 +9,18 @@
  * @link      http://wipup.org/
  */
 
-defined('SYSPATH') OR die('No direct script access.');
+namespace Eadrax\Eadrax\Context\User\Login;
+use Eadrax\Eadrax\Context;
+use Eadrax\Eadrax\Model;
+use Eadrax\Eadrax\Entity;
 
 /**
  * Dependency injection to load all related data models, repositories, and 
- * vendor modules to prepare the Context for execution.
+ * vendor entities to prepare the Context for execution.
  *
  * @package Context
  */
-class Context_User_Login_Factory extends Context_Factory
+class Factory extends Context\Factory
 {
     /**
      * Loads the context
@@ -26,20 +29,22 @@ class Context_User_Login_Factory extends Context_Factory
      */
     public function fetch()
     {
-        return new Context_User_Login(
+        return new Context\User\Login(
             $this->model_user(),
-            $this->module_auth()
+            $this->role_guest(),
+            $this->repository(),
+            $this->entity_auth()
         );
     }
 
     /**
      * Data object for users
      *
-     * @return Model_User
+     * @return Model\User
      */
     public function model_user()
     {
-        return new Model_User(array(
+        return new Model\User(array(
             'username' => $this->get_data('username'),
             'password' => $this->get_data('password'),
             'email' => $this->get_data('email')
@@ -47,12 +52,22 @@ class Context_User_Login_Factory extends Context_Factory
     }
 
     /**
-     * This is a Kohana module.
+     * This is an authentication entity.
      *
-     * @return Auth
+     * @return Entity\Auth
      */
-    public function module_auth()
+    public function entity_auth()
     {
-        return Auth::instance();
+        return new Entity\Auth;
+    }
+
+    public function role_guest()
+    {
+        return new Guest;
+    }
+
+    public function repository()
+    {
+        return new Repository;
     }
 }
