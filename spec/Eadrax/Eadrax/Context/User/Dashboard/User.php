@@ -41,6 +41,11 @@ class User extends ObjectBehavior
         $this->get_id()->shouldBe(NULL);
     }
 
+    function it_should_construct_links()
+    {
+        $this->entity_auth->shouldHaveType('Eadrax\Eadrax\Entity\Auth');
+    }
+
     function it_should_be_able_to_import_data_from_a_user_model()
     {
         $model_user = new \Eadrax\Eadrax\Model\User;
