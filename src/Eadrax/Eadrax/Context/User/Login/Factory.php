@@ -33,7 +33,8 @@ class Factory extends Context\Factory
             $this->model_user(),
             $this->role_guest(),
             $this->repository(),
-            $this->entity_auth()
+            $this->entity_auth(),
+            $this->entity_validation()
         );
     }
 
@@ -61,13 +62,33 @@ class Factory extends Context\Factory
         return new Entity\Auth;
     }
 
+    /**
+     * Grabs the Guest role
+     *
+     * @return Guest
+     */
     public function role_guest()
     {
         return new Guest;
     }
 
+    /**
+     * Gets the repository for this context.
+     *
+     * @return Repository
+     */
     public function repository()
     {
         return new Repository;
+    }
+
+    /**
+     * This is a validation entity.
+     *
+     * @return Entity\Validation
+     */
+    public function entity_validation()
+    {
+        return new Entity\Validation;
     }
 }

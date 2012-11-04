@@ -40,12 +40,13 @@ class Login extends Core
      * @param Entity\Auth $entity_auth Authentication system
      * @return void
      */
-    public function __construct(Model\User $model_user, Guest $role_guest, Repository $repository, Entity\Auth $entity_auth)
+    public function __construct(Model\User $model_user, Guest $role_guest, Repository $repository, Entity\Auth $entity_auth, Entity\Validation $entity_validation)
     {
         $role_guest->assign_data($model_user);
         $role_guest->link(array(
             'repository' => $repository,
-            'entity_auth' => $entity_auth
+            'entity_auth' => $entity_auth,
+            'entity_validation' => $entity_validation
         ));
         $this->guest = $role_guest;
     }

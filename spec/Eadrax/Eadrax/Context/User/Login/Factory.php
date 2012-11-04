@@ -31,6 +31,11 @@ class Factory extends ObjectBehavior
         $this->entity_auth()->shouldHaveType('Eadrax\Eadrax\Entity\Auth');
     }
 
+    function it_finds_an_entity_validation()
+    {
+        $this->entity_validation()->shouldHaveType('Eadrax\Eadrax\Entity\Validation');
+    }
+
     function it_finds_a_role_guest()
     {
         $this->role_guest()->shouldHaveType('Eadrax\Eadrax\Context\User\Login\Guest');
