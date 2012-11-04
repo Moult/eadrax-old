@@ -11,6 +11,7 @@
 
 namespace Eadrax\Eadrax\Context\User;
 use Eadrax\Eadrax\Context\Core;
+use Eadrax\Eadrax\Entity;
 
 /**
  * Enacts the usecase for user logout.
@@ -20,21 +21,21 @@ use Eadrax\Eadrax\Context\Core;
 class Logout extends Core
 {
     /**
-     * Auth module. This context does not require a role.
-     * @var Auth
+     * Auth entity. This context does not require a role.
+     * @var Entity\Auth
      */
-    public $module_auth;
+    public $entity_auth;
 
     /**
      * Casts data models into roles, and makes each role aware of necessary 
      * dependencies.
      *
-     * @param Module_Auth $module_auth Authentication system
+     * @param Entity\Auth $entity_auth Authentication system
      * @return void
      */
-    public function __construct($module_auth)
+    public function __construct($entity_auth)
     {
-        $this->module_auth = $module_auth;
+        $this->entity_auth = $entity_auth;
     }
 
     /**
@@ -44,7 +45,7 @@ class Logout extends Core
      */
     public function execute()
     {
-        $this->module_auth->logout();
+        $this->entity_auth->logout();
 
         return array(
             'status' => 'success'

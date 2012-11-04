@@ -27,7 +27,8 @@ class User extends Model\User implements User\Requirement
     /**
      * Takes a data object and copies all of its properties
      *
-     * @param Model_User $model_user Data object to copy
+     * @param Model\User  $model_user  Data object to copy
+     * @param Entity\Auth $entity_auth The authentication entity
      * @return void
      */
     public function __construct(Model\User $model_user = NULL, Entity\Auth $entity_auth = NULL)
@@ -45,6 +46,12 @@ class User extends Model\User implements User\Requirement
         }
     }
 
+    /**
+     * Assigns data into the role from a data object
+     *
+     * @param Model\User $model_user Data object to copy
+     * @return void
+     */
     public function assign_data(Model\User $model_user)
     {
         parent::__construct(get_object_vars($model_user));

@@ -23,7 +23,7 @@ trait Interaction
     /**
      * Prove that it is allowed to view a dashboard.
      *
-     * @throws Exception_Authorisation if already logged in
+     * @throws Exception\Authorisation if already logged in
      * @return array
      */
     public function authorise_dashboard()

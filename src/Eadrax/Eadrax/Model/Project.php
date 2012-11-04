@@ -12,7 +12,7 @@
 namespace Eadrax\Eadrax\Model;
 
 /**
- * This is a generic WIPUP project.
+ * This is a generic Eadrax project.
  *
  * @package Model
  */
