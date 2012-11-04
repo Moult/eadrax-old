@@ -15,12 +15,13 @@ class Guest extends ObjectBehavior
     /**
      * @param Eadrax\Eadrax\Context\User\Login\Repository $repository
      * @param Eadrax\Eadrax\Entity\Auth                   $entity_auth
+     * @param Eadrax\Eadrax\Entity\Validation             $entity_validation
      */
-    function let($repository, $entity_auth)
+    function let($repository, $entity_auth, $entity_validation)
     {
         $model_user = new \Eadrax\Eadrax\Model\User;
         $model_user->username = 'username';
-        $this->beConstructedWith($model_user, $repository, $entity_auth);
+        $this->beConstructedWith($model_user, $repository, $entity_auth, $entity_validation);
     }
 
     function it_should_be_initializable()

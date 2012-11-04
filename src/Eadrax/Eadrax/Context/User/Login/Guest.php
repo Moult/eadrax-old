@@ -30,7 +30,7 @@ class Guest extends Model\User implements Guest\Requirement
      * @param Model\User $model_user Data object to copy
      * @return void
      */
-    public function __construct(Model\User $model_user = NULL, Repository $repository = NULL, Entity\Auth $entity_auth = NULL)
+    public function __construct(Model\User $model_user = NULL, Repository $repository = NULL, Entity\Auth $entity_auth = NULL, Entity\Validation $entity_validation = NULL)
     {
         if ($model_user !== NULL)
         {
@@ -46,6 +46,11 @@ class Guest extends Model\User implements Guest\Requirement
         if ($entity_auth !== NULL)
         {
             $links['entity_auth'] = $entity_auth;
+        }
+
+        if ($entity_validation !== NULL)
+        {
+            $links['entity_validation'] = $entity_validation;
         }
 
         $this->link($links);
