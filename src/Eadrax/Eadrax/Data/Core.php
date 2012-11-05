@@ -1,20 +1,20 @@
 <?php
 /**
- * Eadrax Model/Core.php
+ * Eadrax Data/Core.php
  *
- * @package   Model
+ * @package   Data
  * @author    Dion Moult <dion@thinkmoult.com>
  * @copyright (c) 2012 Dion Moult
  * @license   ISC http://opensource.org/licenses/isc-license.txt
  * @link      http://wipup.org/
  */
 
-namespace Eadrax\Eadrax\Model;
+namespace Eadrax\Eadrax\Data;
 
 /**
- * All data model objects must extend this.
+ * All data objects must extend this.
  *
- * @package Model
+ * @package Data
  */
 abstract class Core {
     /**
@@ -26,7 +26,7 @@ abstract class Core {
     /**
      * Allows you to set properties whilst instantiating the object.
      *
-     * $model_foo = new Model_Foo(array('foo' => 'bar'));
+     * $data_foo = new Data_Foo(array('foo' => 'bar'));
      *
      * @param array $properties The list of properties to preset
      * @return void
@@ -39,7 +39,7 @@ abstract class Core {
     }
 
     /**
-     * Sets a property of the model.
+     * Sets a property of the data.
      *
      * @param string $property_name  The name of the property to set
      * @param string $property_value The value to set

@@ -10,7 +10,7 @@
  */
 
 namespace Eadrax\Eadrax\Context\Project\Add\Proposal;
-use Eadrax\Eadrax\Model;
+use Eadrax\Eadrax\Data;
 use Eadrax\Eadrax\Exception;
 
 /**
@@ -24,12 +24,12 @@ trait Interaction
     /**
      * Sets the author of the project proposal.
      *
-     * @param Model\User $model_user
+     * @param Data\User $data_user
      * @return void
      */
-    public function assign_author(Model\User $model_user)
+    public function assign_author(Data\User $data_user)
     {
-        $this->set_author($model_user);
+        $this->set_author($data_user);
         return $this->validate_information();
     }
 

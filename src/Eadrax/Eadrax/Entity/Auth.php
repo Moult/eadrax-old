@@ -30,12 +30,12 @@ interface Auth
     public function logged_in();
 
     /**
-     * Retrieves the currently logged in user in the form of a Model\User.
+     * Retrieves the currently logged in user in the form of a Data\User.
      *
      * Example:
      * $auth->get_user()->get_username();
      *
-     * @return Eadrax\Eadrax\Model\User
+     * @return Eadrax\Eadrax\Data\User
      */
     public function get_user();
 

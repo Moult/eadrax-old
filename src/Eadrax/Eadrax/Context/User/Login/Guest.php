@@ -11,33 +11,33 @@
 
 namespace Eadrax\Eadrax\Context\User\Login;
 use Eadrax\Eadrax\Context;
-use Eadrax\Eadrax\Model;
+use Eadrax\Eadrax\Data;
 use Eadrax\Eadrax\Entity;
 
 /**
- * Allows model_user to be cast as a guest role
+ * Allows data_user to be cast as a guest role
  *
  * @package    Context
  * @subpackage Role
  */ 
-class Guest extends Model\User implements Guest\Requirement
+class Guest extends Data\User implements Guest\Requirement
 {
     use Context\Interaction, Guest\Interaction;
 
     /**
      * Takes a data object and copies all of its properties
      *
-     * @param Model\User        $model_user        Data object to copy
+     * @param Data\User        $data_user        Data object to copy
      * @param Repository        $repository        Repository
      * @param Entity\Auth       $entity_auth       Authentication entity
      * @param Entity\Validation $entity_validation Validation entity
      * @return void
      */
-    public function __construct(Model\User $model_user = NULL, Repository $repository = NULL, Entity\Auth $entity_auth = NULL, Entity\Validation $entity_validation = NULL)
+    public function __construct(Data\User $data_user = NULL, Repository $repository = NULL, Entity\Auth $entity_auth = NULL, Entity\Validation $entity_validation = NULL)
     {
-        if ($model_user !== NULL)
+        if ($data_user !== NULL)
         {
-            $this->assign_data($model_user);
+            $this->assign_data($data_user);
         }
 
         $links = array();
@@ -62,11 +62,11 @@ class Guest extends Model\User implements Guest\Requirement
     /**
      * Assigns data into the role from a data object
      *
-     * @param Model\User $model_user Data object to copy
+     * @param Data\User $data_user Data object to copy
      * @return void
      */
-    public function assign_data(Model\User $model_user)
+    public function assign_data(Data\User $data_user)
     {
-        parent::__construct(get_object_vars($model_user));
+        parent::__construct(get_object_vars($data_user));
     }
 }

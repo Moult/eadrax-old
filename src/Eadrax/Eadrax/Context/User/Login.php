@@ -13,7 +13,7 @@ namespace Eadrax\Eadrax\Context\User;
 use Eadrax\Eadrax\Context\Core;
 use Eadrax\Eadrax\Context\User\Login\Guest;
 use Eadrax\Eadrax\Context\User\Login\Repository;
-use Eadrax\Eadrax\Model;
+use Eadrax\Eadrax\Data;
 use Eadrax\Eadrax\Entity;
 use Eadrax\Eadrax\Exception;
 
@@ -31,18 +31,18 @@ class Login extends Core
     public $guest;
 
     /**
-     * Casts data models into roles, and makes each role aware of necessary 
+     * Casts data into roles, and makes each role aware of necessary 
      * dependencies.
      *
-     * @param Model\User  $model_user  User data object
+     * @param Data\User  $data_user  User data object
      * @param Guest       $role_guest  The guest role
      * @param Repository  $repository  The repository
      * @param Entity\Auth $entity_auth Authentication system
      * @return void
      */
-    public function __construct(Model\User $model_user, Guest $role_guest, Repository $repository, Entity\Auth $entity_auth, Entity\Validation $entity_validation)
+    public function __construct(Data\User $data_user, Guest $role_guest, Repository $repository, Entity\Auth $entity_auth, Entity\Validation $entity_validation)
     {
-        $role_guest->assign_data($model_user);
+        $role_guest->assign_data($data_user);
         $role_guest->link(array(
             'repository' => $repository,
             'entity_auth' => $entity_auth,

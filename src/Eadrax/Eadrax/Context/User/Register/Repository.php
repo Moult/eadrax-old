@@ -22,10 +22,10 @@ interface Repository
     /**
      * Saves a user
      *
-     * @param Model_User $model_user The user to save
+     * @param Data_User $data_user The user to save
      * @return void
      */
-    public function register($model_user);
+    public function register($data_user);
 
     /**
      * Checks whether or not a username is unique

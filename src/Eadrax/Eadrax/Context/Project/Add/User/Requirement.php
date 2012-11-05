@@ -12,7 +12,7 @@
 namespace Eadrax\Eadrax\Context\Project\Add\User;
 
 /**
- * Define data model prerequisites to play the user role
+ * Define data prerequisites to play the user role
  *
  * @package    Context
  * @subpackage Role

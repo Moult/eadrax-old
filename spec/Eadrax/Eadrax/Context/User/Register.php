@@ -12,19 +12,19 @@ class Register extends ObjectBehavior
     use Core;
 
     /**
-     * @param Eadrax\Eadrax\Model\User                       $model_user
+     * @param Eadrax\Eadrax\Data\User                       $data_user
      * @param Eadrax\Eadrax\Context\User\Register\Guest      $role_guest
      * @param Eadrax\Eadrax\Context\User\Register\Repository $repository
      * @param Eadrax\Eadrax\Entity\Auth                      $entity_auth
      */
-    function let($model_user, $role_guest, $repository, $entity_auth)
+    function let($data_user, $role_guest, $repository, $entity_auth)
     {
-        $role_guest->assign_data($model_user)->shouldBeCalled();
+        $role_guest->assign_data($data_user)->shouldBeCalled();
         $role_guest->link(array(
             'repository' => $repository,
             'entity_auth' => $entity_auth
         ))->shouldBeCalled();
-        $this->beConstructedWith($model_user, $role_guest, $repository, $entity_auth);
+        $this->beConstructedWith($data_user, $role_guest, $repository, $entity_auth);
     }
 
     function it_should_be_initializable()

@@ -14,7 +14,7 @@ use Eadrax\Eadrax\Context\Project\Add\User;
 use Eadrax\Eadrax\Context\Project\Add\Proposal;
 use Eadrax\Eadrax\Context\Project\Add\Repository;
 use Eadrax\Eadrax\Context\Core;
-use Eadrax\Eadrax\Model;
+use Eadrax\Eadrax\Data;
 use Eadrax\Eadrax\Entity;
 use Eadrax\Eadrax\Exception;
 
@@ -38,23 +38,23 @@ class Add extends Core
     public $proposal;
 
     /**
-     * Casts data models into roles, and makes each role aware of necessary 
+     * Casts data into roles, and makes each role aware of necessary 
      * dependencies.
      *
-     * @param Model\User    $model_user    User data object
+     * @param Data\User    $data_user    User data object
      * @param User          $role_user     User role for this context
-     * @param Model\Project $model_project Project data object
+     * @param Data\Project $data_project Project data object
      * @param Proposal      $role_proposal Proposal role for this context
      * @param Repository    $repository    Repository
      * @param Entity\Auth   $entity_auth   Authentication system
      * @return void
      */
-    public function __construct(Model\User $model_user, User $role_user, Model\Project $model_project, Proposal $role_proposal, Repository $repository, Entity\Auth $entity_auth)
+    public function __construct(Data\User $data_user, User $role_user, Data\Project $data_project, Proposal $role_proposal, Repository $repository, Entity\Auth $entity_auth)
     {
-        $role_user->assign_data($model_user);
+        $role_user->assign_data($data_user);
         $this->user = $role_user;
 
-        $role_proposal->assign_data($model_project);
+        $role_proposal->assign_data($data_project);
         $this->proposal = $role_proposal;
 
         $this->user->link(array(

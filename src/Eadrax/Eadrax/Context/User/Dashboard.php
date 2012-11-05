@@ -12,7 +12,7 @@
 namespace Eadrax\Eadrax\Context\User;
 use Eadrax\Eadrax\Context\Core;
 use Eadrax\Eadrax\Context\User\Dashboard\User;
-use Eadrax\Eadrax\Model;
+use Eadrax\Eadrax\Data;
 use Eadrax\Eadrax\Exception;
 use Eadrax\Eadrax\Entity;
 
@@ -30,17 +30,17 @@ class Dashboard extends Core
     public $user;
 
     /**
-     * Casts data models into roles, and makes each role aware of necessary 
+     * Casts data into roles, and makes each role aware of necessary 
      * dependencies.
      *
-     * @param Model\User  $model_user  User data object
+     * @param Data\User  $data_user  User data object
      * @param User        $role_user   The user role
      * @param Entity\Auth $entity_auth Authentication system
      * @return void
      */
-    public function __construct(Model\User $model_user, User $role_user, Entity\Auth $entity_auth)
+    public function __construct(Data\User $data_user, User $role_user, Entity\Auth $entity_auth)
     {
-        $role_user->assign_data($model_user);
+        $role_user->assign_data($data_user);
         $role_user->link(array(
             'entity_auth' => $entity_auth
         ));

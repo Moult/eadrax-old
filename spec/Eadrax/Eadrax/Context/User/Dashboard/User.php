@@ -17,9 +17,9 @@ class User extends ObjectBehavior
      */
     function let($entity_auth)
     {
-        $model_user = new \Eadrax\Eadrax\Model\User;
-        $model_user->username = 'username';
-        $this->beConstructedWith($model_user, $entity_auth);
+        $data_user = new \Eadrax\Eadrax\Data\User;
+        $data_user->username = 'username';
+        $this->beConstructedWith($data_user, $entity_auth);
     }
 
     function it_should_be_initializable()
@@ -29,7 +29,7 @@ class User extends ObjectBehavior
 
     function it_is_a_user_role()
     {
-        $this->shouldHaveType('Eadrax\Eadrax\Model\User');
+        $this->shouldHaveType('Eadrax\Eadrax\Data\User');
         $this->shouldHaveType('Eadrax\Eadrax\Context\User\Dashboard\User\Requirement');
     }
 
@@ -46,11 +46,11 @@ class User extends ObjectBehavior
         $this->entity_auth->shouldHaveType('Eadrax\Eadrax\Entity\Auth');
     }
 
-    function it_should_be_able_to_import_data_from_a_user_model()
+    function it_should_be_able_to_import_data_from_a_user_data()
     {
-        $model_user = new \Eadrax\Eadrax\Model\User;
-        $model_user->username = 'foo';
-        $this->assign_data($model_user);
+        $data_user = new \Eadrax\Eadrax\Data\User;
+        $data_user->username = 'foo';
+        $this->assign_data($data_user);
         $this->get_username()->shouldBe('foo');
     }
 }

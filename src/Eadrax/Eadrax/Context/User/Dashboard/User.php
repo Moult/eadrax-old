@@ -10,32 +10,32 @@
  */
 
 namespace Eadrax\Eadrax\Context\User\Dashboard;
-use Eadrax\Eadrax\Model;
+use Eadrax\Eadrax\Data;
 use Eadrax\Eadrax\Context;
 use Eadrax\Eadrax\Entity;
 
 /**
- * Allows model_user to be cast as a guest role
+ * Allows data_user to be cast as a guest role
  *
  * @package    Context
  * @subpackage Role
  */ 
-class User extends Model\User implements User\Requirement
+class User extends Data\User implements User\Requirement
 {
     use Context\Interaction, User\Interaction;
 
     /**
      * Takes a data object and copies all of its properties
      *
-     * @param Model\User  $model_user  Data object to copy
+     * @param Data\User  $data_user  Data object to copy
      * @param Entity\Auth $entity_auth The authentication entity
      * @return void
      */
-    public function __construct(Model\User $model_user = NULL, Entity\Auth $entity_auth = NULL)
+    public function __construct(Data\User $data_user = NULL, Entity\Auth $entity_auth = NULL)
     {
-        if ($model_user !== NULL)
+        if ($data_user !== NULL)
         {
-            $this->assign_data($model_user);
+            $this->assign_data($data_user);
         }
 
         if ($entity_auth !== NULL)
@@ -49,11 +49,11 @@ class User extends Model\User implements User\Requirement
     /**
      * Assigns data into the role from a data object
      *
-     * @param Model\User $model_user Data object to copy
+     * @param Data\User $data_user Data object to copy
      * @return void
      */
-    public function assign_data(Model\User $model_user)
+    public function assign_data(Data\User $data_user)
     {
-        parent::__construct(get_object_vars($model_user));
+        parent::__construct(get_object_vars($data_user));
     }
 }

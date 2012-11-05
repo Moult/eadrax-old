@@ -36,7 +36,7 @@ trait Interaction
 
     /**
      * Loads the authentication details of the currently logged in user into the 
-     * user data model.
+     * user data.
      *
      * @return void
      */

@@ -1,8 +1,8 @@
 <?php
 
-namespace spec\Eadrax\Eadrax\Model;
+namespace spec\Eadrax\Eadrax\Data;
 
-require_once 'spec/Eadrax/Eadrax/Model/Core.php';
+require_once 'spec/Eadrax/Eadrax/Data/Core.php';
 
 use PHPSpec2\ObjectBehavior;
 
@@ -12,6 +12,6 @@ class File extends ObjectBehavior
 
     function it_should_be_initializable()
     {
-        $this->shouldHaveType('Eadrax\Eadrax\Model\File');
+        $this->shouldHaveType('Eadrax\Eadrax\Data\File');
     }
 }

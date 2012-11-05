@@ -4,9 +4,9 @@ namespace spec\Eadrax\Eadrax\Context\Project\Add\Proposal;
 
 trait Interaction
 {
-    function it_sets_author_from_the_passed_model_user_then_validates($entity_validation)
+    function it_sets_author_from_the_passed_data_user_then_validates($entity_validation)
     {
-        $model_user = new \Eadrax\Eadrax\Model\User();
+        $data_user = new \Eadrax\Eadrax\Data\User();
 
         $entity_validation->setup(array(
             'name' => $this->get_name(),
@@ -17,8 +17,8 @@ trait Interaction
         $entity_validation->check()->shouldBeCalled()->willReturn(FALSE);
         $entity_validation->errors()->shouldBeCalled()->willReturn(array('foo'));
 
-        $this->shouldThrow('\Eadrax\Eadrax\Exception\Validation')->duringAssign_author($model_user);
-        $this->get_author()->shouldBe($model_user);
+        $this->shouldThrow('\Eadrax\Eadrax\Exception\Validation')->duringAssign_author($data_user);
+        $this->get_author()->shouldBe($data_user);
     }
 
     function it_submits_to_the_repository_if_project_has_valid_information($repository, $entity_validation)

@@ -10,33 +10,33 @@
  */
 
 namespace Eadrax\Eadrax\Context\Project\Add;
-use Eadrax\Eadrax\Model;
+use Eadrax\Eadrax\Data;
 use Eadrax\Eadrax\Context;
 use Eadrax\Eadrax\Entity;
 
 /**
- * Allows model_project to be cast as a proposal role
+ * Allows data_project to be cast as a proposal role
  *
  * @package    Context
  * @subpackage Role
  */ 
-class Proposal extends Model\Project implements Proposal\Requirement
+class Proposal extends Data\Project implements Proposal\Requirement
 {
     use Context\Interaction, Proposal\Interaction;
 
     /**
      * Takes a data object and copies all of its properties
      *
-     * @param Model\Project     $model_project     Data object to copy
+     * @param Data\Project     $data_project     Data object to copy
      * @param Repository        $repository        The repository
      * @param Entity\Validation $entity_validation Validation entity
      * @return void
      */
-    public function __construct(Model\Project $model_project = NULL, Repository $repository = NULL, Entity\Validation $entity_validation = NULL)
+    public function __construct(Data\Project $data_project = NULL, Repository $repository = NULL, Entity\Validation $entity_validation = NULL)
     {
-        if ($model_project !== NULL)
+        if ($data_project !== NULL)
         {
-            $this->assign_data($model_project);
+            $this->assign_data($data_project);
         }
 
         $links = array();
@@ -54,13 +54,13 @@ class Proposal extends Model\Project implements Proposal\Requirement
     }
 
     /**
-     * Loads data from a model.
+     * Loads data from a data.
      *
-     * @param Model\Project $model_project The project model
+     * @param Data\Project $data_project The project data
      * @return void
      */
-    public function assign_data(Model\Project $model_project)
+    public function assign_data(Data\Project $data_project)
     {
-        parent::__construct(get_object_vars($model_project));
+        parent::__construct(get_object_vars($data_project));
     }
 }

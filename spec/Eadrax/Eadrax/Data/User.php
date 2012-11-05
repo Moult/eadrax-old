@@ -1,8 +1,8 @@
 <?php
 
-namespace spec\Eadrax\Eadrax\Model;
+namespace spec\Eadrax\Eadrax\Data;
 
-require_once 'spec/Eadrax/Eadrax/Model/Core.php';
+require_once 'spec/Eadrax/Eadrax/Data/Core.php';
 
 use PHPSpec2\ObjectBehavior;
 
@@ -12,12 +12,12 @@ class User extends ObjectBehavior
 
     function it_should_be_initializable()
     {
-        $this->shouldHaveType('Eadrax\Eadrax\Model\User');
+        $this->shouldHaveType('Eadrax\Eadrax\Data\User');
     }
 
-    function it_should_be_a_model()
+    function it_should_be_a_data()
     {
-        $this->shouldHaveType('Eadrax\Eadrax\Model\Core');
+        $this->shouldHaveType('Eadrax\Eadrax\Data\Core');
     }
 
     function it_should_have_a_username_attribute()

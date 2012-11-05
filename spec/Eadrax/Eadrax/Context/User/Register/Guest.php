@@ -19,9 +19,9 @@ class Guest extends ObjectBehavior
      */
     function let($repository, $entity_auth, $entity_validation)
     {
-        $model_user = new \Eadrax\Eadrax\Model\User;
-        $model_user->username = 'username';
-        $this->beConstructedWith($model_user, $repository, $entity_auth, $entity_validation);
+        $data_user = new \Eadrax\Eadrax\Data\User;
+        $data_user->username = 'username';
+        $this->beConstructedWith($data_user, $repository, $entity_auth, $entity_validation);
     }
 
     function it_should_be_initializable()
@@ -31,7 +31,7 @@ class Guest extends ObjectBehavior
 
     function it_is_a_guest_role()
     {
-        $this->shouldHaveType('Eadrax\Eadrax\Model\User');
+        $this->shouldHaveType('Eadrax\Eadrax\Data\User');
         $this->shouldHaveType('Eadrax\Eadrax\Context\User\Register\Guest\Requirement');
     }
 
@@ -49,11 +49,11 @@ class Guest extends ObjectBehavior
         $this->entity_auth->shouldHaveType('Eadrax\Eadrax\Entity\Auth');
     }
 
-    function it_should_be_able_to_import_data_from_a_user_model()
+    function it_should_be_able_to_import_data_from_a_user_data()
     {
-        $model_user = new \Eadrax\Eadrax\Model\User;
-        $model_user->username = 'foo';
-        $this->assign_data($model_user);
+        $data_user = new \Eadrax\Eadrax\Data\User;
+        $data_user->username = 'foo';
+        $this->assign_data($data_user);
         $this->get_username()->shouldBe('foo');
     }
 }

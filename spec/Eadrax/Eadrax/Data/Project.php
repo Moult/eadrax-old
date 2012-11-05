@@ -1,8 +1,8 @@
 <?php
 
-namespace spec\Eadrax\Eadrax\Model;
+namespace spec\Eadrax\Eadrax\Data;
 
-require_once 'spec/Eadrax/Eadrax/Model/Core.php';
+require_once 'spec/Eadrax/Eadrax/Data/Core.php';
 
 use PHPSpec2\ObjectBehavior;
 
@@ -12,12 +12,12 @@ class Project extends ObjectBehavior
 
     function it_should_be_initializable()
     {
-        $this->shouldHaveType('Eadrax\Eadrax\Model\Project');
+        $this->shouldHaveType('Eadrax\Eadrax\Data\Project');
     }
 
-    function it_should_be_a_model()
+    function it_should_be_a_data()
     {
-        $this->shouldHaveType('Eadrax\Eadrax\Model\Core');
+        $this->shouldHaveType('Eadrax\Eadrax\Data\Core');
     }
 
     function it_should_have_a_name_attribute()
@@ -33,7 +33,7 @@ class Project extends ObjectBehavior
     }
 
     /**
-     * @param Eadrax\Eadrax\Model\User $user
+     * @param Eadrax\Eadrax\Data\User $user
      */
     function it_should_have_an_author_attribute($user)
     {
@@ -50,7 +50,7 @@ class Project extends ObjectBehavior
     }
 
     /**
-     * @param Eadrax\Eadrax\Model\File $file
+     * @param Eadrax\Eadrax\Data\File $file
      */
     function it_should_have_an_icon_attribute($file)
     {

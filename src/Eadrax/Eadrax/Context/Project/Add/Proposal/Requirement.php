@@ -10,10 +10,10 @@
  */
 
 namespace Eadrax\Eadrax\Context\Project\Add\Proposal;
-use Eadrax\Eadrax\Model;
+use Eadrax\Eadrax\Data;
 
 /**
- * Define data model prerequisites to play the proposal role
+ * Define data prerequisites to play the proposal role
  *
  * @package    Context
  * @subpackage Role
@@ -33,5 +33,5 @@ interface Requirement
     /** @ignore */
     public function get_author();
     /** @ignore */
-    public function set_author(Model\User $author);
+    public function set_author(Data\User $author);
 }

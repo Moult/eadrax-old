@@ -14,10 +14,10 @@ trait Interaction
     {
         $entity_auth->logged_in()->shouldBeCalled()->willReturn(TRUE);
 
-        $model_user = new \Eadrax\Eadrax\Model\User;
-        $model_user->username = 'foo';
-        $model_user->id = 'bar';
-        $entity_auth->get_user()->shouldBeCalled()->willReturn($model_user);
+        $data_user = new \Eadrax\Eadrax\Data\User;
+        $data_user->username = 'foo';
+        $data_user->id = 'bar';
+        $entity_auth->get_user()->shouldBeCalled()->willReturn($data_user);
 
         $role_proposal->assign_author($this)->willReturn('foobar');
         $this->authorise_project_add()->shouldReturn('foobar');

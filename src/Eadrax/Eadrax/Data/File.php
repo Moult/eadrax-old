@@ -1,6 +1,6 @@
 <?php
 
-namespace Eadrax\Eadrax\Model;
+namespace Eadrax\Eadrax\Data;
 
 class File extends Core
 {

@@ -1,20 +1,20 @@
 <?php
 /**
- * Eadrax Model/User.php
+ * Eadrax Data/User.php
  *
- * @package   Model
+ * @package   Data
  * @author    Dion Moult <dion@thinkmoult.com>
  * @copyright (c) 2012 Dion Moult
  * @license   ISC http://opensource.org/licenses/isc-license.txt
  * @link      http://wipup.org/
  */
 
-namespace Eadrax\Eadrax\Model;
+namespace Eadrax\Eadrax\Data;
 
 /**
  * This is a generic system user.
  *
- * @package Model
+ * @package Data
  */
 class User extends Core
 {

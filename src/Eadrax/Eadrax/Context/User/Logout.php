@@ -27,7 +27,7 @@ class Logout extends Core
     public $entity_auth;
 
     /**
-     * Casts data models into roles, and makes each role aware of necessary 
+     * Casts data into roles, and makes each role aware of necessary 
      * dependencies.
      *
      * @param Entity\Auth $entity_auth Authentication system

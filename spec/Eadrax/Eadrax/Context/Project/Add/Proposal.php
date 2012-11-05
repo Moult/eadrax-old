@@ -18,9 +18,9 @@ class Proposal extends ObjectBehavior
      */
     function let($repository, $entity_validation)
     {
-        $model_project = new \Eadrax\Eadrax\Model\Project;
-        $model_project->name = 'foo';
-        $this->beConstructedWith($model_project, $repository, $entity_validation);
+        $data_project = new \Eadrax\Eadrax\Data\Project;
+        $data_project->name = 'foo';
+        $this->beConstructedWith($data_project, $repository, $entity_validation);
         $this->name->shouldBe('foo');
     }
 
@@ -31,15 +31,15 @@ class Proposal extends ObjectBehavior
 
     function it_should_be_a_proposal_role()
     {
-        $this->shouldHaveType('Eadrax\Eadrax\Model\Project');
+        $this->shouldHaveType('Eadrax\Eadrax\Data\Project');
         $this->shouldHaveType('Eadrax\Eadrax\Context\Project\Add\Proposal\Requirement');
     }
 
     function it_should_be_able_to_load_data()
     {
-        $model_project = new \Eadrax\Eadrax\Model\Project;
-        $model_project->name = 'bar';
-        $this->assign_data($model_project);
+        $data_project = new \Eadrax\Eadrax\Data\Project;
+        $data_project->name = 'bar';
+        $this->assign_data($data_project);
         $this->name->shouldBe('bar');
     }
 

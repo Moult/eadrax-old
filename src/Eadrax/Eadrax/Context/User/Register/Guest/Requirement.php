@@ -12,7 +12,7 @@
 namespace Eadrax\Eadrax\Context\User\Register\Guest;
 
 /**
- * Define data model prerequisites to play the Guest role
+ * Define data prerequisites to play the Guest role
  *
  * @package    Context
  * @subpackage Role

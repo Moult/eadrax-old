@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Eadrax\Eadrax\Model;
+namespace spec\Eadrax\Eadrax\Data;
 
 trait Core
 {

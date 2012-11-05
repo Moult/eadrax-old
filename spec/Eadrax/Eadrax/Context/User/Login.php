@@ -12,21 +12,21 @@ class Login extends ObjectBehavior
     use Core;
 
     /**
-     * @param Eadrax\Eadrax\Model\User                    $model_user
+     * @param Eadrax\Eadrax\Data\User                    $data_user
      * @param Eadrax\Eadrax\Context\User\Login\Guest      $role_guest
      * @param Eadrax\Eadrax\Context\User\Login\Repository $repository
      * @param Eadrax\Eadrax\Entity\Auth                   $entity_auth
      * @param Eadrax\Eadrax\Entity\Validation             $entity_validation
      */
-    function let($model_user, $role_guest, $repository, $entity_auth, $entity_validation)
+    function let($data_user, $role_guest, $repository, $entity_auth, $entity_validation)
     {
-        $role_guest->assign_data($model_user)->shouldBeCalled();
+        $role_guest->assign_data($data_user)->shouldBeCalled();
         $role_guest->link(array(
             'repository' => $repository,
             'entity_auth' => $entity_auth,
             'entity_validation' => $entity_validation
         ))->shouldBeCalled();
-        $this->beConstructedWith($model_user, $role_guest, $repository, $entity_auth, $entity_validation);
+        $this->beConstructedWith($data_user, $role_guest, $repository, $entity_auth, $entity_validation);
     }
 
     function it_should_be_initializable()

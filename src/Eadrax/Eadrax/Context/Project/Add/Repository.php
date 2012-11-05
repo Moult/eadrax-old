@@ -10,7 +10,7 @@
  */
 
 namespace Eadrax\Eadrax\Context\Project\Add;
-use Eadrax\Eadrax\Model;
+use Eadrax\Eadrax\Data;
 
 /**
  * Handles persistance during adding a project.
@@ -23,8 +23,8 @@ interface Repository
     /**
      * Saves a project
      *
-     * @param Model\Project $model_project The project to save
+     * @param Data\Project $data_project The project to save
      * @return void
      */
-    public function add_project(Model\Project $model_project);
+    public function add_project(Data\Project $data_project);
 }

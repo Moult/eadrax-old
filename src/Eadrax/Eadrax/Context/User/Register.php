@@ -11,7 +11,7 @@
 
 namespace Eadrax\Eadrax\Context\User;
 use Eadrax\Eadrax\Context\Core;
-use Eadrax\Eadrax\Model;
+use Eadrax\Eadrax\Data;
 use Eadrax\Eadrax\Exception;
 use Eadrax\Eadrax\Entity;
 
@@ -29,16 +29,16 @@ class Register extends Core
     public $guest;
 
     /**
-     * Casts data models into roles, and makes each role aware of necessary 
+     * Casts data into roles, and makes each role aware of necessary 
      * dependencies.
      *
-     * @param Model\User  $model_user  User data object
+     * @param Data\User  $data_user  User data object
      * @param Entity\Auth $entity_auth Authentication system
      * @return void
      */
-    public function __construct($model_user, $role_guest, $repository, $entity_auth)
+    public function __construct($data_user, $role_guest, $repository, $entity_auth)
     {
-        $role_guest->assign_data($model_user);
+        $role_guest->assign_data($data_user);
         $role_guest->link(array(
             'repository' => $repository,
             'entity_auth' => $entity_auth
