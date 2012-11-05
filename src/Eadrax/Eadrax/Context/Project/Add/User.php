@@ -28,22 +28,30 @@ class User extends Model\User implements User\Requirement
      * Takes a data object and copies all of its properties
      *
      * @param Model\User  $model_user  Data object to copy
+     * @param Proposal    $role_proposal 
      * @param Entity\Auth $entity_auth The authentication entity
      * @return void
      */
-    public function __construct(Model\User $model_user = NULL, Entity\Auth $entity_auth = NULL)
+    public function __construct(Model\User $model_user = NULL, Proposal $role_proposal = NULL, Entity\Auth $entity_auth = NULL)
     {
         if ($model_user !== NULL)
         {
             $this->assign_data($model_user);
         }
 
+        $links = array();
+
+        if ($role_proposal !== NULL)
+        {
+            $links['proposal'] = $role_proposal;
+        }
+
         if ($entity_auth !== NULL)
         {
-            $this->link(array(
-                'entity_auth' => $entity_auth
-            ));
+            $links['entity_auth'] = $entity_auth;
         }
+
+        $this->link($links);
     }
 
     /**

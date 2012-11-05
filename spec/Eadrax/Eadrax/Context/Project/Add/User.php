@@ -13,13 +13,14 @@ class User extends ObjectBehavior
     use Context\Interaction, User\Interaction;
 
     /**
-     * @param Eadrax\Eadrax\Entity\Auth $entity_auth
+     * @param Eadrax\Eadrax\Context\Project\Add\Proposal $role_proposal
+     * @param Eadrax\Eadrax\Entity\Auth                  $entity_auth
      */
-    function let($entity_auth)
+    function let($role_proposal, $entity_auth)
     {
         $model_user = new \Eadrax\Eadrax\Model\User;
         $model_user->id = 'foo';
-        $this->beConstructedWith($model_user, $entity_auth);
+        $this->beConstructedWith($model_user, $role_proposal, $entity_auth);
     }
 
     function it_should_be_initializable()
@@ -44,6 +45,7 @@ class User extends ObjectBehavior
     function it_should_construct_links()
     {
         $this->entity_auth->shouldHaveType('Eadrax\Eadrax\Entity\Auth');
+        $this->proposal->shouldHaveType('Eadrax\Eadrax\Context\Project\Add\Proposal');
     }
 
     function it_should_be_able_to_import_data_from_a_user_model()
