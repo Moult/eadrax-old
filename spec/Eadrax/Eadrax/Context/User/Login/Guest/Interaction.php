@@ -18,7 +18,7 @@ trait Interaction
             'username' => 'username'
         ))->shouldBeCalled();
         $entity_validation->rule('username', 'not_empty')->shouldBeCalled();
-        $entity_validation->callback('username', array($this, 'is_existing_account'), array($this->username, $this->password));
+        $entity_validation->callback('username', array($this, 'is_existing_account'), array($this->username, $this->password))->shouldBeCalled();
 
         $entity_validation->check()->willReturn(FALSE);
         $entity_validation->errors()->willReturn(array(
@@ -30,12 +30,6 @@ trait Interaction
 
     function it_proceeds_to_login_if_validation_succeeds($entity_auth, $entity_validation)
     {
-        $entity_validation->setup(array(
-            'username' => 'username'
-        ))->shouldBeCalled();
-        $entity_validation->rule('username', 'not_empty')->shouldBeCalled();
-        $entity_validation->callback('username', array($this, 'is_existing_account'), array($this->username, $this->password));
-
         $entity_validation->check()->willReturn(TRUE);
 
         $entity_auth->login($this->username, $this->password)->shouldBeCalled()->willReturn('foo');
