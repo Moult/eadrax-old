@@ -1,6 +1,6 @@
 <?php
 /**
- * Eadrax application/classes/Context/Project/Add/User/Interaction.php
+ * Eadrax Context/Project/Add/User/Interaction.php
  *
  * @package   Context
  * @author    Dion Moult <dion@thinkmoult.com>
@@ -9,7 +9,8 @@
  * @link      http://wipup.org/
  */
 
-defined('SYSPATH') OR die('No direct script access.');
+namespace Eadrax\Eadrax\Context\Project\Add\User;
+use Eadrax\Eadrax\Exception;
 
 /**
  * Defines what the proposal role is capable of.
@@ -17,20 +18,20 @@ defined('SYSPATH') OR die('No direct script access.');
  * @package    Context
  * @subpackage Interaction
  */
-trait Context_Project_Add_User_Interaction
+trait Interaction
 {
     /**
      * Prove that it is allowed to add a project.
      *
-     * @throws Exception_Authorisation if not logged in
+     * @throws Exception\Authorisation if not logged in
      * @return void
      */
     public function authorise_project_add()
     {
-        if ($this->module_auth->logged_in())
+        if ($this->entity_auth->logged_in())
             return $this->load_authentication_details();
         else
-            throw new Exception_Authorisation('Please login before you can add a new project.');
+            throw new Exception\Authorisation('Please login before you can add a new project.');
     }
 
     /**
@@ -41,11 +42,10 @@ trait Context_Project_Add_User_Interaction
      */
     public function load_authentication_details()
     {
-        $authenticated_user = $this->module_auth->get_user();
+        $authenticated_user = $this->entity_auth->get_user();
         $this->set_username($authenticated_user->username);
         $this->set_id($authenticated_user->id);
 
         return $this->proposal->assign_author($this);
     }
-
 }
