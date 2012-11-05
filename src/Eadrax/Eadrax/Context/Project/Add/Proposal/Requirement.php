@@ -1,6 +1,6 @@
 <?php
 /**
- * Eadrax application/classes/Context/Project/Add/Proposal/Requirement.php
+ * Eadrax Context/Project/Add/Proposal/Requirement.php
  *
  * @package   Context
  * @author    Dion Moult <dion@thinkmoult.com>
@@ -9,7 +9,8 @@
  * @link      http://wipup.org/
  */
 
-defined('SYSPATH') OR die('No direct script access.');
+namespace Eadrax\Eadrax\Context\Project\Add\Proposal;
+use Eadrax\Eadrax\Model;
 
 /**
  * Define data model prerequisites to play the proposal role
@@ -17,7 +18,7 @@ defined('SYSPATH') OR die('No direct script access.');
  * @package    Context
  * @subpackage Role
  */
-interface Context_Project_Add_Proposal_Requirement
+interface Requirement
 {
     /** @ignore */
     public function get_name();
@@ -32,5 +33,5 @@ interface Context_Project_Add_Proposal_Requirement
     /** @ignore */
     public function get_author();
     /** @ignore */
-    public function set_author(Model_User $author);
+    public function set_author(Model\User $author);
 }
