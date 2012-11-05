@@ -23,7 +23,7 @@ interface Validation
      * checks on.
      *
      * Example:
-     * $validation = new Validation_Class();
+     * $validation = new Validation_Class;
      * $validation->setup($_POST);
      *
      * @param array input_data
@@ -47,6 +47,7 @@ interface Validation
      * Adds a custom function to validate the input with key $key.
      *
      * Example:
+     * // will call $this->is_existing_account();
      * $validation->callback($this, 'is_existing_account');
      *
      * @param string $key      The key to access the input data value
@@ -61,7 +62,7 @@ interface Validation
      * are any validation errors.
      *
      * Example:
-     * if ($validation->check() === TRUE) // All items are valid.
+     * if ($validation->check() === TRUE) {} // All items are valid.
      *
      * @return bool
      */
