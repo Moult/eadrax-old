@@ -2,10 +2,16 @@
 
 namespace spec\Eadrax\Eadrax\Context\Project\Add;
 
+require_once 'spec/Eadrax/Eadrax/Context/Interaction.php';
+require_once 'spec/Eadrax/Eadrax/Context/Project/Add/User/Interaction.php';
+
 use PHPSpec2\ObjectBehavior;
+use Eadrax\Eadrax\Context;
 
 class User extends ObjectBehavior
 {
+    use Context\Interaction, User\Interaction;
+
     /**
      * @param Eadrax\Eadrax\Entity\Auth $entity_auth
      */
