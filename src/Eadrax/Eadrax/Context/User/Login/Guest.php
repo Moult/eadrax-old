@@ -27,7 +27,10 @@ class Guest extends Model\User implements Guest\Requirement
     /**
      * Takes a data object and copies all of its properties
      *
-     * @param Model\User $model_user Data object to copy
+     * @param Model\User        $model_user        Data object to copy
+     * @param Repository        $repository        Repository
+     * @param Entity\Auth       $entity_auth       Authentication entity
+     * @param Entity\Validation $entity_validation Validation entity
      * @return void
      */
     public function __construct(Model\User $model_user = NULL, Repository $repository = NULL, Entity\Auth $entity_auth = NULL, Entity\Validation $entity_validation = NULL)
