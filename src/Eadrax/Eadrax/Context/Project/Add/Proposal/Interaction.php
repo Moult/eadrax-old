@@ -1,6 +1,6 @@
 <?php
 /**
- * Eadrax application/classes/Context/Project/Add/Proposal/Interaction.php
+ * Eadrax Context/Project/Add/Proposal/Interaction.php
  *
  * @package   Context
  * @author    Dion Moult <dion@thinkmoult.com>
@@ -9,7 +9,9 @@
  * @link      http://wipup.org/
  */
 
-defined('SYSPATH') OR die('No direct script access.');
+namespace Eadrax\Eadrax\Context\Project\Add\Proposal;
+use Eadrax\Eadrax\Model;
+use Eadrax\Eadrax\Exception;
 
 /**
  * Defines what the proposal role is capable of.
@@ -17,15 +19,15 @@ defined('SYSPATH') OR die('No direct script access.');
  * @package    Context
  * @subpackage Interaction
  */
-trait Context_Project_Add_Proposal_Interaction
+trait Interaction
 {
     /**
      * Sets the author of the project proposal.
      *
-     * @param Model_User $model_user
+     * @param Model\User $model_user
      * @return void
      */
-    public function assign_author(Model_User $model_user)
+    public function assign_author(Model\User $model_user)
     {
         $this->set_author($model_user);
         return $this->validate_information();
@@ -38,13 +40,16 @@ trait Context_Project_Add_Proposal_Interaction
      */
     public function validate_information()
     {
-        $validation = Validation::factory(get_object_vars($this))
-            ->rule('name', 'not_empty')
-            ->rule('summary', 'not_empty');
-        if ($validation->check())
+        $this->entity_validation->setup(array(
+            'name' => $this->get_name(),
+            'summary' => $this->get_summary()
+        ));
+        $this->entity_validation->rule('name', 'not_empty');
+        $this->entity_validation->rule('summary', 'not_empty');
+        if ($this->entity_validation->check())
             return $this->submit();
         else
-            throw new Exception_Validation($validation->errors('context/project/add/errors'));
+            throw new Exception\Validation($this->entity_validation->errors());
     }
 
     /**
