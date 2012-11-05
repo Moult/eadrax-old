@@ -33,7 +33,7 @@ class Guest extends Model\User implements Guest\Requirement
      * @param Entity\Validation $entity_validation Validation entity
      * @return void
      */
-    public function __construct(Model\User $model_user, Repository $repository, Entity\Auth $entity_auth, Entity\Validation $entity_validation)
+    public function __construct(Model\User $model_user = NULL, Repository $repository = NULL, Entity\Auth $entity_auth = NULL, Entity\Validation $entity_validation = NULL)
     {
         if ($model_user !== NULL)
         {
