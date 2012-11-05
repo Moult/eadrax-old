@@ -1,6 +1,6 @@
 <?php
 /**
- * Eadrax application/classes/Context/Project/Add.php
+ * Eadrax Context/Project/Add.php
  *
  * @package   Context
  * @author    Dion Moult <dion@thinkmoult.com>
@@ -9,24 +9,31 @@
  * @link      http://wipup.org/
  */
 
-defined('SYSPATH') OR die('No direct script access.');
+namespace Eadrax\Eadrax\Context\Project;
+use Eadrax\Eadrax\Context\Project\Add\User;
+use Eadrax\Eadrax\Context\Project\Add\Proposal;
+use Eadrax\Eadrax\Context\Project\Add\Repository;
+use Eadrax\Eadrax\Context\Core;
+use Eadrax\Eadrax\Model;
+use Eadrax\Eadrax\Entity;
+use Eadrax\Eadrax\Exception;
 
 /**
  * Enacts the usecase for adding a new project.
  *
  * @package Context
  */
-class Context_Project_Add extends Context_Core
+class Add extends Core
 {
     /**
      * User role
-     * @var Context_Project_Add_User
+     * @var User
      */
     public $user;
 
     /**
      * Proposal role
-     * @var Context_Project_Add_Proposal
+     * @var Proposal
      */
     public $proposal;
 
@@ -34,20 +41,25 @@ class Context_Project_Add extends Context_Core
      * Casts data models into roles, and makes each role aware of necessary 
      * dependencies.
      *
-     * @param Model_User    $model_user    User data object
-     * @param Model_Project $model_project Project data object
-     * @param Module_Auth   $module_auth   Authentication system
+     * @param Model\User    $model_user    User data object
+     * @param User          $role_user     User role for this context
+     * @param Model\Project $model_project Project data object
+     * @param Proposal      $role_proposal Proposal role for this context
+     * @param Repository    $repository    Repository
+     * @param Entity\Auth   $entity_auth   Authentication system
      * @return void
      */
-    public function __construct($model_user, $model_project, $module_auth)
+    public function __construct(Model\User $model_user, User $role_user, Model\Project $model_project, Proposal $role_proposal, Repository $repository, Entity\Auth $entity_auth)
     {
-        $this->user = new Context_Project_Add_User($model_user);
-        $this->proposal = new Context_Project_Add_Proposal($model_project);
-        $repository = new Context_Project_Add_Repository;
+        $role_user->assign_data($model_user);
+        $this->user = $role_user;
+
+        $role_proposal->assign_data($model_project);
+        $this->proposal = $role_proposal;
 
         $this->user->link(array(
             'proposal' => $this->proposal,
-            'module_auth' => $module_auth
+            'entity_auth' => $entity_auth
         ));
 
         $this->proposal->link(array(
@@ -66,7 +78,7 @@ class Context_Project_Add extends Context_Core
         {
             $this->user->authorise_project_add();
         }
-        catch (Exception_Authorisation $e)
+        catch (Exception\Authorisation $e)
         {
             return array(
                 'status' => 'failure',
@@ -76,7 +88,7 @@ class Context_Project_Add extends Context_Core
                 )
             );
         }
-        catch (Exception_Validation $e)
+        catch (Exception\Validation $e)
         {
             return array(
                 'status' => 'failure',
