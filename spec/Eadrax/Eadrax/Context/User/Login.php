@@ -63,9 +63,9 @@ class Login extends ObjectBehavior
         ));
     }
 
-    function it_executes_the_usecase_successfully($role_user)
+    function it_executes_the_usecase_successfully($role_guest)
     {
-        $role_user->authorise_dashboard()->willReturn('foo');
+        $role_guest->authorise_dashboard()->willReturn('foo');
         $this->execute()->shouldBe(array(
             'status' => 'success'
         ));
