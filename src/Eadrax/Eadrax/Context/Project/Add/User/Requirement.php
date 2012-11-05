@@ -1,6 +1,6 @@
 <?php
 /**
- * Eadrax application/classes/Context/Project/Add/User/Requirement.php
+ * Eadrax Context/Project/Add/User/Requirement.php
  *
  * @package   Context
  * @author    Dion Moult <dion@thinkmoult.com>
@@ -9,7 +9,7 @@
  * @link      http://wipup.org/
  */
 
-defined('SYSPATH') OR die('No direct script access.');
+namespace Eadrax\Eadrax\Context\Project\Add\User;
 
 /**
  * Define data model prerequisites to play the user role
@@ -17,7 +17,7 @@ defined('SYSPATH') OR die('No direct script access.');
  * @package    Context
  * @subpackage Role
  */
-interface Context_Project_Add_User_Requirement
+interface Requirement
 {
     /** @ignore */
     public function get_id();
