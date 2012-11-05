@@ -1,6 +1,6 @@
 <?php
 /**
- * Eadrax application/classes/Context/User/Register.php
+ * Eadrax Context/User/Register.php
  *
  * @package   Context
  * @author    Dion Moult <dion@thinkmoult.com>
@@ -9,14 +9,18 @@
  * @link      http://wipup.org/
  */
 
-defined('SYSPATH') OR die('No direct script access.');
+namespace Eadrax\Eadrax\Context\User;
+use Eadrax\Eadrax\Context\Core;
+use Eadrax\Eadrax\Model;
+use Eadrax\Eadrax\Exception;
+use Eadrax\Eadrax\Entity;
 
 /**
  * Enacts the usecase for user registration.
  *
  * @package Context
  */
-class Context_User_Register extends Context_Core
+class Register extends Core
 {
     /**
      * Guest role
@@ -28,18 +32,18 @@ class Context_User_Register extends Context_Core
      * Casts data models into roles, and makes each role aware of necessary 
      * dependencies.
      *
-     * @param Model_User  $model_user  User data object
-     * @param Module_Auth $module_auth Authentication system
+     * @param Model\User  $model_user  User data object
+     * @param Entity\Auth $entity_auth Authentication system
      * @return void
      */
-    public function __construct($model_user, $module_auth)
+    public function __construct($model_user, $role_guest, $repository, $entity_auth)
     {
-        $this->guest = new Context_User_Register_Guest($model_user);
-        $repository = new Context_User_Register_Repository;
-        $this->guest->link(array(
+        $role_guest->assign_data($model_user);
+        $role_guest->link(array(
             'repository' => $repository,
-            'module_auth' => $module_auth
+            'entity_auth' => $entity_auth
         ));
+        $this->guest = $role_guest;
     }
 
     /**
@@ -53,7 +57,7 @@ class Context_User_Register extends Context_Core
         {
             $this->guest->authorise_registration();
         }
-        catch (Exception_Authorisation $e)
+        catch (Exception\Authorisation $e)
         {
             return array(
                 'status' => 'failure',
@@ -63,7 +67,7 @@ class Context_User_Register extends Context_Core
                 )
             );
         }
-        catch (Exception_Validation $e)
+        catch (Exception\Validation $e)
         {
             return array(
                 'status' => 'failure',
