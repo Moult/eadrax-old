@@ -10,6 +10,7 @@
  */
 
 namespace Eadrax\Eadrax\Context\User\Register;
+use Eadrax\Eadrax\Data;
 
 /**
  * Handles persistance during user registration.
