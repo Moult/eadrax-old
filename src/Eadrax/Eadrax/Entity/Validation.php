@@ -60,7 +60,7 @@ interface Validation
      *                         return type of bool
      * @return void
      */
-    public function callback($key, array $function);
+    public function callback($key, array $function, array $args);
 
     /**
      * Runs all of the added rules and callbacks, logging whether or not there 
