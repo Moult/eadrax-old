@@ -41,7 +41,7 @@ interface Validation
      * @param string $rule not_empty - passes if there is a value
      * @return void
      */
-    public function rule();
+    public function rule($key, $rule);
 
     /**
      * Adds a custom function to validate the input with key $key.
@@ -55,7 +55,7 @@ interface Validation
      *                         return type of bool
      * @return void
      */
-    public function callback();
+    public function callback($key, array $function);
 
     /**
      * Runs all of the added rules and callbacks, logging whether or not there 
