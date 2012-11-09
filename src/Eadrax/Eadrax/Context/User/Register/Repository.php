@@ -25,7 +25,7 @@ interface Repository
      * @param Data_User $data_user The user to save
      * @return void
      */
-    public function register($data_user);
+    public function register(Data\User $data_user);
 
     /**
      * Checks whether or not a username is unique
