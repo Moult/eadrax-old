@@ -12,14 +12,15 @@ class Add extends ObjectBehavior
     use Core;
 
     /**
-     * @param \Eadrax\Eadrax\Data\User                     $data_user
+     * @param \Eadrax\Eadrax\Data\User                      $data_user
      * @param \Eadrax\Eadrax\Context\Project\Add\User       $role_user
-     * @param \Eadrax\Eadrax\Data\Project                  $data_project
+     * @param \Eadrax\Eadrax\Data\Project                   $data_project
      * @param \Eadrax\Eadrax\Context\Project\Add\Proposal   $role_proposal
      * @param \Eadrax\Eadrax\Context\Project\Add\Repository $repository
      * @param \Eadrax\Eadrax\Entity\Auth                    $entity_auth
+     * @param \Eadrax\Eadrax\Entity\Validation              $entity_validation
      */
-    function let($data_user, $role_user, $data_project, $role_proposal, $repository, $entity_auth)
+    function let($data_user, $role_user, $data_project, $role_proposal, $repository, $entity_auth, $entity_validation)
     {
         $role_user->assign_data($data_user)->shouldBeCalled();
         $role_proposal->assign_data($data_project)->shouldBeCalled();
@@ -28,9 +29,10 @@ class Add extends ObjectBehavior
             'entity_auth' => $entity_auth
         ))->shouldBeCalled();
         $role_proposal->link(array(
-            'repository' => $repository
+            'repository' => $repository,
+            'entity_validation' => $entity_validation
         ))->shouldBeCalled();
-        $this->beConstructedWith($data_user, $role_user, $data_project, $role_proposal, $repository, $entity_auth);
+        $this->beConstructedWith($data_user, $role_user, $data_project, $role_proposal, $repository, $entity_auth, $entity_validation);
     }
 
     function it_should_be_initializable()

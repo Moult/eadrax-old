@@ -41,15 +41,16 @@ class Add extends Core
      * Casts data into roles, and makes each role aware of necessary 
      * dependencies.
      *
-     * @param Data\User    $data_user    User data object
-     * @param User          $role_user     User role for this context
-     * @param Data\Project $data_project Project data object
-     * @param Proposal      $role_proposal Proposal role for this context
-     * @param Repository    $repository    Repository
-     * @param Entity\Auth   $entity_auth   Authentication system
+     * @param Data\User         $data_user         User data object
+     * @param User              $role_user         User role for this context
+     * @param Data\Project      $data_project      Project data object
+     * @param Proposal          $role_proposal     Proposal role for this context
+     * @param Repository        $repository        Repository
+     * @param Entity\Auth       $entity_auth       Authentication system
+     * @param Entity\Validation $entity_validation Validation system
      * @return void
      */
-    public function __construct(Data\User $data_user, User $role_user, Data\Project $data_project, Proposal $role_proposal, Repository $repository, Entity\Auth $entity_auth)
+    public function __construct(Data\User $data_user, User $role_user, Data\Project $data_project, Proposal $role_proposal, Repository $repository, Entity\Auth $entity_auth, Entity\Validation $entity_validation)
     {
         $role_user->assign_data($data_user);
         $this->user = $role_user;
@@ -63,7 +64,8 @@ class Add extends Core
         ));
 
         $this->proposal->link(array(
-            'repository' => $repository
+            'repository' => $repository,
+            'entity_validation' => $entity_validation
         ));
     }
 

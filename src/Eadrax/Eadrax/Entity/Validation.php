@@ -39,9 +39,14 @@ interface Validation
      *
      * @param string $key  The key to access the input data value
      * @param string $rule not_empty - passes if there is a value
+     *                     regex - passes if it matches the regex in $arg
+     *                     min_length - passes if chars are more than $arg
+     *                     max_length - passes if chars are less than $arg
+     *                     email - passes if it is a valid email
+     * @param string $arg  Any extra arguments related to the rule
      * @return void
      */
-    public function rule($key, $rule);
+    public function rule($key, $rule, $arg = NULL);
 
     /**
      * Adds a custom function to validate the input with key $key.

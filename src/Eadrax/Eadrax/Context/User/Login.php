@@ -34,10 +34,11 @@ class Login extends Core
      * Casts data into roles, and makes each role aware of necessary 
      * dependencies.
      *
-     * @param Data\User  $data_user  User data object
-     * @param Guest       $role_guest  The guest role
-     * @param Repository  $repository  The repository
-     * @param Entity\Auth $entity_auth Authentication system
+     * @param Data\User         $data_user         User data object
+     * @param Guest             $role_guest        The guest role
+     * @param Repository        $repository        The repository
+     * @param Entity\Auth       $entity_auth       Authentication system
+     * @param Entity\Validation $entity_validation Validation system
      * @return void
      */
     public function __construct(Data\User $data_user, Guest $role_guest, Repository $repository, Entity\Auth $entity_auth, Entity\Validation $entity_validation)
