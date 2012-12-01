@@ -40,7 +40,6 @@ class Guest extends Data\User
      * Prove that it is allowed to register an account.
      *
      * @throws Exception\Authorisation if already logged in
-     *
      * @return void
      */
     public function authorise_registration()
@@ -55,7 +54,6 @@ class Guest extends Data\User
      * Makes sure our signup details are valid.
      *
      * @throws Exception\Validation
-     *
      * @return void
      */
     public function validate_information()
