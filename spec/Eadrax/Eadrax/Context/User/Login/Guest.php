@@ -2,7 +2,6 @@
 
 namespace spec\Eadrax\Eadrax\Context\User\Login;
 
-require_once 'spec/Eadrax/Eadrax/Context/User/Login/Guest/Interaction.php';
 require_once 'spec/Eadrax/Eadrax/Context/Interaction.php';
 
 use PHPSpec2\ObjectBehavior;
@@ -10,16 +9,16 @@ use spec\Eadrax\Eadrax\Context;
 
 class Guest extends ObjectBehavior
 {
-    use Context\Interaction, Guest\Interaction;
+    use Context\Interaction;
 
     /**
+     * @param Eadrax\Eadrax\Data\User                     $data_user
      * @param Eadrax\Eadrax\Context\User\Login\Repository $repository
      * @param Eadrax\Eadrax\Entity\Auth                   $entity_auth
      * @param Eadrax\Eadrax\Entity\Validation             $entity_validation
      */
-    function let($repository, $entity_auth, $entity_validation)
+    function let($data_user, $repository, $entity_auth, $entity_validation)
     {
-        $data_user = new \Eadrax\Eadrax\Data\User;
         $data_user->username = 'username';
         $this->beConstructedWith($data_user, $repository, $entity_auth, $entity_validation);
     }
@@ -32,7 +31,6 @@ class Guest extends ObjectBehavior
     function it_is_a_guest_role()
     {
         $this->shouldHaveType('Eadrax\Eadrax\Data\User');
-        $this->shouldHaveType('Eadrax\Eadrax\Context\User\Login\Guest\Requirement');
     }
 
     function it_should_be_able_to_construct_data()
@@ -43,18 +41,47 @@ class Guest extends ObjectBehavior
         $this->get_id()->shouldBe(NULL);
     }
 
-    function it_should_construct_links()
+    function it_throws_an_authorisation_error_if_logged_in($entity_auth)
     {
-        $this->repository->shouldHaveType('Eadrax\Eadrax\Context\User\Login\Repository');
-        $this->entity_auth->shouldHaveType('Eadrax\Eadrax\Entity\Auth');
+        $entity_auth->logged_in()->willReturn(TRUE);
+        $this->link(array('entity_auth' => $entity_auth));
+
+        $this->shouldThrow('\Eadrax\Eadrax\Exception\Authorisation')->duringAuthorise_login();
     }
 
-    function it_should_be_able_to_import_data_from_a_user_data()
+    function it_proceeds_to_validate_information_if_not_logged_in($entity_auth, $entity_validation)
     {
-        $data_user = new \Eadrax\Eadrax\Data\User;
-        $data_user->username = 'foo';
-        $this->assign_data($data_user);
-        $this->get_username()->shouldBe('foo');
+        $entity_auth->logged_in()->willReturn(FALSE);
+
+        $entity_validation->setup(array(
+            'username' => 'username'
+        ))->shouldBeCalled();
+        $entity_validation->rule('username', 'not_empty')->shouldBeCalled();
+        $entity_validation->callback('username', array($this, 'is_existing_account'), array($this->username, $this->password))->shouldBeCalled();
+
+        $entity_validation->check()->willReturn(FALSE);
+        $entity_validation->errors()->willReturn(array(
+            'foo' => 'bar'
+        ));
+        $this->link(array('entity_auth' => $entity_auth, 'entity_validation' => $entity_validation));
+
+        $this->shouldThrow('\Eadrax\Eadrax\Exception\Validation')->duringAuthorise_login();
+    }
+
+    function it_proceeds_to_login_if_validation_succeeds($entity_auth, $entity_validation)
+    {
+        $entity_validation->check()->willReturn(TRUE);
+
+        $entity_auth->login($this->username, $this->password)->shouldBeCalled()->willReturn('foo');
+        $this->link(array('entity_auth' => $entity_auth, 'entity_validation' => $entity_validation));
+        $this->validate_information()->shouldReturn('foo');
+    }
+
+    function it_checks_the_repository_for_existing_accounts($repository)
+    {
+        $repository->is_existing_account('foo', 'bar')->shouldBeCalled()->willReturn(TRUE);
+        $this->link(array('repository' => $repository));
+        $this->is_existing_account('foo', 'bar')->shouldBe(TRUE);
     }
 
 }

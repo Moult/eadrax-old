@@ -13,20 +13,13 @@ class Login extends ObjectBehavior
 
     /**
      * @param Eadrax\Eadrax\Data\User                    $data_user
-     * @param Eadrax\Eadrax\Context\User\Login\Guest      $role_guest
      * @param Eadrax\Eadrax\Context\User\Login\Repository $repository
      * @param Eadrax\Eadrax\Entity\Auth                   $entity_auth
      * @param Eadrax\Eadrax\Entity\Validation             $entity_validation
      */
-    function let($data_user, $role_guest, $repository, $entity_auth, $entity_validation)
+    function let($data_user, $repository, $entity_auth, $entity_validation)
     {
-        $role_guest->assign_data($data_user)->shouldBeCalled();
-        $role_guest->link(array(
-            'repository' => $repository,
-            'entity_auth' => $entity_auth,
-            'entity_validation' => $entity_validation
-        ))->shouldBeCalled();
-        $this->beConstructedWith($data_user, $role_guest, $repository, $entity_auth, $entity_validation);
+        $this->beConstructedWith($data_user, $repository, $entity_auth, $entity_validation);
     }
 
     function it_should_be_initializable()
@@ -39,21 +32,36 @@ class Login extends ObjectBehavior
         $this->shouldHaveType('Eadrax\Eadrax\Context\Core');
     }
 
-    function it_catches_authorisation_exceptions_during_usecase($role_guest)
+    function it_assigns_data_to_roles()
     {
-        $role_guest->authorise_login()->willThrow('Eadrax\Eadrax\Exception\Authorisation', 'foo');
+        $this->guest->shouldHaveType('Eadrax\Eadrax\Context\User\Login\Guest');
+        $this->guest->shouldHaveType('Eadrax\Eadrax\Data\User');
+        $this->guest->repository->shouldHaveType('Eadrax\Eadrax\Context\User\Login\Repository');
+        $this->guest->entity_auth->shouldHaveType('Eadrax\Eadrax\Entity\Auth');
+        $this->guest->entity_validation->shouldHaveType('Eadrax\Eadrax\Entity\Validation');
+    }
+
+    function it_catches_authorisation_exceptions_during_usecase($data_user, $repository, $entity_auth, $entity_validation)
+    {
+        $entity_auth->logged_in()->willReturn(TRUE);
+        $this->beConstructedWith($data_user, $repository, $entity_auth, $entity_validation);
+
         $this->execute()->shouldBe(array(
             'status' => 'failure',
             'type' => 'authorisation',
             'data' => array(
-                'errors' => array('foo')
+                'errors' => array('Logged in users don\'t need to login again.')
             )
         ));
     }
 
-    function it_catches_validation_exceptions_during_usecase($role_guest)
+    function it_catches_validation_exceptions_during_usecase($data_user, $repository, $entity_auth, $entity_validation)
     {
-        $role_guest->authorise_login()->willThrow('Eadrax\Eadrax\Exception\Validation', array('foo'));
+        $entity_auth->logged_in()->willReturn(FALSE);
+        $entity_validation->errors()->willReturn(array('foo'));
+        $entity_validation->check()->willReturn(FALSE);
+        $this->beConstructedWith($data_user, $repository, $entity_auth, $entity_validation);
+
         $this->execute()->shouldBe(array(
             'status' => 'failure',
             'type' => 'validation',
@@ -63,9 +71,12 @@ class Login extends ObjectBehavior
         ));
     }
 
-    function it_executes_the_usecase_successfully($role_guest)
+    function it_executes_the_usecase_successfully($data_user, $repository, $entity_auth, $entity_validation)
     {
-        $role_guest->authorise_login()->willReturn('foo');
+        $entity_auth->logged_in()->willReturn(FALSE);
+        $entity_validation->check()->willReturn(TRUE);
+        $this->beConstructedWith($data_user, $repository, $entity_auth, $entity_validation);
+
         $this->execute()->shouldBe(array(
             'status' => 'success'
         ));

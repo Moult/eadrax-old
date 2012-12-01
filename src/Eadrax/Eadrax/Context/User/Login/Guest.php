@@ -13,6 +13,7 @@ namespace Eadrax\Eadrax\Context\User\Login;
 use Eadrax\Eadrax\Context;
 use Eadrax\Eadrax\Data;
 use Eadrax\Eadrax\Entity;
+use Eadrax\Eadrax\Exception;
 
 /**
  * Allows data_user to be cast as a guest role
@@ -20,53 +21,74 @@ use Eadrax\Eadrax\Entity;
  * @package    Context
  * @subpackage Role
  */ 
-class Guest extends Data\User implements Guest\Requirement
+class Guest extends Data\User
 {
-    use Context\Interaction, Guest\Interaction;
+    use Context\Interaction;
 
     /**
      * Takes a data object and copies all of its properties
      *
-     * @param Data\User        $data_user        Data object to copy
-     * @param Repository        $repository        Repository
-     * @param Entity\Auth       $entity_auth       Authentication entity
-     * @param Entity\Validation $entity_validation Validation entity
-     * @return void
-     */
-    public function __construct(Data\User $data_user = NULL, Repository $repository = NULL, Entity\Auth $entity_auth = NULL, Entity\Validation $entity_validation = NULL)
-    {
-        if ($data_user !== NULL)
-        {
-            $this->assign_data($data_user);
-        }
-
-        $links = array();
-        if ($repository !== NULL)
-        {
-            $links['repository'] = $repository;
-        }
-
-        if ($entity_auth !== NULL)
-        {
-            $links['entity_auth'] = $entity_auth;
-        }
-
-        if ($entity_validation !== NULL)
-        {
-            $links['entity_validation'] = $entity_validation;
-        }
-
-        $this->link($links);
-    }
-
-    /**
-     * Assigns data into the role from a data object
-     *
      * @param Data\User $data_user Data object to copy
      * @return void
      */
-    public function assign_data(Data\User $data_user)
+    public function __construct(Data\User $data_user = NULL)
     {
         parent::__construct(get_object_vars($data_user));
+    }
+
+    /**
+     * Prove that it is allowed to login an account.
+     *
+     * @throws Exception\Authorisation if already logged in
+     * @return void
+     */
+    public function authorise_login()
+    {
+        if ($this->entity_auth->logged_in())
+            throw new Exception\Authorisation('Logged in users don\'t need to login again.');
+        else
+            return $this->validate_information();
+    }
+
+    /**
+     * Makes sure our signup details are valid.
+     *
+     * @throws Exception\Validation
+     * @return void
+     */
+    public function validate_information()
+    {
+        $this->entity_validation->setup(array(
+                'username' => $this->username
+            ));
+        $this->entity_validation->rule('username', 'not_empty');
+        $this->entity_validation->callback('username', array($this, 'is_existing_account'), array($this->username, $this->password));
+
+        if ($this->entity_validation->check())
+            return $this->login();
+        else
+            throw new Exception\Validation($this->entity_validation->errors());
+    }
+
+    /**
+     * Checks whether or not a username is unique.
+     *
+     * @param string $username The username to check.
+     * @param string $password The password to check.
+     * @return bool
+     */
+    public function is_existing_account($username, $password)
+    {
+        return $this->repository->is_existing_account($username, $password);
+    }
+
+    /**
+     * Logs the guest into the system.
+     *
+     * @return void
+     */
+    public function login()
+    {
+        return $this->entity_auth->login($this->username, $this->password);
     }
 }
