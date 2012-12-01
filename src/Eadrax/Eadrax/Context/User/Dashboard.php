@@ -33,18 +33,16 @@ class Dashboard extends Core
      * Casts data into roles, and makes each role aware of necessary 
      * dependencies.
      *
-     * @param Data\User  $data_user  User data object
-     * @param User        $role_user   The user role
+     * @param Data\User   $data_user  User data object
      * @param Entity\Auth $entity_auth Authentication system
      * @return void
      */
-    public function __construct(Data\User $data_user, User $role_user, Entity\Auth $entity_auth)
+    public function __construct(Data\User $data_user, Entity\Auth $entity_auth)
     {
-        $role_user->assign_data($data_user);
-        $role_user->link(array(
+        $this->user = new User($data_user);
+        $this->user->link(array(
             'entity_auth' => $entity_auth
         ));
-        $this->user = $role_user;
     }
 
     /**

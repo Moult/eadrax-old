@@ -13,6 +13,7 @@ namespace Eadrax\Eadrax\Context\User\Dashboard;
 use Eadrax\Eadrax\Data;
 use Eadrax\Eadrax\Context;
 use Eadrax\Eadrax\Entity;
+use Eadrax\Eadrax\Exception;
 
 /**
  * Allows data_user to be cast as a guest role
@@ -20,40 +21,34 @@ use Eadrax\Eadrax\Entity;
  * @package    Context
  * @subpackage Role
  */ 
-class User extends Data\User implements User\Requirement
+class User extends Data\User
 {
-    use Context\Interaction, User\Interaction;
+    use Context\Interaction;
 
     /**
      * Takes a data object and copies all of its properties
      *
-     * @param Data\User  $data_user  Data object to copy
-     * @param Entity\Auth $entity_auth The authentication entity
+     * @param Data $data Data object to copy
      * @return void
      */
-    public function __construct(Data\User $data_user = NULL, Entity\Auth $entity_auth = NULL)
+    public function __construct(Data\User $data)
     {
-        if ($data_user !== NULL)
-        {
-            $this->assign_data($data_user);
-        }
-
-        if ($entity_auth !== NULL)
-        {
-            $this->link(array(
-                'entity_auth' => $entity_auth
-            ));
-        }
+        parent::__construct(get_object_vars($data));
     }
 
     /**
-     * Assigns data into the role from a data object
+     * Prove that it is allowed to view a dashboard.
      *
-     * @param Data\User $data_user Data object to copy
-     * @return void
+     * @throws Exception\Authorisation if already logged in
+     * @return array
      */
-    public function assign_data(Data\User $data_user)
+    public function authorise_dashboard()
     {
-        parent::__construct(get_object_vars($data_user));
+        if ($this->entity_auth->logged_in())
+            return array(
+                'username' => $this->entity_auth->get_user()->username
+            );
+        else
+            throw new Exception\Authorisation('Please login before you can view your dashboard.');
     }
 }
