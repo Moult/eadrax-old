@@ -35,21 +35,19 @@ class Register extends Core
      * dependencies.
      *
      * @param Data\User         $data_user         User data object
-     * @param Guest             $role_guest        Guest role
      * @param Repostiroy        $repository        Repository for this context
      * @param Entity\Auth       $entity_auth       Authentication system
      * @param Entity\Validation $entity_validation Validation system
      * @return void
      */
-    public function __construct(Data\User $data_user, Guest $role_guest, Repository $repository, Entity\Auth $entity_auth, Entity\Validation $entity_validation)
+    public function __construct(Data\User $data_user, Repository $repository, Entity\Auth $entity_auth, Entity\Validation $entity_validation)
     {
-        $role_guest->assign_data($data_user);
-        $role_guest->link(array(
+        $this->guest = new Guest($data_user);
+        $this->guest->link(array(
             'repository' => $repository,
             'entity_auth' => $entity_auth,
             'entity_validation' => $entity_validation
         ));
-        $this->guest = $role_guest;
     }
 
     /**
