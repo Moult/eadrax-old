@@ -42,21 +42,16 @@ class Add extends Core
      * dependencies.
      *
      * @param Data\User         $data_user         User data object
-     * @param User              $role_user         User role for this context
      * @param Data\Project      $data_project      Project data object
-     * @param Proposal          $role_proposal     Proposal role for this context
      * @param Repository        $repository        Repository
      * @param Entity\Auth       $entity_auth       Authentication system
      * @param Entity\Validation $entity_validation Validation system
      * @return void
      */
-    public function __construct(Data\User $data_user, User $role_user, Data\Project $data_project, Proposal $role_proposal, Repository $repository, Entity\Auth $entity_auth, Entity\Validation $entity_validation)
+    public function __construct(Data\User $data_user, Data\Project $data_project, Repository $repository, Entity\Auth $entity_auth, Entity\Validation $entity_validation)
     {
-        $role_user->assign_data($data_user);
-        $this->user = $role_user;
-
-        $role_proposal->assign_data($data_project);
-        $this->proposal = $role_proposal;
+        $this->user = new User($data_user);
+        $this->proposal = new Proposal($data_project);
 
         $this->user->link(array(
             'proposal' => $this->proposal,

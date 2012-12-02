@@ -28,12 +28,12 @@ class User extends Data\User
     /**
      * Takes a data object and copies all of its properties
      *
-     * @param Data $data Data object to copy
+     * @param Data $data_user Data object to copy
      * @return void
      */
-    public function __construct(Data\User $data)
+    public function __construct(Data\User $data_user)
     {
-        parent::__construct(get_object_vars($data));
+        parent::__construct(get_object_vars($data_user));
     }
 
     /**

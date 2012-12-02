@@ -13,6 +13,7 @@ namespace Eadrax\Eadrax\Context\Project\Add;
 use Eadrax\Eadrax\Context;
 use Eadrax\Eadrax\Data;
 use Eadrax\Eadrax\Entity;
+use Eadrax\Eadrax\Exception;
 
 /**
  * Allows data_user to be cast as a user role
@@ -20,48 +21,47 @@ use Eadrax\Eadrax\Entity;
  * @package    Context
  * @subpackage Role
  */ 
-class User extends Data\User implements User\Requirement
+class User extends Data\User
 {
-    use Context\Interaction, User\Interaction;
+    use Context\Interaction;
 
     /**
      * Takes a data object and copies all of its properties
      *
-     * @param Data\User  $data_user  Data object to copy
-     * @param Proposal    $role_proposal 
-     * @param Entity\Auth $entity_auth The authentication entity
+     * @param Data\User $data_user Data object to copy
      * @return void
      */
-    public function __construct(Data\User $data_user = NULL, Proposal $role_proposal = NULL, Entity\Auth $entity_auth = NULL)
+    public function __construct(Data\User $data_user = NULL)
     {
-        if ($data_user !== NULL)
-        {
-            $this->assign_data($data_user);
-        }
-
-        $links = array();
-
-        if ($role_proposal !== NULL)
-        {
-            $links['proposal'] = $role_proposal;
-        }
-
-        if ($entity_auth !== NULL)
-        {
-            $links['entity_auth'] = $entity_auth;
-        }
-
-        $this->link($links);
+        parent::__construct(get_object_vars($data_user));
     }
 
     /**
-     * Loads in data from a data
+     * Prove that it is allowed to add a project.
      *
-     * @param Data\User $data_user The user data to load.
+     * @throws Exception\Authorisation if not logged in
      * @return void
      */
-    public function assign_data(Data\User $data_user)
+    public function authorise_project_add()
     {
-        parent::__construct(get_object_vars($data_user));
+        if ($this->entity_auth->logged_in())
+            return $this->load_authentication_details();
+        else
+            throw new Exception\Authorisation('Please login before you can add a new project.');
+    }
+
+    /**
+     * Loads the authentication details of the currently logged in user into the 
+     * user data.
+     *
+     * @return void
+     */
+    public function load_authentication_details()
+    {
+        $authenticated_user = $this->entity_auth->get_user();
+        $this->set_username($authenticated_user->username);
+        $this->set_id($authenticated_user->id);
+
+        return $this->proposal->assign_author($this);
     }
 }

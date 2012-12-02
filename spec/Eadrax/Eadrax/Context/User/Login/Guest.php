@@ -20,7 +20,8 @@ class Guest extends ObjectBehavior
     function let($data_user, $repository, $entity_auth, $entity_validation)
     {
         $data_user->username = 'username';
-        $this->beConstructedWith($data_user, $repository, $entity_auth, $entity_validation);
+        $this->beConstructedWith($data_user);
+        $this->get_username()->shouldBe('username');
     }
 
     function it_should_be_initializable()
@@ -31,14 +32,6 @@ class Guest extends ObjectBehavior
     function it_is_a_guest_role()
     {
         $this->shouldHaveType('Eadrax\Eadrax\Data\User');
-    }
-
-    function it_should_be_able_to_construct_data()
-    {
-        $this->get_username()->shouldBe('username');
-        $this->get_password()->shouldBe(NULL);
-        $this->get_email()->shouldBe(NULL);
-        $this->get_id()->shouldBe(NULL);
     }
 
     function it_throws_an_authorisation_error_if_logged_in($entity_auth)

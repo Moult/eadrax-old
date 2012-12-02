@@ -13,26 +13,14 @@ class Add extends ObjectBehavior
 
     /**
      * @param \Eadrax\Eadrax\Data\User                      $data_user
-     * @param \Eadrax\Eadrax\Context\Project\Add\User       $role_user
      * @param \Eadrax\Eadrax\Data\Project                   $data_project
-     * @param \Eadrax\Eadrax\Context\Project\Add\Proposal   $role_proposal
      * @param \Eadrax\Eadrax\Context\Project\Add\Repository $repository
      * @param \Eadrax\Eadrax\Entity\Auth                    $entity_auth
      * @param \Eadrax\Eadrax\Entity\Validation              $entity_validation
      */
-    function let($data_user, $role_user, $data_project, $role_proposal, $repository, $entity_auth, $entity_validation)
+    function let($data_user, $data_project, $repository, $entity_auth, $entity_validation)
     {
-        $role_user->assign_data($data_user)->shouldBeCalled();
-        $role_proposal->assign_data($data_project)->shouldBeCalled();
-        $role_user->link(array(
-            'proposal' => $role_proposal,
-            'entity_auth' => $entity_auth
-        ))->shouldBeCalled();
-        $role_proposal->link(array(
-            'repository' => $repository,
-            'entity_validation' => $entity_validation
-        ))->shouldBeCalled();
-        $this->beConstructedWith($data_user, $role_user, $data_project, $role_proposal, $repository, $entity_auth, $entity_validation);
+        $this->beConstructedWith($data_user, $data_project, $repository, $entity_auth, $entity_validation);
     }
 
     function it_should_be_initializable()
@@ -40,27 +28,38 @@ class Add extends ObjectBehavior
         $this->shouldHaveType('Eadrax\Eadrax\Context\Project\Add');
     }
 
-    function it_should_assign_roles_to_datas()
+    function it_assigns_data_to_roles()
     {
         $this->user->shouldHaveType('\Eadrax\Eadrax\Context\Project\Add\User');
+        $this->user->proposal->shouldHaveType('\Eadrax\Eadrax\Context\Project\Add\Proposal');
+        $this->user->entity_auth->shouldHaveType('\Eadrax\Eadrax\Entity\Auth');
         $this->proposal->shouldHaveType('\Eadrax\Eadrax\Context\Project\Add\Proposal');
+        $this->proposal->repository->shouldHaveType('\Eadrax\Eadrax\Context\Project\Add\Repository');
+        $this->proposal->entity_validation->shouldHaveType('\Eadrax\Eadrax\Entity\Validation');
     }
 
-    function it_catches_authorisation_exceptions_during_usecase_execution($role_user)
+    function it_catches_authorisation_exceptions_during_usecase_execution($data_user, $data_project, $repository, $entity_auth, $entity_validation)
     {
-        $role_user->authorise_project_add()->shouldBeCalled()->willThrow('\Eadrax\Eadrax\Exception\Authorisation', 'foo');
+        $entity_auth->logged_in()->willReturn(FALSE);
+        $this->beConstructedWith($data_user, $data_project, $repository, $entity_auth, $entity_validation);
+
         $this->execute()->shouldReturn(array(
             'status' => 'failure',
             'type' => 'authorisation',
             'data' => array(
-                'errors' => array('foo')
+                'errors' => array('Please login before you can add a new project.')
             )
         ));
     }
 
-    function it_catches_validation_exceptions_during_usecase_execution($role_user)
+    function it_catches_validation_exceptions_during_usecase_execution($data_user, $data_project, $repository, $entity_auth, $entity_validation)
     {
-        $role_user->authorise_project_add()->shouldBeCalled()->willThrow('\Eadrax\Eadrax\Exception\Validation', array('foo'));
+        $entity_auth->get_user()->willReturn($data_user);
+        $entity_auth->logged_in()->willReturn(TRUE);
+        $entity_validation->errors()->willReturn(array('foo'));
+        $entity_validation->check()->willReturn(FALSE);
+        $this->beConstructedWith($data_user, $data_project, $repository, $entity_auth, $entity_validation);
+
         $this->execute()->shouldReturn(array(
             'status' => 'failure',
             'type' => 'validation',
@@ -70,9 +69,12 @@ class Add extends ObjectBehavior
         ));
     }
 
-    function it_executes_the_usecase_succesfully($role_user)
+    function it_executes_the_usecase_succesfully($data_user, $data_project, $repository, $entity_auth, $entity_validation)
     {
-        $role_user->authorise_project_add()->shouldBeCalled();
+        $entity_auth->get_user()->willReturn($data_user);
+        $entity_auth->logged_in()->willReturn(TRUE);
+        $entity_validation->check()->willReturn(TRUE);
+        $this->beConstructedWith($data_user, $data_project, $repository, $entity_auth, $entity_validation);
         $this->execute()->shouldReturn(array(
             'status' => 'success'
         ));
