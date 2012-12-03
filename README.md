@@ -26,6 +26,11 @@ This branch aims to rewrite Eadrax with the following major changes.
  * Remove the group blog idea
  * Remove collaborative projects (may return later)
  * Remove OpenID signin (may return later)
+ * Hooks for RSS, Github, forum software (?)
+ * Custom views for multiple attachment updates, single-sentence updates,
+   pastebin updates and sound updates.
+ * Responsive webdesign
+ * Redesign with new logo
 
 ## Switch to ISC license
 
