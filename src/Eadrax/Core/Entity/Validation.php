@@ -19,7 +19,7 @@ namespace Eadrax\Core\Entity;
 interface Validation
 {
     /**
-     * Loads in the input data from the user that you want to perform validation 
+     * Loads in the input data from the user that you want to perform validation
      * checks on.
      *
      * Example:
@@ -43,6 +43,10 @@ interface Validation
      *                     min_length - passes if chars are more than $arg
      *                     max_length - passes if chars are less than $arg
      *                     email - passes if it is a valid email
+     *                     url - passes if it is a valid url
+     *                     upload_valid - passes if upload data is valid
+     *                     upload_type - passes if upload data fits filetypes in $arg array
+     *                     upload_size - passes if upload data is less than size in $arg string (eg: 1M, 2KiB, 1GB)
      * @param string $arg  Any extra arguments related to the rule
      * @return void
      */
@@ -56,14 +60,14 @@ interface Validation
      * $validation->callback($this, 'is_existing_account');
      *
      * @param string $key      The key to access the input data value
-     * @param array  $function Array($object, string $function_name) which has a 
+     * @param array  $function Array($object, string $function_name) which has a
      *                         return type of bool
      * @return void
      */
     public function callback($key, array $function, array $args);
 
     /**
-     * Runs all of the added rules and callbacks, logging whether or not there 
+     * Runs all of the added rules and callbacks, logging whether or not there
      * are any validation errors.
      *
      * Example:

@@ -21,10 +21,10 @@ class File extends ObjectBehavior
         $this->get_name()->shouldBe('foo');
     }
 
-    function it_should_have_an_extension_attribute()
+    function it_should_have_an_tmp_name_attribute()
     {
-        $this->set_extension('foo');
-        $this->get_extension()->shouldBe('foo');
+        $this->set_tmp_name('foo');
+        $this->get_tmp_name()->shouldBe('foo');
     }
 
     function it_should_have_a_mimetype_attribute()
@@ -41,5 +41,15 @@ class File extends ObjectBehavior
         $this->get_filesize()->shouldBe(0);
         $this->set_filesize(3.14);
         $this->get_filesize()->shouldBe(3);
+    }
+
+    function it_should_have_an_error_attribute()
+    {
+        $this->set_error(42);
+        $this->get_error()->shouldBe(42);
+        $this->set_error('foo');
+        $this->get_error()->shouldBe(0);
+        $this->set_error(3.14);
+        $this->get_error()->shouldBe(3);
     }
 }

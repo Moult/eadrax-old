@@ -12,6 +12,7 @@
 namespace Eadrax\Core\Context\Project;
 use Eadrax\Core\Context\Project\Add\User;
 use Eadrax\Core\Context\Project\Add\Proposal;
+use Eadrax\Core\Context\Project\Add\Icon;
 use Eadrax\Core\Context\Project\Add\Repository;
 use Eadrax\Core\Context\Core;
 use Eadrax\Core\Data;
@@ -38,20 +39,23 @@ class Add extends Core
     public $proposal;
 
     /**
-     * Casts data into roles, and makes each role aware of necessary 
+     * Casts data into roles, and makes each role aware of necessary
      * dependencies.
      *
      * @param Data\User         $data_user         User data object
      * @param Data\Project      $data_project      Project data object
+     * @param Data\File         $data_file         File data object
      * @param Repository        $repository        Repository
      * @param Entity\Auth       $entity_auth       Authentication system
      * @param Entity\Validation $entity_validation Validation system
+     * @param Entity\Image      $entity_image      Image manipulation system
      * @return void
      */
-    public function __construct(Data\User $data_user, Data\Project $data_project, Repository $repository, Entity\Auth $entity_auth, Entity\Validation $entity_validation)
+    public function __construct(Data\User $data_user, Data\Project $data_project, Data\File $data_file, Repository $repository, Entity\Auth $entity_auth, Entity\Validation $entity_validation, Entity\Image $entity_image)
     {
         $this->user = new User($data_user);
         $this->proposal = new Proposal($data_project);
+        $this->icon = new Icon($data_file);
 
         $this->user->link(array(
             'proposal' => $this->proposal,
@@ -59,8 +63,16 @@ class Add extends Core
         ));
 
         $this->proposal->link(array(
+            'icon' => $this->icon,
             'repository' => $repository,
-            'entity_validation' => $entity_validation
+            'entity_validation' => $entity_validation,
+        ));
+
+        $this->icon->link(array(
+            'proposal' => $this->proposal,
+            'repository' => $repository,
+            'entity_validation' => $entity_validation,
+            'entity_image' => $entity_image
         ));
     }
 

@@ -20,7 +20,7 @@ use Eadrax\Core\Exception;
  *
  * @package    Context
  * @subpackage Role
- */ 
+ */
 class Proposal extends Data\Project
 {
     use Context\Interaction;
@@ -55,14 +55,10 @@ class Proposal extends Data\Project
      */
     public function validate_information()
     {
-        $this->entity_validation->setup(array(
-            'name' => $this->get_name(),
-            'summary' => $this->get_summary()
-        ));
-        $this->entity_validation->rule('name', 'not_empty');
-        $this->entity_validation->rule('summary', 'not_empty');
+        $this->setup_validation();
+
         if ($this->entity_validation->check())
-            return $this->submit();
+            return $this->icon->exists();
         else
             throw new Exception\Validation($this->entity_validation->errors());
     }
@@ -75,5 +71,22 @@ class Proposal extends Data\Project
     public function submit()
     {
         return $this->repository->add_project($this);
+    }
+
+    /**
+     * Set up the validation criteria
+     *
+     * @return void
+     */
+    private function setup_validation()
+    {
+        $this->entity_validation->setup(array(
+            'name' => $this->get_name(),
+            'summary' => $this->get_summary(),
+            'website' => $this->get_website()
+        ));
+        $this->entity_validation->rule('name', 'not_empty');
+        $this->entity_validation->rule('summary', 'not_empty');
+        $this->entity_validation->rule('website', 'url');
     }
 }

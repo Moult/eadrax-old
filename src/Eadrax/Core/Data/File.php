@@ -11,10 +11,10 @@ class File extends Core
     public $name;
 
     /**
-     * File extension
+     * File tmp_name
      * @var string
      */
-    public $extension;
+    public $tmp_name;
 
     /**
      * Filetype mimetype
@@ -27,6 +27,12 @@ class File extends Core
      * @var int
      */
     public $filesize;
+
+    /**
+     * Error code
+     * @var int
+     */
+    public $error;
 
     /** @ignore */
     public function set_name($name)
@@ -41,15 +47,15 @@ class File extends Core
     }
 
     /** @ignore */
-    public function set_extension($extension)
+    public function set_tmp_name($tmp_name)
     {
-        $this->extension = $extension;
+        $this->tmp_name = $tmp_name;
     }
 
     /** @ignore */
-    public function get_extension()
+    public function get_tmp_name()
     {
-        return $this->extension;
+        return $this->tmp_name;
     }
 
     /** @ignore */
@@ -74,5 +80,17 @@ class File extends Core
     public function get_filesize()
     {
         return $this->filesize;
+    }
+
+    /** @ignore */
+    public function set_error($error)
+    {
+        $this->error = (int) $error;
+    }
+
+    /** @ignore */
+    public function get_error()
+    {
+        return $this->error;
     }
 }
