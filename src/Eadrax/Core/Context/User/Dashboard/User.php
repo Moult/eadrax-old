@@ -20,7 +20,7 @@ use Eadrax\Core\Exception;
  *
  * @package    Context
  * @subpackage Role
- */ 
+ */
 class User extends Data\User
 {
     use Context\Interaction;
@@ -46,7 +46,7 @@ class User extends Data\User
     {
         if ($this->entity_auth->logged_in())
             return array(
-                'username' => $this->entity_auth->get_user()->username
+                'username' => $this->entity_auth->get_user()->get_username()
             );
         else
             throw new Exception\Authorisation('Please login before you can view your dashboard.');

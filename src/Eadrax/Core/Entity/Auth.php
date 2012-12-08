@@ -46,8 +46,8 @@ interface Auth
      * $auth->login('username', 'password');
      * var_dump($auth->logged_in()); // bool(true)
      *
-     * @param string username The username of the user
-     * @param string password The password of the user
+     * @param string $username The username of the user
+     * @param string $password The password of the user
      * @return bool Whether or not the login operation succeeded
      */
     public function login($username, $password);
