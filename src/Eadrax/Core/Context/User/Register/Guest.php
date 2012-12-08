@@ -20,7 +20,7 @@ use Eadrax\Core\Exception;
  *
  * @package    Context
  * @subpackage Role
- */ 
+ */
 class Guest extends Data\User
 {
     use Context\Interaction;
@@ -58,21 +58,7 @@ class Guest extends Data\User
      */
     public function validate_information()
     {
-        $this->entity_validation->setup(array(
-            'username' => $this->username,
-            'password' => $this->password,
-            'email' => $this->email
-        ));
-        
-        $this->entity_validation->rule('username', 'not_empty');
-        $this->entity_validation->rule('username', 'regex', '/^[a-z_.]++$/iD');
-        $this->entity_validation->rule('username', 'min_length', '4');
-        $this->entity_validation->rule('username', 'max_length', '15');
-        $this->entity_validation->callback('username', array($this, 'is_unique_username'), array($this->username));
-        $this->entity_validation->rule('password', 'not_empty');
-        $this->entity_validation->rule('password', 'min_length', '6');
-        $this->entity_validation->rule('email', 'not_empty');
-        $this->entity_validation->rule('email', 'email');
+        $this->setup_validation();
 
         if ($this->entity_validation->check())
             return $this->register();
@@ -103,12 +89,41 @@ class Guest extends Data\User
     }
 
     /**
-     * Logs the guest into the system.
+     * Logs the guest into the system by executing the login context.
      *
      * @return void
      */
     public function login()
     {
-        return $this->entity_auth->login($this->username, $this->password);
+        return $this->setup_context_user_login()->execute();
+    }
+
+    /**
+     * Sets up validation rules for checking user details.
+     *
+     * @return void
+     */
+    private function setup_validation()
+    {
+        $this->entity_validation->setup(array(
+            'username' => $this->username,
+            'password' => $this->password,
+            'email' => $this->email
+        ));
+
+        $this->entity_validation->rule('username', 'not_empty');
+        $this->entity_validation->rule('username', 'regex', '/^[a-z_.]++$/iD');
+        $this->entity_validation->rule('username', 'min_length', '4');
+        $this->entity_validation->rule('username', 'max_length', '15');
+        $this->entity_validation->callback('username', array($this, 'is_unique_username'), array($this->username));
+        $this->entity_validation->rule('password', 'not_empty');
+        $this->entity_validation->rule('password', 'min_length', '6');
+        $this->entity_validation->rule('email', 'not_empty');
+        $this->entity_validation->rule('email', 'email');
+    }
+
+    private function setup_context_user_login()
+    {
+        return new Context\User\Login($this, $this->repository_user_login, $this->entity_auth, $this->entity_validation);
     }
 }

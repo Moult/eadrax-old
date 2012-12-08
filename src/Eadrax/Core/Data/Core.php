@@ -47,7 +47,7 @@ abstract class Core {
      */
     private function set_property($property_name, $property_value)
     {
-        if ( ! empty($property_value))
+        if ( ! empty($property_value) AND method_exists($this, 'set_'.$property_name))
         {
             $this->{'set_'.$property_name}($property_value);
         }

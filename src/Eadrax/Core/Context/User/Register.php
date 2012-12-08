@@ -10,6 +10,7 @@
  */
 
 namespace Eadrax\Core\Context\User;
+use Eadrax\Core\Context;
 use Eadrax\Core\Context\Core;
 use Eadrax\Core\Context\User\Register\Guest;
 use Eadrax\Core\Context\User\Register\Repository;
@@ -31,20 +32,22 @@ class Register extends Core
     public $guest;
 
     /**
-     * Casts data into roles, and makes each role aware of necessary 
+     * Casts data into roles, and makes each role aware of necessary
      * dependencies.
      *
-     * @param Data\User         $data_user         User data object
-     * @param Repostiroy        $repository        Repository for this context
-     * @param Entity\Auth       $entity_auth       Authentication system
-     * @param Entity\Validation $entity_validation Validation system
+     * @param Data\User                     $data_user             User data object
+     * @param Repository                    $repository            Repository for this context
+     * @param Context\User\Login\Repository $repository_user_login Repository for user login context
+     * @param Entity\Auth                   $entity_auth           Authentication system
+     * @param Entity\Validation             $entity_validation     Validation system
      * @return void
      */
-    public function __construct(Data\User $data_user, Repository $repository, Entity\Auth $entity_auth, Entity\Validation $entity_validation)
+    public function __construct(Data\User $data_user, Repository $repository, Context\User\Login\Repository $repository_user_login, Entity\Auth $entity_auth, Entity\Validation $entity_validation)
     {
         $this->guest = new Guest($data_user);
         $this->guest->link(array(
             'repository' => $repository,
+            'repository_user_login' => $repository_user_login,
             'entity_auth' => $entity_auth,
             'entity_validation' => $entity_validation
         ));

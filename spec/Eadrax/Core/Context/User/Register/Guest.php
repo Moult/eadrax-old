@@ -14,10 +14,11 @@ class Guest extends ObjectBehavior
     /**
      * @param Eadrax\Core\Data\User                        $data_user
      * @param Eadrax\Core\Context\User\Register\Repository $repository
+     * @param Eadrax\Core\Context\User\Login\Repository    $repository_user_login
      * @param Eadrax\Core\Entity\Auth                      $entity_auth
      * @param Eadrax\Core\Entity\Validation                $entity_validation
      */
-    function let($data_user, $repository, $entity_auth, $entity_validation)
+    function let($data_user, $repository, $repository_user_login, $entity_auth, $entity_validation)
     {
         $data_user->username = 'username';
         $this->beConstructedWith($data_user);
@@ -70,14 +71,17 @@ class Guest extends ObjectBehavior
         $this->shouldThrow('\Eadrax\Core\Exception\Validation')->duringAuthorise_registration();
     }
 
-    function it_proceeds_to_register_and_login_if_validation_succeeds($repository, $entity_auth, $entity_validation)
+    function it_proceeds_to_register_and_login_if_validation_succeeds($repository, $repository_user_login, $entity_auth, $entity_validation)
     {
+        $repository->register($this)->shouldBeCalled();
+        $entity_auth->logged_in()->willReturn(FALSE);
         $entity_validation->check()->willReturn(TRUE);
 
-        $repository->register($this)->shouldBeCalled();
-        $entity_auth->login($this->username, $this->password)->shouldBeCalled()->willReturn('foo');
-        $this->link(array('repository' => $repository, 'entity_auth' => $entity_auth, 'entity_validation' => $entity_validation));
-        $this->validate_information()->shouldReturn('foo');
+        $this->link(array('repository' => $repository, 'repository_user_login' => $repository_user_login, 'entity_auth' => $entity_auth, 'entity_validation' => $entity_validation));
+
+        $this->validate_information()->shouldReturn(array(
+            'status' => 'success'
+        ));
     }
 
     function it_checks_the_repository_for_unique_usernames($repository)

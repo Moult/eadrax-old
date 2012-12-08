@@ -14,12 +14,13 @@ class Register extends ObjectBehavior
     /**
      * @param Eadrax\Core\Data\User                        $data_user
      * @param Eadrax\Core\Context\User\Register\Repository $repository
+     * @param Eadrax\Core\Context\User\Login\Repository    $repository_user_login
      * @param Eadrax\Core\Entity\Auth                      $entity_auth
      * @param Eadrax\Core\Entity\Validation                $entity_validation
      */
-    function let($data_user, $repository, $entity_auth, $entity_validation)
+    function let($data_user, $repository, $repository_user_login, $entity_auth, $entity_validation)
     {
-        $this->beConstructedWith($data_user, $repository, $entity_auth, $entity_validation);
+        $this->beConstructedWith($data_user, $repository, $repository_user_login, $entity_auth, $entity_validation);
     }
 
     function it_should_be_initializable()
@@ -41,10 +42,10 @@ class Register extends ObjectBehavior
         $this->guest->entity_validation->shouldHaveType('Eadrax\Core\Entity\Validation');
     }
 
-    function it_catches_authorisation_exceptions_during_usecase($data_user, $repository, $entity_auth, $entity_validation)
+    function it_catches_authorisation_exceptions_during_usecase($data_user, $repository, $repository_user_login, $entity_auth, $entity_validation)
     {
         $entity_auth->logged_in()->willReturn(TRUE);
-        $this->beConstructedWith($data_user, $repository, $entity_auth, $entity_validation);
+        $this->beConstructedWith($data_user, $repository, $repository_user_login, $entity_auth, $entity_validation);
 
         $this->execute()->shouldBe(array(
             'status' => 'failure',
@@ -55,12 +56,12 @@ class Register extends ObjectBehavior
         ));
     }
 
-    function it_catches_validation_exceptions_during_usecase($data_user, $repository, $entity_auth, $entity_validation)
+    function it_catches_validation_exceptions_during_usecase($data_user, $repository, $repository_user_login, $entity_auth, $entity_validation)
     {
         $entity_auth->logged_in()->willReturn(FALSE);
         $entity_validation->errors()->willReturn(array('foo'));
         $entity_validation->check()->willReturn(FALSE);
-        $this->beConstructedWith($data_user, $repository, $entity_auth, $entity_validation);
+        $this->beConstructedWith($data_user, $repository, $repository_user_login, $entity_auth, $entity_validation);
 
         $this->execute()->shouldBe(array(
             'status' => 'failure',
@@ -71,11 +72,11 @@ class Register extends ObjectBehavior
         ));
     }
 
-    function it_executes_the_usecase_successfully($data_user, $repository, $entity_auth, $entity_validation)
+    function it_executes_the_usecase_successfully($data_user, $repository, $repository_user_login, $entity_auth, $entity_validation)
     {
         $entity_auth->logged_in()->willReturn(FALSE);
         $entity_validation->check()->willReturn(TRUE);
-        $this->beConstructedWith($data_user, $repository, $entity_auth, $entity_validation);
+        $this->beConstructedWith($data_user, $repository, $repository_user_login, $entity_auth, $entity_validation);
 
         $this->execute()->shouldBe(array(
             'status' => 'success'
