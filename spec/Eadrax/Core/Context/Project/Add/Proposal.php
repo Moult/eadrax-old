@@ -2,14 +2,12 @@
 
 namespace spec\Eadrax\Core\Context\Project\Add;
 
-require_once 'spec/Eadrax/Core/Context/Interaction.php';
-
 use PHPSpec2\ObjectBehavior;
-use spec\Eadrax\Core\Context;
+use spec\Eadrax\Core\Context\Interaction;
 
 class Proposal extends ObjectBehavior
 {
-    use Context\Interaction;
+    use Interaction;
 
     /**
      * @param Eadrax\Core\Data\Project                   $data_project

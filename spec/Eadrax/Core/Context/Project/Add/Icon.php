@@ -3,9 +3,12 @@
 namespace spec\Eadrax\Core\Context\Project\Add;
 
 use PHPSpec2\ObjectBehavior;
+use spec\Eadrax\Core\Context\Interaction;
 
 class Icon extends ObjectBehavior
 {
+    use Interaction;
+
     /**
      * @param \Eadrax\Core\Data\File                    $data_file
      * @param \Eadrax\Core\Context\Project\Add\Proposal $proposal
