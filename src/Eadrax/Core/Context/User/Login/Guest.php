@@ -56,12 +56,7 @@ class Guest extends Data\User
      */
     public function validate_information()
     {
-        $this->entity_validation->setup(array(
-                'username' => $this->get_username(),
-                'password' => $this->get_password()
-            ));
-        $this->entity_validation->rule('username', 'not_empty');
-        $this->entity_validation->callback('username', array($this, 'is_existing_account'), array('username', 'password'));
+        $this->setup_validation();
 
         if ( ! $this->entity_validation->check())
             throw new Exception\Validation($this->entity_validation->errors());
@@ -87,5 +82,20 @@ class Guest extends Data\User
     public function login()
     {
         return $this->entity_auth->login($this->username, $this->password);
+    }
+
+    /**
+     * Sets up validation rules.
+     *
+     * @return void
+     */
+    public function setup_validation()
+    {
+        $this->entity_validation->setup(array(
+                'username' => $this->get_username(),
+                'password' => $this->get_password()
+            ));
+        $this->entity_validation->rule('username', 'not_empty');
+        $this->entity_validation->callback('username', array($this, 'is_existing_account'), array('username', 'password'));
     }
 }
