@@ -42,20 +42,18 @@ class Add extends Core
      * Casts data into roles, and makes each role aware of necessary
      * dependencies.
      *
-     * @param Data\User         $data_user         User data object
      * @param Data\Project      $data_project      Project data object
-     * @param Data\File         $data_file         File data object
      * @param Repository        $repository        Repository
      * @param Entity\Auth       $entity_auth       Authentication system
      * @param Entity\Validation $entity_validation Validation system
      * @param Entity\Image      $entity_image      Image manipulation system
      * @return void
      */
-    public function __construct(Data\User $data_user, Data\Project $data_project, Data\File $data_file, Repository $repository, Entity\Auth $entity_auth, Entity\Validation $entity_validation, Entity\Image $entity_image)
+    public function __construct(Data\Project $data_project, Repository $repository, Entity\Auth $entity_auth, Entity\Validation $entity_validation, Entity\Image $entity_image)
     {
-        $this->user = new User($data_user);
+        $this->user = new User($data_project->get_author());
         $this->proposal = new Proposal($data_project);
-        $this->icon = new Icon($data_file);
+        $this->icon = new Icon($data_project->get_icon());
 
         $this->user->link(array(
             'proposal' => $this->proposal,
