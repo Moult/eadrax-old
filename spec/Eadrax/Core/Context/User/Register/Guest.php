@@ -14,11 +14,10 @@ class Guest extends ObjectBehavior
     /**
      * @param Eadrax\Core\Data\User                        $data_user
      * @param Eadrax\Core\Context\User\Register\Repository $repository
-     * @param Eadrax\Core\Context\User\Login\Repository    $repository_user_login
      * @param Eadrax\Core\Entity\Auth                      $entity_auth
      * @param Eadrax\Core\Entity\Validation                $entity_validation
      */
-    function let($data_user, $repository, $repository_user_login, $entity_auth, $entity_validation)
+    function let($data_user, $repository, $entity_auth, $entity_validation)
     {
         $data_user->username = 'username';
         $this->beConstructedWith($data_user);
@@ -35,18 +34,22 @@ class Guest extends ObjectBehavior
         $this->shouldHaveType('Eadrax\Core\Data\User');
     }
 
-    function it_throws_an_authorisation_error_if_logged_in($entity_auth)
+    function it_does_not_authorise_logged_in_users($entity_auth)
     {
         $entity_auth->logged_in()->willReturn(TRUE);
         $this->link(array('entity_auth' => $entity_auth));
-
         $this->shouldThrow('\Eadrax\Core\Exception\Authorisation')->duringAuthorise_registration();
     }
 
-    function it_proceeds_to_validate_information_if_not_logged_in($entity_auth, $entity_validation)
+    function it_authorises_guest_users($entity_auth)
     {
         $entity_auth->logged_in()->willReturn(FALSE);
+        $this->link(array('entity_auth' => $entity_auth));
+        $this->shouldNotThrow('\Eadrax\Core\Exception\Authorisation')->duringAuthorise_registration();
+    }
 
+    function it_checks_for_invalid_user_information($entity_validation)
+    {
         $entity_validation->setup(array(
             'username' => 'username',
             'password' => '',
@@ -56,7 +59,7 @@ class Guest extends ObjectBehavior
         $entity_validation->rule('username', 'regex', '/^[a-z_.]++$/iD')->shouldBeCalled();
         $entity_validation->rule('username', 'min_length', '4')->shouldBeCalled();
         $entity_validation->rule('username', 'max_length', '15')->shouldBeCalled();
-        $entity_validation->callback('username', array($this, 'is_unique_username'), array($this->username))->shouldBeCalled();
+        $entity_validation->callback('username', array($this, 'is_unique_username'), array('username'))->shouldBeCalled();
         $entity_validation->rule('password', 'not_empty')->shouldBeCalled();
         $entity_validation->rule('password', 'min_length', '6')->shouldBeCalled();
         $entity_validation->rule('email', 'not_empty')->shouldBeCalled();
@@ -66,22 +69,23 @@ class Guest extends ObjectBehavior
         $entity_validation->errors()->willReturn(array(
             'foo' => 'bar'
         ));
-        $this->link(array('entity_auth' => $entity_auth, 'entity_validation' => $entity_validation));
+        $this->link(array('entity_validation' => $entity_validation));
 
-        $this->shouldThrow('\Eadrax\Core\Exception\Validation')->duringAuthorise_registration();
+        $this->shouldThrow('\Eadrax\Core\Exception\Validation')->duringValidate_information();
     }
 
-    function it_proceeds_to_register_and_login_if_validation_succeeds($repository, $repository_user_login, $entity_auth, $entity_validation)
+    function it_validates_valid_user_information($entity_validation)
+    {
+        $entity_validation->check()->willReturn(TRUE);
+        $this->link(array('entity_validation' => $entity_validation));
+        $this->shouldNotThrow('\Eadrax\Core\Exception\Validation')->duringValidate_information();
+    }
+
+    function it_registers_the_user($repository)
     {
         $repository->register($this)->shouldBeCalled();
-        $entity_auth->logged_in()->willReturn(FALSE);
-        $entity_validation->check()->willReturn(TRUE);
-
-        $this->link(array('repository' => $repository, 'repository_user_login' => $repository_user_login, 'entity_auth' => $entity_auth, 'entity_validation' => $entity_validation));
-
-        $this->validate_information()->shouldReturn(array(
-            'status' => 'success'
-        ));
+        $this->link(array('repository' => $repository));
+        $this->register();
     }
 
     function it_checks_the_repository_for_unique_usernames($repository)

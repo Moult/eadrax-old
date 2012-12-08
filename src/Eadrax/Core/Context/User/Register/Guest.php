@@ -46,8 +46,6 @@ class Guest extends Data\User
     {
         if ($this->entity_auth->logged_in())
             throw new Exception\Authorisation('Logged in users cannot register new accounts.');
-        else
-            return $this->validate_information();
     }
 
     /**
@@ -60,9 +58,7 @@ class Guest extends Data\User
     {
         $this->setup_validation();
 
-        if ($this->entity_validation->check())
-            return $this->register();
-        else
+        if ( ! $this->entity_validation->check())
             throw new Exception\Validation($this->entity_validation->errors());
     }
 
@@ -85,17 +81,6 @@ class Guest extends Data\User
     public function register()
     {
         $this->repository->register($this);
-        return $this->login();
-    }
-
-    /**
-     * Logs the guest into the system by executing the login context.
-     *
-     * @return void
-     */
-    public function login()
-    {
-        return $this->setup_context_user_login()->execute();
     }
 
     /**
@@ -115,15 +100,10 @@ class Guest extends Data\User
         $this->entity_validation->rule('username', 'regex', '/^[a-z_.]++$/iD');
         $this->entity_validation->rule('username', 'min_length', '4');
         $this->entity_validation->rule('username', 'max_length', '15');
-        $this->entity_validation->callback('username', array($this, 'is_unique_username'), array($this->username));
+        $this->entity_validation->callback('username', array($this, 'is_unique_username'), array('username'));
         $this->entity_validation->rule('password', 'not_empty');
         $this->entity_validation->rule('password', 'min_length', '6');
         $this->entity_validation->rule('email', 'not_empty');
         $this->entity_validation->rule('email', 'email');
-    }
-
-    private function setup_context_user_login()
-    {
-        return new Context\User\Login($this, $this->repository_user_login, $this->entity_auth, $this->entity_validation);
     }
 }

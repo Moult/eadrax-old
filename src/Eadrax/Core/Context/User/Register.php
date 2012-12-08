@@ -47,10 +47,11 @@ class Register extends Core
         $this->guest = new Guest($data_user);
         $this->guest->link(array(
             'repository' => $repository,
-            'repository_user_login' => $repository_user_login,
             'entity_auth' => $entity_auth,
             'entity_validation' => $entity_validation
         ));
+
+        $this->context_user_login = new Context\User\Login($this->guest, $repository_user_login, $entity_auth, $entity_validation);
     }
 
     /**
@@ -62,7 +63,7 @@ class Register extends Core
     {
         try
         {
-            $this->guest->authorise_registration();
+            $this->interact();
         }
         catch (Exception\Authorisation $e)
         {
@@ -88,5 +89,20 @@ class Register extends Core
         return array(
             'status' => 'success'
         );
+    }
+
+    /**
+     * Runs the interaction chain
+     *
+     * @throws Exception\Authorisation
+     * @throws Exception\Validation
+     * @return void
+     */
+    private function interact()
+    {
+        $this->guest->authorise_registration();
+        $this->guest->validate_information();
+        $this->guest->register();
+        $this->context_user_login->execute();
     }
 }
