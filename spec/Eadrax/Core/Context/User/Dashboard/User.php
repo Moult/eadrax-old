@@ -15,7 +15,7 @@ class User extends ObjectBehavior
      * @param Eadrax\Core\Data\User   $data_user
      * @param Eadrax\Core\Entity\Auth $entity_auth
      */
-    function let($data_user, $entity_auth)
+    function let($data_user)
     {
         $data_user->username = 'username';
         $this->beConstructedWith($data_user);
@@ -43,7 +43,7 @@ class User extends ObjectBehavior
     function it_returns_with_a_users_username_if_logged_in($data_user, $entity_auth)
     {
         $entity_auth->logged_in()->willReturn(TRUE);
-        $data_user->username = 'username';
+        $data_user->get_username->willReturn('username');
         $entity_auth->get_user()->willReturn($data_user);
         $this->link(array('entity_auth' => $entity_auth));
 

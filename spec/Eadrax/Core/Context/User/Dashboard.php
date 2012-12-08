@@ -54,7 +54,7 @@ class Dashboard extends ObjectBehavior
     function it_executes_the_usecase_successfully($data_user, $entity_auth)
     {
         $entity_auth->logged_in()->willReturn(TRUE);
-        $data_user->username = 'Foo';
+        $data_user->get_username()->willReturn('Foo');;
         $entity_auth->get_user()->willReturn($data_user);
         $this->beConstructedWith($data_user, $entity_auth);
 
