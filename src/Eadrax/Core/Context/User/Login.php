@@ -31,7 +31,7 @@ class Login extends Core
     public $guest;
 
     /**
-     * Casts data into roles, and makes each role aware of necessary 
+     * Casts data into roles, and makes each role aware of necessary
      * dependencies.
      *
      * @param Data\User         $data_user         User data object
@@ -59,7 +59,7 @@ class Login extends Core
     {
         try
         {
-            $this->guest->authorise_login();
+            $this->interact();
         }
         catch (Exception\Authorisation $e)
         {
@@ -85,5 +85,19 @@ class Login extends Core
         return array(
             'status' => 'success'
         );
+    }
+
+    /**
+     * Carries out the interaction sequence.
+     *
+     * @throws Exception\Authorisation
+     * @throws Exception\Validation
+     * @return void
+     */
+    private function interact()
+    {
+        $this->guest->authorise_login();
+        $this->guest->validate_information();
+        $this->guest->login();
     }
 }

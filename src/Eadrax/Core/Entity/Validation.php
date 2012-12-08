@@ -26,7 +26,7 @@ interface Validation
      * $validation = new Validation_Class;
      * $validation->setup($_POST);
      *
-     * @param array input_data
+     * @param array $input_data
      * @return void
      */
     public function setup(array $input_data);
@@ -62,6 +62,8 @@ interface Validation
      * @param string $key      The key to access the input data value
      * @param array  $function Array($object, string $function_name) which has a
      *                         return type of bool
+     * @param array  $args     An array of setup keys to be used as arguments in
+     *                         the callback function
      * @return void
      */
     public function callback($key, array $function, array $args);

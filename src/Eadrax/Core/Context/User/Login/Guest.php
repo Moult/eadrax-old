@@ -20,7 +20,7 @@ use Eadrax\Core\Exception;
  *
  * @package    Context
  * @subpackage Role
- */ 
+ */
 class Guest extends Data\User
 {
     use Context\Interaction;
@@ -46,8 +46,6 @@ class Guest extends Data\User
     {
         if ($this->entity_auth->logged_in())
             throw new Exception\Authorisation('Logged in users don\'t need to login again.');
-        else
-            return $this->validate_information();
     }
 
     /**
@@ -59,14 +57,13 @@ class Guest extends Data\User
     public function validate_information()
     {
         $this->entity_validation->setup(array(
-                'username' => $this->username
+                'username' => $this->get_username(),
+                'password' => $this->get_password()
             ));
         $this->entity_validation->rule('username', 'not_empty');
-        $this->entity_validation->callback('username', array($this, 'is_existing_account'), array($this->username, $this->password));
+        $this->entity_validation->callback('username', array($this, 'is_existing_account'), array('username', 'password'));
 
-        if ($this->entity_validation->check())
-            return $this->login();
-        else
+        if ( ! $this->entity_validation->check())
             throw new Exception\Validation($this->entity_validation->errors());
     }
 
