@@ -11,7 +11,7 @@ class Icon extends ObjectBehavior
      * @param \Eadrax\Core\Context\Project\Add\Proposal $proposal
      * @param \Eadrax\Core\Entity\Validation            $entity_validation
      */
-    function let($data_file, $proposal, $entity_validation)
+    function let($data_file)
     {
         $this->beConstructedWith($data_file);
     }
@@ -21,19 +21,8 @@ class Icon extends ObjectBehavior
         $this->shouldHaveType('Eadrax\Core\Context\Project\Add\Icon');
     }
 
-    function it_should_check_whether_or_not_it_exists($data_file, $proposal)
+    function it_should_catch_invalid_icon_information($entity_validation)
     {
-        $proposal->submit()->shouldBeCalled();
-        $data_file->name = '';
-        $this->beConstructedWith($data_file);
-        $this->link(array('proposal' => $proposal));
-        $this->exists();
-    }
-
-    function it_should_validate_icon_information($data_file, $entity_validation)
-    {
-        $data_file->name = 'foo';
-        $this->beConstructedWith($data_file);
         $entity_validation->setup(array(
             'metadata' => array(
                 'name' => $this->get_name(),
@@ -49,16 +38,21 @@ class Icon extends ObjectBehavior
         $entity_validation->check()->shouldBeCalled()->willReturn(FALSE);
         $entity_validation->errors()->shouldBeCalled()->willReturn(array('foo' => 'bar'));
         $this->link(array('entity_validation' => $entity_validation));
-        $this->shouldThrow('\Eadrax\Core\Exception\Validation', 'Multiple exceptions thrown: foo')->duringExists();
+        $this->shouldThrow('\Eadrax\Core\Exception\Validation')->duringValidate_information();
     }
 
-    function it_should_save_the_icon_if_valid($proposal, $repository, $entity_validation, $entity_image)
+    function it_should_allow_valid_icon_information($entity_validation)
     {
         $entity_validation->check()->shouldBeCalled()->willReturn(TRUE);
+        $this->link(array('entity_validation' => $entity_validation));
+        $this->shouldNotThrow('\Eadrax\Core\Exception\Validation')->duringValidate_information();
+    }
+
+    function it_should_be_able_to_upload_the_icon($repository, $entity_image)
+    {
         $repository->save_icon($this)->shouldBeCalled();
         $entity_image->resize(50, 50)->shouldBeCalled();
-        $proposal->submit()->shouldBeCalled();
-        $this->link(array('proposal' => $proposal, 'repository' => $repository, 'entity_validation' => $entity_validation, 'entity_image' => $entity_image));
-        $this->validate_information();
+        $this->link(array('repository' => $repository, 'entity_image' => $entity_image));
+        $this->upload();
     }
 }

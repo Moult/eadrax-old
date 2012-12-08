@@ -83,7 +83,7 @@ class Add extends Core
     {
         try
         {
-            $this->user->authorise_project_add();
+            $this->interact();
         }
         catch (Exception\Authorisation $e)
         {
@@ -109,5 +109,23 @@ class Add extends Core
         return array(
             'status' => 'success'
         );
+    }
+
+    /**
+     * Runs the interaction chain
+     *
+     * @throws Exception\Authorisation
+     * @throws Exception\Validation
+     */
+    private function interact()
+    {
+        $this->user->authorise_project_add();
+        $this->proposal->validate_information();
+        if ($this->icon->exists())
+        {
+            $this->icon->validate_information();
+            $this->icon->upload();
+        }
+        $this->proposal->submit();
     }
 }

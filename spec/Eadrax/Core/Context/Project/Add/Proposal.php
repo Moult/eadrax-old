@@ -17,7 +17,7 @@ class Proposal extends ObjectBehavior
      * @param Eadrax\Core\Context\Project\Add\Repository $repository
      * @param Eadrax\Core\Entity\Validation              $entity_validation
      */
-    function let($data_project, $icon, $repository, $entity_validation)
+    function let($data_project)
     {
         $data_project->name = 'foo';
         $this->beConstructedWith($data_project);
@@ -34,10 +34,8 @@ class Proposal extends ObjectBehavior
         $this->shouldHaveType('Eadrax\Core\Data\Project');
     }
 
-    function it_sets_author_from_the_passed_data_user_then_validates($entity_validation)
+    function it_catches_invalid_proposal_information($entity_validation)
     {
-        $data_user = new \Eadrax\Core\Data\User();
-
         $entity_validation->setup(array(
             'name' => $this->get_name(),
             'summary' => $this->get_summary(),
@@ -49,20 +47,17 @@ class Proposal extends ObjectBehavior
         $entity_validation->check()->shouldBeCalled()->willReturn(FALSE);
         $entity_validation->errors()->shouldBeCalled()->willReturn(array('foo'));
         $this->link(array('entity_validation' => $entity_validation));
-
-        $this->shouldThrow('\Eadrax\Core\Exception\Validation')->duringAssign_author($data_user);
-        $this->get_author()->shouldBe($data_user);
+        $this->shouldThrow('\Eadrax\Core\Exception\Validation')->duringValidate_information();
     }
 
-    function it_validates_the_icon_if_project_has_valid_information($icon, $entity_validation)
+    function it_allows_valid_proposal_information($entity_validation)
     {
         $entity_validation->check()->shouldBeCalled()->willReturn(TRUE);
-        $icon->exists()->shouldBeCalled()->willReturn('foo');
-        $this->link(array('icon' => $icon, 'entity_validation' => $entity_validation));
-        $this->validate_information()->shouldReturn('foo');
+        $this->link(array('entity_validation' => $entity_validation));
+        $this->shouldNotThrow('\Eadrax\Core\Exception\Validation')->duringValidate_information();
     }
 
-    function it_submits_the_proposal_to_the_repository($icon, $repository, $entity_validation)
+    function it_submits_the_proposal_to_the_repository($repository)
     {
         $repository->add_project($this)->shouldBeCalled();
         $this->link(array('repository' => $repository));

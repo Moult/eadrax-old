@@ -37,18 +37,6 @@ class Proposal extends Data\Project
     }
 
     /**
-     * Sets the author of the project proposal.
-     *
-     * @param Data\User $data_user
-     * @return void
-     */
-    public function assign_author(Data\User $data_user)
-    {
-        $this->set_author($data_user);
-        return $this->validate_information();
-    }
-
-    /**
      * Validates the proposed data in this new project
      *
      * @return void
@@ -57,9 +45,7 @@ class Proposal extends Data\Project
     {
         $this->setup_validation();
 
-        if ($this->entity_validation->check())
-            return $this->icon->exists();
-        else
+        if ( ! $this->entity_validation->check())
             throw new Exception\Validation($this->entity_validation->errors());
     }
 

@@ -36,19 +36,6 @@ class Icon extends Data\File
     }
 
     /**
-     * Figures out if a file even exists.
-     *
-     * @return void
-     */
-    public function exists()
-    {
-        if ($this->get_name())
-            return $this->validate_information();
-        else
-            return $this->proposal->submit();
-    }
-
-    /**
      * Validates the files status as an icon.
      *
      * @return void
@@ -57,9 +44,7 @@ class Icon extends Data\File
     {
         $this->setup_validation();
 
-        if ($this->entity_validation->check())
-            return $this->upload();
-        else
+        if ( ! $this->entity_validation->check())
             throw new Exception\Validation($this->entity_validation->errors());
     }
 
@@ -77,7 +62,6 @@ class Icon extends Data\File
     public function resize()
     {
         $this->entity_image->resize(50, 50);
-        $this->proposal->submit();
     }
 
     /**

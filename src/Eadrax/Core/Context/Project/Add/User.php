@@ -20,7 +20,7 @@ use Eadrax\Core\Exception;
  *
  * @package    Context
  * @subpackage Role
- */ 
+ */
 class User extends Data\User
 {
     use Context\Interaction;
@@ -51,17 +51,14 @@ class User extends Data\User
     }
 
     /**
-     * Loads the authentication details of the currently logged in user into the 
+     * Loads the authentication details of the currently logged in user into the
      * user data.
      *
      * @return void
      */
     public function load_authentication_details()
     {
-        $authenticated_user = $this->entity_auth->get_user();
-        $this->set_username($authenticated_user->username);
-        $this->set_id($authenticated_user->id);
-
-        return $this->proposal->assign_author($this);
+        $this->__construct($this->entity_auth->get_user());
+        return $this->proposal->set_author($this);
     }
 }

@@ -53,6 +53,21 @@ abstract class Core {
         }
     }
 
+    /**
+     * Checks if the data has been set or not.
+     *
+     * @return bool
+     */
+    public function exists()
+    {
+        foreach ($this as $value)
+        {
+            if ( ! empty($value))
+                return TRUE;
+        }
+        return FALSE;
+    }
+
     /** @ignore */
     public function get_id()
     {
