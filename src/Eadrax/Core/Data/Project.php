@@ -62,7 +62,10 @@ class Project extends Core
     /** @ignore */
     public function get_author()
     {
-        return $this->author;
+        if ($this->author instanceof User)
+            return $this->author;
+        else
+            return new User;
     }
 
     /** @ignore */
@@ -86,7 +89,10 @@ class Project extends Core
     /** @ignore */
     public function get_icon()
     {
-        return $this->icon;
+        if ($this->icon instanceof File)
+            return $this->icon;
+        else
+            return new File;
     }
 
     /** @ignore */

@@ -37,6 +37,7 @@ class Project extends ObjectBehavior
      */
     function it_should_have_an_author_attribute($user)
     {
+        $this->get_author()->shouldHaveType('\Eadrax\Core\Data\User');
         $this->set_author($user);
         $this->get_author()->shouldBe($user);
 
@@ -54,6 +55,7 @@ class Project extends ObjectBehavior
      */
     function it_should_have_an_icon_attribute($file)
     {
+        $this->get_icon()->shouldHaveType('\Eadrax\Core\Data\File');
         $this->set_icon($file);
         $this->get_icon()->shouldBe($file);
 
