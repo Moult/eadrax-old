@@ -31,6 +31,10 @@ class Register extends Core
      */
     public $guest;
 
+    private $repository_user_login;
+    private $entity_auth;
+    private $entity_validation;
+
     /**
      * Casts data into roles, and makes each role aware of necessary
      * dependencies.
@@ -51,7 +55,9 @@ class Register extends Core
             'entity_validation' => $entity_validation
         ));
 
-        $this->context_user_login = new Context\User\Login($this->guest, $repository_user_login, $entity_auth, $entity_validation);
+        $this->repository_user_login = $repository_user_login;
+        $this->entity_auth = $entity_auth;
+        $this->entity_validation = $entity_validation;
     }
 
     /**
@@ -98,11 +104,21 @@ class Register extends Core
      * @throws Exception\Validation
      * @return void
      */
-    private function interact()
+    public function interact()
     {
         $this->guest->authorise_registration();
         $this->guest->validate_information();
         $this->guest->register();
-        $this->context_user_login->execute();
+        $this->context_user_login()->interact();
+    }
+
+    /**
+     * Creates a login user context.
+     *
+     * @return Context\User\Login
+     */
+    private function context_user_login()
+    {
+        return new Context\User\Login($this->guest, $this->repository_user_login, $this->entity_auth, $this->entity_validation);
     }
 }

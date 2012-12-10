@@ -27,7 +27,7 @@ class Logout extends Core
     public $entity_auth;
 
     /**
-     * Casts data into roles, and makes each role aware of necessary 
+     * Casts data into roles, and makes each role aware of necessary
      * dependencies.
      *
      * @param Entity\Auth $entity_auth Authentication system
@@ -45,10 +45,20 @@ class Logout extends Core
      */
     public function execute()
     {
-        $this->entity_auth->logout();
+        $this->interact();
 
         return array(
             'status' => 'success'
         );
+    }
+
+    /**
+     * Runs the interaction chain.
+     *
+     * @return void
+     */
+    public function interact()
+    {
+        $this->entity_auth->logout();
     }
 }

@@ -94,7 +94,7 @@ class Login extends Core
      * @throws Exception\Validation
      * @return void
      */
-    private function interact()
+    public function interact()
     {
         $this->guest->authorise_login();
         $this->guest->validate_information();
