@@ -31,7 +31,7 @@ class User extends Data\User
      * @param Data\User $data_user Data object to copy
      * @return void
      */
-    public function __construct(Data\User $data_user = NULL)
+    public function __construct(Data\User $data_user)
     {
         parent::__construct(get_object_vars($data_user));
     }

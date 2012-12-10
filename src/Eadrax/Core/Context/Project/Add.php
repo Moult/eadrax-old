@@ -15,6 +15,7 @@ use Eadrax\Core\Context\Project\Add\Proposal;
 use Eadrax\Core\Context\Project\Add\Icon;
 use Eadrax\Core\Context\Project\Add\Repository;
 use Eadrax\Core\Context\Core;
+use Eadrax\Core\Context;
 use Eadrax\Core\Data;
 use Eadrax\Core\Entity;
 use Eadrax\Core\Exception;
@@ -39,21 +40,39 @@ class Add extends Core
     public $proposal;
 
     /**
+     * Repository used by subcontext project prepare
+     * @var Context\Project\Prepare\Repository
+     */
+    private $repository_project_prepare;
+
+    /**
+     * Image entity used by subcontext project prepare
+     * @var Entity\Image
+     */
+    private $entity_image;
+
+    /**
+     * Validation entity used by subcontext project prepare
+     * @var Entity\Validation
+     */
+    private $entity_validation;
+
+    /**
      * Casts data into roles, and makes each role aware of necessary
      * dependencies.
      *
-     * @param Data\Project      $data_project      Project data object
-     * @param Repository        $repository        Repository
-     * @param Entity\Auth       $entity_auth       Authentication system
-     * @param Entity\Validation $entity_validation Validation system
-     * @param Entity\Image      $entity_image      Image manipulation system
+     * @param Data\Project                       $data_project               Project data object
+     * @param Context\Project\Add\Repository     $repository                 Repository
+     * @param Context\Project\Prepare\Repository $repository_project_prepare Repository
+     * @param Entity\Auth                        $entity_auth                Authentication system
+     * @param Entity\Validation                  $entity_validation          Validation system
+     * @param Entity\Image                       $entity_image               Image system
      * @return void
      */
-    public function __construct(Data\Project $data_project, Repository $repository, Entity\Auth $entity_auth, Entity\Validation $entity_validation, Entity\Image $entity_image)
+    public function __construct(Data\Project $data_project, Repository $repository, Context\Project\Prepare\Repository $repository_project_prepare, Entity\Auth $entity_auth, Entity\Validation $entity_validation, Entity\Image $entity_image)
     {
         $this->user = new User($data_project->get_author());
         $this->proposal = new Proposal($data_project);
-        $this->icon = new Icon($data_project->get_icon());
 
         $this->user->link(array(
             'proposal' => $this->proposal,
@@ -61,17 +80,12 @@ class Add extends Core
         ));
 
         $this->proposal->link(array(
-            'icon' => $this->icon,
-            'repository' => $repository,
-            'entity_validation' => $entity_validation,
+            'repository' => $repository
         ));
 
-        $this->icon->link(array(
-            'proposal' => $this->proposal,
-            'repository' => $repository,
-            'entity_validation' => $entity_validation,
-            'entity_image' => $entity_image
-        ));
+        $this->repository_project_prepare = $repository_project_prepare;
+        $this->entity_image = $entity_image;
+        $this->entity_validation = $entity_validation;
     }
 
     /**
@@ -117,15 +131,20 @@ class Add extends Core
      * @throws Exception\Authorisation
      * @throws Exception\Validation
      */
-    private function interact()
+    public function interact()
     {
         $this->user->authorise_project_add();
-        $this->proposal->validate_information();
-        if ($this->icon->exists())
-        {
-            $this->icon->validate_information();
-            $this->icon->upload();
-        }
+        $this->context_project_prepare()->interact();
         $this->proposal->submit();
+    }
+
+    /**
+     * Creates a prepare project context.
+     *
+     * @return Context\Project\Prepare;
+     */
+    private function context_project_prepare()
+    {
+        return new Context\Project\Prepare($this->proposal, $this->repository_project_prepare, $this->entity_validation, $this->entity_image);
     }
 }

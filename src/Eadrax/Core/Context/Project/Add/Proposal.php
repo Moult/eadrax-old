@@ -37,19 +37,6 @@ class Proposal extends Data\Project
     }
 
     /**
-     * Validates the proposed data in this new project
-     *
-     * @return void
-     */
-    public function validate_information()
-    {
-        $this->setup_validation();
-
-        if ( ! $this->entity_validation->check())
-            throw new Exception\Validation($this->entity_validation->errors());
-    }
-
-    /**
      * Submits the proposal to the repository
      *
      * @return void
@@ -57,22 +44,5 @@ class Proposal extends Data\Project
     public function submit()
     {
         return $this->repository->add_project($this);
-    }
-
-    /**
-     * Set up the validation criteria
-     *
-     * @return void
-     */
-    private function setup_validation()
-    {
-        $this->entity_validation->setup(array(
-            'name' => $this->get_name(),
-            'summary' => $this->get_summary(),
-            'website' => $this->get_website()
-        ));
-        $this->entity_validation->rule('name', 'not_empty');
-        $this->entity_validation->rule('summary', 'not_empty');
-        $this->entity_validation->rule('website', 'url');
     }
 }

@@ -27,12 +27,4 @@ interface Repository
      * @return void
      */
     public function add_project(Data\Project $data_project);
-
-    /**
-     * Saves an icon
-     *
-     * @param Data\File @data_file The file to save
-     * @return void
-     */
-    public function save_icon(Data\File $data_file);
 }
