@@ -1,32 +1,63 @@
 <?php
+/**
+ * Eadrax Context/Project/Edit/User.php
+ *
+ * @package   Context
+ * @author    Dion Moult <dion@thinkmoult.com>
+ * @copyright (c) 2012 Dion Moult
+ * @license   ISC http://opensource.org/licenses/isc-license.txt
+ * @link      http://wipup.org/
+ */
 
 namespace Eadrax\Core\Context\Project\Edit;
 
 use Eadrax\Core\Context\Interaction;
 use Eadrax\Core\Data;
 use Eadrax\Core\Exception;
+use Eadrax\Core\Entity;
 
 class User extends Data\User
 {
     use Interaction;
 
-    public function __construct(Data\User $data_user)
+    /**
+     * Copies all the properties of a data object
+     *
+     * @param Data\User $data_user The user data to copy
+     * @return void
+     */
+    public function __construct(Data\User $data_user, Entity\Auth $entity_auth)
     {
-        parent::__construct(get_object_vars($data_user));
+        parent::__construct($data_user);
+        $this->entity_auth = $entity_auth;
     }
 
+    /**
+     * Authorises that the user is allowed to edit the project.
+     *
+     * Checks whether or not they are logged in and they own the project
+     *
+     * @throws Exception\Authorisation
+     * @return bool
+     */
     public function authorise_project_edit()
     {
         if ($this->entity_auth->logged_in())
-            return $this->check_proposal_author();
+            return TRUE;
         else
             throw new Exception\Authorisation('You need to be logged in to edit a project.');
     }
 
-    private function check_proposal_author()
+    /**
+     * Checks whether or not we own the project.
+     *
+     * @throws Exception\Authorisation
+     * @return bool
+     */
+    public function check_proposal_author()
     {
-        if ($this->proposal->get_author()->get_id() === $this->entity_auth->get_user()->get_id())
-            return $this->proposal->set_author($this);
+        if ($this->get_id() === $this->entity_auth->get_user()->get_id())
+            return TRUE;
         else
             throw new Exception\Authorisation('You cannot edit a project you do not own.');
     }
