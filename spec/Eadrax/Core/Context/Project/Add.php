@@ -42,10 +42,9 @@ class Add extends ObjectBehavior
         $this->proposal->repository->shouldHaveType('\Eadrax\Core\Context\Project\Add\Repository');
     }
 
-    function it_catches_authorisation_exceptions_during_usecase_execution($data_project, $repository, $repository_project_prepare, $entity_auth, $entity_validation, $entity_image)
+    function it_catches_authorisation_exceptions_during_usecase_execution($entity_auth)
     {
         $entity_auth->logged_in()->willReturn(FALSE);
-        $this->beConstructedWith($data_project, $repository, $repository_project_prepare, $entity_auth, $entity_validation, $entity_image);
 
         $this->execute()->shouldReturn(array(
             'status' => 'failure',
@@ -56,13 +55,12 @@ class Add extends ObjectBehavior
         ));
     }
 
-    function it_catches_validation_exceptions_during_usecase_execution($data_project, $data_user, $repository, $repository_project_prepare, $entity_auth, $entity_validation, $entity_image)
+    function it_catches_validation_exceptions_during_usecase_execution($data_user, $entity_auth, $entity_validation)
     {
         $entity_auth->get_user()->willReturn($data_user);
         $entity_auth->logged_in()->willReturn(TRUE);
         $entity_validation->errors()->willReturn(array('foo'));
         $entity_validation->check()->willReturn(FALSE);
-        $this->beConstructedWith($data_project, $repository, $repository_project_prepare, $entity_auth, $entity_validation, $entity_image);
 
         $this->execute()->shouldReturn(array(
             'status' => 'failure',
@@ -73,12 +71,11 @@ class Add extends ObjectBehavior
         ));
     }
 
-    function it_executes_the_usecase_succesfully($data_user, $data_project, $repository, $repository_project_prepare, $entity_auth, $entity_validation, $entity_image)
+    function it_executes_the_usecase_succesfully($data_user, $entity_auth, $entity_validation)
     {
         $entity_auth->get_user()->willReturn($data_user);
         $entity_auth->logged_in()->willReturn(TRUE);
         $entity_validation->check()->willReturn(TRUE);
-        $this->beConstructedWith($data_project, $repository, $repository_project_prepare, $entity_auth, $entity_validation, $entity_image);
 
         $this->execute()->shouldReturn(array(
             'status' => 'success'

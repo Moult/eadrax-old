@@ -43,11 +43,10 @@ class Prepare extends ObjectBehavior
         $this->icon->repository->shouldHaveType('\Eadrax\Core\Context\Project\Prepare\Repository');
     }
 
-    function it_catches_validation_exceptions_during_usecase_execution($data_project, $repository, $entity_validation, $entity_image)
+    function it_catches_validation_exceptions_during_usecase_execution($entity_validation)
     {
         $entity_validation->errors()->willReturn(array('foo'));
         $entity_validation->check()->willReturn(FALSE);
-        $this->beConstructedWith($data_project, $repository, $entity_validation, $entity_image);
 
         $this->execute()->shouldReturn(array(
             'status' => 'failure',
@@ -58,10 +57,9 @@ class Prepare extends ObjectBehavior
         ));
     }
 
-    function it_executes_the_usecase_succesfully($data_project, $repository, $entity_validation, $entity_image)
+    function it_executes_the_usecase_succesfully($entity_validation)
     {
         $entity_validation->check()->willReturn(TRUE);
-        $this->beConstructedWith($data_project, $repository, $entity_validation, $entity_image);
         $this->execute()->shouldReturn(array(
             'status' => 'success'
         ));
