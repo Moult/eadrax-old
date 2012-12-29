@@ -31,7 +31,7 @@ abstract class Core {
      * @param array $properties The list of properties to preset
      * @return void
      */
-    public function __construct(Array $properties = array())
+    public function __construct($properties = array())
     {
         foreach ($properties as $property_name => $property_value) {
             $this->set_property($property_name, $property_value);

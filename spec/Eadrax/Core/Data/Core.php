@@ -16,6 +16,16 @@ trait Core
         $this->get_id()->shouldBe('foo');
     }
 
+    /**
+     * @param Data $data_object
+     */
+    function it_can_construct_attributes_from_objects($data_object)
+    {
+        $data_object->id = 'foo';
+        $this->beConstructedWith($data_object);
+        $this->get_id()->shouldBe('foo');
+    }
+
     function it_can_check_whether_or_not_data_has_been_set()
     {
         $this->beConstructedWith();
