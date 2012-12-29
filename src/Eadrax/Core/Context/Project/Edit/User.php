@@ -2,7 +2,7 @@
 /**
  * Eadrax Context/Project/Edit/User.php
  *
- * @package   Context
+ * @package   Role
  * @author    Dion Moult <dion@thinkmoult.com>
  * @copyright (c) 2012 Dion Moult
  * @license   ISC http://opensource.org/licenses/isc-license.txt
@@ -16,6 +16,11 @@ use Eadrax\Core\Data;
 use Eadrax\Core\Exception;
 use Eadrax\Core\Entity;
 
+/**
+ * User role
+ *
+ * @package Role
+ */
 class User extends Data\User
 {
     use Interaction;

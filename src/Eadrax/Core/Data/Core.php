@@ -27,6 +27,7 @@ abstract class Core {
      * Allows you to set properties whilst instantiating the object.
      *
      * $data_foo = new Data_Foo(array('foo' => 'bar'));
+     * $data_bar = new Data_Bar($data_foo);
      *
      * @param array $properties The list of properties to preset
      * @return void

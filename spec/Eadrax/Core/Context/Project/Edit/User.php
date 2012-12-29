@@ -31,9 +31,8 @@ class User extends ObjectBehavior
 
     function it_authorises_logged_in_users($entity_auth)
     {
-        $entity_auth->logged_in()->shouldBeCalled()->willReturn(FALSE);
-        $this->link(array('entity_auth' => $entity_auth));
-        $this->shouldThrow('\Eadrax\Core\Exception\Authorisation')->duringAuthorise_project_edit();
+        $entity_auth->logged_in()->shouldBeCalled()->willReturn(TRUE);
+        $this->shouldNotThrow('\Eadrax\Core\Exception\Authorisation')->duringAuthorise_project_edit();
     }
 
     function it_does_not_authorise_users_who_do_not_own_the_project($data_user, $entity_auth)
@@ -43,7 +42,7 @@ class User extends ObjectBehavior
         $this->shouldThrow('\Eadrax\Core\Exception\Authorisation')->duringCheck_proposal_author();
     }
 
-    function it_authorises_users_who_own_the_project($data_user, $proposal, $entity_auth)
+    function it_authorises_users_who_own_the_project($data_user, $entity_auth)
     {
         $data_user->id = '24';
         $data_user->get_id()->shouldBeCalled()->willReturn('24');

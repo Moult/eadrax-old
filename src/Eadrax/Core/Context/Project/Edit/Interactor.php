@@ -13,6 +13,11 @@ namespace Eadrax\Core\Context\Project\Edit;
 use Eadrax\Core\Context\Project\Edit\User;
 use Eadrax\Core\Exception;
 
+/**
+ * Enacts the project edit usecase
+ *
+ * @package Interactor
+ */
 class Interactor
 {
     /**
@@ -21,17 +26,32 @@ class Interactor
      */
     private $user;
 
+    /**
+     * Sets up dependencies
+     *
+     * @return void
+     */
     public function __construct(User $user)
     {
         $this->user = $user;
     }
 
+    /**
+     * Carries out the interaction chain
+     *
+     * @return void
+     */
     public function interact()
     {
         $this->user->authorise_project_edit();
         $this->user->check_proposal_author();
     }
 
+    /**
+     * Runs the interaction chain, providing a results array
+     *
+     * @return array
+     */
     public function execute()
     {
         try

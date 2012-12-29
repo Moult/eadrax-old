@@ -19,6 +19,11 @@ use Eadrax\Core\Context\Project\Edit\Repository;
 use Eadrax\Core\Data;
 use Eadrax\Core\Entity;
 
+/**
+ * Assigns data to roles and generates the interactor
+ *
+ * @package Context
+ */
 class Edit extends Core
 {
     /**
@@ -34,7 +39,7 @@ class Edit extends Core
     private $entity_auth;
 
     /**
-     * Assigns data to roles and establishes role relationships
+     * Sets up dependencies
      *
      * @param Data\Project $data_project The project you want to edit.
      * @param Entity\Auth  $entity_auth  Authentication entity
@@ -46,11 +51,21 @@ class Edit extends Core
         $this->entity_auth = $entity_auth;
     }
 
+    /**
+     * Fetches the context interactor object
+     *
+     * @return Interactor
+     */
     public function fetch()
     {
         return new Interactor($this->get_user());
     }
 
+    /**
+     * Gets a user role
+     *
+     * @return User
+     */
     private function get_user()
     {
         return new User($this->data_project->get_author(), $this->entity_auth);
