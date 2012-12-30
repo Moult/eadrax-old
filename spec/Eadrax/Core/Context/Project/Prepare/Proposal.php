@@ -13,11 +13,11 @@ class Proposal extends ObjectBehavior
      * @param Eadrax\Core\Data\Project      $data_project
      * @param Eadrax\Core\Entity\Validation $entity_validation
      */
-    function let($data_project)
+    function let($data_project, $entity_validation)
     {
         $data_project->name = 'foo';
-        $this->beConstructedWith($data_project);
-        $this->name->shouldBe('foo');
+        $this->beConstructedWith($data_project, $entity_validation);
+        $this->get_name()->shouldBe('foo');
     }
 
     function it_should_be_initializable()
@@ -42,14 +42,12 @@ class Proposal extends ObjectBehavior
         $entity_validation->rule('website', 'url')->shouldBeCalled();
         $entity_validation->check()->shouldBeCalled()->willReturn(FALSE);
         $entity_validation->errors()->shouldBeCalled()->willReturn(array('foo'));
-        $this->link(array('entity_validation' => $entity_validation));
         $this->shouldThrow('\Eadrax\Core\Exception\Validation')->duringValidate_information();
     }
 
     function it_allows_valid_proposal_information($entity_validation)
     {
         $entity_validation->check()->shouldBeCalled()->willReturn(TRUE);
-        $this->link(array('entity_validation' => $entity_validation));
         $this->shouldNotThrow('\Eadrax\Core\Exception\Validation')->duringValidate_information();
     }
 }

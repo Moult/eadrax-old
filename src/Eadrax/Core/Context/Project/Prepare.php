@@ -10,14 +10,13 @@
  */
 
 namespace Eadrax\Core\Context\Project;
-use Eadrax\Core\Context\Project\Prepare\User;
 use Eadrax\Core\Context\Project\Prepare\Proposal;
 use Eadrax\Core\Context\Project\Prepare\Icon;
 use Eadrax\Core\Context\Project\Prepare\Repository;
+use Eadrax\Core\Context\Project\Prepare\Interactor;
 use Eadrax\Core\Context\Core;
 use Eadrax\Core\Data;
 use Eadrax\Core\Entity;
-use Eadrax\Core\Exception;
 
 /**
  * Enacts the usecase for preparing a new project.
@@ -30,20 +29,7 @@ use Eadrax\Core\Exception;
 class Prepare extends Core
 {
     /**
-     * User role
-     * @var Icon
-     */
-    public $icon;
-
-    /**
-     * Proposal role
-     * @var Proposal
-     */
-    public $proposal;
-
-    /**
-     * Casts data into roles, and makes each role aware of necessary
-     * dependencies.
+     * Sets up dependencies
      *
      * @param Data\Project      $data_project      Project data object
      * @param Repository        $repository        Repository
@@ -53,72 +39,40 @@ class Prepare extends Core
      */
     public function __construct(Data\Project $data_project, Repository $repository, Entity\Validation $entity_validation, Entity\Image $entity_image)
     {
-        $this->proposal = new Proposal($data_project);
-        $this->icon = new Icon($data_project->get_icon());
-
-        $this->proposal->link(array(
-            'repository' => $repository,
-            'entity_validation' => $entity_validation,
-        ));
-
-        $this->icon->link(array(
-            'proposal' => $this->proposal,
-            'repository' => $repository,
-            'entity_validation' => $entity_validation,
-            'entity_image' => $entity_image
-        ));
+        $this->data_project = $data_project;
+        $this->data_file = $data_project->get_icon();
+        $this->repository = $repository;
+        $this->entity_image = $entity_image;
+        $this->entity_validation = $entity_validation;
     }
 
     /**
-     * Executes the usecase.
+     * Fetches the context interactor
      *
-     * @return array Holds execution status, type and error information.
+     * @return Interactor
      */
-    public function execute()
+    public function fetch()
     {
-        try
-        {
-            $this->interact();
-        }
-        catch (Exception\Authorisation $e)
-        {
-            return array(
-                'status' => 'failure',
-                'type'   => 'authorisation',
-                'data'   => array(
-                    'errors' => array($e->getMessage())
-                )
-            );
-        }
-        catch (Exception\Validation $e)
-        {
-            return array(
-                'status' => 'failure',
-                'type'   => 'validation',
-                'data'   => array(
-                    'errors' => $e->as_array()
-                )
-            );
-        }
-
-        return array(
-            'status' => 'success'
-        );
+        return new Interactor($this->get_proposal(), $this->get_icon());
     }
 
     /**
-     * Runs the interaction chain
+     * Create a proposal role
      *
-     * @throws Exception\Authorisation
-     * @throws Exception\Validation
+     * @return Proposal
      */
-    public function interact()
+    private function get_proposal()
     {
-        $this->proposal->validate_information();
-        if ($this->icon->exists())
-        {
-            $this->icon->validate_information();
-            $this->icon->upload();
-        }
+        return new Proposal($this->data_project, $this->entity_validation);
+    }
+
+    /**
+     * Create an icon role
+     *
+     * @return Icon
+     */
+    private function get_icon()
+    {
+        return new Icon($this->data_file, $this->repository, $this->entity_image, $this->entity_validation);
     }
 }

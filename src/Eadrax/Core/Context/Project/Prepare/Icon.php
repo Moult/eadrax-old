@@ -13,6 +13,7 @@ namespace Eadrax\Core\Context\Project\Prepare;
 use Eadrax\Core\Data;
 use Eadrax\Core\Context;
 use Eadrax\Core\Exception;
+use Eadrax\Core\Entity;
 
 /**
  * Allows data_file to be cast as a icon role
@@ -27,12 +28,18 @@ class Icon extends Data\File
     /**
      * Takes a data object and copies all of its properties
      *
-     * @param Data\File $data_file Data object to copy
+     * @param Data\File         $data_file         Data object to copy
+     * @param Repository        $repository        Project prepare repository
+     * @param Entity\Image      $entity_image      Image entity
+     * @param Entity\Validation $entity_validation Validation entity
      * @return void
      */
-    public function __construct(Data\File $data_file)
+    public function __construct(Data\File $data_file, Repository $repository, Entity\Image $entity_image, Entity\Validation $entity_validation)
     {
         parent::__construct(get_object_vars($data_file));
+        $this->repository = $repository;
+        $this->entity_image = $entity_image;
+        $this->entity_validation = $entity_validation;
     }
 
     /**

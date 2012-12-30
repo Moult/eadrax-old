@@ -31,37 +31,8 @@ class Prepare extends ObjectBehavior
         $this->shouldHaveType('Eadrax\Core\Context\Project\Prepare');
     }
 
-    function it_assigns_data_to_roles()
+    function it_fetches_the_interactor()
     {
-        $this->proposal->shouldHaveType('\Eadrax\Core\Context\Project\Prepare\Proposal');
-        $this->proposal->repository->shouldHaveType('\Eadrax\Core\Context\Project\Prepare\Repository');
-        $this->proposal->entity_validation->shouldHaveType('\Eadrax\Core\Entity\Validation');
-        $this->icon->shouldHaveType('\Eadrax\Core\Context\Project\Prepare\Icon');
-        $this->icon->proposal->shouldHaveType('\Eadrax\Core\Context\Project\Prepare\Proposal');
-        $this->icon->entity_validation->shouldHaveType('\Eadrax\Core\Entity\Validation');
-        $this->icon->entity_image->shouldHaveType('\Eadrax\Core\Entity\Image');
-        $this->icon->repository->shouldHaveType('\Eadrax\Core\Context\Project\Prepare\Repository');
-    }
-
-    function it_catches_validation_exceptions_during_usecase_execution($entity_validation)
-    {
-        $entity_validation->errors()->willReturn(array('foo'));
-        $entity_validation->check()->willReturn(FALSE);
-
-        $this->execute()->shouldReturn(array(
-            'status' => 'failure',
-            'type' => 'validation',
-            'data' => array(
-                'errors' => array('foo')
-            )
-        ));
-    }
-
-    function it_executes_the_usecase_succesfully($entity_validation)
-    {
-        $entity_validation->check()->willReturn(TRUE);
-        $this->execute()->shouldReturn(array(
-            'status' => 'success'
-        ));
+        $this->fetch()->shouldHaveType('Eadrax\Core\Context\Project\Prepare\Interactor');
     }
 }

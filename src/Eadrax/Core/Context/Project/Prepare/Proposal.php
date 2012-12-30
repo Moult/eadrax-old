@@ -28,12 +28,14 @@ class Proposal extends Data\Project
     /**
      * Takes a data object and copies all of its properties
      *
-     * @param Data\Project $data_project Data object to copy
+     * @param Data\Project      $data_project      Data object to copy
+     * @param Entity\Validation $entity_validation Validation entity
      * @return void
      */
-    public function __construct(Data\Project $data_project = NULL)
+    public function __construct(Data\Project $data_project, Entity\Validation $entity_validation)
     {
-        parent::__construct(get_object_vars($data_project));
+        parent::__construct($data_project);
+        $this->entity_validation = $entity_validation;
     }
 
     /**
