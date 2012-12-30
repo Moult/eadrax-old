@@ -23,11 +23,6 @@ class Multiple extends ObjectBehavior
 
     function it_should_return_errors_as_an_array()
     {
-        $this->as_array()->shouldBe(array('foo' => 'bar'));
-    }
-
-    function it_should_offer_errors_in_the_form_of_a_string()
-    {
-        $this->getMessage()->shouldBe('Multiple exceptions thrown: foo');
+        $this->get_errors()->shouldBe(array('foo' => 'bar'));
     }
 }

@@ -87,7 +87,7 @@ class Register extends Core
                 'status' => 'failure',
                 'type'   => 'validation',
                 'data'   => array(
-                    'errors' => $e->as_array()
+                    'errors' => $e->get_errors()
                 )
             );
         }

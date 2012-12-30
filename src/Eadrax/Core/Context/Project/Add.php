@@ -115,7 +115,7 @@ class Add extends Core
                 'status' => 'failure',
                 'type'   => 'validation',
                 'data'   => array(
-                    'errors' => $e->as_array()
+                    'errors' => $e->get_errors()
                 )
             );
         }
@@ -134,7 +134,7 @@ class Add extends Core
     public function interact()
     {
         $this->user->authorise_project_add();
-        $this->context_project_prepare()->interact();
+        //$this->context_project_prepare()->interact();
         $this->proposal->submit();
     }
 
