@@ -12,13 +12,12 @@ class Proposal extends ObjectBehavior
     /**
      * @param Eadrax\Core\Data\Project                   $data_project
      * @param Eadrax\Core\Context\Project\Add\Repository $repository
-     * @param Eadrax\Core\Entity\Validation              $entity_validation
      */
-    function let($data_project)
+    function let($data_project, $repository)
     {
         $data_project->name = 'foo';
-        $this->beConstructedWith($data_project);
-        $this->name->shouldBe('foo');
+        $this->beConstructedWith($data_project, $repository);
+        $this->get_name()->shouldBe('foo');
     }
 
     function it_should_be_initializable()
@@ -34,7 +33,6 @@ class Proposal extends ObjectBehavior
     function it_submits_the_proposal_to_the_repository($repository)
     {
         $repository->add_project($this)->shouldBeCalled();
-        $this->link(array('repository' => $repository));
         $this->submit();
     }
 }

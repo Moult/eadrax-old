@@ -33,52 +33,8 @@ class Add extends ObjectBehavior
         $this->shouldHaveType('Eadrax\Core\Context\Project\Add');
     }
 
-    function it_assigns_data_to_roles()
+    function it_fetches_the_interactor()
     {
-        $this->user->shouldHaveType('\Eadrax\Core\Context\Project\Add\User');
-        $this->user->proposal->shouldHaveType('\Eadrax\Core\Context\Project\Add\Proposal');
-        $this->user->entity_auth->shouldHaveType('\Eadrax\Core\Entity\Auth');
-        $this->proposal->shouldHaveType('\Eadrax\Core\Context\Project\Add\Proposal');
-        $this->proposal->repository->shouldHaveType('\Eadrax\Core\Context\Project\Add\Repository');
-    }
-
-    function it_catches_authorisation_exceptions_during_usecase_execution($entity_auth)
-    {
-        $entity_auth->logged_in()->willReturn(FALSE);
-
-        $this->execute()->shouldReturn(array(
-            'status' => 'failure',
-            'type' => 'authorisation',
-            'data' => array(
-                'errors' => array('Please login before you can add a new project.')
-            )
-        ));
-    }
-
-    function it_catches_validation_exceptions_during_usecase_execution($data_user, $entity_auth, $entity_validation)
-    {
-        $entity_auth->get_user()->willReturn($data_user);
-        $entity_auth->logged_in()->willReturn(TRUE);
-        $entity_validation->errors()->willReturn(array('foo'));
-        $entity_validation->check()->willReturn(FALSE);
-
-        $this->execute()->shouldReturn(array(
-            'status' => 'failure',
-            'type' => 'validation',
-            'data' => array(
-                'errors' => array('foo')
-            )
-        ));
-    }
-
-    function it_executes_the_usecase_succesfully($data_user, $entity_auth, $entity_validation)
-    {
-        $entity_auth->get_user()->willReturn($data_user);
-        $entity_auth->logged_in()->willReturn(TRUE);
-        $entity_validation->check()->willReturn(TRUE);
-
-        $this->execute()->shouldReturn(array(
-            'status' => 'success'
-        ));
+        $this->fetch()->shouldHaveType('Eadrax\Core\Context\Project\Add\Interactor');
     }
 }

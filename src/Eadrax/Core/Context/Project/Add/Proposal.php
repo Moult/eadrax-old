@@ -26,14 +26,22 @@ class Proposal extends Data\Project
     use Context\Interaction;
 
     /**
-     * Takes a data object and copies all of its properties
+     * Project add repository
+     * @var Repository
+     */
+    private $repository;
+
+    /**
+     * Imports data and sets up collaborators
      *
      * @param Data\Project $data_project Data object to copy
+     * @param Repository   $repository   Project add repository
      * @return void
      */
-    public function __construct(Data\Project $data_project = NULL)
+    public function __construct(Data\Project $data_project, Repository $repository)
     {
-        parent::__construct(get_object_vars($data_project));
+        parent::__construct($data_project);
+        $this->repository = $repository;
     }
 
     /**

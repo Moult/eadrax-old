@@ -11,6 +11,7 @@
 
 namespace Eadrax\Core\Context\Project;
 use Eadrax\Core\Context\Project\Add\User;
+use Eadrax\Core\Context\Project\Add\Interactor;
 use Eadrax\Core\Context\Project\Add\Proposal;
 use Eadrax\Core\Context\Project\Add\Icon;
 use Eadrax\Core\Context\Project\Add\Repository;
@@ -28,22 +29,40 @@ use Eadrax\Core\Exception;
 class Add extends Core
 {
     /**
-     * User role
-     * @var User
+     * Project data
+     * @var Data\Project
      */
-    public $user;
+    private $data_project;
 
     /**
-     * Proposal role
-     * @var Proposal
+     * User data
+     * @var Data\User
      */
-    public $proposal;
+    private $data_user;
+
+    /**
+     * File data
+     * @var Data\File
+     */
+    private $data_file;
+
+    /**
+     * Project add repository
+     * @var Repository
+     */
+    private $repository;
 
     /**
      * Repository used by subcontext project prepare
      * @var Context\Project\Prepare\Repository
      */
     private $repository_project_prepare;
+
+    /**
+     * Auth entity
+     * @var Entity\Auth
+     */
+    private $entity_auth;
 
     /**
      * Image entity used by subcontext project prepare
@@ -71,80 +90,50 @@ class Add extends Core
      */
     public function __construct(Data\Project $data_project, Repository $repository, Context\Project\Prepare\Repository $repository_project_prepare, Entity\Auth $entity_auth, Entity\Validation $entity_validation, Entity\Image $entity_image)
     {
-        $this->user = new User($data_project->get_author());
-        $this->proposal = new Proposal($data_project);
-
-        $this->user->link(array(
-            'proposal' => $this->proposal,
-            'entity_auth' => $entity_auth
-        ));
-
-        $this->proposal->link(array(
-            'repository' => $repository
-        ));
-
+        $this->data_project = $data_project;
+        $this->data_user = $data_project->get_author();
+        $this->data_file = $data_project->get_icon();
+        $this->repository = $repository;
         $this->repository_project_prepare = $repository_project_prepare;
+        $this->entity_auth = $entity_auth;
         $this->entity_image = $entity_image;
         $this->entity_validation = $entity_validation;
     }
 
-    /**
-     * Executes the usecase.
-     *
-     * @return array Holds execution status, type and error information.
-     */
-    public function execute()
+    public function fetch()
     {
-        try
-        {
-            $this->interact();
-        }
-        catch (Exception\Authorisation $e)
-        {
-            return array(
-                'status' => 'failure',
-                'type'   => 'authorisation',
-                'data'   => array(
-                    'errors' => array($e->getMessage())
-                )
-            );
-        }
-        catch (Exception\Validation $e)
-        {
-            return array(
-                'status' => 'failure',
-                'type'   => 'validation',
-                'data'   => array(
-                    'errors' => $e->get_errors()
-                )
-            );
-        }
-
-        return array(
-            'status' => 'success'
+        return new Interactor(
+            $this->get_proposal(),
+            $this->get_user(),
+            $this->get_project_prepare()
         );
     }
 
-    /**
-     * Runs the interaction chain
-     *
-     * @throws Exception\Authorisation
-     * @throws Exception\Validation
-     */
-    public function interact()
+    private function get_proposal()
     {
-        $this->user->authorise_project_add();
-        //$this->context_project_prepare()->interact();
-        $this->proposal->submit();
+        return new Proposal($this->data_project, $this->repository);
     }
 
-    /**
-     * Creates a prepare project context.
-     *
-     * @return Context\Project\Prepare;
-     */
-    private function context_project_prepare()
+    private function get_user()
     {
-        return new Context\Project\Prepare($this->proposal, $this->repository_project_prepare, $this->entity_validation, $this->entity_image);
+        return new User($this->data_user, $this->entity_auth);
+    }
+
+    private function get_project_prepare()
+    {
+        return new Context\Project\Prepare\Interactor(
+            $this->get_project_prepare_proposal(),
+            $this->get_project_prepare_icon()
+        );
+    }
+
+    private function get_project_prepare_proposal()
+    {
+        return new Context\Project\Prepare\Proposal($this->data_project, $this->entity_validation);
+    }
+
+    private function get_project_prepare_icon()
+    {
+        return new Context\Project\Prepare\Icon($this->data_file, $this->repository_project_prepare, $this->entity_image, $this->entity_validation);
     }
 }

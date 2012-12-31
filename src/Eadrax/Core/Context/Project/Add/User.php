@@ -28,37 +28,27 @@ class User extends Data\User
     /**
      * Takes a data object and copies all of its properties
      *
-     * @param Data\User $data_user Data object to copy
+     * @param Data\User   $data_user   Data object to copy
+     * @param Entity\Auth $entity_auth Auth entity
      * @return void
      */
-    public function __construct(Data\User $data_user)
+    public function __construct(Data\User $data_user, Entity\Auth $entity_auth)
     {
         parent::__construct(get_object_vars($data_user));
+        $this->entity_auth = $entity_auth;
     }
 
     /**
      * Prove that it is allowed to add a project.
      *
      * @throws Exception\Authorisation if not logged in
-     * @return void
+     * @return bool
      */
     public function authorise_project_add()
     {
         if ($this->entity_auth->logged_in())
-            return $this->load_authentication_details();
+            return TRUE;
         else
             throw new Exception\Authorisation('Please login before you can add a new project.');
-    }
-
-    /**
-     * Loads the authentication details of the currently logged in user into the
-     * user data.
-     *
-     * @return void
-     */
-    public function load_authentication_details()
-    {
-        $this->__construct($this->entity_auth->get_user());
-        return $this->proposal->set_author($this);
     }
 }
