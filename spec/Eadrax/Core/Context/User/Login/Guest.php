@@ -21,7 +21,7 @@ class Guest extends ObjectBehavior
     {
         $data_user->username = 'username';
         $data_user->password = 'password';
-        $this->beConstructedWith($data_user);
+        $this->beConstructedWith($data_user, $repository, $entity_auth, $entity_validation);
         $this->get_username()->shouldBe('username');
     }
 
@@ -38,14 +38,12 @@ class Guest extends ObjectBehavior
     function it_throws_an_authorisation_error_if_logged_in($entity_auth)
     {
         $entity_auth->logged_in()->shouldBeCalled()->willReturn(TRUE);
-        $this->link(array('entity_auth' => $entity_auth));
         $this->shouldThrow('\Eadrax\Core\Exception\Authorisation')->duringAuthorise_login();
     }
 
     function it_authorises_guests($entity_auth)
     {
         $entity_auth->logged_in()->shouldBeCalled()->willReturn(FALSE);
-        $this->link(array('entity_auth' => $entity_auth));
         $this->shouldNotThrow('\Eadrax\Core\Exception\Authorisation')->duringAuthorise_login();
     }
 
@@ -62,28 +60,24 @@ class Guest extends ObjectBehavior
         $entity_validation->errors()->shouldBeCalled()->willReturn(array(
             'foo' => 'bar'
         ));
-        $this->link(array('entity_validation' => $entity_validation));
         $this->shouldThrow('\Eadrax\Core\Exception\Validation')->duringValidate_information();
     }
 
     function it_allows_valid_information($entity_validation)
     {
         $entity_validation->check()->shouldBeCalled()->willReturn(TRUE);
-        $this->link(array('entity_validation' => $entity_validation));
         $this->shouldNotThrow('\Eadrax\Core\Exception\Validation')->duringValidate_information();
     }
 
     function it_logs_the_user_in($entity_auth)
     {
         $entity_auth->login($this->username, $this->password)->shouldBeCalled()->willReturn('foo');
-        $this->link(array('entity_auth' => $entity_auth));
         $this->login()->shouldReturn('foo');
     }
 
     function it_checks_for_existing_accounts($repository)
     {
         $repository->is_existing_account('username', 'password')->shouldBeCalled()->willReturn(TRUE);
-        $this->link(array('repository' => $repository));
         $this->is_existing_account('username', 'password')->shouldBe(TRUE);
     }
 }

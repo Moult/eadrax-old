@@ -11,6 +11,7 @@
 
 namespace Eadrax\Core\Context\User;
 use Eadrax\Core\Context\Core;
+use Eadrax\Core\Context\User\Login\Interactor;
 use Eadrax\Core\Context\User\Login\Guest;
 use Eadrax\Core\Context\User\Login\Repository;
 use Eadrax\Core\Data;
@@ -25,14 +26,31 @@ use Eadrax\Core\Exception;
 class Login extends Core
 {
     /**
-     * Guest role
-     * @var Guest
+     * User data
+     * @var Data\User
      */
-    public $guest;
+    private $data_user;
 
     /**
-     * Casts data into roles, and makes each role aware of necessary
-     * dependencies.
+     * Context repository
+     * @var Repository
+     */
+    private $repository;
+
+    /**
+     * Auth entity
+     * @var Entity\Auth
+     */
+    private $entity_auth;
+
+    /**
+     * Validation entity
+     * @var Entity\Validation
+     */
+    private $entity_validation;
+
+    /**
+     * Sets up all usecase dependencies
      *
      * @param Data\User         $data_user         User data object
      * @param Repository        $repository        The repository
@@ -42,62 +60,29 @@ class Login extends Core
      */
     public function __construct(Data\User $data_user, Repository $repository, Entity\Auth $entity_auth, Entity\Validation $entity_validation)
     {
-        $this->guest = new Guest($data_user);
-        $this->guest->link(array(
-            'repository' => $repository,
-            'entity_auth' => $entity_auth,
-            'entity_validation' => $entity_validation
-        ));
+        $this->data_user = $data_user;
+        $this->repository = $repository;
+        $this->entity_auth = $entity_auth;
+        $this->entity_validation = $entity_validation;
     }
 
     /**
-     * Executes the usecase.
+     * Fetches the interactor
      *
-     * @return array Holds execution status, type and error information.
+     * @return Interactor
      */
-    public function execute()
+    public function fetch()
     {
-        try
-        {
-            $this->interact();
-        }
-        catch (Exception\Authorisation $e)
-        {
-            return array(
-                'status' => 'failure',
-                'type'   => 'authorisation',
-                'data'   => array(
-                    'errors' => array($e->getMessage())
-                )
-            );
-        }
-        catch (Exception\Validation $e)
-        {
-            return array(
-                'status' => 'failure',
-                'type'   => 'validation',
-                'data'   => array(
-                    'errors' => $e->get_errors()
-                )
-            );
-        }
-
-        return array(
-            'status' => 'success'
-        );
+        return new Interactor($this->get_guest());
     }
 
     /**
-     * Carries out the interaction sequence.
+     * Retrieves the guest role
      *
-     * @throws Exception\Authorisation
-     * @throws Exception\Validation
-     * @return void
+     * @return Guest
      */
-    public function interact()
+    private function get_guest()
     {
-        $this->guest->authorise_login();
-        $this->guest->validate_information();
-        $this->guest->login();
+        return new Guest($this->data_user, $this->repository, $this->entity_auth, $this->entity_validation);
     }
 }

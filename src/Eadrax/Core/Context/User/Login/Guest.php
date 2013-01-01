@@ -28,12 +28,18 @@ class Guest extends Data\User
     /**
      * Takes a data object and copies all of its properties
      *
-     * @param Data\User $data_user Data object to copy
+     * @param Data\User         $data_user         Data object to copy
+     * @param Repository        $repository        Repository
+     * @param Entity\Auth       $entity_auth       Auth entity
+     * @param Entity\Validation $entity_validation Validation entity
      * @return void
      */
-    public function __construct(Data\User $data_user = NULL)
+    public function __construct(Data\User $data_user, Repository $repository, Entity\Auth $entity_auth, Entity\Validation $entity_validation)
     {
-        parent::__construct(get_object_vars($data_user));
+        parent::__construct($data_user);
+        $this->repository = $repository;
+        $this->entity_auth = $entity_auth;
+        $this->entity_validation = $entity_validation;
     }
 
     /**
