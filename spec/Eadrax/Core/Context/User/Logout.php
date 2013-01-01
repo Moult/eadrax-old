@@ -14,7 +14,7 @@ class Logout extends ObjectBehavior
     /**
      * @param Eadrax\Core\Entity\Auth $auth
      */
-   function let($auth)
+    function let($auth)
     {
         $this->beConstructedWith($auth);
     }
@@ -29,11 +29,8 @@ class Logout extends ObjectBehavior
         $this->shouldHaveType('Eadrax\Core\Context\Core');
     }
 
-    function it_should_return_success($auth)
+    function it_fetches_the_interactor()
     {
-        $auth->logout()->shouldBeCalled();
-        $this->execute()->shouldBe(array(
-            'status' => 'success'
-        ));
+        $this->fetch()->shouldHaveType('Eadrax\Core\Context\User\Logout\Interactor');
     }
 }

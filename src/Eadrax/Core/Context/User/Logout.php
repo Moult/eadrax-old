@@ -10,6 +10,7 @@
  */
 
 namespace Eadrax\Core\Context\User;
+use Eadrax\Core\Context\User\Logout\Interactor;
 use Eadrax\Core\Context\Core;
 use Eadrax\Core\Entity;
 
@@ -39,26 +40,12 @@ class Logout extends Core
     }
 
     /**
-     * Executes the usecase.
+     * Fetches the interactor
      *
-     * @return array Holds execution status, type and error information.
+     * @return Interactor
      */
-    public function execute()
+    public function fetch()
     {
-        $this->interact();
-
-        return array(
-            'status' => 'success'
-        );
-    }
-
-    /**
-     * Runs the interaction chain.
-     *
-     * @return void
-     */
-    public function interact()
-    {
-        $this->entity_auth->logout();
+        return new Interactor($this->entity_auth);
     }
 }
