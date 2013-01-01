@@ -11,6 +11,7 @@
 
 namespace Eadrax\Core\Context\User;
 use Eadrax\Core\Context\Core;
+use Eadrax\Core\Context\User\Dashboard\Interactor;
 use Eadrax\Core\Context\User\Dashboard\User;
 use Eadrax\Core\Data;
 use Eadrax\Core\Exception;
@@ -24,13 +25,19 @@ use Eadrax\Core\Entity;
 class Dashboard extends Core
 {
     /**
-     * User role
-     * @var User
+     * User data
+     * @var Data\User
      */
-    public $user;
+    private $data_user;
 
     /**
-     * Casts data into roles, and makes each role aware of necessary 
+     * Auth entity
+     * @var Entity\Auth
+     */
+    private $entity_auth;
+
+    /**
+     * Casts data into roles, and makes each role aware of necessary
      * dependencies.
      *
      * @param Data\User   $data_user  User data object
@@ -39,37 +46,27 @@ class Dashboard extends Core
      */
     public function __construct(Data\User $data_user, Entity\Auth $entity_auth)
     {
-        $this->user = new User($data_user);
-        $this->user->link(array(
-            'entity_auth' => $entity_auth
-        ));
+        $this->data_user = $data_user;
+        $this->entity_auth = $entity_auth;
     }
 
     /**
-     * Executes the usecase.
+     * Fetches the interactor
      *
-     * @return array Holds execution status, type and error information.
+     * @return void
      */
-    public function execute()
+    public function fetch()
     {
-        try
-        {
-            $data = $this->user->authorise_dashboard();
-        }
-        catch (Exception\Authorisation $e)
-        {
-            return array(
-                'status' => 'failure',
-                'type'   => 'authorisation',
-                'data'   => array(
-                    'errors' => array($e->getMessage())
-                )
-            );
-        }
+        return new Interactor($this->get_user());
+    }
 
-        return array(
-            'status' => 'success',
-            'data'   => $data
-        );
+    /**
+     * Gets a user role
+     *
+     * @return User
+     */
+    private function get_user()
+    {
+        return new User($this->data_user, $this->entity_auth);
     }
 }

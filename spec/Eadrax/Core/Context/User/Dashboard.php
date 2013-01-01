@@ -30,37 +30,8 @@ class Dashboard extends ObjectBehavior
         $this->shouldHaveType('Eadrax\Core\Context\Core');
     }
 
-    function it_assigns_data_to_roles()
+    function it_fetches_the_interactor()
     {
-        $this->user->shouldHaveType('Eadrax\Core\Context\User\Dashboard\User');
-        $this->user->shouldHaveType('Eadrax\Core\Data\User');
-        $this->user->entity_auth->shouldHaveType('Eadrax\Core\Entity\Auth');
-    }
-
-    function it_catches_authorisation_exceptions_during_usecase($data_user, $entity_auth)
-    {
-        $entity_auth->logged_in()->willReturn(FALSE);
-        $this->beConstructedWith($data_user, $entity_auth);
-
-        $this->execute()->shouldBe(array(
-            'status' => 'failure',
-            'type' => 'authorisation',
-            'data' => array(
-                'errors' => array('Please login before you can view your dashboard.')
-            )
-        ));
-    }
-
-    function it_executes_the_usecase_successfully($data_user, $entity_auth)
-    {
-        $entity_auth->logged_in()->willReturn(TRUE);
-        $data_user->get_username()->willReturn('Foo');;
-        $entity_auth->get_user()->willReturn($data_user);
-        $this->beConstructedWith($data_user, $entity_auth);
-
-        $this->execute()->shouldBe(array(
-            'status' => 'success',
-            'data' => array('username' => 'Foo')
-        ));
+        $this->fetch()->shouldHaveType('Eadrax\Core\Context\User\Dashboard\Interactor');
     }
 }

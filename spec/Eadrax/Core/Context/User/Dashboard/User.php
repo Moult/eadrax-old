@@ -15,10 +15,10 @@ class User extends ObjectBehavior
      * @param Eadrax\Core\Data\User   $data_user
      * @param Eadrax\Core\Entity\Auth $entity_auth
      */
-    function let($data_user)
+    function let($data_user, $entity_auth)
     {
         $data_user->username = 'username';
-        $this->beConstructedWith($data_user);
+        $this->beConstructedWith($data_user, $entity_auth);
         $this->get_username()->shouldBe('username');
     }
 
@@ -35,7 +35,6 @@ class User extends ObjectBehavior
     function it_throws_an_authorisation_error_if_not_logged_in($entity_auth)
     {
         $entity_auth->logged_in()->willReturn(FALSE);
-        $this->link(array('entity_auth' => $entity_auth));
 
         $this->shouldThrow('\Eadrax\Core\Exception\Authorisation')->duringAuthorise_dashboard();
     }
@@ -45,7 +44,6 @@ class User extends ObjectBehavior
         $entity_auth->logged_in()->willReturn(TRUE);
         $data_user->get_username->willReturn('username');
         $entity_auth->get_user()->willReturn($data_user);
-        $this->link(array('entity_auth' => $entity_auth));
 
         $this->authorise_dashboard()->shouldReturn(array(
             'username' => 'username'

@@ -31,9 +31,10 @@ class User extends Data\User
      * @param Data $data_user Data object to copy
      * @return void
      */
-    public function __construct(Data\User $data_user)
+    public function __construct(Data\User $data_user, Entity\Auth $entity_auth)
     {
-        parent::__construct(get_object_vars($data_user));
+        parent::__construct($data_user);
+        $this->entity_auth = $entity_auth;
     }
 
     /**
