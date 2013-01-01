@@ -3,12 +3,9 @@
 namespace spec\Eadrax\Core\Context\Project\Edit;
 
 use PHPSpec2\ObjectBehavior;
-use spec\Eadrax\Core\Context\Interaction;
 
 class User extends ObjectBehavior
 {
-    use Interaction;
-
     /**
      * @param \Eadrax\Core\Data\User   $data_user
      * @param \Eadrax\Core\Entity\Auth $entity_auth

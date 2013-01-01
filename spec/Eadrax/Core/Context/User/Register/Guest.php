@@ -2,15 +2,11 @@
 
 namespace spec\Eadrax\Core\Context\User\Register;
 
-require_once 'spec/Eadrax/Core/Context/Interaction.php';
-
 use PHPSpec2\ObjectBehavior;
 use spec\Eadrax\Core\Context;
 
 class Guest extends ObjectBehavior
 {
-    use Context\Interaction;
-
     /**
      * @param Eadrax\Core\Data\User                        $data_user
      * @param Eadrax\Core\Context\User\Register\Repository $repository

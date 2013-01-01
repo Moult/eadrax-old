@@ -3,12 +3,9 @@
 namespace spec\Eadrax\Core\Context\Project\Prepare;
 
 use PHPSpec2\ObjectBehavior;
-use spec\Eadrax\Core\Context\Interaction;
 
 class Proposal extends ObjectBehavior
 {
-    use Interaction;
-
     /**
      * @param Eadrax\Core\Data\Project      $data_project
      * @param Eadrax\Core\Entity\Validation $entity_validation

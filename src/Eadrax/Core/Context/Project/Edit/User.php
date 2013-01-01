@@ -11,7 +11,6 @@
 
 namespace Eadrax\Core\Context\Project\Edit;
 
-use Eadrax\Core\Context\Interaction;
 use Eadrax\Core\Data;
 use Eadrax\Core\Exception;
 use Eadrax\Core\Entity;
@@ -23,8 +22,6 @@ use Eadrax\Core\Entity;
  */
 class User extends Data\User
 {
-    use Interaction;
-
     /**
      * Copies all the properties of a data object
      *

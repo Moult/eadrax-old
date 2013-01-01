@@ -23,8 +23,6 @@ use Eadrax\Core\Exception;
  */
 class Proposal extends Data\Project
 {
-    use Context\Interaction;
-
     /**
      * Project add repository
      * @var Repository

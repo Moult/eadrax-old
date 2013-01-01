@@ -2,15 +2,11 @@
 
 namespace spec\Eadrax\Core\Context\User\Dashboard;
 
-require_once 'spec/Eadrax/Core/Context/Interaction.php';
-
 use PHPSpec2\ObjectBehavior;
 use spec\Eadrax\Core\Context;
 
 class User extends ObjectBehavior
 {
-    use Context\Interaction;
-
     /**
      * @param Eadrax\Core\Data\User   $data_user
      * @param Eadrax\Core\Entity\Auth $entity_auth

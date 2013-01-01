@@ -23,8 +23,6 @@ use Eadrax\Core\Exception;
  */
 class Proposal extends Data\Project
 {
-    use Context\Interaction;
-
     /**
      * Takes a data object and copies all of its properties
      *

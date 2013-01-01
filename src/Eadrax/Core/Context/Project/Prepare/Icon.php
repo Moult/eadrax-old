@@ -23,8 +23,6 @@ use Eadrax\Core\Entity;
  */
 class Icon extends Data\File
 {
-    use Context\Interaction;
-
     /**
      * Takes a data object and copies all of its properties
      *

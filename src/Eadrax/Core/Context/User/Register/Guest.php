@@ -23,8 +23,6 @@ use Eadrax\Core\Exception;
  */
 class Guest extends Data\User
 {
-    use Context\Interaction;
-
     /**
      * Context repository
      * @var Repository
