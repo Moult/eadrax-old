@@ -26,14 +26,38 @@ class Guest extends Data\User
     use Context\Interaction;
 
     /**
+     * Context repository
+     * @var Repository
+     */
+    private $repository;
+
+    /**
+     * Auth entity
+     * @var Entity\Auth
+     */
+    private $entity_auth;
+
+    /**
+     * Validation entity
+     * @var Entity\Validation
+     */
+    private $entity_validation;
+
+    /**
      * Takes a data object and copies all of its properties
      *
-     * @param Data\User $data_user Data object to copy
+     * @param Data\User         $data_user         Data object to copy
+     * @param Repository        $repository        context repository
+     * @param Entity\Auth       $entity_auth       Auth entity
+     * @param Entity\Validation $entity_validation Validation entity
      * @return void
      */
-    public function __construct(Data\User $data_user = NULL)
+    public function __construct(Data\User $data_user, Repository $repository, Entity\Auth $entity_auth, Entity\Validation $entity_validation)
     {
-        parent::__construct(get_object_vars($data_user));
+        parent::__construct($data_user);
+        $this->repository = $repository;
+        $this->entity_auth = $entity_auth;
+        $this->entity_validation = $entity_validation;
     }
 
     /**

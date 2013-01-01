@@ -12,6 +12,8 @@
 namespace Eadrax\Core\Context\User;
 use Eadrax\Core\Context;
 use Eadrax\Core\Context\Core;
+use Eadrax\Core\Context\User;
+use Eadrax\Core\Context\User\Register\Interactor;
 use Eadrax\Core\Context\User\Register\Guest;
 use Eadrax\Core\Context\User\Register\Repository;
 use Eadrax\Core\Data;
@@ -26,99 +28,91 @@ use Eadrax\Core\Entity;
 class Register extends Core
 {
     /**
-     * Guest role
-     * @var Guest
+     * User data
+     * @var Data\User
      */
-    public $guest;
+    private $data_user;
 
+    /**
+     * Context repository
+     * @var Repository
+     */
+    private $repository;
+
+    /**
+     * User login repository
+     * @var User\Login\Repository
+     */
     private $repository_user_login;
+
+    /**
+     * Auth entity
+     * @var Entity\Auth
+     */
     private $entity_auth;
+
+    /**
+     * Validation entity
+     * @var Entity\Validation
+     */
     private $entity_validation;
 
     /**
-     * Casts data into roles, and makes each role aware of necessary
-     * dependencies.
+     * Sets up all dependencies required to run the usecase
      *
-     * @param Data\User                     $data_user             User data object
-     * @param Repository                    $repository            Repository for this context
-     * @param Context\User\Login\Repository $repository_user_login Repository for user login context
-     * @param Entity\Auth                   $entity_auth           Authentication system
-     * @param Entity\Validation             $entity_validation     Validation system
+     * @param Data\User             $data_user             User data object
+     * @param Repository            $repository            Repository for this context
+     * @param User\Login\Repository $repository_user_login Repository for user login context
+     * @param Entity\Auth           $entity_auth           Authentication system
+     * @param Entity\Validation     $entity_validation     Validation system
      * @return void
      */
-    public function __construct(Data\User $data_user, Repository $repository, Context\User\Login\Repository $repository_user_login, Entity\Auth $entity_auth, Entity\Validation $entity_validation)
+    public function __construct(Data\User $data_user, Repository $repository, User\Login\Repository $repository_user_login, Entity\Auth $entity_auth, Entity\Validation $entity_validation)
     {
-        $this->guest = new Guest($data_user);
-        $this->guest->link(array(
-            'repository' => $repository,
-            'entity_auth' => $entity_auth,
-            'entity_validation' => $entity_validation
-        ));
-
+        $this->data_user = $data_user;
+        $this->repository = $repository;
         $this->repository_user_login = $repository_user_login;
         $this->entity_auth = $entity_auth;
         $this->entity_validation = $entity_validation;
     }
 
     /**
-     * Executes the usecase.
+     * Fetches the interactor
      *
-     * @return array Holds execution status, type and error information.
+     * @return Interactor
      */
-    public function execute()
+    public function fetch()
     {
-        try
-        {
-            $this->interact();
-        }
-        catch (Exception\Authorisation $e)
-        {
-            return array(
-                'status' => 'failure',
-                'type'   => 'authorisation',
-                'data'   => array(
-                    'errors' => array($e->getMessage())
-                )
-            );
-        }
-        catch (Exception\Validation $e)
-        {
-            return array(
-                'status' => 'failure',
-                'type'   => 'validation',
-                'data'   => array(
-                    'errors' => $e->get_errors()
-                )
-            );
-        }
-
-        return array(
-            'status' => 'success'
-        );
+        return new Interactor($this->get_guest(), $this->get_user_login());
     }
 
     /**
-     * Runs the interaction chain
+     * Gets a guest role
      *
-     * @throws Exception\Authorisation
-     * @throws Exception\Validation
-     * @return void
+     * @return Guest
      */
-    public function interact()
+    private function get_guest()
     {
-        $this->guest->authorise_registration();
-        $this->guest->validate_information();
-        $this->guest->register();
-        $this->context_user_login()->interact();
+        return new Guest($this->data_user, $this->repository, $this->entity_auth, $this->entity_validation);
     }
 
     /**
-     * Creates a login user context.
+     * Gets a user login interactor
      *
-     * @return Context\User\Login
+     * @return User\Login\Interactor
      */
-    private function context_user_login()
+    private function get_user_login()
     {
-        return new Context\User\Login($this->guest, $this->repository_user_login, $this->entity_auth, $this->entity_validation);
+        return new User\Login\Interactor($this->get_user_login_guest());
+    }
+
+    /**
+     * Gets a user login guest role
+     *
+     * @return User\Login\Guest
+     */
+    private function get_user_login_guest()
+    {
+        return new User\Login\Guest($this->data_user, $this->repository_user_login, $this->entity_auth, $this->entity_validation);
     }
 }
