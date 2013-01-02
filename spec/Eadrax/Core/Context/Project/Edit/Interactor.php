@@ -8,10 +8,12 @@ class Interactor extends ObjectBehavior
 {
     /**
      * @param Eadrax\Core\Context\Project\Edit\User $user
+     * @param Eadrax\Core\Context\Project\Prepare\Interactor $project_prepare
+     * @param Eadrax\Core\Context\Project\Edit\Proposal $proposal
      */
-    function let($user)
+    function let($user, $proposal, $project_prepare)
     {
-        $this->beConstructedWith($user);
+        $this->beConstructedWith($user, $proposal, $project_prepare);
     }
 
     function it_should_be_initializable()
@@ -19,10 +21,12 @@ class Interactor extends ObjectBehavior
         $this->shouldHaveType('Eadrax\Core\Context\Project\Edit\Interactor');
     }
 
-    function it_runs_the_interaction_chain($user)
+    function it_runs_the_interaction_chain($user, $proposal, $project_prepare)
     {
         $user->authorise_project_edit()->shouldBeCalled();
         $user->check_proposal_author()->shouldBeCalled();
+        $project_prepare->interact()->shouldBeCalled();
+        $proposal->update()->shouldBeCalled();
         $this->interact();
     }
 

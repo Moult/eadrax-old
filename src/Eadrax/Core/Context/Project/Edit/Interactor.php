@@ -10,6 +10,7 @@
  */
 
 namespace Eadrax\Core\Context\Project\Edit;
+use Eadrax\Core\Context\Project;
 use Eadrax\Core\Context\Project\Edit\User;
 use Eadrax\Core\Exception;
 
@@ -31,9 +32,11 @@ class Interactor
      *
      * @return void
      */
-    public function __construct(User $user)
+    public function __construct(User $user, Proposal $proposal, Project\Prepare\Interactor $project_prepare)
     {
         $this->user = $user;
+        $this->proposal = $proposal;
+        $this->project_prepare = $project_prepare;
     }
 
     /**
@@ -45,6 +48,8 @@ class Interactor
     {
         $this->user->authorise_project_edit();
         $this->user->check_proposal_author();
+        $this->project_prepare->interact();
+        $this->proposal->update();
     }
 
     /**
