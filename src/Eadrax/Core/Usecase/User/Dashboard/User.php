@@ -38,7 +38,7 @@ class User extends Data\User
     {
         if ($this->entity_auth->logged_in())
             return array(
-                'username' => $this->entity_auth->get_user()->get_username()
+                'username' => $this->entity_auth->get_user()->username
             );
         else
             throw new Exception\Authorisation('Please login before you can view your dashboard.');

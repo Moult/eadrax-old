@@ -52,7 +52,7 @@ class User extends Data\User
      */
     public function check_proposal_author()
     {
-        if ($this->get_id() === $this->entity_auth->get_user()->get_id())
+        if ($this->id === $this->entity_auth->get_user()->id)
             return TRUE;
         else
             throw new Exception\Authorisation('You cannot edit a project you do not own.');

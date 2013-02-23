@@ -90,8 +90,8 @@ class Guest extends Data\User
     public function setup_validation()
     {
         $this->entity_validation->setup(array(
-                'username' => $this->get_username(),
-                'password' => $this->get_password()
+                'username' => $this->username,
+                'password' => $this->password
             ));
         $this->entity_validation->rule('username', 'not_empty');
         $this->entity_validation->callback('username', array($this, 'is_existing_account'), array('username', 'password'));

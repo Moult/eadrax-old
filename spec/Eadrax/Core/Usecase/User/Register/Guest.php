@@ -17,7 +17,7 @@ class Guest extends ObjectBehavior
     {
         $data_user->username = 'username';
         $this->beConstructedWith($data_user, $repository, $entity_auth, $entity_validation);
-        $this->get_username()->shouldBe('username');
+        $this->username->shouldBe('username');
     }
 
     function it_should_be_initializable()

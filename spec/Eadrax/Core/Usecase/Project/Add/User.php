@@ -14,7 +14,7 @@ class User extends ObjectBehavior
     {
         $data_user->id = 'foo';
         $this->beConstructedWith($data_user, $entity_auth);
-        $this->get_id()->shouldBe('foo');
+        $this->id->shouldBe('foo');
     }
 
     function it_should_be_initializable()

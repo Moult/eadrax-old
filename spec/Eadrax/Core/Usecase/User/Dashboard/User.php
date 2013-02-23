@@ -15,7 +15,7 @@ class User extends ObjectBehavior
     {
         $data_user->username = 'username';
         $this->beConstructedWith($data_user, $entity_auth);
-        $this->get_username()->shouldBe('username');
+        $this->username->shouldBe('username');
     }
 
     function it_should_be_initializable()
@@ -38,7 +38,6 @@ class User extends ObjectBehavior
     function it_returns_with_a_users_username_if_logged_in($data_user, $entity_auth)
     {
         $entity_auth->logged_in()->willReturn(TRUE);
-        $data_user->get_username->willReturn('username');
         $entity_auth->get_user()->willReturn($data_user);
 
         $this->authorise_dashboard()->shouldReturn(array(
