@@ -32,7 +32,11 @@ class Proposal extends Data\Project
      */
     public function __construct(Data\Project $data_project, Tool\Validation $entity_validation)
     {
-        parent::__construct($data_project);
+        foreach ($data_project as $property => $value)
+        {
+            $this->$property = $value;
+        }
+
         $this->entity_validation = $entity_validation;
     }
 

@@ -34,7 +34,11 @@ class Icon extends Data\File
      */
     public function __construct(Data\File $data_file, Repository $repository, Tool\Image $entity_image, Tool\Validation $entity_validation)
     {
-        parent::__construct(get_object_vars($data_file));
+        foreach ($data_file as $property => $value)
+        {
+            $this->$property = $value;
+        }
+
         $this->repository = $repository;
         $this->entity_image = $entity_image;
         $this->entity_validation = $entity_validation;

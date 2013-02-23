@@ -16,7 +16,7 @@ namespace Eadrax\Core\Data;
  *
  * @package Data
  */
-class Project extends Core
+class Project
 {
     /** @ignore */
     public $name;

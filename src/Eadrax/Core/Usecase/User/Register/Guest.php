@@ -52,7 +52,11 @@ class Guest extends Data\User
      */
     public function __construct(Data\User $data_user, Repository $repository, Tool\Auth $entity_auth, Tool\Validation $entity_validation)
     {
-        parent::__construct($data_user);
+        foreach ($data_user as $property => $value)
+        {
+            $this->$property = $value;
+        }
+
         $this->repository = $repository;
         $this->entity_auth = $entity_auth;
         $this->entity_validation = $entity_validation;

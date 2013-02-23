@@ -16,7 +16,7 @@ namespace Eadrax\Core\Data;
  *
  * @package Data
  */
-class User extends Core
+class User
 {
     /** @ignore */
     public $username;
@@ -24,6 +24,8 @@ class User extends Core
     public $password;
     /** @ignore */
     public $email;
+    /** @ignore */
+    public $id;
 
     /** @ignore */
     public function get_username()
@@ -59,5 +61,15 @@ class User extends Core
     public function set_email($email)
     {
         $this->email = $email;
+    }
+
+    public function set_id($id)
+    {
+        $this->id = $id;
+    }
+
+    public function get_id()
+    {
+        return $this->id;
     }
 }

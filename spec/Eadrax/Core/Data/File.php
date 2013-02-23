@@ -2,14 +2,10 @@
 
 namespace spec\Eadrax\Core\Data;
 
-require_once 'spec/Eadrax/Core/Data/Core.php';
-
 use PHPSpec2\ObjectBehavior;
 
 class File extends ObjectBehavior
 {
-    use Core;
-
     function it_should_be_initializable()
     {
         $this->shouldHaveType('Eadrax\Core\Data\File');

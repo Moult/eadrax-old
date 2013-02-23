@@ -27,7 +27,11 @@ class Proposal extends Data\Project
      */
     public function __construct(Data\Project $data_project, Repository $repository)
     {
-        parent::__construct($data_project);
+        foreach ($data_project as $property => $value)
+        {
+            $this->$property = $value;
+        }
+
         $this->repository = $repository;
     }
 

@@ -2,7 +2,7 @@
 
 namespace Eadrax\Core\Data;
 
-class File extends Core
+class File
 {
     /**
      * Name of the file

@@ -30,7 +30,11 @@ class User extends Data\User
      */
     public function __construct(Data\User $data_user, Tool\Auth $entity_auth)
     {
-        parent::__construct($data_user);
+        foreach ($data_user as $property => $value)
+        {
+            $this->$property = $value;
+        }
+
         $this->entity_auth = $entity_auth;
     }
 
