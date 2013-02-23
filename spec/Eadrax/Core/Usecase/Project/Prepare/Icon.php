@@ -7,10 +7,10 @@ use PHPSpec2\ObjectBehavior;
 class Icon extends ObjectBehavior
 {
     /**
-     * @param \Eadrax\Core\Data\File                          $data_file
-     * @param \Eadrax\Core\Usecase\Project\Prepare\Repository $repository
-     * @param \Eadrax\Core\Tool\Image                       $entity_image
-     * @param \Eadrax\Core\Tool\Validation                  $entity_validation
+     * @param Eadrax\Core\Data\File $data_file
+     * @param Eadrax\Core\Usecase\Project\Prepare\Repository $repository
+     * @param Eadrax\Core\Tool\Image $entity_image
+     * @param Eadrax\Core\Tool\Validation $entity_validation
      */
     function let($data_file, $repository, $entity_image, $entity_validation)
     {

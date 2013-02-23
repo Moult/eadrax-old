@@ -7,14 +7,14 @@ use PHPSpec2\ObjectBehavior;
 class Add extends ObjectBehavior
 {
     /**
-     * @param \Eadrax\Core\Data\User                          $data_user
-     * @param \Eadrax\Core\Data\Project                       $data_project
-     * @param \Eadrax\Core\Data\File                          $data_file
-     * @param \Eadrax\Core\Usecase\Project\Add\Repository     $repository
-     * @param \Eadrax\Core\Usecase\Project\Prepare\Repository $repository_project_prepare
-     * @param \Eadrax\Core\Tool\Auth                        $entity_auth
-     * @param \Eadrax\Core\Tool\Validation                  $entity_validation
-     * @param \Eadrax\Core\Tool\Image                       $entity_image
+     * @param Eadrax\Core\Data\User $data_user
+     * @param Eadrax\Core\Data\Project $data_project
+     * @param Eadrax\Core\Data\File $data_file
+     * @param Eadrax\Core\Usecase\Project\Add\Repository $repository
+     * @param Eadrax\Core\Usecase\Project\Prepare\Repository $repository_project_prepare
+     * @param Eadrax\Core\Tool\Auth $entity_auth
+     * @param Eadrax\Core\Tool\Validation $entity_validation
+     * @param Eadrax\Core\Tool\Image $entity_image
      */
     function let($data_user, $data_project, $data_file, $repository, $repository_project_prepare, $entity_auth, $entity_validation, $entity_image)
     {

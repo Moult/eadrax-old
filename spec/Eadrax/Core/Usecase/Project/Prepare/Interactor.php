@@ -8,7 +8,7 @@ class Interactor extends ObjectBehavior
 {
     /**
      * @param Eadrax\Core\Usecase\Project\Prepare\Proposal $proposal
-     * @param Eadrax\Core\Usecase\Project\Prepare\Icon     $icon
+     * @param Eadrax\Core\Usecase\Project\Prepare\Icon $icon
      */
     function let($proposal, $icon)
     {

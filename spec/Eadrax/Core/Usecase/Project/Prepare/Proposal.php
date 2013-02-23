@@ -7,7 +7,7 @@ use PHPSpec2\ObjectBehavior;
 class Proposal extends ObjectBehavior
 {
     /**
-     * @param Eadrax\Core\Data\Project      $data_project
+     * @param Eadrax\Core\Data\Project $data_project
      * @param Eadrax\Core\Tool\Validation $entity_validation
      */
     function let($data_project, $entity_validation)
