@@ -1,15 +1,11 @@
 <?php
 /**
- * Eadrax Usecase/User/Login.php
- *
- * @package   Usecase
- * @author    Dion Moult <dion@thinkmoult.com>
- * @copyright (c) 2012 Dion Moult
- * @license   ISC http://opensource.org/licenses/isc-license.txt
- * @link      http://wipup.org/
+ * @license MIT
+ * Full license text in LICENSE file
  */
 
 namespace Eadrax\Core\Usecase\User;
+
 use Eadrax\Core\Usecase\User\Login\Interactor;
 use Eadrax\Core\Usecase\User\Login\Guest;
 use Eadrax\Core\Usecase\User\Login\Repository;
@@ -17,11 +13,6 @@ use Eadrax\Core\Data;
 use Eadrax\Core\Tool;
 use Eadrax\Core\Exception;
 
-/**
- * Enacts the usecase for user login.
- *
- * @package Usecase
- */
 class Login
 {
     /**

@@ -1,13 +1,13 @@
 <?php
+/**
+ * @license MIT
+ * Full license text in LICENSE file
+ */
 
 namespace Eadrax\Core\Usecase\User\Logout;
+
 use Eadrax\Core\Tool;
 
-/**
- * Runs the user logout usecase
- *
- * @package Interactor
- */
 class Interactor
 {
     /**

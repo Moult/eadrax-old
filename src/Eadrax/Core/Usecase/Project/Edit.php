@@ -1,12 +1,7 @@
 <?php
 /**
- * Eadrax Usecase/Project/Edit.php
- *
- * @package   Usecase
- * @author    Dion Moult <dion@thinkmoult.com>
- * @copyright (c) 2012 Dion Moult
- * @license   ISC http://opensource.org/licenses/isc-license.txt
- * @link      http://wipup.org/
+ * @license MIT
+ * Full license text in LICENSE file
  */
 
 namespace Eadrax\Core\Usecase\Project;
@@ -19,11 +14,6 @@ use Eadrax\Core\Usecase\Project\Edit\Repository;
 use Eadrax\Core\Data;
 use Eadrax\Core\Tool;
 
-/**
- * Assigns data to roles and generates the interactor
- *
- * @package Usecase
- */
 class Edit
 {
     /**

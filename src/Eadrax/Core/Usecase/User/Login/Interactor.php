@@ -1,22 +1,13 @@
 <?php
 /**
- * Eadrax Usecase/User/Login/Interactor.php
- *
- * @package   Interactor
- * @author    Dion Moult <dion@thinkmoult.com>
- * @copyright (c) 2012 Dion Moult
- * @license   ISC http://opensource.org/licenses/isc-license.txt
- * @link      http://wipup.org/
+ * @license MIT
+ * Full license text in LICENSE file
  */
 
 namespace Eadrax\Core\Usecase\User\Login;
+
 use Eadrax\Core\Exception;
 
-/**
- * Runs the user login usecase
- *
- * @package Interactor
- */
 class Interactor
 {
     /**

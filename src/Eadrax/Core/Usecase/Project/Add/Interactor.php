@@ -1,6 +1,11 @@
 <?php
+/**
+ * @license MIT
+ * Full license text in LICENSE file
+ */
 
 namespace Eadrax\Core\Usecase\Project\Add;
+
 use Eadrax\Core\Usecase\Project;
 use Eadrax\Core\Exception;
 

@@ -1,24 +1,15 @@
 <?php
 /**
- * Eadrax Usecase/Project/Edit/Interactor.php
- *
- * @package   Interactor
- * @author    Dion Moult <dion@thinkmoult.com>
- * @copyright (c) 2012 Dion Moult|Omni Studios
- * @license   ISC http://opensource.org/licenses/isc-license.txt
- * @link      http://wipup.org/
+ * @license MIT
+ * Full license text in LICENSE file
  */
 
 namespace Eadrax\Core\Usecase\Project\Edit;
+
 use Eadrax\Core\Usecase\Project;
 use Eadrax\Core\Usecase\Project\Edit\User;
 use Eadrax\Core\Exception;
 
-/**
- * Enacts the project edit usecase
- *
- * @package Interactor
- */
 class Interactor
 {
     /**

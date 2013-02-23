@@ -1,22 +1,11 @@
 <?php
 /**
- * Eadrax Usecase/User/Login/Repository.php
- *
- * @package   Usecase
- * @author    Dion Moult <dion@thinkmoult.com>
- * @copyright (c) 2012 Dion Moult
- * @license   ISC http://opensource.org/licenses/isc-license.txt
- * @link      http://wipup.org/
+ * @license MIT
+ * Full license text in LICENSE file
  */
 
 namespace Eadrax\Core\Usecase\User\Login;
 
-/**
- * Handles persistance during user registration.
- *
- * @package    Usecase
- * @subpackage Repository
- */
 interface Repository
 {
     /**

@@ -1,15 +1,11 @@
 <?php
 /**
- * Eadrax Usecase/User/Register.php
- *
- * @package   Usecase
- * @author    Dion Moult <dion@thinkmoult.com>
- * @copyright (c) 2012 Dion Moult
- * @license   ISC http://opensource.org/licenses/isc-license.txt
- * @link      http://wipup.org/
+ * @license MIT
+ * Full license text in LICENSE file
  */
 
 namespace Eadrax\Core\Usecase\User;
+
 use Eadrax\Core\Usecase;
 use Eadrax\Core\Usecase\User;
 use Eadrax\Core\Usecase\User\Register\Interactor;
@@ -19,11 +15,6 @@ use Eadrax\Core\Data;
 use Eadrax\Core\Exception;
 use Eadrax\Core\Tool;
 
-/**
- * Enacts the usecase for user registration.
- *
- * @package Usecase
- */
 class Register
 {
     /**

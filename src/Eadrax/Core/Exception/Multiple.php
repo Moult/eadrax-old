@@ -1,26 +1,11 @@
 <?php
 /**
- * Eadrax Exception/Multiple.php
- *
- * @package   Exception
- * @author    Dion Moult <dion@thinkmoult.com>
- * @copyright (c) 2012 Dion Moult
- * @license   ISC http://opensource.org/licenses/isc-license.txt
- * @link      http://wipup.org/
+ * @license MIT
+ * Full license text in LICENSE file
  */
 
 namespace Eadrax\Core\Exception;
 
-/**
- * For exceptions that need to log an array rather than a single message
- *
- * throw new Exception_Multiple_Subclass(array());
- * catch (Exception_Multiple_Subclass $e) {
- *     $issues = $e->get_errors();
- * }
- *
- * @package Exception
- */
 class Multiple extends \Exception
 {
     /**

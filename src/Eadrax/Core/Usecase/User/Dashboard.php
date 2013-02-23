@@ -1,26 +1,17 @@
 <?php
 /**
- * Eadrax Usecase/User/Dashboard.php
- *
- * @package   Usecase
- * @author    Dion Moult <dion@thinkmoult.com>
- * @copyright (c) 2012 Dion Moult
- * @license   ISC http://opensource.org/licenses/isc-license.txt
- * @link      http://wipup.org/
+ * @license MIT
+ * Full license text in LICENSE file
  */
 
 namespace Eadrax\Core\Usecase\User;
+
 use Eadrax\Core\Usecase\User\Dashboard\Interactor;
 use Eadrax\Core\Usecase\User\Dashboard\User;
 use Eadrax\Core\Data;
 use Eadrax\Core\Exception;
 use Eadrax\Core\Tool;
 
-/**
- * Enacts the usecase for user dashboard.
- *
- * @package Usecase
- */
 class Dashboard
 {
     /**

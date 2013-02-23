@@ -1,21 +1,11 @@
 <?php
 /**
- * Eadrax Data/User.php
- *
- * @package   Data
- * @author    Dion Moult <dion@thinkmoult.com>
- * @copyright (c) 2012 Dion Moult
- * @license   ISC http://opensource.org/licenses/isc-license.txt
- * @link      http://wipup.org/
+ * @license MIT
+ * Full license text in LICENSE file
  */
 
 namespace Eadrax\Core\Data;
 
-/**
- * This is a generic system user.
- *
- * @package Data
- */
 class User
 {
     /** @ignore */

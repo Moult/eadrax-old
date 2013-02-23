@@ -1,15 +1,11 @@
 <?php
 /**
- * Eadrax Usecase/Project/Prepare.php
- *
- * @package   Usecase
- * @author    Dion Moult <dion@thinkmoult.com>
- * @copyright (c) 2012 Dion Moult
- * @license   ISC http://opensource.org/licenses/isc-license.txt
- * @link      http://wipup.org/
+ * @license MIT
+ * Full license text in LICENSE file
  */
 
 namespace Eadrax\Core\Usecase\Project;
+
 use Eadrax\Core\Usecase\Project\Prepare\Proposal;
 use Eadrax\Core\Usecase\Project\Prepare\Icon;
 use Eadrax\Core\Usecase\Project\Prepare\Repository;
@@ -17,14 +13,6 @@ use Eadrax\Core\Usecase\Project\Prepare\Interactor;
 use Eadrax\Core\Data;
 use Eadrax\Core\Tool;
 
-/**
- * Enacts the usecase for preparing a new project.
- *
- * Preparing a project involves validating all of its data and uploading the
- * icon.
- *
- * @package Usecase
- */
 class Prepare
 {
     /**

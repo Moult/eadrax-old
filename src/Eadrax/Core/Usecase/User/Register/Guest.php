@@ -1,26 +1,16 @@
 <?php
 /**
- * Eadrax Usecase/User/Register/Guest.php
- *
- * @package   Usecase
- * @author    Dion Moult <dion@thinkmoult.com>
- * @copyright (c) 2012 Dion Moult
- * @license   ISC http://opensource.org/licenses/isc-license.txt
- * @link      http://wipup.org/
+ * @license MIT
+ * Full license text in LICENSE file
  */
 
 namespace Eadrax\Core\Usecase\User\Register;
+
 use Eadrax\Core\Data;
 use Eadrax\Core\Usecase;
 use Eadrax\Core\Tool;
 use Eadrax\Core\Exception;
 
-/**
- * Allows data_user to be cast as a guest role
- *
- * @package    Usecase
- * @subpackage Role
- */
 class Guest extends Data\User
 {
     /**

@@ -1,26 +1,16 @@
 <?php
 /**
- * Eadrax Usecase/Project/Prepare/Icon.php
- *
- * @package   Usecase
- * @author    Dion Moult <dion@thinkmoult.com>
- * @copyright (c) 2012 Dion Moult
- * @license   ISC http://opensource.org/licenses/isc-license.txt
- * @link      http://wipup.org/
+ * @license MIT
+ * Full license text in LICENSE file
  */
 
 namespace Eadrax\Core\Usecase\Project\Prepare;
+
 use Eadrax\Core\Data;
 use Eadrax\Core\Usecase;
 use Eadrax\Core\Exception;
 use Eadrax\Core\Tool;
 
-/**
- * Allows data_file to be cast as a icon role
- *
- * @package    Usecase
- * @subpackage Role
- */
 class Icon extends Data\File
 {
     /**

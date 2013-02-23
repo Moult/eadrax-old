@@ -1,21 +1,11 @@
 <?php
 /**
- * Eadrax Tool/Image.php
- *
- * @package   Tool
- * @author    Dion Moult <dion@thinkmoult.com>
- * @copyright (c) 2012 Dion Moult
- * @license   ISC http://opensource.org/licenses/isc-license.txt
- * @link      http://wipup.org/
+ * @license MIT
+ * Full license text in LICENSE file
  */
 
 namespace Eadrax\Core\Tool;
 
-/**
- * Allows for image manipulation
- *
- * @package Tool
- */
 interface Image
 {
     /**

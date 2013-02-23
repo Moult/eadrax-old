@@ -1,22 +1,13 @@
 <?php
 /**
- * Eadrax Usecase/User/Dashboard/Interactor.php
- *
- * @package   Interactor
- * @author    Dion Moult <dion@thinkmoult.com>
- * @copyright (c) 2012 Dion Moult
- * @license   ISC http://opensource.org/licenses/isc-license.txt
- * @link      http://wipup.org/
+ * @license MIT
+ * Full license text in LICENSE file
  */
 
 namespace Eadrax\Core\Usecase\User\Dashboard;
+
 use Eadrax\Core\Exception;
 
-/**
- * Executes the user dashboard view usecase
- *
- * @package Interactor
- */
 class Interactor
 {
     /**
