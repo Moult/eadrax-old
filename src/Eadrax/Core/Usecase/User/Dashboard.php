@@ -10,7 +10,6 @@
  */
 
 namespace Eadrax\Core\Usecase\User;
-use Eadrax\Core\Usecase\Core;
 use Eadrax\Core\Usecase\User\Dashboard\Interactor;
 use Eadrax\Core\Usecase\User\Dashboard\User;
 use Eadrax\Core\Data;
@@ -22,7 +21,7 @@ use Eadrax\Core\Tool;
  *
  * @package Usecase
  */
-class Dashboard extends Core
+class Dashboard
 {
     /**
      * User data

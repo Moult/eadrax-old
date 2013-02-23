@@ -3,12 +3,9 @@
 namespace spec\Eadrax\Core\Usecase\Project;
 
 use PHPSpec2\ObjectBehavior;
-use spec\Eadrax\Core\Usecase\Core;
 
 class Edit extends ObjectBehavior
 {
-    use Core;
-
     /**
      * @param Eadrax\Core\Data\User $data_user
      * @param Eadrax\Core\Data\Project $data_project

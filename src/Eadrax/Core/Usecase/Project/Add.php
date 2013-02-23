@@ -15,7 +15,6 @@ use Eadrax\Core\Usecase\Project\Add\Interactor;
 use Eadrax\Core\Usecase\Project\Add\Proposal;
 use Eadrax\Core\Usecase\Project\Add\Icon;
 use Eadrax\Core\Usecase\Project\Add\Repository;
-use Eadrax\Core\Usecase\Core;
 use Eadrax\Core\Usecase;
 use Eadrax\Core\Data;
 use Eadrax\Core\Tool;
@@ -26,7 +25,7 @@ use Eadrax\Core\Exception;
  *
  * @package Usecase
  */
-class Add extends Core
+class Add
 {
     /**
      * Project data

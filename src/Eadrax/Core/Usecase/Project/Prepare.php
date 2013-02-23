@@ -14,7 +14,6 @@ use Eadrax\Core\Usecase\Project\Prepare\Proposal;
 use Eadrax\Core\Usecase\Project\Prepare\Icon;
 use Eadrax\Core\Usecase\Project\Prepare\Repository;
 use Eadrax\Core\Usecase\Project\Prepare\Interactor;
-use Eadrax\Core\Usecase\Core;
 use Eadrax\Core\Data;
 use Eadrax\Core\Tool;
 
@@ -26,7 +25,7 @@ use Eadrax\Core\Tool;
  *
  * @package Usecase
  */
-class Prepare extends Core
+class Prepare
 {
     /**
      * Sets up dependencies

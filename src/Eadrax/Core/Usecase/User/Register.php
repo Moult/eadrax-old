@@ -11,7 +11,6 @@
 
 namespace Eadrax\Core\Usecase\User;
 use Eadrax\Core\Usecase;
-use Eadrax\Core\Usecase\Core;
 use Eadrax\Core\Usecase\User;
 use Eadrax\Core\Usecase\User\Register\Interactor;
 use Eadrax\Core\Usecase\User\Register\Guest;
@@ -25,7 +24,7 @@ use Eadrax\Core\Tool;
  *
  * @package Usecase
  */
-class Register extends Core
+class Register
 {
     /**
      * User data

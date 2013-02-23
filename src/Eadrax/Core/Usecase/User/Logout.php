@@ -11,7 +11,6 @@
 
 namespace Eadrax\Core\Usecase\User;
 use Eadrax\Core\Usecase\User\Logout\Interactor;
-use Eadrax\Core\Usecase\Core;
 use Eadrax\Core\Tool;
 
 /**
@@ -19,7 +18,7 @@ use Eadrax\Core\Tool;
  *
  * @package Usecase
  */
-class Logout extends Core
+class Logout
 {
     /**
      * Auth entity. This context does not require a role.

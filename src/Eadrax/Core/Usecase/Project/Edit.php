@@ -11,7 +11,6 @@
 
 namespace Eadrax\Core\Usecase\Project;
 
-use Eadrax\Core\Usecase\Core;
 use Eadrax\Core\Usecase\Project;
 use Eadrax\Core\Usecase\Project\Edit\User;
 use Eadrax\Core\Usecase\Project\Edit\Interactor;
@@ -25,7 +24,7 @@ use Eadrax\Core\Tool;
  *
  * @package Usecase
  */
-class Edit extends Core
+class Edit
 {
     /**
      * Project data

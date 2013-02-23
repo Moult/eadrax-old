@@ -10,7 +10,6 @@
  */
 
 namespace Eadrax\Core\Usecase\User;
-use Eadrax\Core\Usecase\Core;
 use Eadrax\Core\Usecase\User\Login\Interactor;
 use Eadrax\Core\Usecase\User\Login\Guest;
 use Eadrax\Core\Usecase\User\Login\Repository;
@@ -23,7 +22,7 @@ use Eadrax\Core\Exception;
  *
  * @package Usecase
  */
-class Login extends Core
+class Login
 {
     /**
      * User data

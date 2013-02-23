@@ -2,15 +2,10 @@
 
 namespace spec\Eadrax\Core\Usecase\Project;
 
-require_once 'spec/Eadrax/Core/Usecase/Core.php';
-
 use PHPSpec2\ObjectBehavior;
-use spec\Eadrax\Core\Usecase\Core;
 
 class Add extends ObjectBehavior
 {
-    use Core;
-
     /**
      * @param \Eadrax\Core\Data\User                          $data_user
      * @param \Eadrax\Core\Data\Project                       $data_project
