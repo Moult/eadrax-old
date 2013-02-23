@@ -16,8 +16,13 @@ class Validation extends ObjectBehavior
         $this->shouldHaveType('Eadrax\Core\Exception\Validation');
     }
 
-    function it_can_hold_multiple_exception_errors()
+    function it_is_an_exception()
     {
-        $this->shouldHaveType('Eadrax\Core\Exception\Multiple');
+        $this->shouldHaveType('Exception');
+    }
+
+    function it_should_return_errors_as_an_array()
+    {
+        $this->get_errors()->shouldBe(array('foo' => 'bar'));
     }
 }
