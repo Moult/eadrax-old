@@ -14,7 +14,7 @@ class Proposal extends ObjectBehavior
     {
         $data_project->name = 'foo';
         $this->beConstructedWith($data_project, $repository);
-        $this->get_name()->shouldBe('foo');
+        $this->name->shouldBe('foo');
     }
 
     function it_should_be_initializable()

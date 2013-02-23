@@ -14,7 +14,7 @@ class Proposal extends ObjectBehavior
     {
         $data_project->name = 'foo';
         $this->beConstructedWith($data_project, $entity_validation);
-        $this->get_name()->shouldBe('foo');
+        $this->name->shouldBe('foo');
     }
 
     function it_should_be_initializable()
@@ -30,9 +30,9 @@ class Proposal extends ObjectBehavior
     function it_catches_invalid_proposal_information($entity_validation)
     {
         $entity_validation->setup(array(
-            'name' => $this->get_name(),
-            'summary' => $this->get_summary(),
-            'website' => $this->get_website()
+            'name' => $this->name,
+            'summary' => $this->summary,
+            'website' => $this->website
         ))->shouldBeCalled();
         $entity_validation->rule('name', 'not_empty')->shouldBeCalled();
         $entity_validation->rule('summary', 'not_empty')->shouldBeCalled();

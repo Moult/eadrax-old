@@ -51,9 +51,9 @@ class Proposal extends Data\Project
     private function setup_validation()
     {
         $this->entity_validation->setup(array(
-            'name' => $this->get_name(),
-            'summary' => $this->get_summary(),
-            'website' => $this->get_website()
+            'name' => $this->name,
+            'summary' => $this->summary,
+            'website' => $this->website
         ));
         $this->entity_validation->rule('name', 'not_empty');
         $this->entity_validation->rule('summary', 'not_empty');
