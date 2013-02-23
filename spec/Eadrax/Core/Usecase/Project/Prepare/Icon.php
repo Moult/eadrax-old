@@ -14,6 +14,11 @@ class Icon extends ObjectBehavior
      */
     function let($data_file, $repository, $entity_image, $entity_validation)
     {
+        $data_file->name = 'File name';
+        $data_file->mimetype = 'File mimetype';
+        $data_file->tmp_name = 'File tmp name';
+        $data_file->error_code = 'File error code';
+        $data_file->filesize_in_bytes = 'File size in bytes';
         $this->beConstructedWith($data_file, $repository, $entity_image, $entity_validation);
     }
 
@@ -26,11 +31,11 @@ class Icon extends ObjectBehavior
     {
         $entity_validation->setup(array(
             'metadata' => array(
-                'name' => $this->get_name(),
-                'type' => $this->get_mimetype(),
-                'tmp_name' => $this->get_tmp_name(),
-                'error' => $this->get_error(),
-                'size' => $this->get_filesize()
+                'name' => 'File name',
+                'type' => 'File mimetype',
+                'tmp_name' => 'File tmp name',
+                'error' => 'File error code',
+                'size' => 'File size in bytes'
             )
         ))->shouldBeCalled();
         $entity_validation->rule('metadata', 'upload_valid')->shouldBeCalled();

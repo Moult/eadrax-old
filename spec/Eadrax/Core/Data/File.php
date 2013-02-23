@@ -13,39 +13,26 @@ class File extends ObjectBehavior
 
     function it_should_have_a_name_attribute()
     {
-        $this->set_name('foo');
-        $this->get_name()->shouldBe('foo');
+        $this->name->shouldBe(NULL);
     }
 
     function it_should_have_an_tmp_name_attribute()
     {
-        $this->set_tmp_name('foo');
-        $this->get_tmp_name()->shouldBe('foo');
+        $this->tmp_name->shouldBe(NULL);
     }
 
     function it_should_have_a_mimetype_attribute()
     {
-        $this->set_mimetype('foo');
-        $this->get_mimetype()->shouldBe('foo');
+        $this->mimetype->shouldBe(NULL);
     }
 
     function it_should_have_a_filesize_attribute()
     {
-        $this->set_filesize(42);
-        $this->get_filesize()->shouldBe(42);
-        $this->set_filesize('foo');
-        $this->get_filesize()->shouldBe(0);
-        $this->set_filesize(3.14);
-        $this->get_filesize()->shouldBe(3);
+        $this->filesize_in_bytes->shouldBe(NULL);
     }
 
     function it_should_have_an_error_attribute()
     {
-        $this->set_error(42);
-        $this->get_error()->shouldBe(42);
-        $this->set_error('foo');
-        $this->get_error()->shouldBe(0);
-        $this->set_error(3.14);
-        $this->get_error()->shouldBe(3);
+        $this->error_code->shouldBe(NULL);
     }
 }

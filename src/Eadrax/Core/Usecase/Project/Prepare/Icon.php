@@ -72,11 +72,11 @@ class Icon extends Data\File
     {
         $this->entity_validation->setup(array(
             'metadata' => array(
-                'name' => $this->get_name(),
-                'type' => $this->get_mimetype(),
-                'tmp_name' => $this->get_tmp_name(),
-                'error' => $this->get_error(),
-                'size' => $this->get_filesize()
+                'name' => $this->name,
+                'type' => $this->mimetype,
+                'tmp_name' => $this->tmp_name,
+                'error' => $this->error_code,
+                'size' => $this->filesize_in_bytes
             )
         ));
         $this->entity_validation->rule('metadata', 'upload_valid');
