@@ -12,7 +12,7 @@
 namespace Eadrax\Core\Usecase\User\Dashboard;
 use Eadrax\Core\Data;
 use Eadrax\Core\Usecase;
-use Eadrax\Core\Entity;
+use Eadrax\Core\Tool;
 use Eadrax\Core\Exception;
 
 /**
@@ -29,7 +29,7 @@ class User extends Data\User
      * @param Data $data_user Data object to copy
      * @return void
      */
-    public function __construct(Data\User $data_user, Entity\Auth $entity_auth)
+    public function __construct(Data\User $data_user, Tool\Auth $entity_auth)
     {
         parent::__construct($data_user);
         $this->entity_auth = $entity_auth;

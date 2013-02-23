@@ -8,7 +8,7 @@ class Proposal extends ObjectBehavior
 {
     /**
      * @param Eadrax\Core\Data\Project      $data_project
-     * @param Eadrax\Core\Entity\Validation $entity_validation
+     * @param Eadrax\Core\Tool\Validation $entity_validation
      */
     function let($data_project, $entity_validation)
     {

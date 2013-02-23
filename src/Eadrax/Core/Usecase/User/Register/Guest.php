@@ -12,7 +12,7 @@
 namespace Eadrax\Core\Usecase\User\Register;
 use Eadrax\Core\Data;
 use Eadrax\Core\Usecase;
-use Eadrax\Core\Entity;
+use Eadrax\Core\Tool;
 use Eadrax\Core\Exception;
 
 /**
@@ -31,13 +31,13 @@ class Guest extends Data\User
 
     /**
      * Auth entity
-     * @var Entity\Auth
+     * @var Tool\Auth
      */
     private $entity_auth;
 
     /**
      * Validation entity
-     * @var Entity\Validation
+     * @var Tool\Validation
      */
     private $entity_validation;
 
@@ -46,11 +46,11 @@ class Guest extends Data\User
      *
      * @param Data\User         $data_user         Data object to copy
      * @param Repository        $repository        context repository
-     * @param Entity\Auth       $entity_auth       Auth entity
-     * @param Entity\Validation $entity_validation Validation entity
+     * @param Tool\Auth       $entity_auth       Auth entity
+     * @param Tool\Validation $entity_validation Validation entity
      * @return void
      */
-    public function __construct(Data\User $data_user, Repository $repository, Entity\Auth $entity_auth, Entity\Validation $entity_validation)
+    public function __construct(Data\User $data_user, Repository $repository, Tool\Auth $entity_auth, Tool\Validation $entity_validation)
     {
         parent::__construct($data_user);
         $this->repository = $repository;

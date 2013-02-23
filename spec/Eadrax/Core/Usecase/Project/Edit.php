@@ -15,9 +15,9 @@ class Edit extends ObjectBehavior
      * @param Eadrax\Core\Data\File $data_file
      * @param Eadrax\Core\Usecase\Project\Edit\Repository $repository
      * @param Eadrax\Core\Usecase\Project\Prepare\Repository $repository_project_prepare
-     * @param Eadrax\Core\Entity\Auth $entity_auth
-     * @param Eadrax\Core\Entity\Image $entity_image
-     * @param Eadrax\Core\Entity\Validation $entity_validation
+     * @param Eadrax\Core\Tool\Auth $entity_auth
+     * @param Eadrax\Core\Tool\Image $entity_image
+     * @param Eadrax\Core\Tool\Validation $entity_validation
      */
     function let($data_user, $data_project, $data_file, $repository, $repository_project_prepare, $entity_auth, $entity_image, $entity_validation)
     {

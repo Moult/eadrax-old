@@ -12,7 +12,7 @@
 namespace Eadrax\Core\Usecase\Project\Prepare;
 use Eadrax\Core\Data;
 use Eadrax\Core\Usecase;
-use Eadrax\Core\Entity;
+use Eadrax\Core\Tool;
 use Eadrax\Core\Exception;
 
 /**
@@ -27,10 +27,10 @@ class Proposal extends Data\Project
      * Takes a data object and copies all of its properties
      *
      * @param Data\Project      $data_project      Data object to copy
-     * @param Entity\Validation $entity_validation Validation entity
+     * @param Tool\Validation $entity_validation Validation entity
      * @return void
      */
-    public function __construct(Data\Project $data_project, Entity\Validation $entity_validation)
+    public function __construct(Data\Project $data_project, Tool\Validation $entity_validation)
     {
         parent::__construct($data_project);
         $this->entity_validation = $entity_validation;

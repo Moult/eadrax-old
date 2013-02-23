@@ -1,20 +1,20 @@
 <?php
 /**
- * Eadrax Entity/Image.php
+ * Eadrax Tool/Image.php
  *
- * @package   Entity
+ * @package   Tool
  * @author    Dion Moult <dion@thinkmoult.com>
  * @copyright (c) 2012 Dion Moult
  * @license   ISC http://opensource.org/licenses/isc-license.txt
  * @link      http://wipup.org/
  */
 
-namespace Eadrax\Core\Entity;
+namespace Eadrax\Core\Tool;
 
 /**
  * Allows for image manipulation
  *
- * @package Entity
+ * @package Tool
  */
 interface Image
 {

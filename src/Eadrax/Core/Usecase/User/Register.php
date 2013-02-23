@@ -18,7 +18,7 @@ use Eadrax\Core\Usecase\User\Register\Guest;
 use Eadrax\Core\Usecase\User\Register\Repository;
 use Eadrax\Core\Data;
 use Eadrax\Core\Exception;
-use Eadrax\Core\Entity;
+use Eadrax\Core\Tool;
 
 /**
  * Enacts the usecase for user registration.
@@ -47,13 +47,13 @@ class Register extends Core
 
     /**
      * Auth entity
-     * @var Entity\Auth
+     * @var Tool\Auth
      */
     private $entity_auth;
 
     /**
      * Validation entity
-     * @var Entity\Validation
+     * @var Tool\Validation
      */
     private $entity_validation;
 
@@ -63,11 +63,11 @@ class Register extends Core
      * @param Data\User             $data_user             User data object
      * @param Repository            $repository            Repository for this context
      * @param User\Login\Repository $repository_user_login Repository for user login context
-     * @param Entity\Auth           $entity_auth           Authentication system
-     * @param Entity\Validation     $entity_validation     Validation system
+     * @param Tool\Auth           $entity_auth           Authentication system
+     * @param Tool\Validation     $entity_validation     Validation system
      * @return void
      */
-    public function __construct(Data\User $data_user, Repository $repository, User\Login\Repository $repository_user_login, Entity\Auth $entity_auth, Entity\Validation $entity_validation)
+    public function __construct(Data\User $data_user, Repository $repository, User\Login\Repository $repository_user_login, Tool\Auth $entity_auth, Tool\Validation $entity_validation)
     {
         $this->data_user = $data_user;
         $this->repository = $repository;

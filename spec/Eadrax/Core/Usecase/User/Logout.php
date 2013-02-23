@@ -12,7 +12,7 @@ class Logout extends ObjectBehavior
     use Core;
 
     /**
-     * @param Eadrax\Core\Entity\Auth $auth
+     * @param Eadrax\Core\Tool\Auth $auth
      */
     function let($auth)
     {

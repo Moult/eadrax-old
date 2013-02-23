@@ -10,8 +10,8 @@ class Guest extends ObjectBehavior
     /**
      * @param Eadrax\Core\Data\User                        $data_user
      * @param Eadrax\Core\Usecase\User\Register\Repository $repository
-     * @param Eadrax\Core\Entity\Auth                      $entity_auth
-     * @param Eadrax\Core\Entity\Validation                $entity_validation
+     * @param Eadrax\Core\Tool\Auth                      $entity_auth
+     * @param Eadrax\Core\Tool\Validation                $entity_validation
      */
     function let($data_user, $repository, $entity_auth, $entity_validation)
     {

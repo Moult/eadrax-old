@@ -12,7 +12,7 @@
 namespace Eadrax\Core\Usecase\Project\Add;
 use Eadrax\Core\Data;
 use Eadrax\Core\Usecase;
-use Eadrax\Core\Entity;
+use Eadrax\Core\Tool;
 use Eadrax\Core\Exception;
 
 /**

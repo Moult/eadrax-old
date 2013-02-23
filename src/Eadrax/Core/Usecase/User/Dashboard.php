@@ -15,7 +15,7 @@ use Eadrax\Core\Usecase\User\Dashboard\Interactor;
 use Eadrax\Core\Usecase\User\Dashboard\User;
 use Eadrax\Core\Data;
 use Eadrax\Core\Exception;
-use Eadrax\Core\Entity;
+use Eadrax\Core\Tool;
 
 /**
  * Enacts the usecase for user dashboard.
@@ -32,7 +32,7 @@ class Dashboard extends Core
 
     /**
      * Auth entity
-     * @var Entity\Auth
+     * @var Tool\Auth
      */
     private $entity_auth;
 
@@ -41,10 +41,10 @@ class Dashboard extends Core
      * dependencies.
      *
      * @param Data\User   $data_user  User data object
-     * @param Entity\Auth $entity_auth Authentication system
+     * @param Tool\Auth $entity_auth Authentication system
      * @return void
      */
-    public function __construct(Data\User $data_user, Entity\Auth $entity_auth)
+    public function __construct(Data\User $data_user, Tool\Auth $entity_auth)
     {
         $this->data_user = $data_user;
         $this->entity_auth = $entity_auth;

@@ -12,7 +12,7 @@
 namespace Eadrax\Core\Usecase\User;
 use Eadrax\Core\Usecase\User\Logout\Interactor;
 use Eadrax\Core\Usecase\Core;
-use Eadrax\Core\Entity;
+use Eadrax\Core\Tool;
 
 /**
  * Enacts the usecase for user logout.
@@ -23,7 +23,7 @@ class Logout extends Core
 {
     /**
      * Auth entity. This context does not require a role.
-     * @var Entity\Auth
+     * @var Tool\Auth
      */
     public $entity_auth;
 
@@ -31,7 +31,7 @@ class Logout extends Core
      * Casts data into roles, and makes each role aware of necessary
      * dependencies.
      *
-     * @param Entity\Auth $entity_auth Authentication system
+     * @param Tool\Auth $entity_auth Authentication system
      * @return void
      */
     public function __construct($entity_auth)

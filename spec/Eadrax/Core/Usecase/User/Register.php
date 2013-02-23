@@ -15,8 +15,8 @@ class Register extends ObjectBehavior
      * @param Eadrax\Core\Data\User                        $data_user
      * @param Eadrax\Core\Usecase\User\Register\Repository $repository
      * @param Eadrax\Core\Usecase\User\Login\Repository    $repository_user_login
-     * @param Eadrax\Core\Entity\Auth                      $entity_auth
-     * @param Eadrax\Core\Entity\Validation                $entity_validation
+     * @param Eadrax\Core\Tool\Auth                      $entity_auth
+     * @param Eadrax\Core\Tool\Validation                $entity_validation
      */
     function let($data_user, $repository, $repository_user_login, $entity_auth, $entity_validation)
     {

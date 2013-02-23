@@ -18,7 +18,7 @@ use Eadrax\Core\Usecase\Project\Edit\Interactor;
 use Eadrax\Core\Usecase\Project\Edit\Proposal;
 use Eadrax\Core\Usecase\Project\Edit\Repository;
 use Eadrax\Core\Data;
-use Eadrax\Core\Entity;
+use Eadrax\Core\Tool;
 
 /**
  * Assigns data to roles and generates the interactor
@@ -35,13 +35,13 @@ class Edit extends Core
 
     /**
      * Auth entity
-     * @var Entity\Auth
+     * @var Tool\Auth
      */
     private $entity_auth;
 
     /**
      * Validation entity
-     * @var Entity\Validation
+     * @var Tool\Validation
      */
     private $entity_validation;
 
@@ -51,12 +51,12 @@ class Edit extends Core
      * @param Data\Project               $data_project               The project you want to edit.
      * @param Repository                 $repository                 Repository of current context
      * @param Project\Prepare\Repository $repository_project_prepare Repository of project prepare
-     * @param Entity\Auth                $entity_auth                Authentication entity
-     * @param Entity\Image               $entity_image               Image entity
-     * @param Entity\Validation          $entity_validation          Validation entity
+     * @param Tool\Auth                $entity_auth                Authentication entity
+     * @param Tool\Image               $entity_image               Image entity
+     * @param Tool\Validation          $entity_validation          Validation entity
      * @return void
      */
-    function __construct(Data\Project $data_project, Repository $repository, Project\Prepare\Repository $repository_project_prepare, Entity\Auth $entity_auth, Entity\Image $entity_image, Entity\Validation $entity_validation)
+    function __construct(Data\Project $data_project, Repository $repository, Project\Prepare\Repository $repository_project_prepare, Tool\Auth $entity_auth, Tool\Image $entity_image, Tool\Validation $entity_validation)
     {
         $this->data_project = $data_project;
         $this->repository = $repository;

@@ -13,7 +13,7 @@ namespace Eadrax\Core\Usecase\Project\Edit;
 
 use Eadrax\Core\Data;
 use Eadrax\Core\Exception;
-use Eadrax\Core\Entity;
+use Eadrax\Core\Tool;
 
 /**
  * User role
@@ -28,7 +28,7 @@ class User extends Data\User
      * @param Data\User $data_user The user data to copy
      * @return void
      */
-    public function __construct(Data\User $data_user, Entity\Auth $entity_auth)
+    public function __construct(Data\User $data_user, Tool\Auth $entity_auth)
     {
         parent::__construct($data_user);
         $this->entity_auth = $entity_auth;

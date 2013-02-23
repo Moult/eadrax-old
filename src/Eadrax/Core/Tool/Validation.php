@@ -1,20 +1,20 @@
 <?php
 /**
- * Eadrax Entity/Validation.php
+ * Eadrax Tool/Validation.php
  *
- * @package   Entity
+ * @package   Tool
  * @author    Dion Moult <dion@thinkmoult.com>
  * @copyright (c) 2012 Dion Moult
  * @license   ISC http://opensource.org/licenses/isc-license.txt
  * @link      http://wipup.org/
  */
 
-namespace Eadrax\Core\Entity;
+namespace Eadrax\Core\Tool;
 
 /**
  * Allows for validation of user input
  *
- * @package Entity
+ * @package Tool
  */
 interface Validation
 {

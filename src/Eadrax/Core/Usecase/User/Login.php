@@ -15,7 +15,7 @@ use Eadrax\Core\Usecase\User\Login\Interactor;
 use Eadrax\Core\Usecase\User\Login\Guest;
 use Eadrax\Core\Usecase\User\Login\Repository;
 use Eadrax\Core\Data;
-use Eadrax\Core\Entity;
+use Eadrax\Core\Tool;
 use Eadrax\Core\Exception;
 
 /**
@@ -39,13 +39,13 @@ class Login extends Core
 
     /**
      * Auth entity
-     * @var Entity\Auth
+     * @var Tool\Auth
      */
     private $entity_auth;
 
     /**
      * Validation entity
-     * @var Entity\Validation
+     * @var Tool\Validation
      */
     private $entity_validation;
 
@@ -54,11 +54,11 @@ class Login extends Core
      *
      * @param Data\User         $data_user         User data object
      * @param Repository        $repository        The repository
-     * @param Entity\Auth       $entity_auth       Authentication system
-     * @param Entity\Validation $entity_validation Validation system
+     * @param Tool\Auth       $entity_auth       Authentication system
+     * @param Tool\Validation $entity_validation Validation system
      * @return void
      */
-    public function __construct(Data\User $data_user, Repository $repository, Entity\Auth $entity_auth, Entity\Validation $entity_validation)
+    public function __construct(Data\User $data_user, Repository $repository, Tool\Auth $entity_auth, Tool\Validation $entity_validation)
     {
         $this->data_user = $data_user;
         $this->repository = $repository;

@@ -9,7 +9,7 @@ class User extends ObjectBehavior
 {
     /**
      * @param Eadrax\Core\Data\User   $data_user
-     * @param Eadrax\Core\Entity\Auth $entity_auth
+     * @param Eadrax\Core\Tool\Auth $entity_auth
      */
     function let($data_user, $entity_auth)
     {

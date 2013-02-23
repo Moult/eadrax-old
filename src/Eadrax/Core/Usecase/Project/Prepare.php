@@ -16,7 +16,7 @@ use Eadrax\Core\Usecase\Project\Prepare\Repository;
 use Eadrax\Core\Usecase\Project\Prepare\Interactor;
 use Eadrax\Core\Usecase\Core;
 use Eadrax\Core\Data;
-use Eadrax\Core\Entity;
+use Eadrax\Core\Tool;
 
 /**
  * Enacts the usecase for preparing a new project.
@@ -33,11 +33,11 @@ class Prepare extends Core
      *
      * @param Data\Project      $data_project      Project data object
      * @param Repository        $repository        Repository
-     * @param Entity\Validation $entity_validation Validation system
-     * @param Entity\Image      $entity_image      Image manipulation system
+     * @param Tool\Validation $entity_validation Validation system
+     * @param Tool\Image      $entity_image      Image manipulation system
      * @return void
      */
-    public function __construct(Data\Project $data_project, Repository $repository, Entity\Validation $entity_validation, Entity\Image $entity_image)
+    public function __construct(Data\Project $data_project, Repository $repository, Tool\Validation $entity_validation, Tool\Image $entity_image)
     {
         $this->data_project = $data_project;
         $this->data_file = $data_project->get_icon();

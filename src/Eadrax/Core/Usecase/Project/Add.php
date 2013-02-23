@@ -18,7 +18,7 @@ use Eadrax\Core\Usecase\Project\Add\Repository;
 use Eadrax\Core\Usecase\Core;
 use Eadrax\Core\Usecase;
 use Eadrax\Core\Data;
-use Eadrax\Core\Entity;
+use Eadrax\Core\Tool;
 use Eadrax\Core\Exception;
 
 /**
@@ -60,19 +60,19 @@ class Add extends Core
 
     /**
      * Auth entity
-     * @var Entity\Auth
+     * @var Tool\Auth
      */
     private $entity_auth;
 
     /**
      * Image entity used by subcontext project prepare
-     * @var Entity\Image
+     * @var Tool\Image
      */
     private $entity_image;
 
     /**
      * Validation entity used by subcontext project prepare
-     * @var Entity\Validation
+     * @var Tool\Validation
      */
     private $entity_validation;
 
@@ -83,12 +83,12 @@ class Add extends Core
      * @param Data\Project                       $data_project               Project data object
      * @param Usecase\Project\Add\Repository     $repository                 Repository
      * @param Usecase\Project\Prepare\Repository $repository_project_prepare Repository
-     * @param Entity\Auth                        $entity_auth                Authentication system
-     * @param Entity\Validation                  $entity_validation          Validation system
-     * @param Entity\Image                       $entity_image               Image system
+     * @param Tool\Auth                        $entity_auth                Authentication system
+     * @param Tool\Validation                  $entity_validation          Validation system
+     * @param Tool\Image                       $entity_image               Image system
      * @return void
      */
-    public function __construct(Data\Project $data_project, Repository $repository, Usecase\Project\Prepare\Repository $repository_project_prepare, Entity\Auth $entity_auth, Entity\Validation $entity_validation, Entity\Image $entity_image)
+    public function __construct(Data\Project $data_project, Repository $repository, Usecase\Project\Prepare\Repository $repository_project_prepare, Tool\Auth $entity_auth, Tool\Validation $entity_validation, Tool\Image $entity_image)
     {
         $this->data_project = $data_project;
         $this->data_user = $data_project->get_author();

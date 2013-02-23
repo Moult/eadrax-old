@@ -7,7 +7,7 @@ use PHPSpec2\ObjectBehavior;
 class Interactor extends ObjectBehavior
 {
     /**
-     * @param Eadrax\Core\Entity\Auth $entity_auth
+     * @param Eadrax\Core\Tool\Auth $entity_auth
      */
     function let($entity_auth)
     {

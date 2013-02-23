@@ -1,7 +1,7 @@
 <?php
 
 namespace Eadrax\Core\Usecase\User\Logout;
-use Eadrax\Core\Entity;
+use Eadrax\Core\Tool;
 
 /**
  * Runs the user logout usecase
@@ -12,7 +12,7 @@ class Interactor
 {
     /**
      * Auth entity
-     * @var Entity\Auth
+     * @var Tool\Auth
      */
     private $entity_auth;
 
@@ -21,7 +21,7 @@ class Interactor
      *
      * @return void
      */
-    public function __construct(Entity\Auth $entity_auth)
+    public function __construct(Tool\Auth $entity_auth)
     {
         $this->entity_auth = $entity_auth;
     }
