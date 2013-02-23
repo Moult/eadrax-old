@@ -11,19 +11,19 @@ use Eadrax\Core\Tool;
 class Interactor
 {
     /**
-     * Auth entity
+     * Auth tool
      * @var Tool\Auth
      */
-    private $entity_auth;
+    private $tool_auth;
 
     /**
      * Sets up collaborators
      *
      * @return void
      */
-    public function __construct(Tool\Auth $entity_auth)
+    public function __construct(Tool\Auth $tool_auth)
     {
-        $this->entity_auth = $entity_auth;
+        $this->tool_auth = $tool_auth;
     }
 
     /**
@@ -33,7 +33,7 @@ class Interactor
      */
     public function interact()
     {
-        $this->entity_auth->logout();
+        $this->tool_auth->logout();
     }
 
     /**

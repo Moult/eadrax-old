@@ -28,32 +28,32 @@ class Login
     private $repository;
 
     /**
-     * Auth entity
+     * Auth tool
      * @var Tool\Auth
      */
-    private $entity_auth;
+    private $tool_auth;
 
     /**
-     * Validation entity
+     * Validation tool
      * @var Tool\Validation
      */
-    private $entity_validation;
+    private $tool_validation;
 
     /**
      * Sets up all usecase dependencies
      *
      * @param Data\User         $data_user         User data object
      * @param Repository        $repository        The repository
-     * @param Tool\Auth       $entity_auth       Authentication system
-     * @param Tool\Validation $entity_validation Validation system
+     * @param Tool\Auth       $tool_auth       Authentication system
+     * @param Tool\Validation $tool_validation Validation system
      * @return void
      */
-    public function __construct(Data\User $data_user, Repository $repository, Tool\Auth $entity_auth, Tool\Validation $entity_validation)
+    public function __construct(Data\User $data_user, Repository $repository, Tool\Auth $tool_auth, Tool\Validation $tool_validation)
     {
         $this->data_user = $data_user;
         $this->repository = $repository;
-        $this->entity_auth = $entity_auth;
-        $this->entity_validation = $entity_validation;
+        $this->tool_auth = $tool_auth;
+        $this->tool_validation = $tool_validation;
     }
 
     /**
@@ -73,6 +73,6 @@ class Login
      */
     private function get_guest()
     {
-        return new Guest($this->data_user, $this->repository, $this->entity_auth, $this->entity_validation);
+        return new Guest($this->data_user, $this->repository, $this->tool_auth, $this->tool_validation);
     }
 }

@@ -49,22 +49,22 @@ class Add
     private $repository_project_prepare;
 
     /**
-     * Auth entity
+     * Auth tool
      * @var Tool\Auth
      */
-    private $entity_auth;
+    private $tool_auth;
 
     /**
-     * Image entity used by subcontext project prepare
+     * Image tool used by subcontext project prepare
      * @var Tool\Image
      */
-    private $entity_image;
+    private $tool_image;
 
     /**
-     * Validation entity used by subcontext project prepare
+     * Validation tool used by subcontext project prepare
      * @var Tool\Validation
      */
-    private $entity_validation;
+    private $tool_validation;
 
     /**
      * Casts data into roles, and makes each role aware of necessary
@@ -73,21 +73,21 @@ class Add
      * @param Data\Project                       $data_project               Project data object
      * @param Usecase\Project\Add\Repository     $repository                 Repository
      * @param Usecase\Project\Prepare\Repository $repository_project_prepare Repository
-     * @param Tool\Auth                        $entity_auth                Authentication system
-     * @param Tool\Validation                  $entity_validation          Validation system
-     * @param Tool\Image                       $entity_image               Image system
+     * @param Tool\Auth                        $tool_auth                Authentication system
+     * @param Tool\Validation                  $tool_validation          Validation system
+     * @param Tool\Image                       $tool_image               Image system
      * @return void
      */
-    public function __construct(Data\Project $data_project, Repository $repository, Usecase\Project\Prepare\Repository $repository_project_prepare, Tool\Auth $entity_auth, Tool\Validation $entity_validation, Tool\Image $entity_image)
+    public function __construct(Data\Project $data_project, Repository $repository, Usecase\Project\Prepare\Repository $repository_project_prepare, Tool\Auth $tool_auth, Tool\Validation $tool_validation, Tool\Image $tool_image)
     {
         $this->data_project = $data_project;
         $this->data_user = $data_project->get_author();
         $this->data_file = $data_project->get_icon();
         $this->repository = $repository;
         $this->repository_project_prepare = $repository_project_prepare;
-        $this->entity_auth = $entity_auth;
-        $this->entity_image = $entity_image;
-        $this->entity_validation = $entity_validation;
+        $this->tool_auth = $tool_auth;
+        $this->tool_image = $tool_image;
+        $this->tool_validation = $tool_validation;
     }
 
     public function fetch()
@@ -106,7 +106,7 @@ class Add
 
     private function get_user()
     {
-        return new User($this->data_user, $this->entity_auth);
+        return new User($this->data_user, $this->tool_auth);
     }
 
     private function get_project_prepare()
@@ -119,11 +119,11 @@ class Add
 
     private function get_project_prepare_proposal()
     {
-        return new Usecase\Project\Prepare\Proposal($this->data_project, $this->entity_validation);
+        return new Usecase\Project\Prepare\Proposal($this->data_project, $this->tool_validation);
     }
 
     private function get_project_prepare_icon()
     {
-        return new Usecase\Project\Prepare\Icon($this->data_file, $this->repository_project_prepare, $this->entity_image, $this->entity_validation);
+        return new Usecase\Project\Prepare\Icon($this->data_file, $this->repository_project_prepare, $this->tool_image, $this->tool_validation);
     }
 }

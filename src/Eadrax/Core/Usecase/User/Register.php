@@ -36,16 +36,16 @@ class Register
     private $repository_user_login;
 
     /**
-     * Auth entity
+     * Auth tool
      * @var Tool\Auth
      */
-    private $entity_auth;
+    private $tool_auth;
 
     /**
-     * Validation entity
+     * Validation tool
      * @var Tool\Validation
      */
-    private $entity_validation;
+    private $tool_validation;
 
     /**
      * Sets up all dependencies required to run the usecase
@@ -53,17 +53,17 @@ class Register
      * @param Data\User             $data_user             User data object
      * @param Repository            $repository            Repository for this context
      * @param User\Login\Repository $repository_user_login Repository for user login context
-     * @param Tool\Auth           $entity_auth           Authentication system
-     * @param Tool\Validation     $entity_validation     Validation system
+     * @param Tool\Auth           $tool_auth           Authentication system
+     * @param Tool\Validation     $tool_validation     Validation system
      * @return void
      */
-    public function __construct(Data\User $data_user, Repository $repository, User\Login\Repository $repository_user_login, Tool\Auth $entity_auth, Tool\Validation $entity_validation)
+    public function __construct(Data\User $data_user, Repository $repository, User\Login\Repository $repository_user_login, Tool\Auth $tool_auth, Tool\Validation $tool_validation)
     {
         $this->data_user = $data_user;
         $this->repository = $repository;
         $this->repository_user_login = $repository_user_login;
-        $this->entity_auth = $entity_auth;
-        $this->entity_validation = $entity_validation;
+        $this->tool_auth = $tool_auth;
+        $this->tool_validation = $tool_validation;
     }
 
     /**
@@ -83,7 +83,7 @@ class Register
      */
     private function get_guest()
     {
-        return new Guest($this->data_user, $this->repository, $this->entity_auth, $this->entity_validation);
+        return new Guest($this->data_user, $this->repository, $this->tool_auth, $this->tool_validation);
     }
 
     /**
@@ -103,6 +103,6 @@ class Register
      */
     private function get_user_login_guest()
     {
-        return new User\Login\Guest($this->data_user, $this->repository_user_login, $this->entity_auth, $this->entity_validation);
+        return new User\Login\Guest($this->data_user, $this->repository_user_login, $this->tool_auth, $this->tool_validation);
     }
 }

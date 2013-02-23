@@ -12,15 +12,15 @@ class Edit extends ObjectBehavior
      * @param Eadrax\Core\Data\File $data_file
      * @param Eadrax\Core\Usecase\Project\Edit\Repository $repository
      * @param Eadrax\Core\Usecase\Project\Prepare\Repository $repository_project_prepare
-     * @param Eadrax\Core\Tool\Auth $entity_auth
-     * @param Eadrax\Core\Tool\Image $entity_image
-     * @param Eadrax\Core\Tool\Validation $entity_validation
+     * @param Eadrax\Core\Tool\Auth $tool_auth
+     * @param Eadrax\Core\Tool\Image $tool_image
+     * @param Eadrax\Core\Tool\Validation $tool_validation
      */
-    function let($data_user, $data_project, $data_file, $repository, $repository_project_prepare, $entity_auth, $entity_image, $entity_validation)
+    function let($data_user, $data_project, $data_file, $repository, $repository_project_prepare, $tool_auth, $tool_image, $tool_validation)
     {
         $data_project->get_author()->willReturn($data_user);
         $data_project->get_icon()->willReturn($data_file);
-        $this->beConstructedWith($data_project, $repository, $repository_project_prepare, $entity_auth, $entity_image, $entity_validation);
+        $this->beConstructedWith($data_project, $repository, $repository_project_prepare, $tool_auth, $tool_image, $tool_validation);
     }
 
     function it_should_be_initializable()

@@ -8,11 +8,11 @@ class Dashboard extends ObjectBehavior
 {
     /**
      * @param Eadrax\Core\Data\User $data_user
-     * @param Eadrax\Core\Tool\Auth $entity_auth
+     * @param Eadrax\Core\Tool\Auth $tool_auth
      */
-    function let($data_user, $entity_auth)
+    function let($data_user, $tool_auth)
     {
-        $this->beConstructedWith($data_user, $entity_auth);
+        $this->beConstructedWith($data_user, $tool_auth);
     }
 
     function it_should_be_initializable()

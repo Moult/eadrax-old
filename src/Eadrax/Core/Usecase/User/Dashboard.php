@@ -21,23 +21,23 @@ class Dashboard
     private $data_user;
 
     /**
-     * Auth entity
+     * Auth tool
      * @var Tool\Auth
      */
-    private $entity_auth;
+    private $tool_auth;
 
     /**
      * Casts data into roles, and makes each role aware of necessary
      * dependencies.
      *
      * @param Data\User   $data_user  User data object
-     * @param Tool\Auth $entity_auth Authentication system
+     * @param Tool\Auth $tool_auth Authentication system
      * @return void
      */
-    public function __construct(Data\User $data_user, Tool\Auth $entity_auth)
+    public function __construct(Data\User $data_user, Tool\Auth $tool_auth)
     {
         $this->data_user = $data_user;
-        $this->entity_auth = $entity_auth;
+        $this->tool_auth = $tool_auth;
     }
 
     /**
@@ -57,6 +57,6 @@ class Dashboard
      */
     private function get_user()
     {
-        return new User($this->data_user, $this->entity_auth);
+        return new User($this->data_user, $this->tool_auth);
     }
 }

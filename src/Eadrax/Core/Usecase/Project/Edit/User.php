@@ -18,14 +18,14 @@ class User extends Data\User
      * @param Data\User $data_user The user data to copy
      * @return void
      */
-    public function __construct(Data\User $data_user, Tool\Auth $entity_auth)
+    public function __construct(Data\User $data_user, Tool\Auth $tool_auth)
     {
         foreach ($data_user as $property => $value)
         {
             $this->$property = $value;
         }
 
-        $this->entity_auth = $entity_auth;
+        $this->tool_auth = $tool_auth;
     }
 
     /**
@@ -38,7 +38,7 @@ class User extends Data\User
      */
     public function authorise_project_edit()
     {
-        if ($this->entity_auth->logged_in())
+        if ($this->tool_auth->logged_in())
             return TRUE;
         else
             throw new Exception\Authorisation('You need to be logged in to edit a project.');
@@ -52,7 +52,7 @@ class User extends Data\User
      */
     public function check_proposal_author()
     {
-        if ($this->id === $this->entity_auth->get_user()->id)
+        if ($this->id === $this->tool_auth->get_user()->id)
             return TRUE;
         else
             throw new Exception\Authorisation('You cannot edit a project you do not own.');

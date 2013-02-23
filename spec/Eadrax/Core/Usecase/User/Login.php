@@ -9,12 +9,12 @@ class Login extends ObjectBehavior
     /**
      * @param Eadrax\Core\Data\User $data_user
      * @param Eadrax\Core\Usecase\User\Login\Repository $repository
-     * @param Eadrax\Core\Tool\Auth $entity_auth
-     * @param Eadrax\Core\Tool\Validation $entity_validation
+     * @param Eadrax\Core\Tool\Auth $tool_auth
+     * @param Eadrax\Core\Tool\Validation $tool_validation
      */
-    function let($data_user, $repository, $entity_auth, $entity_validation)
+    function let($data_user, $repository, $tool_auth, $tool_validation)
     {
-        $this->beConstructedWith($data_user, $repository, $entity_auth, $entity_validation);
+        $this->beConstructedWith($data_user, $repository, $tool_auth, $tool_validation);
     }
 
     function it_should_be_initializable()

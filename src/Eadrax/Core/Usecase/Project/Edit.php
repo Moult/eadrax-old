@@ -23,16 +23,16 @@ class Edit
     private $data_project;
 
     /**
-     * Auth entity
+     * Auth tool
      * @var Tool\Auth
      */
-    private $entity_auth;
+    private $tool_auth;
 
     /**
-     * Validation entity
+     * Validation tool
      * @var Tool\Validation
      */
-    private $entity_validation;
+    private $tool_validation;
 
     /**
      * Sets up dependencies
@@ -40,19 +40,19 @@ class Edit
      * @param Data\Project               $data_project               The project you want to edit.
      * @param Repository                 $repository                 Repository of current context
      * @param Project\Prepare\Repository $repository_project_prepare Repository of project prepare
-     * @param Tool\Auth                $entity_auth                Authentication entity
-     * @param Tool\Image               $entity_image               Image entity
-     * @param Tool\Validation          $entity_validation          Validation entity
+     * @param Tool\Auth                $tool_auth                Authentication tool
+     * @param Tool\Image               $tool_image               Image tool
+     * @param Tool\Validation          $tool_validation          Validation tool
      * @return void
      */
-    function __construct(Data\Project $data_project, Repository $repository, Project\Prepare\Repository $repository_project_prepare, Tool\Auth $entity_auth, Tool\Image $entity_image, Tool\Validation $entity_validation)
+    function __construct(Data\Project $data_project, Repository $repository, Project\Prepare\Repository $repository_project_prepare, Tool\Auth $tool_auth, Tool\Image $tool_image, Tool\Validation $tool_validation)
     {
         $this->data_project = $data_project;
         $this->repository = $repository;
         $this->repository_project_prepare = $repository_project_prepare;
-        $this->entity_auth = $entity_auth;
-        $this->entity_image = $entity_image;
-        $this->entity_validation = $entity_validation;
+        $this->tool_auth = $tool_auth;
+        $this->tool_image = $tool_image;
+        $this->tool_validation = $tool_validation;
     }
 
     /**
@@ -72,7 +72,7 @@ class Edit
      */
     private function get_user()
     {
-        return new User($this->data_project->get_author(), $this->entity_auth);
+        return new User($this->data_project->get_author(), $this->tool_auth);
     }
 
     /**
@@ -102,7 +102,7 @@ class Edit
      */
     private function get_project_prepare_proposal()
     {
-        return new Project\Prepare\Proposal($this->data_project, $this->entity_validation);
+        return new Project\Prepare\Proposal($this->data_project, $this->tool_validation);
     }
 
     /**
@@ -112,7 +112,7 @@ class Edit
      */
     private function get_project_prepare_icon()
     {
-        return new Project\Prepare\Icon($this->data_project->get_icon(), $this->get_project_prepare_repository(), $this->entity_image, $this->entity_validation);
+        return new Project\Prepare\Icon($this->data_project->get_icon(), $this->get_project_prepare_repository(), $this->tool_image, $this->tool_validation);
     }
 
     /**

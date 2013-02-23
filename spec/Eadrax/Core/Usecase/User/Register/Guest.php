@@ -10,13 +10,13 @@ class Guest extends ObjectBehavior
     /**
      * @param Eadrax\Core\Data\User $data_user
      * @param Eadrax\Core\Usecase\User\Register\Repository $repository
-     * @param Eadrax\Core\Tool\Auth $entity_auth
-     * @param Eadrax\Core\Tool\Validation $entity_validation
+     * @param Eadrax\Core\Tool\Auth $tool_auth
+     * @param Eadrax\Core\Tool\Validation $tool_validation
      */
-    function let($data_user, $repository, $entity_auth, $entity_validation)
+    function let($data_user, $repository, $tool_auth, $tool_validation)
     {
         $data_user->username = 'username';
-        $this->beConstructedWith($data_user, $repository, $entity_auth, $entity_validation);
+        $this->beConstructedWith($data_user, $repository, $tool_auth, $tool_validation);
         $this->username->shouldBe('username');
     }
 
@@ -30,46 +30,46 @@ class Guest extends ObjectBehavior
         $this->shouldHaveType('Eadrax\Core\Data\User');
     }
 
-    function it_does_not_authorise_logged_in_users($entity_auth)
+    function it_does_not_authorise_logged_in_users($tool_auth)
     {
-        $entity_auth->logged_in()->willReturn(TRUE);
+        $tool_auth->logged_in()->willReturn(TRUE);
         $this->shouldThrow('\Eadrax\Core\Exception\Authorisation')->duringAuthorise_registration();
     }
 
-    function it_authorises_guest_users($entity_auth)
+    function it_authorises_guest_users($tool_auth)
     {
-        $entity_auth->logged_in()->willReturn(FALSE);
+        $tool_auth->logged_in()->willReturn(FALSE);
         $this->shouldNotThrow('\Eadrax\Core\Exception\Authorisation')->duringAuthorise_registration();
     }
 
-    function it_checks_for_invalid_user_information($entity_validation)
+    function it_checks_for_invalid_user_information($tool_validation)
     {
-        $entity_validation->setup(array(
+        $tool_validation->setup(array(
             'username' => 'username',
             'password' => '',
             'email' => ''
         ))->shouldBeCalled();
-        $entity_validation->rule('username', 'not_empty')->shouldBeCalled();
-        $entity_validation->rule('username', 'regex', '/^[a-z_.]++$/iD')->shouldBeCalled();
-        $entity_validation->rule('username', 'min_length', '4')->shouldBeCalled();
-        $entity_validation->rule('username', 'max_length', '15')->shouldBeCalled();
-        $entity_validation->callback('username', array($this, 'is_unique_username'), array('username'))->shouldBeCalled();
-        $entity_validation->rule('password', 'not_empty')->shouldBeCalled();
-        $entity_validation->rule('password', 'min_length', '6')->shouldBeCalled();
-        $entity_validation->rule('email', 'not_empty')->shouldBeCalled();
-        $entity_validation->rule('email', 'email')->shouldBeCalled();
+        $tool_validation->rule('username', 'not_empty')->shouldBeCalled();
+        $tool_validation->rule('username', 'regex', '/^[a-z_.]++$/iD')->shouldBeCalled();
+        $tool_validation->rule('username', 'min_length', '4')->shouldBeCalled();
+        $tool_validation->rule('username', 'max_length', '15')->shouldBeCalled();
+        $tool_validation->callback('username', array($this, 'is_unique_username'), array('username'))->shouldBeCalled();
+        $tool_validation->rule('password', 'not_empty')->shouldBeCalled();
+        $tool_validation->rule('password', 'min_length', '6')->shouldBeCalled();
+        $tool_validation->rule('email', 'not_empty')->shouldBeCalled();
+        $tool_validation->rule('email', 'email')->shouldBeCalled();
 
-        $entity_validation->check()->willReturn(FALSE);
-        $entity_validation->errors()->willReturn(array(
+        $tool_validation->check()->willReturn(FALSE);
+        $tool_validation->errors()->willReturn(array(
             'foo' => 'bar'
         ));
 
         $this->shouldThrow('\Eadrax\Core\Exception\Validation')->duringValidate_information();
     }
 
-    function it_validates_valid_user_information($entity_validation)
+    function it_validates_valid_user_information($tool_validation)
     {
-        $entity_validation->check()->willReturn(TRUE);
+        $tool_validation->check()->willReturn(TRUE);
         $this->shouldNotThrow('\Eadrax\Core\Exception\Validation')->duringValidate_information();
     }
 

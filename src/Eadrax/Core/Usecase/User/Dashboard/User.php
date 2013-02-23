@@ -19,13 +19,13 @@ class User extends Data\User
      * @param Data $data_user Data object to copy
      * @return void
      */
-    public function __construct(Data\User $data_user, Tool\Auth $entity_auth)
+    public function __construct(Data\User $data_user, Tool\Auth $tool_auth)
     {
         foreach ($data_user as $property => $value)
         {
             $this->$property = $value;
         }
-        $this->entity_auth = $entity_auth;
+        $this->tool_auth = $tool_auth;
     }
 
     /**
@@ -36,9 +36,9 @@ class User extends Data\User
      */
     public function authorise_dashboard()
     {
-        if ($this->entity_auth->logged_in())
+        if ($this->tool_auth->logged_in())
             return array(
-                'username' => $this->entity_auth->get_user()->username
+                'username' => $this->tool_auth->get_user()->username
             );
         else
             throw new Exception\Authorisation('Please login before you can view your dashboard.');

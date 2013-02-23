@@ -17,17 +17,17 @@ class Proposal extends Data\Project
      * Takes a data object and copies all of its properties
      *
      * @param Data\Project      $data_project      Data object to copy
-     * @param Tool\Validation $entity_validation Validation entity
+     * @param Tool\Validation $tool_validation Validation tool
      * @return void
      */
-    public function __construct(Data\Project $data_project, Tool\Validation $entity_validation)
+    public function __construct(Data\Project $data_project, Tool\Validation $tool_validation)
     {
         foreach ($data_project as $property => $value)
         {
             $this->$property = $value;
         }
 
-        $this->entity_validation = $entity_validation;
+        $this->tool_validation = $tool_validation;
     }
 
     /**
@@ -39,8 +39,8 @@ class Proposal extends Data\Project
     {
         $this->setup_validation();
 
-        if ( ! $this->entity_validation->check())
-            throw new Exception\Validation($this->entity_validation->errors());
+        if ( ! $this->tool_validation->check())
+            throw new Exception\Validation($this->tool_validation->errors());
     }
 
     /**
@@ -50,13 +50,13 @@ class Proposal extends Data\Project
      */
     private function setup_validation()
     {
-        $this->entity_validation->setup(array(
+        $this->tool_validation->setup(array(
             'name' => $this->name,
             'summary' => $this->summary,
             'website' => $this->website
         ));
-        $this->entity_validation->rule('name', 'not_empty');
-        $this->entity_validation->rule('summary', 'not_empty');
-        $this->entity_validation->rule('website', 'url');
+        $this->tool_validation->rule('name', 'not_empty');
+        $this->tool_validation->rule('summary', 'not_empty');
+        $this->tool_validation->rule('website', 'url');
     }
 }

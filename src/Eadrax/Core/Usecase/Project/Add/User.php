@@ -17,17 +17,17 @@ class User extends Data\User
      * Takes a data object and copies all of its properties
      *
      * @param Data\User   $data_user   Data object to copy
-     * @param Tool\Auth $entity_auth Auth entity
+     * @param Tool\Auth $tool_auth Auth tool
      * @return void
      */
-    public function __construct(Data\User $data_user, Tool\Auth $entity_auth)
+    public function __construct(Data\User $data_user, Tool\Auth $tool_auth)
     {
         foreach ($data_user as $property => $value)
         {
             $this->$property = $value;
         }
 
-        $this->entity_auth = $entity_auth;
+        $this->tool_auth = $tool_auth;
     }
 
     /**
@@ -38,7 +38,7 @@ class User extends Data\User
      */
     public function authorise_project_add()
     {
-        if ($this->entity_auth->logged_in())
+        if ($this->tool_auth->logged_in())
             return TRUE;
         else
             throw new Exception\Authorisation('Please login before you can add a new project.');

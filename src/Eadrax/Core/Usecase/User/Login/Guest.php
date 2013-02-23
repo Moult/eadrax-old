@@ -18,11 +18,11 @@ class Guest extends Data\User
      *
      * @param Data\User         $data_user         Data object to copy
      * @param Repository        $repository        Repository
-     * @param Tool\Auth       $entity_auth       Auth entity
-     * @param Tool\Validation $entity_validation Validation entity
+     * @param Tool\Auth       $tool_auth       Auth tool
+     * @param Tool\Validation $tool_validation Validation tool
      * @return void
      */
-    public function __construct(Data\User $data_user, Repository $repository, Tool\Auth $entity_auth, Tool\Validation $entity_validation)
+    public function __construct(Data\User $data_user, Repository $repository, Tool\Auth $tool_auth, Tool\Validation $tool_validation)
     {
         foreach ($data_user as $property => $value)
         {
@@ -30,8 +30,8 @@ class Guest extends Data\User
         }
 
         $this->repository = $repository;
-        $this->entity_auth = $entity_auth;
-        $this->entity_validation = $entity_validation;
+        $this->tool_auth = $tool_auth;
+        $this->tool_validation = $tool_validation;
     }
 
     /**
@@ -42,7 +42,7 @@ class Guest extends Data\User
      */
     public function authorise_login()
     {
-        if ($this->entity_auth->logged_in())
+        if ($this->tool_auth->logged_in())
             throw new Exception\Authorisation('Logged in users don\'t need to login again.');
     }
 
@@ -56,8 +56,8 @@ class Guest extends Data\User
     {
         $this->setup_validation();
 
-        if ( ! $this->entity_validation->check())
-            throw new Exception\Validation($this->entity_validation->errors());
+        if ( ! $this->tool_validation->check())
+            throw new Exception\Validation($this->tool_validation->errors());
     }
 
     /**
@@ -79,7 +79,7 @@ class Guest extends Data\User
      */
     public function login()
     {
-        return $this->entity_auth->login($this->username, $this->password);
+        return $this->tool_auth->login($this->username, $this->password);
     }
 
     /**
@@ -89,11 +89,11 @@ class Guest extends Data\User
      */
     public function setup_validation()
     {
-        $this->entity_validation->setup(array(
+        $this->tool_validation->setup(array(
                 'username' => $this->username,
                 'password' => $this->password
             ));
-        $this->entity_validation->rule('username', 'not_empty');
-        $this->entity_validation->callback('username', array($this, 'is_existing_account'), array('username', 'password'));
+        $this->tool_validation->rule('username', 'not_empty');
+        $this->tool_validation->callback('username', array($this, 'is_existing_account'), array('username', 'password'));
     }
 }

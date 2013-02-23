@@ -9,12 +9,12 @@ class User extends ObjectBehavior
 {
     /**
      * @param Eadrax\Core\Data\User $data_user
-     * @param Eadrax\Core\Tool\Auth $entity_auth
+     * @param Eadrax\Core\Tool\Auth $tool_auth
      */
-    function let($data_user, $entity_auth)
+    function let($data_user, $tool_auth)
     {
         $data_user->username = 'username';
-        $this->beConstructedWith($data_user, $entity_auth);
+        $this->beConstructedWith($data_user, $tool_auth);
         $this->username->shouldBe('username');
     }
 
@@ -28,17 +28,17 @@ class User extends ObjectBehavior
         $this->shouldHaveType('Eadrax\Core\Data\User');
     }
 
-    function it_throws_an_authorisation_error_if_not_logged_in($entity_auth)
+    function it_throws_an_authorisation_error_if_not_logged_in($tool_auth)
     {
-        $entity_auth->logged_in()->willReturn(FALSE);
+        $tool_auth->logged_in()->willReturn(FALSE);
 
         $this->shouldThrow('\Eadrax\Core\Exception\Authorisation')->duringAuthorise_dashboard();
     }
 
-    function it_returns_with_a_users_username_if_logged_in($data_user, $entity_auth)
+    function it_returns_with_a_users_username_if_logged_in($data_user, $tool_auth)
     {
-        $entity_auth->logged_in()->willReturn(TRUE);
-        $entity_auth->get_user()->willReturn($data_user);
+        $tool_auth->logged_in()->willReturn(TRUE);
+        $tool_auth->get_user()->willReturn($data_user);
 
         $this->authorise_dashboard()->shouldReturn(array(
             'username' => 'username'

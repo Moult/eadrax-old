@@ -18,11 +18,11 @@ class Icon extends Data\File
      *
      * @param Data\File         $data_file         Data object to copy
      * @param Repository        $repository        Project prepare repository
-     * @param Tool\Image      $entity_image      Image entity
-     * @param Tool\Validation $entity_validation Validation entity
+     * @param Tool\Image      $tool_image      Image tool
+     * @param Tool\Validation $tool_validation Validation tool
      * @return void
      */
-    public function __construct(Data\File $data_file, Repository $repository, Tool\Image $entity_image, Tool\Validation $entity_validation)
+    public function __construct(Data\File $data_file, Repository $repository, Tool\Image $tool_image, Tool\Validation $tool_validation)
     {
         foreach ($data_file as $property => $value)
         {
@@ -30,8 +30,8 @@ class Icon extends Data\File
         }
 
         $this->repository = $repository;
-        $this->entity_image = $entity_image;
-        $this->entity_validation = $entity_validation;
+        $this->tool_image = $tool_image;
+        $this->tool_validation = $tool_validation;
     }
 
     /**
@@ -43,8 +43,8 @@ class Icon extends Data\File
     {
         $this->setup_validation();
 
-        if ( ! $this->entity_validation->check())
-            throw new Exception\Validation($this->entity_validation->errors());
+        if ( ! $this->tool_validation->check())
+            throw new Exception\Validation($this->tool_validation->errors());
     }
 
     /**
@@ -60,7 +60,7 @@ class Icon extends Data\File
 
     public function resize()
     {
-        $this->entity_image->resize(50, 50);
+        $this->tool_image->resize(50, 50);
     }
 
     /**
@@ -70,7 +70,7 @@ class Icon extends Data\File
      */
     private function setup_validation()
     {
-        $this->entity_validation->setup(array(
+        $this->tool_validation->setup(array(
             'metadata' => array(
                 'name' => $this->name,
                 'type' => $this->mimetype,
@@ -79,8 +79,8 @@ class Icon extends Data\File
                 'size' => $this->filesize_in_bytes
             )
         ));
-        $this->entity_validation->rule('metadata', 'upload_valid');
-        $this->entity_validation->rule('metadata', 'upload_type', array('jpg', 'png'));
-        $this->entity_validation->rule('metadata', 'upload_size', '1M');
+        $this->tool_validation->rule('metadata', 'upload_valid');
+        $this->tool_validation->rule('metadata', 'upload_type', array('jpg', 'png'));
+        $this->tool_validation->rule('metadata', 'upload_size', '1M');
     }
 }

@@ -20,27 +20,27 @@ class Guest extends Data\User
     private $repository;
 
     /**
-     * Auth entity
+     * Auth tool
      * @var Tool\Auth
      */
-    private $entity_auth;
+    private $tool_auth;
 
     /**
-     * Validation entity
+     * Validation tool
      * @var Tool\Validation
      */
-    private $entity_validation;
+    private $tool_validation;
 
     /**
      * Takes a data object and copies all of its properties
      *
      * @param Data\User         $data_user         Data object to copy
      * @param Repository        $repository        context repository
-     * @param Tool\Auth       $entity_auth       Auth entity
-     * @param Tool\Validation $entity_validation Validation entity
+     * @param Tool\Auth       $tool_auth       Auth tool
+     * @param Tool\Validation $tool_validation Validation tool
      * @return void
      */
-    public function __construct(Data\User $data_user, Repository $repository, Tool\Auth $entity_auth, Tool\Validation $entity_validation)
+    public function __construct(Data\User $data_user, Repository $repository, Tool\Auth $tool_auth, Tool\Validation $tool_validation)
     {
         foreach ($data_user as $property => $value)
         {
@@ -48,8 +48,8 @@ class Guest extends Data\User
         }
 
         $this->repository = $repository;
-        $this->entity_auth = $entity_auth;
-        $this->entity_validation = $entity_validation;
+        $this->tool_auth = $tool_auth;
+        $this->tool_validation = $tool_validation;
     }
 
     /**
@@ -60,7 +60,7 @@ class Guest extends Data\User
      */
     public function authorise_registration()
     {
-        if ($this->entity_auth->logged_in())
+        if ($this->tool_auth->logged_in())
             throw new Exception\Authorisation('Logged in users cannot register new accounts.');
     }
 
@@ -74,8 +74,8 @@ class Guest extends Data\User
     {
         $this->setup_validation();
 
-        if ( ! $this->entity_validation->check())
-            throw new Exception\Validation($this->entity_validation->errors());
+        if ( ! $this->tool_validation->check())
+            throw new Exception\Validation($this->tool_validation->errors());
     }
 
     /**
@@ -106,20 +106,20 @@ class Guest extends Data\User
      */
     private function setup_validation()
     {
-        $this->entity_validation->setup(array(
+        $this->tool_validation->setup(array(
             'username' => $this->username,
             'password' => $this->password,
             'email' => $this->email
         ));
 
-        $this->entity_validation->rule('username', 'not_empty');
-        $this->entity_validation->rule('username', 'regex', '/^[a-z_.]++$/iD');
-        $this->entity_validation->rule('username', 'min_length', '4');
-        $this->entity_validation->rule('username', 'max_length', '15');
-        $this->entity_validation->callback('username', array($this, 'is_unique_username'), array('username'));
-        $this->entity_validation->rule('password', 'not_empty');
-        $this->entity_validation->rule('password', 'min_length', '6');
-        $this->entity_validation->rule('email', 'not_empty');
-        $this->entity_validation->rule('email', 'email');
+        $this->tool_validation->rule('username', 'not_empty');
+        $this->tool_validation->rule('username', 'regex', '/^[a-z_.]++$/iD');
+        $this->tool_validation->rule('username', 'min_length', '4');
+        $this->tool_validation->rule('username', 'max_length', '15');
+        $this->tool_validation->callback('username', array($this, 'is_unique_username'), array('username'));
+        $this->tool_validation->rule('password', 'not_empty');
+        $this->tool_validation->rule('password', 'min_length', '6');
+        $this->tool_validation->rule('email', 'not_empty');
+        $this->tool_validation->rule('email', 'email');
     }
 }

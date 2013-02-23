@@ -8,12 +8,12 @@ class Proposal extends ObjectBehavior
 {
     /**
      * @param Eadrax\Core\Data\Project $data_project
-     * @param Eadrax\Core\Tool\Validation $entity_validation
+     * @param Eadrax\Core\Tool\Validation $tool_validation
      */
-    function let($data_project, $entity_validation)
+    function let($data_project, $tool_validation)
     {
         $data_project->name = 'foo';
-        $this->beConstructedWith($data_project, $entity_validation);
+        $this->beConstructedWith($data_project, $tool_validation);
         $this->name->shouldBe('foo');
     }
 
@@ -27,24 +27,24 @@ class Proposal extends ObjectBehavior
         $this->shouldHaveType('Eadrax\Core\Data\Project');
     }
 
-    function it_catches_invalid_proposal_information($entity_validation)
+    function it_catches_invalid_proposal_information($tool_validation)
     {
-        $entity_validation->setup(array(
+        $tool_validation->setup(array(
             'name' => $this->name,
             'summary' => $this->summary,
             'website' => $this->website
         ))->shouldBeCalled();
-        $entity_validation->rule('name', 'not_empty')->shouldBeCalled();
-        $entity_validation->rule('summary', 'not_empty')->shouldBeCalled();
-        $entity_validation->rule('website', 'url')->shouldBeCalled();
-        $entity_validation->check()->shouldBeCalled()->willReturn(FALSE);
-        $entity_validation->errors()->shouldBeCalled()->willReturn(array('foo'));
+        $tool_validation->rule('name', 'not_empty')->shouldBeCalled();
+        $tool_validation->rule('summary', 'not_empty')->shouldBeCalled();
+        $tool_validation->rule('website', 'url')->shouldBeCalled();
+        $tool_validation->check()->shouldBeCalled()->willReturn(FALSE);
+        $tool_validation->errors()->shouldBeCalled()->willReturn(array('foo'));
         $this->shouldThrow('\Eadrax\Core\Exception\Validation')->duringValidate_information();
     }
 
-    function it_allows_valid_proposal_information($entity_validation)
+    function it_allows_valid_proposal_information($tool_validation)
     {
-        $entity_validation->check()->shouldBeCalled()->willReturn(TRUE);
+        $tool_validation->check()->shouldBeCalled()->willReturn(TRUE);
         $this->shouldNotThrow('\Eadrax\Core\Exception\Validation')->duringValidate_information();
     }
 }
