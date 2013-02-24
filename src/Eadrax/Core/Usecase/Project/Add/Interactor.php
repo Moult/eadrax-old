@@ -11,23 +11,10 @@ use Eadrax\Core\Exception;
 
 class Interactor
 {
-    /**
-     * User role
-     * @var User
-     */
-    public $user;
+    private $user;
+    private $proposal;
+    private $project_prepare;
 
-    /**
-     * Proposal role
-     * @var Proposal
-     */
-    public $proposal;
-
-    /**
-     * Sets up role dependencies
-     *
-     * @return void
-     */
     public function __construct(Proposal $proposal, User $user, Project\Prepare\Interactor $project_prepare)
     {
         $this->proposal = $proposal;
@@ -35,11 +22,6 @@ class Interactor
         $this->project_prepare = $project_prepare;
     }
 
-    /**
-     * Carries out the interaction chain of the usecase
-     *
-     * @return void
-     */
     public function interact()
     {
         $this->user->authorise_project_add();
@@ -47,11 +29,6 @@ class Interactor
         $this->proposal->submit();
     }
 
-    /**
-     * Runs interaction, generating a results array
-     *
-     * @return array
-     */
     public function execute()
     {
         try

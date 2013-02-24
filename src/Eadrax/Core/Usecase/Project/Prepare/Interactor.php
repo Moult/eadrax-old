@@ -10,16 +10,7 @@ use Eadrax\Core\Exception;
 
 class Interactor
 {
-    /**
-     * Proposal role
-     * @var Proposal
-     */
     private $proposal;
-
-    /**
-     * Icon role
-     * @var Icon
-     */
     private $icon;
 
     public function __construct(Proposal $proposal, Icon $icon)
@@ -28,12 +19,6 @@ class Interactor
         $this->icon = $icon;
     }
 
-    /**
-     * Runs the interaction chain
-     *
-     * @throws Exception\Validation
-     * @return void
-     */
     public function interact()
     {
         $this->proposal->validate_information();
@@ -44,11 +29,6 @@ class Interactor
         }
     }
 
-    /**
-     * Generates a result array out of the interaction chain
-     *
-     * @return array
-     */
     public function execute()
     {
         try

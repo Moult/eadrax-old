@@ -10,11 +10,8 @@ use Eadrax\Core\Data;
 
 class Proposal extends Data\Project
 {
-    /**
-     * Sets up role dependencies
-     *
-     * @return void
-     */
+    private $repository;
+
     public function __construct(Data\Project $data_project, Repository $repository)
     {
         foreach ($data_project as $property => $value)
@@ -25,11 +22,6 @@ class Proposal extends Data\Project
         $this->repository = $repository;
     }
 
-    /**
-     * Updates the current project
-     *
-     * @return void
-     */
     public function update()
     {
         $this->repository->update_project($this);

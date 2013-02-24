@@ -13,13 +13,8 @@ use Eadrax\Core\Exception;
 
 class Proposal extends Data\Project
 {
-    /**
-     * Takes a data object and copies all of its properties
-     *
-     * @param Data\Project      $data_project      Data object to copy
-     * @param Tool\Validation $tool_validation Validation tool
-     * @return void
-     */
+    private $tool_validation;
+
     public function __construct(Data\Project $data_project, Tool\Validation $tool_validation)
     {
         foreach ($data_project as $property => $value)
@@ -30,11 +25,6 @@ class Proposal extends Data\Project
         $this->tool_validation = $tool_validation;
     }
 
-    /**
-     * Validates the proposed data in this project
-     *
-     * @return void
-     */
     public function validate_information()
     {
         $this->setup_validation();
@@ -43,11 +33,6 @@ class Proposal extends Data\Project
             throw new Exception\Validation($this->tool_validation->errors());
     }
 
-    /**
-     * Set up the validation criteria
-     *
-     * @return void
-     */
     private function setup_validation()
     {
         $this->tool_validation->setup(array(

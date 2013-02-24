@@ -10,11 +10,5 @@ use Eadrax\Core\Data;
 
 interface Repository
 {
-    /**
-     * Saves a project
-     *
-     * @param Data\Project $data_project The project to save
-     * @return void
-     */
     public function add_project(Data\Project $data_project);
 }

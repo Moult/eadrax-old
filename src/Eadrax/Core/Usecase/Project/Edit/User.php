@@ -12,12 +12,8 @@ use Eadrax\Core\Tool;
 
 class User extends Data\User
 {
-    /**
-     * Copies all the properties of a data object
-     *
-     * @param Data\User $data_user The user data to copy
-     * @return void
-     */
+    private $tool_auth;
+
     public function __construct(Data\User $data_user, Tool\Auth $tool_auth)
     {
         foreach ($data_user as $property => $value)
@@ -28,14 +24,6 @@ class User extends Data\User
         $this->tool_auth = $tool_auth;
     }
 
-    /**
-     * Authorises that the user is allowed to edit the project.
-     *
-     * Checks whether or not they are logged in and they own the project
-     *
-     * @throws Exception\Authorisation
-     * @return bool
-     */
     public function authorise_project_edit()
     {
         if ($this->tool_auth->logged_in())
@@ -44,12 +32,6 @@ class User extends Data\User
             throw new Exception\Authorisation('You need to be logged in to edit a project.');
     }
 
-    /**
-     * Checks whether or not we own the project.
-     *
-     * @throws Exception\Authorisation
-     * @return bool
-     */
     public function check_proposal_author()
     {
         if ($this->id === $this->tool_auth->get_user()->id)

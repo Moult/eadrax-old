@@ -13,13 +13,8 @@ use Eadrax\Core\Exception;
 
 class User extends Data\User
 {
-    /**
-     * Takes a data object and copies all of its properties
-     *
-     * @param Data\User   $data_user   Data object to copy
-     * @param Tool\Auth $tool_auth Auth tool
-     * @return void
-     */
+    private $tool_auth;
+
     public function __construct(Data\User $data_user, Tool\Auth $tool_auth)
     {
         foreach ($data_user as $property => $value)
@@ -30,12 +25,6 @@ class User extends Data\User
         $this->tool_auth = $tool_auth;
     }
 
-    /**
-     * Prove that it is allowed to add a project.
-     *
-     * @throws Exception\Authorisation if not logged in
-     * @return bool
-     */
     public function authorise_project_add()
     {
         if ($this->tool_auth->logged_in())

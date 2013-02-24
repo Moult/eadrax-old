@@ -14,70 +14,18 @@ use Eadrax\Core\Usecase\Project\Add\Repository;
 use Eadrax\Core\Usecase;
 use Eadrax\Core\Data;
 use Eadrax\Core\Tool;
-use Eadrax\Core\Exception;
 
 class Add
 {
-    /**
-     * Project data
-     * @var Data\Project
-     */
     private $data_project;
-
-    /**
-     * User data
-     * @var Data\User
-     */
     private $data_user;
-
-    /**
-     * File data
-     * @var Data\File
-     */
     private $data_file;
-
-    /**
-     * Project add repository
-     * @var Repository
-     */
     private $repository;
-
-    /**
-     * Repository used by subcontext project prepare
-     * @var Usecase\Project\Prepare\Repository
-     */
     private $repository_project_prepare;
-
-    /**
-     * Auth tool
-     * @var Tool\Auth
-     */
     private $tool_auth;
-
-    /**
-     * Image tool used by subcontext project prepare
-     * @var Tool\Image
-     */
     private $tool_image;
-
-    /**
-     * Validation tool used by subcontext project prepare
-     * @var Tool\Validation
-     */
     private $tool_validation;
 
-    /**
-     * Casts data into roles, and makes each role aware of necessary
-     * dependencies.
-     *
-     * @param Data\Project                       $data_project               Project data object
-     * @param Usecase\Project\Add\Repository     $repository                 Repository
-     * @param Usecase\Project\Prepare\Repository $repository_project_prepare Repository
-     * @param Tool\Auth                        $tool_auth                Authentication system
-     * @param Tool\Validation                  $tool_validation          Validation system
-     * @param Tool\Image                       $tool_image               Image system
-     * @return void
-     */
     public function __construct(Data\Project $data_project, Repository $repository, Usecase\Project\Prepare\Repository $repository_project_prepare, Tool\Auth $tool_auth, Tool\Validation $tool_validation, Tool\Image $tool_image)
     {
         $this->data_project = $data_project;
