@@ -13,12 +13,6 @@ use Eadrax\Core\Exception;
 
 class User extends Data\User
 {
-    /**
-     * Takes a data object and copies all of its properties
-     *
-     * @param Data $data_user Data object to copy
-     * @return void
-     */
     public function __construct(Data\User $data_user, Tool\Auth $tool_auth)
     {
         foreach ($data_user as $property => $value)
@@ -28,12 +22,6 @@ class User extends Data\User
         $this->tool_auth = $tool_auth;
     }
 
-    /**
-     * Prove that it is allowed to view a dashboard.
-     *
-     * @throws Exception\Authorisation if already logged in
-     * @return array
-     */
     public function authorise_dashboard()
     {
         if ($this->tool_auth->logged_in())

@@ -10,27 +10,13 @@ use Eadrax\Core\Exception;
 
 class Interactor
 {
-    /**
-     * Guest role
-     * @var Guest
-     */
     private $guest;
 
-    /**
-     * Sets up role dependencies
-     *
-     * @return void
-     */
     public function __construct(Guest $guest)
     {
         $this->guest = $guest;
     }
 
-    /**
-     * Executes the interaction chain
-     *
-     * @return void
-     */
     public function interact()
     {
         $this->guest->authorise_login();
@@ -38,11 +24,6 @@ class Interactor
         $this->guest->login();
     }
 
-    /**
-     * Run interaction, generating a results array.
-     *
-     * @return array
-     */
     public function execute()
     {
         try
