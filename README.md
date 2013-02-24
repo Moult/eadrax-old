@@ -11,6 +11,39 @@ You might like Eadrax if you:
  * Want to visualise your process and progress
  * Prefer open-source software
 
+## Features
+
+Those marked in bold have been implemented.
+
+ * User register
+ * User login
+ * User edit
+ * User logout
+ * User fans
+ * User newsfeed
+ * User view
+
+ * Project view
+ * Project add
+ * Project edit
+ * Project delete
+ * Project fans
+
+ * Update view
+ * Update add
+ * Update edit
+ * Update delete
+
+ * Kudos add
+ * Kudos remove
+
+ * Comment add
+ * Comment edit
+ * Comment delete
+
+ * Track project
+ * Track user
+
 # About Eadrax-develop
 
 This branch aims to rewrite Eadrax with the following major changes.
@@ -31,6 +64,7 @@ This branch aims to rewrite Eadrax with the following major changes.
    pastebin updates and sound updates.
  * Responsive webdesign
  * Redesign with new logo
+ * Switch from BBCode to Markdown
 
 ## Switch to MIT license
 
