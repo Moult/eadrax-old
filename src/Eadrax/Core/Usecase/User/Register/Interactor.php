@@ -11,52 +11,20 @@ use Eadrax\Core\Exception;
 
 class Interactor
 {
-    private $guest;
+    private $registrant;
     private $user_login;
 
-    public function __construct(Guest $guest, User\Login\Interactor $user_login)
+    public function __construct(Registrant $registrant, User\Login\Interactor $user_login)
     {
-        $this->guest = $guest;
+        $this->registrant = $registrant;
         $this->user_login = $user_login;
     }
 
     public function interact()
     {
-        $this->guest->authorise_registration();
-        $this->guest->validate_information();
-        $this->guest->register();
+        $this->registrant->authorise();
+        $this->registrant->validate();
+        $this->registrant->register();
         $this->user_login->interact();
-    }
-
-    public function execute()
-    {
-        try
-        {
-            $this->interact();
-        }
-        catch (Exception\Authorisation $e)
-        {
-            return array(
-                'status' => 'failure',
-                'type' => 'authorisation',
-                'data' => array(
-                    'errors' => array($e->getMessage())
-                )
-            );
-        }
-        catch (Exception\Validation $e)
-        {
-            return array(
-                'status' => 'failure',
-                'type' => 'validation',
-                'data' => array(
-                    'errors' => $e->get_errors()
-                )
-            );
-        }
-
-        return array(
-            'status' => 'success'
-        );
     }
 }

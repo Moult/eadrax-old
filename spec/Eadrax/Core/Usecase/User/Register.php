@@ -7,15 +7,27 @@ use PHPSpec2\ObjectBehavior;
 class Register extends ObjectBehavior
 {
     /**
-     * @param Eadrax\Core\Data\User $data_user
-     * @param Eadrax\Core\Usecase\User\Register\Repository $repository
-     * @param Eadrax\Core\Usecase\User\Login\Repository $repository_user_login
-     * @param Eadrax\Core\Tool\Auth $tool_auth
-     * @param Eadrax\Core\Tool\Validation $tool_validation
+     * @param Eadrax\Core\Usecase\User\Register\Repository $user_register
+     * @param Eadrax\Core\Usecase\User\Login\Repository $user_login
+     * @param Eadrax\Core\Tool\Auth $auth
+     * @param Eadrax\Core\Tool\Validation $validation
      */
-    function let($data_user, $repository, $repository_user_login, $tool_auth, $tool_validation)
+    function let($user_register, $user_login, $auth, $validation)
     {
-        $this->beConstructedWith($data_user, $repository, $repository_user_login, $tool_auth, $tool_validation);
+        $data = array(
+            'username' => 'Moult',
+            'password' => 'password',
+            'email' => 'dion@thinkmoult.com'
+        );
+        $repositories = array(
+            'user_register' => $user_register,
+            'user_login' => $user_login
+        );
+        $tools = array(
+            'auth' => $auth,
+            'validation' => $validation
+        );
+        $this->beConstructedWith($data, $repositories, $tools);
     }
 
     function it_should_be_initializable()
