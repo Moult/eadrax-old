@@ -11,15 +11,15 @@ use Eadrax\Core\Tool;
 
 class Logout
 {
-    private $tool_auth;
+    private $auth;
 
-    public function __construct($tool_auth)
+    public function __construct($auth)
     {
-        $this->tool_auth = $tool_auth;
+        $this->auth = $auth;
     }
 
     public function fetch()
     {
-        return new Interactor($this->tool_auth);
+        return new Interactor($this->auth);
     }
 }

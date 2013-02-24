@@ -10,23 +10,15 @@ use Eadrax\Core\Tool;
 
 class Interactor
 {
-    private $tool_auth;
+    private $auth;
 
-    public function __construct(Tool\Auth $tool_auth)
+    public function __construct(Tool\Auth $auth)
     {
-        $this->tool_auth = $tool_auth;
+        $this->auth = $auth;
     }
 
     public function interact()
     {
-        $this->tool_auth->logout();
-    }
-
-    public function execute()
-    {
-        $this->interact();
-        return array(
-            'status' => 'success'
-        );
+        $this->auth->logout();
     }
 }

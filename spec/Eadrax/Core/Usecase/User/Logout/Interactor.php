@@ -7,11 +7,11 @@ use PHPSpec2\ObjectBehavior;
 class Interactor extends ObjectBehavior
 {
     /**
-     * @param Eadrax\Core\Tool\Auth $tool_auth
+     * @param Eadrax\Core\Tool\Auth $auth
      */
-    function let($tool_auth)
+    function let($auth)
     {
-        $this->beConstructedWith($tool_auth);
+        $this->beConstructedWith($auth);
     }
 
     function it_should_be_initializable()
@@ -19,17 +19,9 @@ class Interactor extends ObjectBehavior
         $this->shouldHaveType('Eadrax\Core\Usecase\User\Logout\Interactor');
     }
 
-    function it_runs_the_interaction_chain($tool_auth)
+    function it_runs_the_interaction_chain($auth)
     {
-        $tool_auth->logout()->shouldBeCalled();
+        $auth->logout()->shouldBeCalled();
         $this->interact();
-    }
-
-    function it_executes_the_usecase_succesfully($tool_auth)
-    {
-        $tool_auth->logout()->shouldBeCalled();
-        $this->execute()->shouldReturn(array(
-            'status' => 'success'
-        ));
     }
 }
