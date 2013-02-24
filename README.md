@@ -15,31 +15,44 @@ You might like Eadrax if you:
 
 Those marked in bold have been implemented.
 
- * User register
- * User login
+### User features
+
+ * **User register**
+ * **User login**
  * User edit
  * User logout
  * User fans
  * User newsfeed
  * User view
 
+### Project features
+
  * Project view
  * Project add
  * Project edit
  * Project delete
  * Project fans
+ * Project hook
+
+### Update features
 
  * Update view
  * Update add
  * Update edit
  * Update delete
 
+### Kudos features
+
  * Kudos add
  * Kudos remove
+
+### Comment features
 
  * Comment add
  * Comment edit
  * Comment delete
+
+### Track features
 
  * Track project
  * Track user
