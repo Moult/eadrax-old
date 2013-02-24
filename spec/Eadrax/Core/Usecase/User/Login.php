@@ -7,14 +7,24 @@ use PHPSpec2\ObjectBehavior;
 class Login extends ObjectBehavior
 {
     /**
-     * @param Eadrax\Core\Data\User $data_user
-     * @param Eadrax\Core\Usecase\User\Login\Repository $repository
-     * @param Eadrax\Core\Tool\Auth $tool_auth
-     * @param Eadrax\Core\Tool\Validation $tool_validation
+     * @param Eadrax\Core\Usecase\User\Login\Repository $user_login
+     * @param Eadrax\Core\Tool\Auth $auth
+     * @param Eadrax\Core\Tool\Validation $validation
      */
-    function let($data_user, $repository, $tool_auth, $tool_validation)
+    function let($user_login, $auth, $validation)
     {
-        $this->beConstructedWith($data_user, $repository, $tool_auth, $tool_validation);
+        $data = array(
+            'username' => 'Moult',
+            'password' => 'password'
+        );
+        $repositories = array(
+            'user_login' => $user_login
+        );
+        $tools = array(
+            'auth' => $auth,
+            'validation' => $validation
+        );
+        $this->beConstructedWith($data, $repositories, $tools);
     }
 
     function it_should_be_initializable()

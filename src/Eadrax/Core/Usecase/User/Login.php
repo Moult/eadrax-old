@@ -8,23 +8,19 @@ namespace Eadrax\Core\Usecase\User;
 
 use Eadrax\Core\Usecase\User\Login\Interactor;
 use Eadrax\Core\Usecase\User\Login\Guest;
-use Eadrax\Core\Usecase\User\Login\Repository;
 use Eadrax\Core\Data;
-use Eadrax\Core\Tool;
 
 class Login
 {
-    private $data_user;
-    private $repository;
-    private $tool_auth;
-    private $tool_validation;
+    private $data;
+    private $repositories;
+    private $tools;
 
-    public function __construct(Data\User $data_user, Repository $repository, Tool\Auth $tool_auth, Tool\Validation $tool_validation)
+    public function __construct(Array $data, Array $repositories, Array $tools)
     {
-        $this->data_user = $data_user;
-        $this->repository = $repository;
-        $this->tool_auth = $tool_auth;
-        $this->tool_validation = $tool_validation;
+        $this->data = $data;
+        $this->repositories = $repositories;
+        $this->tools = $tools;
     }
 
     public function fetch()
@@ -34,6 +30,19 @@ class Login
 
     private function get_guest()
     {
-        return new Guest($this->data_user, $this->repository, $this->tool_auth, $this->tool_validation);
+        return new Guest(
+            $this->get_user(),
+            $this->repositories['user_login'],
+            $this->tools['auth'],
+            $this->tools['validation']
+        );
+    }
+
+    private function get_user()
+    {
+        $user = new Data\User;
+        $user->username = $this->data['username'];
+        $user->password = $this->data['password'];
+        return $user;
     }
 }

@@ -6,47 +6,50 @@
 
 namespace Eadrax\Core\Usecase\User\Login;
 
-use Eadrax\Core\Usecase;
 use Eadrax\Core\Data;
 use Eadrax\Core\Tool;
 use Eadrax\Core\Exception;
 
 class Guest extends Data\User
 {
-    public function __construct(Data\User $data_user, Repository $repository, Tool\Auth $tool_auth, Tool\Validation $tool_validation)
+    private $repository;
+    private $auth;
+    private $validation;
+
+    public function __construct(Data\User $user, Repository $repository, Tool\Auth $auth, Tool\Validation $validation)
     {
-        foreach ($data_user as $property => $value)
+        foreach ($user as $property => $value)
         {
             $this->$property = $value;
         }
 
         $this->repository = $repository;
-        $this->tool_auth = $tool_auth;
-        $this->tool_validation = $tool_validation;
+        $this->auth = $auth;
+        $this->validation = $validation;
     }
 
-    public function authorise_login()
+    public function authorise()
     {
-        if ($this->tool_auth->logged_in())
+        if ($this->auth->logged_in())
             throw new Exception\Authorisation('Logged in users don\'t need to login again.');
     }
 
-    public function validate_information()
+    public function validate()
     {
         $this->setup_validation();
 
-        if ( ! $this->tool_validation->check())
-            throw new Exception\Validation($this->tool_validation->errors());
+        if ( ! $this->validation->check())
+            throw new Exception\Validation($this->validation->errors());
     }
 
     private function setup_validation()
     {
-        $this->tool_validation->setup(array(
+        $this->validation->setup(array(
                 'username' => $this->username,
                 'password' => $this->password
             ));
-        $this->tool_validation->rule('username', 'not_empty');
-        $this->tool_validation->callback('username', array($this, 'is_existing_account'), array('username', 'password'));
+        $this->validation->rule('username', 'not_empty');
+        $this->validation->callback('username', array($this, 'is_existing_account'), array('username', 'password'));
     }
 
     public function is_existing_account($username, $password)
@@ -56,6 +59,6 @@ class Guest extends Data\User
 
     public function login()
     {
-        return $this->tool_auth->login($this->username, $this->password);
+        return $this->auth->login($this->username, $this->password);
     }
 }
