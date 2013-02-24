@@ -20,7 +20,7 @@ Those marked in bold have been implemented.
  * **User register**
  * **User login**
  * User edit
- * User logout
+ * **User logout**
  * User fans
  * User newsfeed
  * User view
