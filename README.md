@@ -26,15 +26,15 @@ This branch aims to rewrite Eadrax with the following major changes.
  * Remove the group blog idea
  * Remove collaborative projects (may return later)
  * Remove OpenID signin (may return later)
- * Hooks for RSS, Github, forum software (?)
+ * Service Hooks for RSS, Github, forum software (?)
  * Custom views for multiple attachment updates, single-sentence updates,
    pastebin updates and sound updates.
  * Responsive webdesign
  * Redesign with new logo
 
-## Switch to ISC license
+## Switch to MIT license
 
-More permissive and doesn't make your brain explode.
+More permissive, well-known, and doesn't make your brain explode.
 
 ## Use best practices
 
@@ -42,7 +42,7 @@ I was guilty of code rot.
 
 # System Requirements
 
- * PHP >= 5.4
+ * PHP >= 5.3.3
 
 The following are unconfirmed requirements for the develop branch. If you
 encounter bugs, ensure you satisfy these.
