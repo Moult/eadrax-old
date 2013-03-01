@@ -24,40 +24,8 @@ class Interactor
 
     public function interact()
     {
-        $this->user->authorise_project_add();
+        $this->user->authorise();
         $this->project_prepare->interact();
         $this->proposal->submit();
-    }
-
-    public function execute()
-    {
-        try
-        {
-            $this->interact();
-        }
-        catch (Exception\Validation $e)
-        {
-            return array(
-                'status' => 'failure',
-                'type' => 'validation',
-                'data' => array(
-                    'errors' => $e->get_errors()
-                )
-            );
-        }
-        catch (Exception\Authorisation $e)
-        {
-            return array(
-                'status' => 'failure',
-                'type' => 'authorisation',
-                'data' => array(
-                    'errors' => array($e->getMessage())
-                )
-            );
-        }
-
-        return array(
-            'status' => 'success'
-        );
     }
 }

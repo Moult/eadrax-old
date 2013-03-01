@@ -6,28 +6,27 @@
 
 namespace Eadrax\Core\Usecase\Project\Add;
 
-use Eadrax\Core\Usecase;
 use Eadrax\Core\Data;
 use Eadrax\Core\Tool;
 use Eadrax\Core\Exception;
 
 class User extends Data\User
 {
-    private $tool_auth;
+    private $auth;
 
-    public function __construct(Data\User $data_user, Tool\Auth $tool_auth)
+    public function __construct(Data\User $user, Tool\Auth $auth)
     {
-        foreach ($data_user as $property => $value)
+        foreach ($user as $property => $value)
         {
             $this->$property = $value;
         }
 
-        $this->tool_auth = $tool_auth;
+        $this->auth = $auth;
     }
 
-    public function authorise_project_add()
+    public function authorise()
     {
-        if ($this->tool_auth->logged_in())
+        if ($this->auth->logged_in())
             return TRUE;
         else
             throw new Exception\Authorisation('Please login before you can add a new project.');

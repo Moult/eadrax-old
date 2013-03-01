@@ -23,40 +23,9 @@ class Interactor extends ObjectBehavior
 
     function it_carries_out_the_interaction_chain($proposal, $user, $project_prepare)
     {
-        $user->authorise_project_add()->shouldBeCalled();
+        $user->authorise()->shouldBeCalled();
         $project_prepare->interact()->shouldBeCalled();
         $proposal->submit()->shouldBeCalled();
         $this->interact();
-    }
-
-    function it_catches_authorisation_errors_during_usecase_execution($user)
-    {
-        $user->authorise_project_add()->shouldBeCalled()->willThrow('Eadrax\Core\Exception\Authorisation', 'foo');
-        $this->execute()->shouldReturn(array(
-            'status' => 'failure',
-            'type' => 'authorisation',
-            'data' => array(
-                'errors' => array('foo')
-            )
-        ));
-    }
-
-    function it_catches_validation_errors_during_usecase_execution($project_prepare)
-    {
-        $project_prepare->interact()->shouldBeCalled()->willThrow('Eadrax\Core\Exception\Validation', array('foo' => 'bar'));
-        $this->execute()->shouldReturn(array(
-            'status' => 'failure',
-            'type' => 'validation',
-            'data' => array(
-                'errors' => array('foo' => 'bar')
-            )
-        ));
-    }
-
-    function it_executes_the_usecase_successfully()
-    {
-        $this->execute()->shouldReturn(array(
-            'status' => 'success'
-        ));
     }
 }

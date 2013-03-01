@@ -7,13 +7,13 @@ use PHPSpec2\ObjectBehavior;
 class User extends ObjectBehavior
 {
     /**
-     * @param Eadrax\Core\Data\User $data_user
-     * @param Eadrax\Core\Tool\Auth $tool_auth
+     * @param Eadrax\Core\Data\User $user
+     * @param Eadrax\Core\Tool\Auth $auth
      */
-    function let($data_user, $tool_auth)
+    function let($user, $auth)
     {
-        $data_user->id = 'foo';
-        $this->beConstructedWith($data_user, $tool_auth);
+        $user->id = 'foo';
+        $this->beConstructedWith($user, $auth);
         $this->id->shouldBe('foo');
     }
 
@@ -27,15 +27,15 @@ class User extends ObjectBehavior
         $this->shouldHaveType('Eadrax\Core\Data\User');
     }
 
-    function it_does_not_authorise_guests($tool_auth)
+    function it_does_not_authorise_guests($auth)
     {
-        $tool_auth->logged_in()->willReturn(FALSE);
-        $this->shouldThrow('\Eadrax\Core\Exception\Authorisation')->duringAuthorise_project_add();
+        $auth->logged_in()->willReturn(FALSE);
+        $this->shouldThrow('\Eadrax\Core\Exception\Authorisation')->duringAuthorise();
     }
 
-    function it_checks_the_authorised_user($tool_auth)
+    function it_checks_the_authorised_user($auth)
     {
-        $tool_auth->logged_in()->shouldBeCalled()->willReturn(TRUE);
-        $this->shouldNotThrow('\Eadrax\Core\Exception\Authorisation')->duringAuthorise_project_add();
+        $auth->logged_in()->shouldBeCalled()->willReturn(TRUE);
+        $this->shouldNotThrow('\Eadrax\Core\Exception\Authorisation')->duringAuthorise();
     }
 }

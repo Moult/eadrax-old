@@ -7,17 +7,14 @@
 namespace Eadrax\Core\Usecase\Project\Add;
 
 use Eadrax\Core\Data;
-use Eadrax\Core\Usecase;
-use Eadrax\Core\Tool;
-use Eadrax\Core\Exception;
 
 class Proposal extends Data\Project
 {
     private $repository;
 
-    public function __construct(Data\Project $data_project, Repository $repository)
+    public function __construct(Data\Project $project, Repository $repository)
     {
-        foreach ($data_project as $property => $value)
+        foreach ($project as $property => $value)
         {
             $this->$property = $value;
         }
