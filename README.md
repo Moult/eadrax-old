@@ -28,8 +28,8 @@ Those marked in bold have been implemented.
 ### Project features
 
  * Project view
- * Project add
- * Project edit
+ * **Project add**
+ * **Project edit**
  * Project delete
  * Project fans
  * Project hook
