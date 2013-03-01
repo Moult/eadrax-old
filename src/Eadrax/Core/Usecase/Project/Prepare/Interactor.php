@@ -19,6 +19,6 @@ class Interactor
 
     public function interact()
     {
-        $this->proposal->validate_information();
+        $this->proposal->validate();
     }
 }

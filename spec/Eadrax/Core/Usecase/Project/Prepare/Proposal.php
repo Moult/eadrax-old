@@ -7,13 +7,13 @@ use PHPSpec2\ObjectBehavior;
 class Proposal extends ObjectBehavior
 {
     /**
-     * @param Eadrax\Core\Data\Project $data_project
-     * @param Eadrax\Core\Tool\Validation $tool_validation
+     * @param Eadrax\Core\Data\Project $project
+     * @param Eadrax\Core\Tool\Validation $validation
      */
-    function let($data_project, $tool_validation)
+    function let($project, $validation)
     {
-        $data_project->name = 'foo';
-        $this->beConstructedWith($data_project, $tool_validation);
+        $project->name = 'foo';
+        $this->beConstructedWith($project, $validation);
         $this->name->shouldBe('foo');
     }
 
@@ -27,24 +27,24 @@ class Proposal extends ObjectBehavior
         $this->shouldHaveType('Eadrax\Core\Data\Project');
     }
 
-    function it_catches_invalid_proposal_information($tool_validation)
+    function it_catches_invalid_proposal_information($validation)
     {
-        $tool_validation->setup(array(
+        $validation->setup(array(
             'name' => $this->name,
             'summary' => $this->summary,
             'website' => $this->website
         ))->shouldBeCalled();
-        $tool_validation->rule('name', 'not_empty')->shouldBeCalled();
-        $tool_validation->rule('summary', 'not_empty')->shouldBeCalled();
-        $tool_validation->rule('website', 'url')->shouldBeCalled();
-        $tool_validation->check()->shouldBeCalled()->willReturn(FALSE);
-        $tool_validation->errors()->shouldBeCalled()->willReturn(array('foo'));
-        $this->shouldThrow('\Eadrax\Core\Exception\Validation')->duringValidate_information();
+        $validation->rule('name', 'not_empty')->shouldBeCalled();
+        $validation->rule('summary', 'not_empty')->shouldBeCalled();
+        $validation->rule('website', 'url')->shouldBeCalled();
+        $validation->check()->shouldBeCalled()->willReturn(FALSE);
+        $validation->errors()->shouldBeCalled()->willReturn(array('foo'));
+        $this->shouldThrow('\Eadrax\Core\Exception\Validation')->duringValidate();
     }
 
-    function it_allows_valid_proposal_information($tool_validation)
+    function it_allows_valid_proposal_information($validation)
     {
-        $tool_validation->check()->shouldBeCalled()->willReturn(TRUE);
-        $this->shouldNotThrow('\Eadrax\Core\Exception\Validation')->duringValidate_information();
+        $validation->check()->shouldBeCalled()->willReturn(TRUE);
+        $this->shouldNotThrow('\Eadrax\Core\Exception\Validation')->duringValidate();
     }
 }

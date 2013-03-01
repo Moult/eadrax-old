@@ -21,7 +21,7 @@ class Interactor extends ObjectBehavior
 
     function it_runs_the_interaction_chain($proposal)
     {
-        $proposal->validate_information()->shouldBeCalled();
+        $proposal->validate()->shouldBeCalled();
         $this->interact();
     }
 }
