@@ -7,20 +7,28 @@ use PHPSpec2\ObjectBehavior;
 class Add extends ObjectBehavior
 {
     /**
-     * @param Eadrax\Core\Data\User $data_user
-     * @param Eadrax\Core\Data\Project $data_project
-     * @param Eadrax\Core\Data\File $data_file
-     * @param Eadrax\Core\Usecase\Project\Add\Repository $repository
-     * @param Eadrax\Core\Usecase\Project\Prepare\Repository $repository_project_prepare
-     * @param Eadrax\Core\Tool\Auth $tool_auth
-     * @param Eadrax\Core\Tool\Validation $tool_validation
-     * @param Eadrax\Core\Tool\Image $tool_image
+     * @param Eadrax\Core\Data\User $user
+     * @param Eadrax\Core\Usecase\Project\Add\Repository $project_add
+     * @param Eadrax\Core\Usecase\Project\Prepare\Repository $project_prepare
+     * @param Eadrax\Core\Tool\Auth $auth
+     * @param Eadrax\Core\Tool\Validation $validation
      */
-    function let($data_user, $data_project, $data_file, $repository, $repository_project_prepare, $tool_auth, $tool_validation, $tool_image)
+    function let($user, $project_add, $project_prepare, $auth, $validation)
     {
-        $data_project->get_author()->willReturn($data_user);
-        $data_project->get_icon()->willReturn($data_file);
-        $this->beConstructedWith($data_project, $repository, $repository_project_prepare, $tool_auth, $tool_validation, $tool_image);
+        $data = array(
+            'name' => 'Project name',
+            'summary' => 'Project summary',
+        );
+        $repositories = array(
+            'project_add' => $project_add,
+            'project_prepare' => $project_prepare
+        );
+        $auth->get_user()->willReturn($user);
+        $tools = array(
+            'auth' => $auth,
+            'validation' => $validation
+        );
+        $this->beConstructedWith($data, $repositories, $tools);
     }
 
     function it_should_be_initializable()

@@ -7,20 +7,28 @@ use PHPSpec2\ObjectBehavior;
 class Edit extends ObjectBehavior
 {
     /**
-     * @param Eadrax\Core\Data\User $data_user
-     * @param Eadrax\Core\Data\Project $data_project
-     * @param Eadrax\Core\Data\File $data_file
-     * @param Eadrax\Core\Usecase\Project\Edit\Repository $repository
-     * @param Eadrax\Core\Usecase\Project\Prepare\Repository $repository_project_prepare
-     * @param Eadrax\Core\Tool\Auth $tool_auth
-     * @param Eadrax\Core\Tool\Image $tool_image
-     * @param Eadrax\Core\Tool\Validation $tool_validation
+     * @param Eadrax\Core\Data\User $user
+     * @param Eadrax\Core\Usecase\Project\Edit\Repository $project_edit
+     * @param Eadrax\Core\Tool\Auth $auth
+     * @param Eadrax\Core\Tool\Validation $validation
      */
-    function let($data_user, $data_project, $data_file, $repository, $repository_project_prepare, $tool_auth, $tool_image, $tool_validation)
+    function let($user, $project_edit, $auth, $validation)
     {
-        $data_project->get_author()->willReturn($data_user);
-        $data_project->get_icon()->willReturn($data_file);
-        $this->beConstructedWith($data_project, $repository, $repository_project_prepare, $tool_auth, $tool_image, $tool_validation);
+        $data = array(
+            'name' => 'Project name',
+            'summary' => 'Project summary',
+            'description' => 'Project description',
+            'website' => 'http://projectwebsite.com/'
+        );
+        $repositories = array(
+            'project_edit' => $project_edit
+        );
+        $auth->get_user()->willReturn($user);
+        $tools = array(
+            'auth' => $auth,
+            'validation' => $validation
+        );
+        $this->beConstructedWith($data, $repositories, $tools);
     }
 
     function it_should_be_initializable()

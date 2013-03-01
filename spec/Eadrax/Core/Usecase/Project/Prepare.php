@@ -7,18 +7,20 @@ use PHPSpec2\ObjectBehavior;
 class Prepare extends ObjectBehavior
 {
     /**
-     * @param Eadrax\Core\Data\User $data_user
-     * @param Eadrax\Core\Data\Project $data_project
-     * @param Eadrax\Core\Data\File $data_file
-     * @param Eadrax\Core\Usecase\Project\Prepare\Repository $repository
-     * @param Eadrax\Core\Tool\Validation $tool_validation
-     * @param Eadrax\Core\Tool\Image $tool_image
+     * @param Eadrax\Core\Tool\Validation $validation
      */
-    function let($data_user, $data_project, $data_file, $repository, $tool_validation, $tool_image)
+    function let($validation)
     {
-        $data_project->get_author()->willReturn($data_user);
-        $data_project->get_icon()->willReturn($data_file);
-        $this->beConstructedWith($data_project, $repository, $tool_validation, $tool_image);
+        $data = array(
+            'name' => 'Project name',
+            'summary' => 'Project summary',
+            'description' => 'Project description',
+            'website' => 'http://projectwebsite.com/'
+        );
+        $tools = array(
+            'validation' => $validation
+        );
+        $this->beConstructedWith($data, $tools);
     }
 
     function it_should_be_initializable()

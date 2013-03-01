@@ -7,64 +7,66 @@
 namespace Eadrax\Core\Usecase\Project;
 
 use Eadrax\Core\Usecase\Project;
-use Eadrax\Core\Usecase\Project\Edit\User;
 use Eadrax\Core\Usecase\Project\Edit\Interactor;
 use Eadrax\Core\Usecase\Project\Edit\Proposal;
-use Eadrax\Core\Usecase\Project\Edit\Repository;
+use Eadrax\Core\Usecase\Project\Edit\User;
+use Eadrax\Core\Usecase;
 use Eadrax\Core\Data;
-use Eadrax\Core\Tool;
 
 class Edit
 {
-    private $data_project;
-    private $repository;
-    private $repository_project_prepare;
-    private $tool_auth;
-    private $tool_image;
-    private $tool_validation;
+    private $data;
+    private $repositories;
+    private $tools;
 
-    function __construct(Data\Project $data_project, Repository $repository, Project\Prepare\Repository $repository_project_prepare, Tool\Auth $tool_auth, Tool\Image $tool_image, Tool\Validation $tool_validation)
+    function __construct($data, $repositories, $tools)
     {
-        $this->data_project = $data_project;
-        $this->repository = $repository;
-        $this->repository_project_prepare = $repository_project_prepare;
-        $this->tool_auth = $tool_auth;
-        $this->tool_image = $tool_image;
-        $this->tool_validation = $tool_validation;
+        $this->data = $data;
+        $this->repositories = $repositories;
+        $this->tools = $tools;
     }
 
     public function fetch()
     {
-        return new Interactor($this->get_user(), $this->get_proposal(), $this->get_project_prepare());
+        return new Interactor(
+            $this->get_user(),
+            $this->get_proposal(),
+            $this->get_project_prepare()
+        );
     }
 
     private function get_user()
     {
-        return new User($this->data_project->get_author(), $this->tool_auth);
+        return new User(
+            $this->tools['auth']->get_user(),
+            $this->tools['auth']
+        );
     }
 
     private function get_proposal()
     {
-        return new Proposal($this->data_project, $this->repository);
+        return new Proposal(
+            $this->get_project(),
+            $this->repositories['project_edit']
+        );
+    }
+
+    private function get_project()
+    {
+        $project = new Data\Project;
+        foreach ($this->data as $property => $value)
+        {
+            $project->$property = $value;
+        }
+        return $project;
     }
 
     private function get_project_prepare()
     {
-        return new Project\Prepare\Interactor($this->get_project_prepare_proposal(), $this->get_project_prepare_icon());
-    }
-
-    private function get_project_prepare_proposal()
-    {
-        return new Project\Prepare\Proposal($this->data_project, $this->tool_validation);
-    }
-
-    private function get_project_prepare_icon()
-    {
-        return new Project\Prepare\Icon($this->data_project->get_icon(), $this->get_project_prepare_repository(), $this->tool_image, $this->tool_validation);
-    }
-
-    private function get_project_prepare_repository()
-    {
-        return $this->repository_project_prepare;
+        $project_prepare = new Usecase\Project\Prepare(
+            $this->data,
+            $this->tools
+        );
+        return $project_prepare->fetch();
     }
 }
