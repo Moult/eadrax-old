@@ -7,12 +7,12 @@ use PHPSpec2\ObjectBehavior;
 class Proposal extends ObjectBehavior
 {
     /**
-     * @param Eadrax\Core\Data\Project $data_project
+     * @param Eadrax\Core\Data\Project $project
      * @param Eadrax\Core\Usecase\Project\Edit\Repository $repository
      */
-    function let($data_project, $repository)
+    function let($project, $repository)
     {
-        $this->beConstructedWith($data_project, $repository);
+        $this->beConstructedWith($project, $repository);
     }
     function it_should_be_initializable()
     {
