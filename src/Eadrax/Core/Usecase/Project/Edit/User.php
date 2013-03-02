@@ -26,17 +26,7 @@ class User extends Data\User
 
     public function authorise()
     {
-        if ($this->auth->logged_in())
-            return TRUE;
-        else
+        if ( ! $this->auth->logged_in())
             throw new Exception\Authorisation('You need to be logged in to edit a project.');
-    }
-
-    public function verify_ownership()
-    {
-        if ($this->id === $this->auth->get_user()->id)
-            return TRUE;
-        else
-            throw new Exception\Authorisation('You cannot edit a project you do not own.');
     }
 }

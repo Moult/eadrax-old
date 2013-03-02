@@ -31,21 +31,4 @@ class User extends ObjectBehavior
         $auth->logged_in()->shouldBeCalled()->willReturn(TRUE);
         $this->shouldNotThrow('\Eadrax\Core\Exception\Authorisation')->duringAuthorise();
     }
-
-    /**
-     * @param Eadrax\Core\Data\user $impostor
-     */
-    function it_does_not_authorise_users_who_do_not_own_the_project($impostor, $user, $auth)
-    {
-        $user->id = '24';
-        $auth->get_user()->shouldBeCalled()->willReturn($impostor);
-        $this->shouldThrow('\Eadrax\Core\Exception\Authorisation')->duringVerify_ownership();
-    }
-
-    function it_authorises_users_who_own_the_project($user, $auth)
-    {
-        $user->id = '24';
-        $auth->get_user()->shouldBeCalled()->willReturn($user);
-        $this->shouldNotThrow('\Eadrax\Core\Exception\Authorisation')->duringVerify_ownership();
-    }
 }

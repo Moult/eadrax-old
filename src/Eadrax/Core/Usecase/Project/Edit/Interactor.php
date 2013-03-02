@@ -26,7 +26,7 @@ class Interactor
     public function interact()
     {
         $this->user->authorise();
-        $this->user->verify_ownership();
+        $this->proposal->verify_ownership($this->user);
         $this->project_prepare->interact();
         $this->proposal->update();
     }

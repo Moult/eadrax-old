@@ -24,7 +24,7 @@ class Interactor extends ObjectBehavior
     function it_runs_the_interaction_chain($user, $proposal, $project_prepare)
     {
         $user->authorise()->shouldBeCalled();
-        $user->verify_ownership()->shouldBeCalled();
+        $proposal->verify_ownership($user)->shouldBeCalled();
         $project_prepare->interact()->shouldBeCalled();
         $proposal->update()->shouldBeCalled();
         $this->interact();

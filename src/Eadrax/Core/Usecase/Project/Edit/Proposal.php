@@ -7,6 +7,7 @@
 namespace Eadrax\Core\Usecase\Project\Edit;
 
 use Eadrax\Core\Data;
+use Eadrax\Core\Exception;
 
 class Proposal extends Data\Project
 {
@@ -20,6 +21,13 @@ class Proposal extends Data\Project
         }
 
         $this->repository = $repository;
+    }
+
+    public function verify_ownership(User $user)
+    {
+        $owner = $this->repository->get_owner($this);
+        if ($user->id !== $owner->id)
+            throw new Exception\Authorisation('You cannot edit a project you do not own.');
     }
 
     public function update()
