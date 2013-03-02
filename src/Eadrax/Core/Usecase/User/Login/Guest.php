@@ -18,6 +18,9 @@ class Guest extends Data\User
 
     public function __construct(Data\User $user, Repository $repository, Tool\Auth $auth, Tool\Validation $validation)
     {
+        if (empty($user->username) OR empty($user->password))
+            throw new Exception\Data('A username and password is required.');
+
         foreach ($user as $property => $value)
         {
             $this->$property = $value;
