@@ -21,9 +21,10 @@ class Interactor extends ObjectBehavior
 
     function it_should_run_the_interaction_chain($guest)
     {
+        $guest->id = 42;
         $guest->authorise()->shouldBeCalled();
         $guest->validate()->shouldBeCalled();
         $guest->login()->shouldBeCalled();
-        $this->interact();
+        $this->interact()->shouldReturn(42);
     }
 }

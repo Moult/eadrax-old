@@ -22,5 +22,6 @@ class Interactor
         $this->guest->authorise();
         $this->guest->validate();
         $this->guest->login();
+        return $this->guest->id;
     }
 }

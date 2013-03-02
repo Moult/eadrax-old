@@ -59,6 +59,6 @@ class Guest extends Data\User
 
     public function login()
     {
-        return $this->auth->login($this->username, $this->password);
+        $this->id = $this->auth->login($this->username, $this->password);
     }
 }

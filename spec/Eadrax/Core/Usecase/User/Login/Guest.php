@@ -68,7 +68,8 @@ class Guest extends ObjectBehavior
     function it_logs_the_user_in($auth)
     {
         $auth->login($this->username, $this->password)->shouldBeCalled()->willReturn('foo');
-        $this->login()->shouldReturn('foo');
+        $this->login();
+        $this->id->shouldBe('foo');
     }
 
     function it_checks_for_existing_accounts($repository)
