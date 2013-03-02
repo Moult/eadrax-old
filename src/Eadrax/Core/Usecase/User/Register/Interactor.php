@@ -25,6 +25,6 @@ class Interactor
         $this->registrant->authorise();
         $this->registrant->validate();
         $this->registrant->register();
-        $this->user_login->interact();
+        return $this->user_login->interact();
     }
 }

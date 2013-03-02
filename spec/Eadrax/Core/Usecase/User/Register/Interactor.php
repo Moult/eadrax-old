@@ -25,7 +25,7 @@ class Interactor extends ObjectBehavior
         $registrant->authorise()->shouldBeCalled();
         $registrant->validate()->shouldBeCalled();
         $registrant->register()->shouldBeCalled();
-        $user_login->interact()->shouldBeCalled();
-        $this->interact();
+        $user_login->interact()->shouldBeCalled()->willReturn('foo');
+        $this->interact()->shouldReturn('foo');
     }
 }
