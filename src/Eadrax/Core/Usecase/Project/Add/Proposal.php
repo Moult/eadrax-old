@@ -23,6 +23,6 @@ class Proposal extends Data\Project
 
     public function submit()
     {
-        $this->id = $this->repository->add_project($this);
+        $this->id = $this->repository->add($this);
     }
 }

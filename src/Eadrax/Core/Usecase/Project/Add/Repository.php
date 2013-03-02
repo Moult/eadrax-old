@@ -10,5 +10,8 @@ use Eadrax\Core\Data;
 
 interface Repository
 {
-    public function add_project(Data\Project $data_project);
+    /**
+     * @return string ID of newly added project
+     */
+    public function add(Proposal $proposal);
 }

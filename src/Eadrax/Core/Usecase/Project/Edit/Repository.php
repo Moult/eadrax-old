@@ -10,5 +10,5 @@ use Eadrax\Core\Data;
 
 interface Repository
 {
-    public function update_project(Data\Project $data_project);
+    public function update(Proposal $proposal);
 }

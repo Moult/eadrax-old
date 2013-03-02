@@ -29,7 +29,7 @@ class Proposal extends ObjectBehavior
 
     function it_submits_the_proposal_to_the_repository($repository)
     {
-        $repository->add_project($this)->shouldBeCalled()->willReturn(42);
+        $repository->add($this)->shouldBeCalled()->willReturn(42);
         $this->submit();
         $this->id->shouldBe(42);
     }

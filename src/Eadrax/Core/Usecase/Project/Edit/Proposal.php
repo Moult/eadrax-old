@@ -32,6 +32,6 @@ class Proposal extends Data\Project
 
     public function update()
     {
-        $this->repository->update_project($this);
+        $this->repository->update($this);
     }
 }
