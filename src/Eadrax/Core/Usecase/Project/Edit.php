@@ -54,6 +54,7 @@ class Edit
     private function get_project()
     {
         $project = new Data\Project;
+        $project->id = $this->data['id'];
         foreach ($this->data as $property => $value)
         {
             $project->$property = $value;

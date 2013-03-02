@@ -15,6 +15,7 @@ class Edit extends ObjectBehavior
     function let($user, $project_edit, $auth, $validation)
     {
         $data = array(
+            'id' => 'Project id',
             'name' => 'Project name',
             'summary' => 'Project summary',
             'description' => 'Project description',
