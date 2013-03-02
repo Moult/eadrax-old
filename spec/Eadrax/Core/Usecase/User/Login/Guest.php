@@ -31,20 +31,6 @@ class Guest extends ObjectBehavior
         $this->shouldHaveType('Eadrax\Core\Data\User');
     }
 
-    /**
-     * @param Eadrax\Core\Data\User $empty_user
-     */
-    function it_needs_a_username_and_password($empty_user, $repository, $auth, $validation)
-    {
-        $this->shouldThrow('Eadrax\Core\Exception\Data')
-            ->during('__construct', array(
-                $empty_user,
-                $repository,
-                $auth,
-                $validation
-            ));
-    }
-
     function it_throws_an_authorisation_error_if_logged_in($auth)
     {
         $auth->logged_in()->shouldBeCalled()->willReturn(TRUE);
