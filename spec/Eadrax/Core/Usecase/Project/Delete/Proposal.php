@@ -28,15 +28,6 @@ class Proposal extends ObjectBehavior
     }
 
     /**
-     * @param Eadrax\Core\Data\Project $empty_project
-     */
-    function it_needs_an_id_to_be_set($empty_project, $repository)
-    {
-        $this->shouldThrow('Eadrax\Core\Exception\Data')
-            ->during('__construct', array($empty_project, $repository));
-    }
-
-    /**
      * @param Eadrax\Core\Data\User $owner
      */
     function it_verifies_project_ownership_with_logged_in_user($owner, $repository)

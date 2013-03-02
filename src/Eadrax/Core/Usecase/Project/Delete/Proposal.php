@@ -13,9 +13,6 @@ class Proposal extends Data\Project
 {
     public function __construct(Data\Project $project, Repository $repository)
     {
-        if (empty($project->id))
-            throw new Exception\Data('You have not provided enough data to execute this role.');
-
         foreach ($project as $property => $value)
         {
             $this->$property = $value;
