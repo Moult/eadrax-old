@@ -30,7 +30,7 @@ Those marked in bold have been implemented.
  * Project view
  * **Project add**
  * **Project edit**
- * Project delete
+ * **Project delete**
  * Project fans
  * Project hook
 
