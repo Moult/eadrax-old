@@ -8,6 +8,7 @@ namespace Eadrax\Core\Data;
 
 class Project
 {
+    public $id;
     public $name;
     public $summary;
     /**
