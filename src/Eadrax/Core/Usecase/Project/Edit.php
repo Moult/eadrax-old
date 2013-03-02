@@ -11,7 +11,6 @@ use Eadrax\Core\Usecase\Project\Edit\Interactor;
 use Eadrax\Core\Usecase\Project\Edit\Proposal;
 use Eadrax\Core\Usecase\Project\Edit\User;
 use Eadrax\Core\Usecase;
-use Eadrax\Core\Data;
 
 class Edit
 {
@@ -19,7 +18,7 @@ class Edit
     private $repositories;
     private $tools;
 
-    function __construct($data, $repositories, $tools)
+    function __construct(Array $data, Array $repositories, Array $tools)
     {
         $this->data = $data;
         $this->repositories = $repositories;
@@ -46,20 +45,9 @@ class Edit
     private function get_proposal()
     {
         return new Proposal(
-            $this->get_project(),
+            $this->data['project'],
             $this->repositories['project_edit']
         );
-    }
-
-    private function get_project()
-    {
-        $project = new Data\Project;
-        $project->id = $this->data['id'];
-        foreach ($this->data as $property => $value)
-        {
-            $project->$property = $value;
-        }
-        return $project;
     }
 
     private function get_project_prepare()

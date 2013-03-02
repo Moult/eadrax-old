@@ -15,7 +15,7 @@ class Prepare
     private $data;
     private $tools;
 
-    public function __construct($data, $tools)
+    public function __construct(Array $data, Array $tools)
     {
         $this->data = $data;
         $this->tools = $tools;
@@ -31,18 +31,8 @@ class Prepare
     private function get_proposal()
     {
         return new Proposal(
-            $this->get_project(),
+            $this->data['project'],
             $this->tools['validation']
         );
-    }
-
-    private function get_project()
-    {
-        $project = new Data\Project;
-        foreach ($this->data as $property => $value)
-        {
-            $project->$property = $value;
-        }
-        return $project;
     }
 }

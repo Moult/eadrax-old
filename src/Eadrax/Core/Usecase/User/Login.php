@@ -8,7 +8,6 @@ namespace Eadrax\Core\Usecase\User;
 
 use Eadrax\Core\Usecase\User\Login\Interactor;
 use Eadrax\Core\Usecase\User\Login\Guest;
-use Eadrax\Core\Data;
 
 class Login
 {
@@ -31,18 +30,10 @@ class Login
     private function get_guest()
     {
         return new Guest(
-            $this->get_user(),
+            $this->data['user'],
             $this->repositories['user_login'],
             $this->tools['auth'],
             $this->tools['validation']
         );
-    }
-
-    private function get_user()
-    {
-        $user = new Data\User;
-        $user->username = $this->data['username'];
-        $user->password = $this->data['password'];
-        return $user;
     }
 }

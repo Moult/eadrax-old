@@ -9,7 +9,6 @@ namespace Eadrax\Core\Usecase\Project;
 use Eadrax\Core\Usecase\Project\Delete\Interactor;
 use Eadrax\Core\Usecase\Project\Delete\User;
 use Eadrax\Core\Usecase\Project\Delete\Proposal;
-use Eadrax\Core\Data;
 
 class Delete
 {
@@ -17,7 +16,7 @@ class Delete
     private $repositories;
     private $tools;
 
-    public function __construct($data, $repositories, $tools)
+    public function __construct(Array $data, Array $repositories, Array $tools)
     {
         $this->data = $data;
         $this->repositories = $repositories;
@@ -43,15 +42,8 @@ class Delete
     private function get_proposal()
     {
         return new Proposal(
-            $this->get_project(),
+            $this->data['project'],
             $this->repositories['project_delete']
         );
-    }
-
-    private function get_project()
-    {
-        $project = new Data\Project;
-        $project->id = $this->data['id'];
-        return $project;
     }
 }

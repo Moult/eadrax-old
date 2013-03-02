@@ -8,16 +8,16 @@ class Add extends ObjectBehavior
 {
     /**
      * @param Eadrax\Core\Data\User $user
+     * @param Eadrax\Core\Data\Project $project
      * @param Eadrax\Core\Usecase\Project\Add\Repository $project_add
      * @param Eadrax\Core\Usecase\Project\Prepare\Repository $project_prepare
      * @param Eadrax\Core\Tool\Auth $auth
      * @param Eadrax\Core\Tool\Validation $validation
      */
-    function let($user, $project_add, $project_prepare, $auth, $validation)
+    function let($project, $user, $project_add, $project_prepare, $auth, $validation)
     {
         $data = array(
-            'name' => 'Project name',
-            'summary' => 'Project summary',
+            'project' => $project
         );
         $repositories = array(
             'project_add' => $project_add,

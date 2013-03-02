@@ -7,15 +7,13 @@ use PHPSpec2\ObjectBehavior;
 class Prepare extends ObjectBehavior
 {
     /**
+     * @param Eadrax\Core\Data\Project $project
      * @param Eadrax\Core\Tool\Validation $validation
      */
-    function let($validation)
+    function let($project, $validation)
     {
         $data = array(
-            'name' => 'Project name',
-            'summary' => 'Project summary',
-            'description' => 'Project description',
-            'website' => 'http://projectwebsite.com/'
+            'project' => $project
         );
         $tools = array(
             'validation' => $validation

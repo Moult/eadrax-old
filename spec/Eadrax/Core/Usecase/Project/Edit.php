@@ -8,18 +8,15 @@ class Edit extends ObjectBehavior
 {
     /**
      * @param Eadrax\Core\Data\User $user
+     * @param Eadrax\Core\Data\Project $project
      * @param Eadrax\Core\Usecase\Project\Edit\Repository $project_edit
      * @param Eadrax\Core\Tool\Auth $auth
      * @param Eadrax\Core\Tool\Validation $validation
      */
-    function let($user, $project_edit, $auth, $validation)
+    function let($project, $user, $project_edit, $auth, $validation)
     {
         $data = array(
-            'id' => 'Project id',
-            'name' => 'Project name',
-            'summary' => 'Project summary',
-            'description' => 'Project description',
-            'website' => 'http://projectwebsite.com/'
+            'project' => $project
         );
         $repositories = array(
             'project_edit' => $project_edit

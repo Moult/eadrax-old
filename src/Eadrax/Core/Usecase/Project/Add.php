@@ -10,7 +10,6 @@ use Eadrax\Core\Usecase\Project\Add\Interactor;
 use Eadrax\Core\Usecase\Project\Add\Proposal;
 use Eadrax\Core\Usecase\Project\Add\User;
 use Eadrax\Core\Usecase;
-use Eadrax\Core\Data;
 
 class Add
 {
@@ -18,7 +17,7 @@ class Add
     private $repositories;
     private $tools;
 
-    public function __construct($data, $repositories, $tools)
+    public function __construct(Array $data, Array $repositories, Array $tools)
     {
         $this->data = $data;
         $this->repositories = $repositories;
@@ -37,17 +36,9 @@ class Add
     private function get_proposal()
     {
         return new Proposal(
-            $this->get_project(),
+            $this->data['project'],
             $this->repositories['project_add']
         );
-    }
-
-    private function get_project()
-    {
-        $project = new Data\Project;
-        $project->name = $this->data['name'];
-        $project->summary = $this->data['summary'];
-        return $project;
     }
 
     private function get_user()

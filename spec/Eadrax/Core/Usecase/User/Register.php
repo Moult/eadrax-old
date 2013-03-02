@@ -7,17 +7,16 @@ use PHPSpec2\ObjectBehavior;
 class Register extends ObjectBehavior
 {
     /**
+     * @param Eadrax\Core\Data\User $user
      * @param Eadrax\Core\Usecase\User\Register\Repository $user_register
      * @param Eadrax\Core\Usecase\User\Login\Repository $user_login
      * @param Eadrax\Core\Tool\Auth $auth
      * @param Eadrax\Core\Tool\Validation $validation
      */
-    function let($user_register, $user_login, $auth, $validation)
+    function let($user, $user_register, $user_login, $auth, $validation)
     {
         $data = array(
-            'username' => 'Moult',
-            'password' => 'password',
-            'email' => 'dion@thinkmoult.com'
+            'user' => $user
         );
         $repositories = array(
             'user_register' => $user_register,
