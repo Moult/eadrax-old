@@ -11,22 +11,22 @@ class User extends ObjectBehavior
         $this->shouldHaveType('Eadrax\Core\Data\User');
     }
 
-    function it_should_have_an_id_attribute()
+    function it_should_have_an_id()
     {
         $this->id->shouldBe(NULL);
     }
 
-    function it_should_have_a_username_attribute()
+    function it_should_have_a_username()
     {
         $this->username->shouldBe(NULL);
     }
 
-    function it_should_have_a_password_attribute()
+    function it_should_have_a_password()
     {
         $this->password->shouldBe(NULL);
     }
 
-    function it_should_have_an_email_attribute()
+    function it_should_have_an_email()
     {
         $this->email->shouldBe(NULL);
     }
