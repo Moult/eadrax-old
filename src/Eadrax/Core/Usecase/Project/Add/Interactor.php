@@ -27,5 +27,6 @@ class Interactor
         $this->user->authorise();
         $this->project_prepare->interact();
         $this->proposal->submit();
+        return $this->proposal->id;
     }
 }

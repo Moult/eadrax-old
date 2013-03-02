@@ -23,9 +23,10 @@ class Interactor extends ObjectBehavior
 
     function it_carries_out_the_interaction_chain($proposal, $user, $project_prepare)
     {
+        $proposal->id = 42;
         $user->authorise()->shouldBeCalled();
         $project_prepare->interact()->shouldBeCalled();
         $proposal->submit()->shouldBeCalled();
-        $this->interact();
+        $this->interact()->shouldReturn(42);
     }
 }
