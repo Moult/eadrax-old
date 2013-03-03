@@ -10,7 +10,7 @@ use Eadrax\Core\Data;
 use Eadrax\Core\Tool;
 use Eadrax\Core\Exception;
 
-class User extends Data\User
+class Author extends Data\User
 {
     private $auth;
 

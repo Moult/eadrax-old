@@ -4,7 +4,7 @@ namespace spec\Eadrax\Core\Usecase\Project\Add;
 
 use PHPSpec2\ObjectBehavior;
 
-class User extends ObjectBehavior
+class Author extends ObjectBehavior
 {
     /**
      * @param Eadrax\Core\Data\User $user
@@ -19,7 +19,7 @@ class User extends ObjectBehavior
 
     function it_should_be_initializable()
     {
-        $this->shouldHaveType('Eadrax\Core\Usecase\Project\Add\User');
+        $this->shouldHaveType('Eadrax\Core\Usecase\Project\Add\Author');
     }
 
     function it_is_a_user_role()

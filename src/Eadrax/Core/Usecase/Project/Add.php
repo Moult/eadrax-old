@@ -8,7 +8,7 @@ namespace Eadrax\Core\Usecase\Project;
 
 use Eadrax\Core\Usecase\Project\Add\Interactor;
 use Eadrax\Core\Usecase\Project\Add\Proposal;
-use Eadrax\Core\Usecase\Project\Add\User;
+use Eadrax\Core\Usecase\Project\Add\Author;
 use Eadrax\Core\Usecase;
 
 class Add
@@ -28,7 +28,7 @@ class Add
     {
         return new Interactor(
             $this->get_proposal(),
-            $this->get_user(),
+            $this->get_author(),
             $this->get_project_prepare()
         );
     }
@@ -41,9 +41,9 @@ class Add
         );
     }
 
-    private function get_user()
+    private function get_author()
     {
-        return new User(
+        return new Author(
             $this->tools['auth']->get_user(),
             $this->tools['auth']
         );

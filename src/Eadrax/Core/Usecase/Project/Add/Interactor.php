@@ -11,20 +11,20 @@ use Eadrax\Core\Exception;
 
 class Interactor
 {
-    private $user;
+    private $author;
     private $proposal;
     private $project_prepare;
 
-    public function __construct(Proposal $proposal, User $user, Project\Prepare\Interactor $project_prepare)
+    public function __construct(Proposal $proposal, Author $author, Project\Prepare\Interactor $project_prepare)
     {
         $this->proposal = $proposal;
-        $this->user = $user;
+        $this->author = $author;
         $this->project_prepare = $project_prepare;
     }
 
     public function interact()
     {
-        $this->user->authorise();
+        $this->author->authorise();
         $this->project_prepare->interact();
         $this->proposal->submit();
         return $this->proposal->id;
