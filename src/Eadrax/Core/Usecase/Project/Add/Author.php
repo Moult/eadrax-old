@@ -26,9 +26,7 @@ class Author extends Data\User
 
     public function authorise()
     {
-        if ($this->auth->logged_in())
-            return TRUE;
-        else
+        if ( ! $this->auth->logged_in())
             throw new Exception\Authorisation('Please login before you can add a new project.');
     }
 }
