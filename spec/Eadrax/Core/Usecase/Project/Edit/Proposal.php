@@ -12,8 +12,22 @@ class Proposal extends ObjectBehavior
      */
     function let($project, $repository)
     {
+        $project->id = 'Project id';
+        $project->name = 'Project name';
+        $project->summary = 'Project summary';
+        $project->description = 'Project description';
+        $project->website = 'Project website';
+
         $this->beConstructedWith($project, $repository);
+
+        $this->id->shouldBe('Project id');
+        $this->name->shouldBe('Project name');
+        $this->summary->shouldBe('Project summary');
+        $this->description->shouldBe('Project description');
+        $this->website->shouldBe('Project website');
+        $this->last_updated->shouldBe(time());
     }
+
     function it_should_be_initializable()
     {
         $this->shouldHaveType('Eadrax\Core\Usecase\Project\Edit\Proposal');

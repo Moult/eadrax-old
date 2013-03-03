@@ -14,6 +14,7 @@ class Proposal extends ObjectBehavior
     {
         $project->id = 42;
         $this->beConstructedWith($project, $repository);
+        $this->id->shouldBe(42);
     }
 
     function it_should_be_initializable()

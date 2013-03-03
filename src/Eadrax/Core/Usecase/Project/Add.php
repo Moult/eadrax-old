@@ -37,14 +37,14 @@ class Add
     {
         return new Proposal(
             $this->data['project'],
-            $this->repositories['project_add']
+            $this->repositories['project_add'],
+            $this->tools['auth']
         );
     }
 
     private function get_author()
     {
         return new Author(
-            $this->tools['auth']->get_user(),
             $this->tools['auth']
         );
     }

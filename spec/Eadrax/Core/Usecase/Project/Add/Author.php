@@ -7,14 +7,11 @@ use PHPSpec2\ObjectBehavior;
 class Author extends ObjectBehavior
 {
     /**
-     * @param Eadrax\Core\Data\User $user
      * @param Eadrax\Core\Tool\Auth $auth
      */
-    function let($user, $auth)
+    function let($auth)
     {
-        $user->id = 'foo';
-        $this->beConstructedWith($user, $auth);
-        $this->id->shouldBe('foo');
+        $this->beConstructedWith($auth);
     }
 
     function it_should_be_initializable()

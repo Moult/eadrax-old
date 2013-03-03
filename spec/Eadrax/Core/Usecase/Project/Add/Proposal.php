@@ -8,13 +8,23 @@ class Proposal extends ObjectBehavior
 {
     /**
      * @param Eadrax\Core\Data\Project $project
+     * @param Eadrax\Core\Data\User $user
      * @param Eadrax\Core\Usecase\Project\Add\Repository $repository
+     * @param Eadrax\Core\Tool\Auth $auth
      */
-    function let($project, $repository)
+    function let($project, $user, $repository, $auth)
     {
-        $project->name = 'foo';
-        $this->beConstructedWith($project, $repository);
-        $this->name->shouldBe('foo');
+        $auth->get_user()->willReturn($user);
+        $project->name = 'Project name';
+        $project->summary = 'Project summary';
+
+        $this->beConstructedWith($project, $repository, $auth);
+
+        $this->name->shouldBe('Project name');
+        $this->summary->shouldBe('Project summary');
+        $this->author->shouldBe($user);
+        $this->views->shouldBe(0);
+        $this->last_updated->shouldBe(time());
     }
 
     function it_should_be_initializable()

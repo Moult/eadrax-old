@@ -12,9 +12,15 @@ class Proposal extends ObjectBehavior
      */
     function let($project, $validation)
     {
-        $project->name = 'foo';
+        $project->name = 'Project name';
+        $project->summary = 'Project summary';
+        $project->website = 'Project website';
+
         $this->beConstructedWith($project, $validation);
-        $this->name->shouldBe('foo');
+
+        $this->name->shouldBe('Project name');
+        $this->summary->shouldBe('Project summary');
+        $this->website->shouldBe('Project website');
     }
 
     function it_should_be_initializable()

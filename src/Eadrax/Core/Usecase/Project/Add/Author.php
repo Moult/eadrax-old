@@ -14,13 +14,8 @@ class Author extends Data\User
 {
     private $auth;
 
-    public function __construct(Data\User $user, Tool\Auth $auth)
+    public function __construct(Tool\Auth $auth)
     {
-        foreach ($user as $property => $value)
-        {
-            $this->$property = $value;
-        }
-
         $this->auth = $auth;
     }
 

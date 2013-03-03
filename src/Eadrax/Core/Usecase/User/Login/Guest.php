@@ -18,10 +18,8 @@ class Guest extends Data\User
 
     public function __construct(Data\User $user, Repository $repository, Tool\Auth $auth, Tool\Validation $validation)
     {
-        foreach ($user as $property => $value)
-        {
-            $this->$property = $value;
-        }
+        $this->username = $user->username;
+        $this->password = $user->password;
 
         $this->repository = $repository;
         $this->auth = $auth;

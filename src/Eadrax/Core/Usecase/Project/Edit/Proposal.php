@@ -15,10 +15,12 @@ class Proposal extends Data\Project
 
     public function __construct(Data\Project $project, Repository $repository)
     {
-        foreach ($project as $property => $value)
-        {
-            $this->$property = $value;
-        }
+        $this->id = $project->id;
+        $this->name = $project->name;
+        $this->summary = $project->summary;
+        $this->description = $project->description;
+        $this->website = $project->website;
+        $this->last_updated = time();
 
         $this->repository = $repository;
     }

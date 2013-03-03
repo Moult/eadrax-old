@@ -16,10 +16,9 @@ class Proposal extends Data\Project
 
     public function __construct(Data\Project $project, Tool\Validation $validation)
     {
-        foreach ($project as $property => $value)
-        {
-            $this->$property = $value;
-        }
+        $this->name = $project->name;
+        $this->summary = $project->summary;
+        $this->website = $project->website;
 
         $this->validation = $validation;
     }

@@ -13,10 +13,7 @@ class Proposal extends Data\Project
 {
     public function __construct(Data\Project $project, Repository $repository)
     {
-        foreach ($project as $property => $value)
-        {
-            $this->$property = $value;
-        }
+        $this->id = $project->id;
         $this->repository = $repository;
     }
 
