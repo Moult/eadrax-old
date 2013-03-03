@@ -7,14 +7,13 @@ use PHPSpec2\ObjectBehavior;
 class Add extends ObjectBehavior
 {
     /**
-     * @param Eadrax\Core\Data\User $user
      * @param Eadrax\Core\Data\Project $project
      * @param Eadrax\Core\Usecase\Project\Add\Repository $project_add
      * @param Eadrax\Core\Usecase\Project\Prepare\Repository $project_prepare
      * @param Eadrax\Core\Tool\Auth $auth
      * @param Eadrax\Core\Tool\Validation $validation
      */
-    function let($project, $user, $project_add, $project_prepare, $auth, $validation)
+    function let($project, $project_add, $project_prepare, $auth, $validation)
     {
         $data = array(
             'project' => $project
@@ -23,7 +22,6 @@ class Add extends ObjectBehavior
             'project_add' => $project_add,
             'project_prepare' => $project_prepare
         );
-        $auth->get_user()->willReturn($user);
         $tools = array(
             'auth' => $auth,
             'validation' => $validation

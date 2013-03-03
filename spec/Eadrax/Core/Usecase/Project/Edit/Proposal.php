@@ -35,27 +35,27 @@ class Proposal extends ObjectBehavior
     }
 
     /**
-     * @param Eadrax\Core\Usecase\Project\Edit\User $impostor
-     * @param Eadrax\Core\Usecase\Project\Edit\User $owner
+     * @param Eadrax\Core\Usecase\Project\Edit\Author $impostor
+     * @param Eadrax\Core\Data\User $author
      */
-    function it_does_not_authorise_users_who_do_not_own_the_project($impostor, $owner, $repository)
+    function it_does_not_authorise_users_who_do_not_own_the_project($impostor, $author, $repository)
     {
-        $impostor->id = '42';
-        $owner->id = '24';
-        $repository->get_owner($this)->shouldBeCalled()->willReturn($owner);
+        $impostor->id = 42;
+        $author->id = 24;
+        $repository->get_author($this)->shouldBeCalled()->willReturn($author);
         $this->shouldThrow('\Eadrax\Core\Exception\Authorisation')
             ->duringVerify_ownership($impostor);
     }
 
     /**
-     * @param Eadrax\Core\Usecase\Project\Edit\User $owner
+     * @param Eadrax\Core\Usecase\Project\Edit\Author $author
      */
-    function it_authorises_users_who_own_the_project($owner, $repository)
+    function it_authorises_users_who_own_the_project($author, $repository)
     {
-        $owner->id = '24';
-        $repository->get_owner($this)->shouldBeCalled()->willReturn($owner);
+        $author->id = 24;
+        $repository->get_author($this)->shouldBeCalled()->willReturn($author);
         $this->shouldNotThrow('\Eadrax\Core\Exception\Authorisation')
-            ->duringVerify_ownership($owner);
+            ->duringVerify_ownership($author);
     }
 
     function it_should_be_able_to_update_the_existing_project($repository)

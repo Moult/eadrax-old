@@ -11,7 +11,6 @@ interface Repository
     /**
      * @return Eadrax\Core\Data\User
      */
-    public function get_owner(Proposal $proposal);
-
+    public function get_author(Proposal $proposal);
     public function delete(Proposal $proposal);
 }

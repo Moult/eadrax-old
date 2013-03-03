@@ -7,12 +7,12 @@ use PHPSpec2\ObjectBehavior;
 class Interactor extends ObjectBehavior
 {
     /**
-     * @param Eadrax\Core\Usecase\Project\Delete\User $user
+     * @param Eadrax\Core\Usecase\Project\Delete\Author $author
      * @param Eadrax\Core\Usecase\Project\Delete\Proposal $proposal
      */
-    function let($user, $proposal)
+    function let($author, $proposal)
     {
-        $this->beConstructedWith($user, $proposal);
+        $this->beConstructedWith($author, $proposal);
     }
 
     function it_should_be_initializable()
@@ -20,10 +20,10 @@ class Interactor extends ObjectBehavior
         $this->shouldHaveType('Eadrax\Core\Usecase\Project\Delete\Interactor');
     }
 
-    function it_carries_out_the_interaction_chain($user, $proposal)
+    function it_carries_out_the_interaction_chain($author, $proposal)
     {
-        $user->authorise()->shouldBeCalled();
-        $proposal->verify_ownership($user)->shouldBeCalled();
+        $author->authorise()->shouldBeCalled();
+        $proposal->verify_ownership($author)->shouldBeCalled();
         $proposal->delete()->shouldBeCalled();
         $this->interact();
     }

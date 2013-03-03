@@ -7,26 +7,26 @@
 namespace Eadrax\Core\Usecase\Project\Edit;
 
 use Eadrax\Core\Usecase\Project;
-use Eadrax\Core\Usecase\Project\Edit\User;
+use Eadrax\Core\Usecase\Project\Edit\Author;
 use Eadrax\Core\Exception;
 
 class Interactor
 {
-    private $user;
+    private $author;
     private $proposal;
     private $project_prepare;
 
-    public function __construct(User $user, Proposal $proposal, Project\Prepare\Interactor $project_prepare)
+    public function __construct(Author $author, Proposal $proposal, Project\Prepare\Interactor $project_prepare)
     {
-        $this->user = $user;
+        $this->author = $author;
         $this->proposal = $proposal;
         $this->project_prepare = $project_prepare;
     }
 
     public function interact()
     {
-        $this->user->authorise();
-        $this->proposal->verify_ownership($this->user);
+        $this->author->authorise();
+        $this->proposal->verify_ownership($this->author);
         $this->project_prepare->interact();
         $this->proposal->update();
     }

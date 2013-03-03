@@ -7,7 +7,7 @@
 namespace Eadrax\Core\Usecase\Project;
 
 use Eadrax\Core\Usecase\Project\Delete\Interactor;
-use Eadrax\Core\Usecase\Project\Delete\User;
+use Eadrax\Core\Usecase\Project\Delete\Author;
 use Eadrax\Core\Usecase\Project\Delete\Proposal;
 
 class Delete
@@ -26,15 +26,14 @@ class Delete
     public function fetch()
     {
         return new Interactor(
-            $this->get_user(),
+            $this->get_author(),
             $this->get_proposal()
         );
     }
 
-    private function get_user()
+    private function get_author()
     {
-        return new User(
-            $this->tools['auth']->get_user(),
+        return new Author(
             $this->tools['auth']
         );
     }

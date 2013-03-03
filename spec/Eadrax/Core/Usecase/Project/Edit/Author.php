@@ -4,20 +4,19 @@ namespace spec\Eadrax\Core\Usecase\Project\Edit;
 
 use PHPSpec2\ObjectBehavior;
 
-class User extends ObjectBehavior
+class Author extends ObjectBehavior
 {
     /**
-     * @param Eadrax\Core\Data\User $user
      * @param Eadrax\Core\Tool\Auth $auth
      */
-    function let($user, $auth)
+    function let($auth)
     {
-        $this->beConstructedWith($user, $auth);
+        $this->beConstructedWith($auth);
     }
 
     function it_should_be_initializable()
     {
-        $this->shouldHaveType('\Eadrax\Core\Usecase\Project\Edit\User');
+        $this->shouldHaveType('\Eadrax\Core\Usecase\Project\Edit\Author');
     }
 
     function it_does_not_authorise_guests($auth)

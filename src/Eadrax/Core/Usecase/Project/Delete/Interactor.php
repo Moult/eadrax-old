@@ -8,19 +8,19 @@ namespace Eadrax\Core\Usecase\Project\Delete;
 
 class Interactor
 {
-    private $user;
+    private $author;
     private $proposal;
 
-    public function __construct(User $user, Proposal $proposal)
+    public function __construct(Author $author, Proposal $proposal)
     {
-        $this->user = $user;
+        $this->author = $author;
         $this->proposal = $proposal;
     }
 
     public function interact()
     {
-        $this->user->authorise();
-        $this->proposal->verify_ownership($this->user);
+        $this->author->authorise();
+        $this->proposal->verify_ownership($this->author);
         $this->proposal->delete();
     }
 }

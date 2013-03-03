@@ -10,11 +10,9 @@ class Delete extends ObjectBehavior
      * @param Eadrax\Core\Data\Project $project
      * @param Eadrax\Core\Usecase\Project\Delete\Repository $project_delete
      * @param Eadrax\Core\Tool\Auth $auth
-     * @param Eadrax\Core\Data\User $user
      */
-    function let($project, $project_delete, $auth, $user)
+    function let($project, $project_delete, $auth)
     {
-        $auth->get_user()->willReturn($user);
         $data = array(
             'project' => $project
         );

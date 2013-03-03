@@ -9,7 +9,7 @@ namespace Eadrax\Core\Usecase\Project;
 use Eadrax\Core\Usecase\Project;
 use Eadrax\Core\Usecase\Project\Edit\Interactor;
 use Eadrax\Core\Usecase\Project\Edit\Proposal;
-use Eadrax\Core\Usecase\Project\Edit\User;
+use Eadrax\Core\Usecase\Project\Edit\Author;
 use Eadrax\Core\Usecase;
 
 class Edit
@@ -28,16 +28,15 @@ class Edit
     public function fetch()
     {
         return new Interactor(
-            $this->get_user(),
+            $this->get_author(),
             $this->get_proposal(),
             $this->get_project_prepare()
         );
     }
 
-    private function get_user()
+    private function get_author()
     {
-        return new User(
-            $this->tools['auth']->get_user(),
+        return new Author(
             $this->tools['auth']
         );
     }

@@ -25,10 +25,10 @@ class Proposal extends Data\Project
         $this->repository = $repository;
     }
 
-    public function verify_ownership(User $user)
+    public function verify_ownership(Author $author)
     {
-        $owner = $this->repository->get_owner($this);
-        if ($user->id !== $owner->id)
+        $previous_author = $this->repository->get_author($this);
+        if ($author->id !== $previous_author->id)
             throw new Exception\Authorisation('You cannot edit a project you do not own.');
     }
 
