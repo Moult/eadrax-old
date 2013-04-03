@@ -7,7 +7,6 @@
 namespace Eadrax\Core\Usecase\User\Register;
 
 use Eadrax\Core\Usecase\User;
-use Eadrax\Core\Exception;
 
 class Interactor
 {
