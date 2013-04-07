@@ -25,7 +25,7 @@ class Interactor extends ObjectBehavior
         $user->authorise()->shouldBeCalled();
         $user->has_idol($idol)->shouldBeCalled()->willReturn(FALSE);
         $user->add_idol($idol)->shouldBeCalled();
-        $idol->notify()->shouldBeCalled();
+        $idol->notify_new_fan($user)->shouldBeCalled();
         $this->interact();
     }
 

@@ -14,9 +14,11 @@ class User extends ObjectBehavior
     function let($repository, $auth, $user)
     {
         $user->id = 'id';
+        $user->username = 'Barfoo';
         $auth->get_user()->willReturn($user);
         $this->beConstructedWith($repository, $auth);
         $this->id->shouldBe('id');
+        $this->username->shouldBe('Barfoo');
     }
 
     function it_should_be_initializable()

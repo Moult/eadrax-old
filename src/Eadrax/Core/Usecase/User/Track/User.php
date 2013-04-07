@@ -18,6 +18,7 @@ class User extends Data\User
     {
         $auth_user = $auth->get_user();
         $this->id = $auth_user->id;
+        $this->username = $auth_user->username;
 
         $this->repository = $repository;
         $this->auth = $auth;

@@ -27,7 +27,7 @@ class Interactor
         else
         {
             $this->user->add_idol($this->idol);
-            $this->idol->notify();
+            $this->idol->notify_new_fan($this->user);
         }
     }
 }
