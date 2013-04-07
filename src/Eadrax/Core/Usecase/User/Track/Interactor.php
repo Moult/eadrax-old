@@ -9,25 +9,25 @@ namespace Eadrax\Core\Usecase\User\Track;
 class Interactor
 {
     private $idol;
-    private $user;
+    private $fan;
 
-    public function __construct(Idol $idol, User $user)
+    public function __construct(Idol $idol, Fan $fan)
     {
         $this->idol = $idol;
-        $this->user = $user;
+        $this->fan = $fan;
     }
 
     public function interact()
     {
-        $this->user->authorise();
-        if ($this->user->has_idol($this->idol))
+        $this->fan->authorise();
+        if ($this->fan->has_idol($this->idol))
         {
-            $this->user->remove_idol($this->idol);
+            $this->fan->remove_idol($this->idol);
         }
         else
         {
-            $this->user->add_idol($this->idol);
-            $this->idol->notify_new_fan($this->user);
+            $this->fan->add_idol($this->idol);
+            $this->idol->notify_new_fan($this->fan);
         }
     }
 }

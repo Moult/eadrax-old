@@ -4,7 +4,7 @@ namespace spec\Eadrax\Core\Usecase\User\Track;
 
 use PHPSpec2\ObjectBehavior;
 
-class User extends ObjectBehavior
+class Fan extends ObjectBehavior
 {
     /**
      * @param Eadrax\Core\Usecase\User\Track\Repository $repository
@@ -23,7 +23,7 @@ class User extends ObjectBehavior
 
     function it_should_be_initializable()
     {
-        $this->shouldHaveType('Eadrax\Core\Usecase\User\Track\User');
+        $this->shouldHaveType('Eadrax\Core\Usecase\User\Track\Fan');
     }
 
     function it_should_be_a_user_data()

@@ -9,7 +9,7 @@ use Eadrax\Core\Tool;
 use Eadrax\Core\Data;
 use Eadrax\Core\Exception;
 
-class User extends Data\User
+class Fan extends Data\User
 {
     private $auth;
     private $repository;
