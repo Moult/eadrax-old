@@ -32,8 +32,13 @@ interface Validation
      *                     regex - passes if it matches the regex in $arg
      *                     min_length - passes if chars are more than $arg
      *                     max_length - passes if chars are less than $arg
+     *                     exact_length - passes if chars are exactly $arg
      *                     email - passes if it is a valid email
+     *                     email_domain - passes if it is a valid email domain MX
      *                     url - passes if it is a valid url
+     *                     ip - passes if valid ip address
+     *                     date - passes if is a valid date
+     *                     matches - passes if matches another key value
      *                     upload_valid - passes if upload data is valid
      *                     upload_type - passes if upload data fits filetypes in $arg array
      *                     upload_size - passes if upload data is less than size in $arg string (eg: 1M, 2KiB, 1GB)
