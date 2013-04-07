@@ -12,4 +12,16 @@ class User
     public $username;
     public $password;
     public $email;
+    public $password_verify;
+    public $bio;
+    public $website;
+    public $location;
+    /**
+     * @var File
+     */
+    public $avatar;
+    public $dob;
+    public $gender;
+    public $show_email;
+    public $receive_notifications;
 }
