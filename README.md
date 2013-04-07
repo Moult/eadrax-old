@@ -21,7 +21,7 @@ Those marked in bold have been implemented.
  * **User login**
  * **User edit**
  * **User logout**
- * User fans
+ * **User track**
  * User newsfeed
  * User view
 
