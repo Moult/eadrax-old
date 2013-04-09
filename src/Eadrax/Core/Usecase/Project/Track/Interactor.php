@@ -35,7 +35,7 @@ class Interactor
         elseif ($this->fan->is_fan_of_all_other_projects_by_($this->project->author))
             return $this->make_project_author_an_idol_of_fan();
         else
-            return $this->fan->add_project($this->project);
+            return $this->make_fan_track_project();
     }
 
     private function remove_idol_and_just_track_all_other_projects()
@@ -44,11 +44,16 @@ class Interactor
         $this->fan->track_all_projects_by_author_except_for($this->project);
     }
 
-
     private function make_project_author_an_idol_of_fan()
     {
         $this->fan->untrack_all_projects_by($this->project->author);
         $this->user_track->interact();
     }
 
+    private function make_fan_track_project()
+    {
+
+        $this->fan->add_project($this->project);
+        $this->project->notify_author($this->fan);
+    }
 }

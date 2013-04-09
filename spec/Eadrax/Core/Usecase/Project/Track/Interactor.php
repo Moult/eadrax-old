@@ -61,6 +61,7 @@ class Interactor extends ObjectBehavior
         $fan->is_tracking_project($project)->shouldBeCalled()->willReturn(FALSE);
         $fan->is_fan_of_all_other_projects_by_($author)->shouldBeCalled()->willReturn(FALSE);
         $fan->add_project($project)->shouldBeCalled();
+        $project->notify_author($fan)->shouldBeCalled();
         $this->interact();
     }
 }
