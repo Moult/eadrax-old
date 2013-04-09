@@ -31,7 +31,7 @@ Those marked in bold have been implemented.
  * **Project add**
  * **Project edit**
  * **Project delete**
- * Project fans
+ * **Project track**
  * Project hook
 
 ### Update features
