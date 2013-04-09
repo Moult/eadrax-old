@@ -52,7 +52,6 @@ class Interactor
 
     private function make_fan_track_project()
     {
-
         $this->fan->add_project($this->project);
         $this->project->notify_author($this->fan);
     }
