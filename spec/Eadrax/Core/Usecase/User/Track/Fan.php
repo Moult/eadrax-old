@@ -71,4 +71,13 @@ class Fan extends ObjectBehavior
         $this->remove_idol($idol);
     }
 
+    /**
+     * @param Eadrax\Core\Usecase\User\Track\Idol $idol
+     */
+    function it_can_remove_tracked_projects_by_an_author($idol, $repository)
+    {
+        $repository->remove_tracked_projects_by($this, $idol)->shouldBeCalled();
+        $this->remove_tracked_projects_by($idol);
+    }
+
 }

@@ -26,6 +26,7 @@ class Interactor
         }
         else
         {
+            $this->fan->remove_tracked_projects_by($this->idol);
             $this->fan->add_idol($this->idol);
             $this->idol->notify_new_fan($this->fan);
         }

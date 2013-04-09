@@ -44,4 +44,9 @@ class Fan extends Data\User
     {
         $this->repository->remove_idol($this, $idol);
     }
+
+    public function remove_tracked_projects_by($idol)
+    {
+        $this->repository->remove_tracked_projects_by($this, $idol);
+    }
 }

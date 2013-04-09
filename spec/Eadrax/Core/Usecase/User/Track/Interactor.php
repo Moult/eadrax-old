@@ -24,6 +24,7 @@ class Interactor extends ObjectBehavior
     {
         $fan->authorise()->shouldBeCalled();
         $fan->has_idol($idol)->shouldBeCalled()->willReturn(FALSE);
+        $fan->remove_tracked_projects_by($idol)->shouldBeCalled();
         $fan->add_idol($idol)->shouldBeCalled();
         $idol->notify_new_fan($fan)->shouldBeCalled();
         $this->interact();

@@ -15,4 +15,5 @@ interface Repository
      * @return Eadrax\Core\Data\User
      */
     public function get_username_and_email($user_id);
+    public function remove_tracked_projects_by($fan, $idol);
 }
