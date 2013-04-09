@@ -56,11 +56,6 @@ Those marked in bold have been implemented.
  * Comment edit
  * Comment delete
 
-### Track features
-
- * Track project
- * Track user
-
 # About Eadrax-develop
 
 This branch aims to rewrite Eadrax with the following major changes.
