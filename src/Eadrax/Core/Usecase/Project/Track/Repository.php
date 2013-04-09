@@ -24,4 +24,5 @@ interface Repository
     public function number_of_projects_tracked_by($fan, $author);
     public function remove_projects_by_author($fan, $author);
     public function add_project($fan, $project);
+    public function get_project_author($project);
 }
