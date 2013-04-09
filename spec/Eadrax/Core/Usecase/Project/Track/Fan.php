@@ -14,9 +14,11 @@ class Fan extends ObjectBehavior
     function let($repository, $user, $auth)
     {
         $user->id = 'id';
+        $user->username = 'Foo';
         $auth->get_user()->willReturn($user);
         $this->beConstructedWith($repository, $auth);
         $this->id->shouldBe('id');
+        $this->username->shouldBe('Foo');
     }
     function it_should_be_initializable()
     {
