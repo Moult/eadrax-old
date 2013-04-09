@@ -32,7 +32,11 @@ Those marked in bold have been implemented.
  * **Project edit**
  * **Project delete**
  * **Project track**
- * Project hook
+
+### Hook features
+
+ * Hook add
+ * Hook delete
 
 ### Update features
 
