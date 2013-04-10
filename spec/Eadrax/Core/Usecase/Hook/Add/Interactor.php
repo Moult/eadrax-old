@@ -22,6 +22,7 @@ class Interactor extends ObjectBehavior
 
     function it_executes_the_interaction_chain($project, $service)
     {
+        $project->authorise()->shouldBeCalled();
         $project->has_service($service)->shouldBeCalled()->willReturn(FALSE);
         $service->is_valid()->shouldBeCalled();
         $project->add_service($service)->shouldBeCalled();

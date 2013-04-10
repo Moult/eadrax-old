@@ -19,6 +19,7 @@ class Interactor
 
     public function interact()
     {
+        $this->project->authorise();
         if ( ! $this->project->has_service($this->service))
         {
             $this->service->is_valid();

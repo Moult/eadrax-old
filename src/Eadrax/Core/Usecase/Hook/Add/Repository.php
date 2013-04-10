@@ -10,4 +10,5 @@ interface Repository
 {
     public function project_has_service($project, $service);
     public function add_service_hook_to_project($project, $service);
+    public function get_project_author($project);
 }
