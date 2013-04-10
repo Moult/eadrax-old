@@ -91,27 +91,17 @@ I was guilty of code rot.
 
  * PHP >= 5.3.3
 
-The following are unconfirmed requirements for the develop branch. If you
-encounter bugs, ensure you satisfy these.
-
- * Apache >= 2.2
- * MySQL >= 5.0
- * ffmpeg >= 0.6 (needed for video features)
- * ffmpeg-php >= 0.6 (needed for video features)
- * diff >= 2.8.0 (needed for revision features)
- * PEAR Text\_Diff >= 1.1.1 (needed for inline revision features)
- * An RPX API key by Janrain's OpenID services. (needed for OpenID features)
-
 The most recent packages are recommended.
 
 # Installing Eadrax
 
-You can grab the latest copy of Eadrax project from
-http://github.com/Moult/Eadrax
-  * **develop** - recommended but unstable. Clone head and then pull all git
-    submodules via `git submodule update --init --recursive` in project root.
+There are two versions of Eadrax you can get:
+
+  * **develop** - recommended for developers but still in development. Clone
+    head and then pull all git submodules via `git submodule update --init
+    --recursive` in project root.
   * Alternatively, grab **master** - latest "live" stable version (used by
-    http://wipup.org).  Note that this is no longer supported - to install
+    http://wipup.org). Note that this is no longer supported - to install
     master, please read their README instructions instead.
 
 Files in src/ are PSR-0 compatible.
