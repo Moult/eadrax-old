@@ -35,7 +35,7 @@ Those marked in bold have been implemented.
 
 ### Hook features
 
- * Hook add
+ * **Hook add**
  * Hook delete
 
 ### Update features
