@@ -8,5 +8,6 @@ namespace Eadrax\Core\Data;
 
 class Hook
 {
+    public $id;
     public $url;
 }
