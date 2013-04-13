@@ -29,6 +29,44 @@ class Interactor extends ObjectBehavior
         $this->interact();
     }
 
+    function it_uploads_a_file($proposal)
+    {
+        $proposal->type = 'file';
+        $proposal->upload->shouldBeCalled();
+        $this->interact();
+    }
+
+    function it_creates_thumbnails_for_image_files($proposal)
+    {
+        $proposal->type = 'file';
+        $proposal->extra = 'image';
+        $proposal->generate_thumbnail()->shouldBeCalled();
+        $this->interact();
+    }
+
+    function it_generates_thumbnails_for_videos($proposal)
+    {
+        $proposal->type = 'file';
+        $proposal->extra = 'video';
+        $proposal->generate_thumbnail()->shouldBeCalled();
+        $this->interact();
+    }
+
+    function it_generates_thumbnails_for_sounds($proposal)
+    {
+        $proposal->type = 'file';
+        $proposal->extra = 'sound';
+        $proposal->generate_thumbnail()->shouldBeCalled();
+        $this->interact();
+    }
+
+    function it_generates_metadata_for_files($proposal)
+    {
+        $proposal->type = 'file';
+        $proposal->generate_metadata()->shouldBeCalled();
+        $this->interact();
+    }
+
     function it_does_not_notify_trackers_if_proposal_is_private($project, $proposal)
     {
         $proposal->private = TRUE;
