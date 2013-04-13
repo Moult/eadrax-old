@@ -42,6 +42,7 @@ interface Validation
      *                     upload_valid - passes if upload data is valid
      *                     upload_type - passes if upload data fits filetypes in $arg array
      *                     upload_size - passes if upload data is less than size in $arg string (eg: 1M, 2KiB, 1GB)
+     *                     rss2 - passes if data is a valid rss2 feed url
      * @param string $arg  Any extra arguments related to the rule
      * @return void
      */
