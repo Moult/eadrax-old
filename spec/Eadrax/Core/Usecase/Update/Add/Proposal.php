@@ -77,10 +77,29 @@ class Proposal extends ObjectBehavior
     {
         $update->type = 'website';
         $update->content = 'foobar.com';
-        $validation->setup(array('content' => 'http://foobar.com'));
+        $validation->setup(array('content' => 'http://foobar.com'))->shouldBeCalled();
         $validation->rule('content', 'not_empty')->shouldBeCalled();
         $validation->rule('content', 'url')->shouldBeCalled();
         $validation->rule('content', 'url_domain')->shouldBeCalled();
+        $validation->check()->shouldBeCalled();
+        $validation->errors()->shouldBeCalled()->willReturn(array('content'));
+        $this->shouldThrow('Eadrax\Core\Exception\Validation')
+            ->duringValidate();
+    }
+
+    /**
+     * @param Eadrax\Core\Data\File $file
+     */
+    function it_validates_files($file, $update, $validation)
+    {
+        $supported_filetypes = array('gif', 'jpg', 'jpeg', 'png', 'svg', 'tiff', 'bmp', 'exr', 'pdf', 'zip', 'rar', 'tar', 'gz', 'bz', '7z', 'ogg', 'ogv', 'wmv', 'mp3', 'wav', 'avi', 'mpg', 'mpeg', 'mov', 'swf', 'flv', 'blend', 'xcf', 'doc', 'ppt', 'xls', 'odt', 'ods', 'odp', 'odg', 'psd', 'fla', 'ai', 'indd', 'aep', 'txt', 'cab', 'csv', 'exe', 'diff', 'patch', 'rtf', 'torrent', 'mp4');
+
+        $update->type = 'file';
+        $update->content = $file;
+        $validation->setup(array('content' => $file))->shouldBeCalled();
+        $validation->rule('content', 'upload_valid')->shouldBeCalled();
+        $validation->rule('content', 'upload_type', $supported_filetypes)->shouldBeCalled();
+        $validation->rule('content', 'upload_size', '100M')->shouldBeCalled();
         $validation->check()->shouldBeCalled();
         $validation->errors()->shouldBeCalled()->willReturn(array('content'));
         $this->shouldThrow('Eadrax\Core\Exception\Validation')

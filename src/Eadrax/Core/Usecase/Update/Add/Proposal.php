@@ -35,7 +35,13 @@ class Proposal extends Data\Update
             $this->validate_paste();
         }
         elseif ($this->type === 'website')
+        {
             $this->validate_website();
+        }
+        elseif ($this->type === 'file')
+        {
+            $this->validate_file();
+        }
 
         if ( ! $this->validation->check())
             throw new Exception\Validation($this->validation->errors());
@@ -71,9 +77,25 @@ class Proposal extends Data\Update
 
     private function validate_website()
     {
-        $this->validation->setup(array('content' => $this->content));
+        $this->validation->setup(array('content' => $this->normalise_url($this->content)));
         $this->validation->rule('content', 'not_empty');
         $this->validation->rule('content', 'url');
         $this->validation->rule('content', 'url_domain');
+    }
+
+    private function normalise_url($url)
+    {
+        return ((substr($url, 0, 7) !== 'http://') ? 'http://' : '').$url;
+    }
+
+    private function validate_file()
+    {
+
+        $supported_filetypes = array('gif', 'jpg', 'jpeg', 'png', 'svg', 'tiff', 'bmp', 'exr', 'pdf', 'zip', 'rar', 'tar', 'gz', 'bz', '7z', 'ogg', 'ogv', 'wmv', 'mp3', 'wav', 'avi', 'mpg', 'mpeg', 'mov', 'swf', 'flv', 'blend', 'xcf', 'doc', 'ppt', 'xls', 'odt', 'ods', 'odp', 'odg', 'psd', 'fla', 'ai', 'indd', 'aep', 'txt', 'cab', 'csv', 'exe', 'diff', 'patch', 'rtf', 'torrent', 'mp4');
+
+        $this->validation->setup(array('content' => $this->content));
+        $this->validation->rule('content', 'upload_valid');
+        $this->validation->rule('content', 'upload_type', $supported_filetypes);
+        $this->validation->rule('content', 'upload_size', '100M');
     }
 }
