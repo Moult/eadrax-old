@@ -72,4 +72,18 @@ class Proposal extends ObjectBehavior
         $this->validate_paste_syntax('bash')->shouldReturn(TRUE);
         $this->validate_paste_syntax('english')->shouldReturn(FALSE);
     }
+
+    function it_validates_websites($update, $validation)
+    {
+        $update->type = 'website';
+        $update->content = 'foobar.com';
+        $validation->setup(array('content' => 'http://foobar.com'));
+        $validation->rule('content', 'not_empty')->shouldBeCalled();
+        $validation->rule('content', 'url')->shouldBeCalled();
+        $validation->rule('content', 'url_domain')->shouldBeCalled();
+        $validation->check()->shouldBeCalled();
+        $validation->errors()->shouldBeCalled()->willReturn(array('content'));
+        $this->shouldThrow('Eadrax\Core\Exception\Validation')
+            ->duringValidate();
+    }
 }

@@ -36,6 +36,13 @@ class Interactor extends ObjectBehavior
         $this->interact();
     }
 
+    function it_creates_thumbnails_for_websites($proposal)
+    {
+        $proposal->type = 'website';
+        $proposal->generate_thumbnail()->shouldBeCalled();
+        $this->interact();
+    }
+
     function it_creates_thumbnails_for_image_files($proposal)
     {
         $proposal->type = 'file';

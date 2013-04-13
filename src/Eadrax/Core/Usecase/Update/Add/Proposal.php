@@ -34,6 +34,8 @@ class Proposal extends Data\Update
         {
             $this->validate_paste();
         }
+        elseif ($this->type === 'website')
+            $this->validate_website();
 
         if ( ! $this->validation->check())
             throw new Exception\Validation($this->validation->errors());
@@ -65,5 +67,13 @@ class Proposal extends Data\Update
             return TRUE;
         else
             return FALSE;
+    }
+
+    private function validate_website()
+    {
+        $this->validation->setup(array('content' => $this->content));
+        $this->validation->rule('content', 'not_empty');
+        $this->validation->rule('content', 'url');
+        $this->validation->rule('content', 'url_domain');
     }
 }

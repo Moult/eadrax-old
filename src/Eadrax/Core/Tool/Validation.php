@@ -36,6 +36,7 @@ interface Validation
      *                     email - passes if it is a valid email
      *                     email_domain - passes if it is a valid email domain MX
      *                     url - passes if it is a valid url
+     *                     url_domain - passes if the url dommain is valid and accessible
      *                     ip - passes if valid ip address
      *                     date - passes if is a valid date
      *                     matches - passes if matches another key value
