@@ -22,6 +22,9 @@ class Interactor
         $this->project->authorise();
         $this->proposal->validate();
         $this->proposal->submit();
-        $this->project->notify_trackers($this->proposal);
+        if ( ! $this->proposal->private)
+        {
+            $this->project->notify_trackers($this->proposal);
+        }
     }
 }

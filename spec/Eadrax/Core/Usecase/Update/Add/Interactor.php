@@ -28,4 +28,11 @@ class Interactor extends ObjectBehavior
         $project->notify_trackers($proposal)->shouldBeCalled();
         $this->interact();
     }
+
+    function it_does_not_notify_trackers_if_proposal_is_private($project, $proposal)
+    {
+        $proposal->private = TRUE;
+        $project->notify_trackers($proposal)->shouldNotBeCalled();
+        $this->interact();
+    }
 }
