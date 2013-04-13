@@ -37,6 +37,7 @@ class Project extends Data\Project
         foreach ($trackers as $tracker)
         {
             $author_username = $this->author->username;
+            // TODO: proposal updates do not have names.
             $message = <<<EOT
 Hey $tracker->username,
 
