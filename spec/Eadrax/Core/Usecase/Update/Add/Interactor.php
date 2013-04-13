@@ -7,13 +7,12 @@ use PHPSpec2\ObjectBehavior;
 class Interactor extends ObjectBehavior
 {
     /**
-     * @param Eadrax\Core\Usecase\Update\Add\Author $author
-     * @param Eadrax\Core\Usecase\Update\Add\Proposal $proposal
      * @param Eadrax\Core\Usecase\Update\Add\Project $project
+     * @param Eadrax\Core\Usecase\Update\Add\Proposal $proposal
      */
-    function let($author, $proposal, $project)
+    function let($project, $proposal)
     {
-        $this->beConstructedWith($author, $proposal, $project);
+        $this->beConstructedWith($project, $proposal);
     }
 
     function it_should_be_initializable()
@@ -21,12 +20,12 @@ class Interactor extends ObjectBehavior
         $this->shouldHaveType('Eadrax\Core\Usecase\Update\Add\Interactor');
     }
 
-    function it_carries_out_the_usecase($author, $proposal, $project)
+    function it_carries_out_the_usecase($project, $proposal)
     {
-        $author->authorise()->shouldBeCalled();
+        $project->authorise()->shouldBeCalled();
         $proposal->validate()->shouldBeCalled();
         $proposal->submit()->shouldBeCalled();
-        $project->notify_trackers()->shouldBeCalled();
+        $project->notify_trackers($proposal)->shouldBeCalled();
         $this->interact();
     }
 }

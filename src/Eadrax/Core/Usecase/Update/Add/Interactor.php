@@ -8,22 +8,20 @@ namespace Eadrax\Core\Usecase\Update\Add;
 
 class Interactor
 {
-    private $author;
-    private $proposal;
     private $project;
+    private $proposal;
 
-    public function __construct(Author $author, Proposal $proposal, Project $project)
+    public function __construct(Project $project, Proposal $proposal)
     {
-        $this->author = $author;
-        $this->proposal = $proposal;
         $this->project = $project;
+        $this->proposal = $proposal;
     }
 
     public function interact()
     {
-        $this->author->authorise();
+        $this->project->authorise();
         $this->proposal->validate();
         $this->proposal->submit();
-        $this->project->notify_trackers();
+        $this->project->notify_trackers($this->proposal);
     }
 }
