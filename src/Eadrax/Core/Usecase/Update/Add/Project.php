@@ -42,7 +42,7 @@ Hey $tracker->username,
 
 $author_username has made a new update on WIPUP called "$proposal->name". You can check it out with the link below:
 
-TODO
+TODO $proposal->id
 
 You are receiving this notification because you are tracking their activity.
 

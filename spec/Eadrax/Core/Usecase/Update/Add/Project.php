@@ -67,6 +67,7 @@ class Project extends ObjectBehavior
         $user1->email = 'foo@bar.com';
         $user2->username = 'Bar.baz';
         $user2->email = 'bar@baz.com';
+        $proposal->id = 'updateid';
         $proposal->name = 'Foobar';
 
         $repository->get_user_and_project_trackers($this)->shouldBeCalled()
@@ -77,7 +78,7 @@ Hey Foo.bar,
 
 Author has made a new update on WIPUP called "Foobar". You can check it out with the link below:
 
-TODO
+TODO updateid
 
 You are receiving this notification because you are tracking their activity.
 
@@ -96,7 +97,7 @@ Hey Bar.baz,
 
 Author has made a new update on WIPUP called "Foobar". You can check it out with the link below:
 
-TODO
+TODO updateid
 
 You are receiving this notification because you are tracking their activity.
 
