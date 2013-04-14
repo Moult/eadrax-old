@@ -42,7 +42,7 @@ Those marked in bold have been implemented.
 ### Update features
 
  * Update view
- * Update add
+ * **Update add**
  * Update edit
  * Update delete
 
@@ -64,6 +64,7 @@ This branch aims to rewrite Eadrax with the following major changes.
 ## Feature updates
 
  * Improved project privacy settings
+ * Support for HTML5 video via webm
  * Separation from project and category assignments
  * Added "highlights" pick for updates
  * Sortable WIPSpaces (to allow for many projects)
@@ -72,7 +73,7 @@ This branch aims to rewrite Eadrax with the following major changes.
  * Remove the group blog idea
  * Remove collaborative projects (may return later)
  * Remove OpenID signin (may return later)
- * Service Hooks for RSS, Github, forum software (?)
+ * Service Hooks for RSS, Github, forum software
  * Custom views for multiple attachment updates, single-sentence updates,
    pastebin updates and sound updates.
  * Responsive webdesign
