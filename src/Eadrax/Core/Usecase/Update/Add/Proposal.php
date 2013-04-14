@@ -11,9 +11,11 @@ use Eadrax\Core\Exception;
 
 class Proposal extends Data\Update
 {
+    private $filesystem;
+    private $upload;
     private $validation;
 
-    public function __construct(Data\Update $update, Tool\Validation $validation)
+    public function __construct(Data\Update $update, Tool\Filesystem $filesystem, Tool\Upload $upload, Tool\Validation $validation)
     {
         $this->type = $update->type;
         $this->content = $update->content;
@@ -21,6 +23,8 @@ class Proposal extends Data\Update
         $this->private = $update->private;
         $this->project = $update->project;
 
+        $this->filesystem = $filesystem;
+        $this->upload = $upload;
         $this->validation = $validation;
     }
 
@@ -94,8 +98,70 @@ class Proposal extends Data\Update
         $supported_filetypes = array('gif', 'jpg', 'jpeg', 'png', 'svg', 'tiff', 'bmp', 'exr', 'pdf', 'zip', 'rar', 'tar', 'gz', 'bz', '7z', 'ogg', 'ogv', 'wmv', 'mp3', 'wav', 'avi', 'mpg', 'mpeg', 'mov', 'swf', 'flv', 'blend', 'xcf', 'doc', 'ppt', 'xls', 'odt', 'ods', 'odp', 'odg', 'psd', 'fla', 'ai', 'indd', 'aep', 'txt', 'cab', 'csv', 'exe', 'diff', 'patch', 'rtf', 'torrent', 'mp4');
 
         $this->validation->setup(array('content' => $this->content));
+        $this->validation->rule('content', 'not_empty');
         $this->validation->rule('content', 'upload_valid');
         $this->validation->rule('content', 'upload_type', $supported_filetypes);
         $this->validation->rule('content', 'upload_size', '100M');
+    }
+
+    public function upload()
+    {
+        $this->content = $this->upload->save($this->content, '/path/to/upload');
+    }
+
+    public function generate_metadata()
+    {
+        $metadata = array();
+        $extension = pathinfo($this->content, PATHINFO_EXTENSION);
+        if ($this->is_an_image_extension($extension))
+        {
+            $dimensions = $this->filesystem->get_image_dimensions($this->content);
+            $metadata['width'] = $dimensions['width'];
+            $metadata['height'] = $dimensions['height'];
+        }
+        elseif ($this->is_a_video_extension($extension))
+        {
+            $dimensions = $this->filesystem->get_video_dimensions($this->content);
+            $metadata['width'] = $dimensions['width'];
+            $metadata['height'] = $dimensions['height'];
+            $metadata['length'] = $this->filesystem->get_video_length($this->content);
+        }
+        elseif ($this->is_a_sound_extension($extension))
+        {
+            $metadata['length'] = $this->filesystem->get_sound_length($this->content);
+        }
+        $metadata['size'] = $this->filesystem->get_file_size($this->content);
+        $this->extra = serialize($metadata);
+    }
+
+    private function is_an_image_extension($extension)
+    {
+        if ($extension === 'gif'
+            OR $extension === 'jpg'
+            OR $extension === 'jpeg'
+            OR $extension === 'png'
+            OR $extension === 'svg'
+            OR $extension === 'tiff'
+            OR $extension === 'bmp'
+            OR $extension === 'exr')
+            return TRUE;
+        else
+            return FALSE;
+    }
+
+    private function is_a_video_extension($extension)
+    {
+        if ($extension === 'avi')
+            return TRUE;
+        else
+            return FALSE;
+    }
+
+    private function is_a_sound_extension($extension)
+    {
+        if ($extension === 'mp3')
+            return TRUE;
+        else
+            return FALSE;
     }
 }

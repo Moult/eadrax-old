@@ -9,16 +9,18 @@ class Proposal extends ObjectBehavior
     /**
      * @param Eadrax\Core\Data\Update $update
      * @param Eadrax\Core\Data\Project $project
+     * @param Eadrax\Core\Tool\Filesystem $filesystem
+     * @param Eadrax\Core\Tool\Upload $upload
      * @param Eadrax\Core\Tool\Validation $validation
      */
-    public function let($update, $project, $validation)
+    public function let($update, $project, $filesystem, $upload, $validation)
     {
         $update->type = 'type';
         $update->content = 'content';
         $update->extra = 'extra';
         $update->private = 'private';
         $update->project = $project;
-        $this->beConstructedWith($update, $validation);
+        $this->beConstructedWith($update, $filesystem, $upload, $validation);
     }
 
     function it_should_be_initializable($project)
@@ -97,6 +99,7 @@ class Proposal extends ObjectBehavior
         $update->type = 'file';
         $update->content = $file;
         $validation->setup(array('content' => $file))->shouldBeCalled();
+        $validation->rule('content', 'not_empty')->shouldBeCalled();
         $validation->rule('content', 'upload_valid')->shouldBeCalled();
         $validation->rule('content', 'upload_type', $supported_filetypes)->shouldBeCalled();
         $validation->rule('content', 'upload_size', '100M')->shouldBeCalled();
@@ -104,5 +107,64 @@ class Proposal extends ObjectBehavior
         $validation->errors()->shouldBeCalled()->willReturn(array('content'));
         $this->shouldThrow('Eadrax\Core\Exception\Validation')
             ->duringValidate();
+    }
+
+    /**
+     * @param Eadrax\Core\Data\File $file
+     */
+    function it_can_upload_files($upload, $update, $file)
+    {
+        $update->content = $file;
+        $upload->save($file, '/path/to/upload')->shouldBeCalled()->willReturn('/path/to/upload/file');
+        $this->upload();
+        $this->content->shouldBe('/path/to/upload/file');
+    }
+
+    function it_generates_metadata_for_images($update, $filesystem)
+    {
+        $update->type = 'file';
+        $update->content = '/path/to/upload/file.png';
+        $filesystem->get_image_dimensions('/path/to/upload/file.png')->shouldBeCalled()
+            ->willReturn(array('width' => 200, 'height' => 300));
+        $filesystem->get_file_size('/path/to/upload/file.png')->shouldBeCalled()
+            ->willReturn(12345);
+        $this->generate_metadata();
+        $this->extra->shouldBe('a:3:{s:5:"width";i:200;s:6:"height";i:300;s:4:"size";i:12345;}');
+    }
+
+    function it_generates_metadata_for_videos($update, $filesystem)
+    {
+        $update->type = 'file';
+        $update->content = '/path/to/upload/file.avi';
+        $filesystem->get_video_dimensions('/path/to/upload/file.avi')->shouldBeCalled()
+            ->willReturn(array('width' => 200, 'height' => 300));
+        $filesystem->get_video_length('/path/to/upload/file.avi')->shouldBeCalled()
+            ->willReturn(123);
+        $filesystem->get_file_size('/path/to/upload/file.avi')->shouldBeCalled()
+            ->willReturn(12345);
+        $this->generate_metadata();
+        $this->extra->shouldBe('a:4:{s:5:"width";i:200;s:6:"height";i:300;s:6:"length";i:123;s:4:"size";i:12345;}');
+    }
+
+    function it_generates_metadata_for_sound($update, $filesystem)
+    {
+        $update->type = 'file';
+        $update->content = '/path/to/upload/file.mp3';
+        $filesystem->get_sound_length('/path/to/upload/file.mp3')->shouldBeCalled()
+            ->willReturn(123);
+        $filesystem->get_file_size('/path/to/upload/file.mp3')->shouldBeCalled()
+            ->willReturn(12345);
+        $this->generate_metadata();
+        $this->extra->shouldBe('a:2:{s:6:"length";i:123;s:4:"size";i:12345;}');
+    }
+
+    function it_generates_metadata_for_binary_files($update, $filesystem)
+    {
+        $update->type = 'file';
+        $update->content = '/path/to/upload/file.zip';
+        $filesystem->get_file_size('/path/to/upload/file.zip')->shouldBeCalled()
+            ->willReturn(12345);
+        $this->generate_metadata();
+        $this->extra->shouldBe('a:1:{s:4:"size";i:12345;}');
     }
 }
