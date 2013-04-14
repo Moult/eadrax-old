@@ -13,8 +13,8 @@ interface Filesystem
      *
      * Example:
      * $dimensions = $filesystem->get_image_dimensions('path/to/file.png');
-     * $width = $dimensions['width'];
-     * $height = $dimensions ['height'];
+     * $width = $dimensions[0];
+     * $height = $dimensions[1];
      *
      * @return Array width, height
      */
@@ -25,8 +25,8 @@ interface Filesystem
      *
      * Example:
      * $dimensions = $filesystem->get_video_dimensions('path/to/file.avi');
-     * $width = $dimensions['width'];
-     * $height = $dimensions ['height'];
+     * $width = $dimensions[0];
+     * $height = $dimensions [1];
      *
      * @return Array width, height
      */
