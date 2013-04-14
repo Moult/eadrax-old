@@ -13,4 +13,5 @@ interface Repository
      * @return Array of Data\User
      */
     public function get_user_and_project_trackers($project);
+    public function add_update($update);
 }

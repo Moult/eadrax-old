@@ -9,19 +9,20 @@ class Proposal extends ObjectBehavior
     /**
      * @param Eadrax\Core\Data\Update $update
      * @param Eadrax\Core\Data\Project $project
+     * @param Eadrax\Core\Usecase\Update\Add\Repository $repository
      * @param Eadrax\Core\Tool\Filesystem $filesystem
      * @param Eadrax\Core\Tool\Image $image
      * @param Eadrax\Core\Tool\Upload $upload
      * @param Eadrax\Core\Tool\Validation $validation
      */
-    public function let($update, $project, $filesystem, $image, $upload, $validation)
+    public function let($update, $project, $repository, $filesystem, $image, $upload, $validation)
     {
         $update->type = 'type';
         $update->content = 'content';
         $update->extra = 'extra';
         $update->private = 'private';
         $update->project = $project;
-        $this->beConstructedWith($update, $filesystem, $image, $upload, $validation);
+        $this->beConstructedWith($update, $repository, $filesystem, $image, $upload, $validation);
     }
 
     function it_should_be_initializable($project)
@@ -246,5 +247,11 @@ class Proposal extends ObjectBehavior
         $update->content = 'foo.mp3';
         $image->thumbnail_sound('foo.mp3')->shouldBeCalled();
         $this->generate_thumbnail();
+    }
+
+    function it_submits_the_update($repository)
+    {
+        $repository->add_update($this)->shouldBeCalled();
+        $this->submit();
     }
 }

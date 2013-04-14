@@ -26,7 +26,7 @@ interface Filesystem
      * Example:
      * $dimensions = $filesystem->get_video_dimensions('path/to/file.avi');
      * $width = $dimensions[0];
-     * $height = $dimensions [1];
+     * $height = $dimensions[1];
      *
      * @return Array width, height
      */

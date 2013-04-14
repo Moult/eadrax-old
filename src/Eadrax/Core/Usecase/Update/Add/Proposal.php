@@ -11,12 +11,13 @@ use Eadrax\Core\Exception;
 
 class Proposal extends Data\Update
 {
+    private $repository;
     private $filesystem;
     private $image;
     private $upload;
     private $validation;
 
-    public function __construct(Data\Update $update, Tool\Filesystem $filesystem, Tool\Image $image, Tool\Upload $upload, Tool\Validation $validation)
+    public function __construct(Data\Update $update, Repository $repository, Tool\Filesystem $filesystem, Tool\Image $image, Tool\Upload $upload, Tool\Validation $validation)
     {
         $this->type = $update->type;
         $this->content = $update->content;
@@ -24,6 +25,7 @@ class Proposal extends Data\Update
         $this->private = $update->private;
         $this->project = $update->project;
 
+        $this->repository = $repository;
         $this->filesystem = $filesystem;
         $this->image = $image;
         $this->upload = $upload;
@@ -174,5 +176,10 @@ class Proposal extends Data\Update
             return $this->image->thumbnail_video($this->content);
         elseif ($this->type === 'file/sound')
             return $this->image->thumbnail_sound($this->content);
+    }
+
+    public function submit()
+    {
+        $this->repository->add_update($this);
     }
 }
