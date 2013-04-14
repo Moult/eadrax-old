@@ -85,17 +85,10 @@ This branch aims to rewrite Eadrax with the following major changes:
 
 There are two versions of Eadrax you can get:
 
-  * **develop** - recommended for developers but still in development. Clone
-    head and then pull all git submodules via `git submodule update --init
-    --recursive` in project root.
+  * **develop** - recommended for developers but still in development.
   * Alternatively, grab **master** - latest "live" stable version (used by
     http://wipup.org). Note that this is no longer supported - to install
     master, please read their README instructions instead.
-
-Files in src/ are PSR-0 compatible.
-
-_As of writing Eadrax-develop is still far from complete. So if things are
-broken, it's probably because they actually are._
 
 # Developer Information
 
