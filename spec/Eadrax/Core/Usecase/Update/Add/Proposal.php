@@ -10,17 +10,18 @@ class Proposal extends ObjectBehavior
      * @param Eadrax\Core\Data\Update $update
      * @param Eadrax\Core\Data\Project $project
      * @param Eadrax\Core\Tool\Filesystem $filesystem
+     * @param Eadrax\Core\Tool\Image $image
      * @param Eadrax\Core\Tool\Upload $upload
      * @param Eadrax\Core\Tool\Validation $validation
      */
-    public function let($update, $project, $filesystem, $upload, $validation)
+    public function let($update, $project, $filesystem, $image, $upload, $validation)
     {
         $update->type = 'type';
         $update->content = 'content';
         $update->extra = 'extra';
         $update->private = 'private';
         $update->project = $project;
-        $this->beConstructedWith($update, $filesystem, $upload, $validation);
+        $this->beConstructedWith($update, $filesystem, $image, $upload, $validation);
     }
 
     function it_should_be_initializable($project)
@@ -166,5 +167,37 @@ class Proposal extends ObjectBehavior
             ->willReturn(12345);
         $this->generate_metadata();
         $this->extra->shouldBe('a:1:{s:4:"size";i:12345;}');
+    }
+
+    function it_generates_thumbnails_for_websites($update, $image)
+    {
+        $update->type = 'website';
+        $update->content = 'http://foo.com';
+        $image->screenshot_website('http://foo.com', '/path/to/thumbnail/foo_com.png')->shouldBeCalled();
+        $this->generate_thumbnail();
+    }
+
+    function it_generates_thumbnails_for_images($update, $image)
+    {
+        $update->type = 'file';
+        $update->content = 'foo.jpg';
+        $image->thumbnail_image('foo.jpg', '/path/to/thumbnail/foo.png')->shouldBeCalled();
+        $this->generate_thumbnail();
+    }
+
+    function it_generates_thumbnails_for_videos($update, $image)
+    {
+        $update->type = 'file';
+        $update->content = 'foo.avi';
+        $image->thumbnail_video('foo.avi', '/path/to/thumbnail/foo.png')->shouldBeCalled();
+        $this->generate_thumbnail();
+    }
+
+    function it_generates_thumbnails_for_sounds($update, $image)
+    {
+        $update->type = 'file';
+        $update->content = 'foo.mp3';
+        $image->thumbnail_sound('foo.mp3', '/path/to/thumbnail/foo.png')->shouldBeCalled();
+        $this->generate_thumbnail();
     }
 }

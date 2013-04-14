@@ -12,10 +12,11 @@ use Eadrax\Core\Exception;
 class Proposal extends Data\Update
 {
     private $filesystem;
+    private $image;
     private $upload;
     private $validation;
 
-    public function __construct(Data\Update $update, Tool\Filesystem $filesystem, Tool\Upload $upload, Tool\Validation $validation)
+    public function __construct(Data\Update $update, Tool\Filesystem $filesystem, Tool\Image $image, Tool\Upload $upload, Tool\Validation $validation)
     {
         $this->type = $update->type;
         $this->content = $update->content;
@@ -24,6 +25,7 @@ class Proposal extends Data\Update
         $this->project = $update->project;
 
         $this->filesystem = $filesystem;
+        $this->image = $image;
         $this->upload = $upload;
         $this->validation = $validation;
     }
@@ -163,5 +165,30 @@ class Proposal extends Data\Update
             return TRUE;
         else
             return FALSE;
+    }
+
+    public function generate_thumbnail()
+    {
+        $extension = pathinfo($this->content, PATHINFO_EXTENSION);
+        if ($this->type === 'website')
+            return $this->image->screenshot_website(
+                $this->content,
+                '/path/to/thumbnail/'.preg_replace('/[^a-z0-9]/i', '_', substr($this->content, 7)).'.png'
+            );
+        elseif ($this->is_an_image_extension($extension))
+            return $this->image->thumbnail_image(
+                $this->content,
+                '/path/to/thumbnail/'.substr($this->content, 0, -strlen($extension)).'png'
+            );
+        elseif ($this->is_a_video_extension($extension))
+            return $this->image->thumbnail_video(
+                $this->content,
+                '/path/to/thumbnail/'.substr($this->content, 0, -strlen($extension)).'png'
+            );
+        elseif ($this->is_a_sound_extension($extension))
+            return $this->image->thumbnail_sound(
+                $this->content,
+                '/path/to/thumbnail/'.substr($this->content, 0, -strlen($extension)).'png'
+            );
     }
 }
