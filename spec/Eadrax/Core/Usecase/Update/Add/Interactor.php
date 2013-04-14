@@ -29,10 +29,12 @@ class Interactor extends ObjectBehavior
         $this->interact();
     }
 
-    function it_uploads_a_file($proposal)
+    function it_processes_files($proposal)
     {
         $proposal->type = 'file';
-        $proposal->upload->shouldBeCalled();
+        $proposal->upload()->shouldBeCalled();
+        $proposal->encode_video()->shouldBeCalled();
+        $proposal->generate_metadata()->shouldBeCalled();
         $this->interact();
     }
 
@@ -71,13 +73,6 @@ class Interactor extends ObjectBehavior
     {
         $proposal->type = 'file';
         $proposal->detect_file_type()->shouldBeCalled();
-        $this->interact();
-    }
-
-    function it_generates_metadata_for_files($proposal)
-    {
-        $proposal->type = 'file';
-        $proposal->generate_metadata()->shouldBeCalled();
         $this->interact();
     }
 

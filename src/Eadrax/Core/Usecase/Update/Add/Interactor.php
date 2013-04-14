@@ -33,6 +33,7 @@ class Interactor
         {
             $this->proposal->detect_file_type();
             $this->proposal->upload();
+            $this->proposal->encode_video();
             $this->proposal->generate_metadata();
         }
     }
