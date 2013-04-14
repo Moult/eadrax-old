@@ -22,7 +22,7 @@ class Interactor
         $this->project->authorise();
         $this->proposal->validate();
         $this->process_files();
-        $this->generate_thumbnails();
+        $this->proposal->generate_thumbnail();
         $this->proposal->submit();
         $this->notify_trackers();
     }
@@ -35,15 +35,6 @@ class Interactor
             $this->proposal->upload();
             $this->proposal->encode_video();
             $this->proposal->generate_metadata();
-        }
-    }
-
-    private function generate_thumbnails()
-    {
-        if ($this->proposal->type === 'website'
-            OR $this->proposal->type === 'file')
-        {
-            $this->proposal->generate_thumbnail();
         }
     }
 

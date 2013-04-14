@@ -247,5 +247,4 @@ class Proposal extends ObjectBehavior
         $image->thumbnail_sound('foo.mp3', '/path/to/thumbnail/foo.mp3.png')->shouldBeCalled();
         $this->generate_thumbnail();
     }
-
 }
