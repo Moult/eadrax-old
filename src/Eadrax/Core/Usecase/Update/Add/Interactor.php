@@ -39,9 +39,7 @@ class Interactor
     private function generate_thumbnails()
     {
         if ($this->proposal->type === 'website'
-            OR $this->proposal->extra === 'image'
-            OR $this->proposal->extra === 'video'
-            OR $this->proposal->extra === 'sound')
+            OR $this->proposal->type === 'file')
         {
             $this->proposal->generate_thumbnail();
         }
