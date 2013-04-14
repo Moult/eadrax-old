@@ -15,9 +15,9 @@ interface Upload
      * Automatically prefixes filename with unique identifier.
      *
      * Example:
-     * $upload->save($file, '/path/to/upload');
+     * $upload->save($file);
      *
      * @return mixed string bool full path to uploaded file or FALSE if failed
      */
-    public function save(Data\File $file, $directory);
+    public function save(Data\File $file);
 }

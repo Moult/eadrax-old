@@ -152,7 +152,7 @@ class Proposal extends ObjectBehavior
     function it_can_upload_files($upload, $update, $file)
     {
         $update->content = $file;
-        $upload->save($file, '/path/to/upload')->shouldBeCalled()->willReturn('/path/to/upload/file');
+        $upload->save($file)->shouldBeCalled()->willReturn('/path/to/upload/file');
         $this->upload();
         $this->content->shouldBe('/path/to/upload/file');
     }
@@ -220,7 +220,7 @@ class Proposal extends ObjectBehavior
     {
         $update->type = 'website';
         $update->content = 'http://foo.com';
-        $image->screenshot_website('http://foo.com', '/path/to/thumbnail/foo.com.png')->shouldBeCalled();
+        $image->screenshot_website('http://foo.com')->shouldBeCalled();
         $this->generate_thumbnail();
     }
 
@@ -228,7 +228,7 @@ class Proposal extends ObjectBehavior
     {
         $update->type = 'file/image';
         $update->content = 'foo.jpg';
-        $image->thumbnail_image('foo.jpg', '/path/to/thumbnail/foo.jpg.png')->shouldBeCalled();
+        $image->thumbnail_image('foo.jpg')->shouldBeCalled();
         $this->generate_thumbnail();
     }
 
@@ -236,7 +236,7 @@ class Proposal extends ObjectBehavior
     {
         $update->type = 'file/video';
         $update->content = 'foo.avi';
-        $image->thumbnail_video('foo.avi', '/path/to/thumbnail/foo.avi.png')->shouldBeCalled();
+        $image->thumbnail_video('foo.avi')->shouldBeCalled();
         $this->generate_thumbnail();
     }
 
@@ -244,7 +244,7 @@ class Proposal extends ObjectBehavior
     {
         $update->type = 'file/sound';
         $update->content = 'foo.mp3';
-        $image->thumbnail_sound('foo.mp3', '/path/to/thumbnail/foo.mp3.png')->shouldBeCalled();
+        $image->thumbnail_sound('foo.mp3')->shouldBeCalled();
         $this->generate_thumbnail();
     }
 }

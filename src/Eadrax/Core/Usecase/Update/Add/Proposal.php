@@ -116,7 +116,7 @@ class Proposal extends Data\Update
 
     public function upload()
     {
-        $this->content = $this->upload->save($this->content, '/path/to/upload');
+        $this->content = $this->upload->save($this->content);
     }
 
     public function encode_video()
@@ -168,24 +168,12 @@ class Proposal extends Data\Update
     public function generate_thumbnail()
     {
         if ($this->type === 'website')
-            return $this->image->screenshot_website(
-                $this->content,
-                '/path/to/thumbnail/'.substr($this->content, 7).'.png'
-            );
+            return $this->image->screenshot_website($this->content);
         elseif ($this->type === 'file/image')
-            return $this->image->thumbnail_image(
-                $this->content,
-                '/path/to/thumbnail/'.$this->content.'.png'
-            );
+            return $this->image->thumbnail_image($this->content);
         elseif ($this->type === 'file/video')
-            return $this->image->thumbnail_video(
-                $this->content,
-                '/path/to/thumbnail/'.$this->content.'.png'
-            );
+            return $this->image->thumbnail_video($this->content);
         elseif ($this->type === 'file/sound')
-            return $this->image->thumbnail_sound(
-                $this->content,
-                '/path/to/thumbnail/'.$this->content.'.png'
-            );
+            return $this->image->thumbnail_sound($this->content);
     }
 }
