@@ -113,6 +113,42 @@ class Proposal extends ObjectBehavior
     /**
      * @param Eadrax\Core\Data\File $file
      */
+    function it_detects_image_file_type($file, $update)
+    {
+        $file->name = 'foo.png';
+        $update->type = 'file';
+        $update->content = $file;
+        $this->detect_file_type();
+        $this->type->shouldBe('file/image');
+    }
+
+    /**
+     * @param Eadrax\Core\Data\File $file
+     */
+    function it_detects_video_file_type($file, $update)
+    {
+        $file->name = 'foo.avi';
+        $update->type = 'file';
+        $update->content = $file;
+        $this->detect_file_type();
+        $this->type->shouldBe('file/video');
+    }
+
+    /**
+     * @param Eadrax\Core\Data\File $file
+     */
+    function it_detects_sound_file_type($file, $update)
+    {
+        $file->name = 'foo.mp3';
+        $update->type = 'file';
+        $update->content = $file;
+        $this->detect_file_type();
+        $this->type->shouldBe('file/sound');
+    }
+
+    /**
+     * @param Eadrax\Core\Data\File $file
+     */
     function it_can_upload_files($upload, $update, $file)
     {
         $update->content = $file;
@@ -121,35 +157,46 @@ class Proposal extends ObjectBehavior
         $this->content->shouldBe('/path/to/upload/file');
     }
 
+    /**
+     * @param Eadrax\Core\Data\File $file
+     */
+    function it_encodes_uploaded_videos($filesystem, $upload, $update, $file)
+    {
+        $update->type = 'file/video';
+        $update->content = '/path/to/upload/file.avi';
+        $filesystem->encode_video_to_webm('/path/to/upload/file.avi')->shouldBeCalled();
+        $this->encode_video();
+    }
+
     function it_generates_metadata_for_images($update, $filesystem)
     {
-        $update->type = 'file';
+        $update->type = 'file/image';
         $update->content = '/path/to/upload/file.png';
         $filesystem->get_image_dimensions('/path/to/upload/file.png')->shouldBeCalled()
-            ->willReturn(array('width' => 200, 'height' => 300));
+            ->willReturn(array(200, 300));
         $filesystem->get_file_size('/path/to/upload/file.png')->shouldBeCalled()
             ->willReturn(12345);
         $this->generate_metadata();
-        $this->extra->shouldBe('a:3:{s:5:"width";i:200;s:6:"height";i:300;s:4:"size";i:12345;}');
+        $this->extra->shouldBe('a:3:{s:6:"height";i:300;s:5:"width";i:200;s:4:"size";i:12345;}');
     }
 
     function it_generates_metadata_for_videos($update, $filesystem)
     {
-        $update->type = 'file';
+        $update->type = 'file/video';
         $update->content = '/path/to/upload/file.avi';
         $filesystem->get_video_dimensions('/path/to/upload/file.avi')->shouldBeCalled()
-            ->willReturn(array('width' => 200, 'height' => 300));
+            ->willReturn(array(200, 300));
         $filesystem->get_video_length('/path/to/upload/file.avi')->shouldBeCalled()
             ->willReturn(123);
         $filesystem->get_file_size('/path/to/upload/file.avi')->shouldBeCalled()
             ->willReturn(12345);
         $this->generate_metadata();
-        $this->extra->shouldBe('a:4:{s:5:"width";i:200;s:6:"height";i:300;s:6:"length";i:123;s:4:"size";i:12345;}');
+        $this->extra->shouldBe('a:4:{s:6:"height";i:300;s:5:"width";i:200;s:6:"length";i:123;s:4:"size";i:12345;}');
     }
 
     function it_generates_metadata_for_sound($update, $filesystem)
     {
-        $update->type = 'file';
+        $update->type = 'file/sound';
         $update->content = '/path/to/upload/file.mp3';
         $filesystem->get_sound_length('/path/to/upload/file.mp3')->shouldBeCalled()
             ->willReturn(123);
@@ -173,31 +220,32 @@ class Proposal extends ObjectBehavior
     {
         $update->type = 'website';
         $update->content = 'http://foo.com';
-        $image->screenshot_website('http://foo.com', '/path/to/thumbnail/foo_com.png')->shouldBeCalled();
+        $image->screenshot_website('http://foo.com', '/path/to/thumbnail/foo.com.png')->shouldBeCalled();
         $this->generate_thumbnail();
     }
 
     function it_generates_thumbnails_for_images($update, $image)
     {
-        $update->type = 'file';
+        $update->type = 'file/image';
         $update->content = 'foo.jpg';
-        $image->thumbnail_image('foo.jpg', '/path/to/thumbnail/foo.png')->shouldBeCalled();
+        $image->thumbnail_image('foo.jpg', '/path/to/thumbnail/foo.jpg.png')->shouldBeCalled();
         $this->generate_thumbnail();
     }
 
     function it_generates_thumbnails_for_videos($update, $image)
     {
-        $update->type = 'file';
+        $update->type = 'file/video';
         $update->content = 'foo.avi';
-        $image->thumbnail_video('foo.avi', '/path/to/thumbnail/foo.png')->shouldBeCalled();
+        $image->thumbnail_video('foo.avi', '/path/to/thumbnail/foo.avi.png')->shouldBeCalled();
         $this->generate_thumbnail();
     }
 
     function it_generates_thumbnails_for_sounds($update, $image)
     {
-        $update->type = 'file';
+        $update->type = 'file/sound';
         $update->content = 'foo.mp3';
-        $image->thumbnail_sound('foo.mp3', '/path/to/thumbnail/foo.png')->shouldBeCalled();
+        $image->thumbnail_sound('foo.mp3', '/path/to/thumbnail/foo.mp3.png')->shouldBeCalled();
         $this->generate_thumbnail();
     }
+
 }

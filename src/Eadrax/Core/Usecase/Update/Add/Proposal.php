@@ -75,10 +75,7 @@ class Proposal extends Data\Update
     {
         $supported_syntaxes = array('none', 'abap', 'actionscript', 'actionscript3', 'ada', 'apache', 'applescript', 'apt_sources', 'asm', 'asp', 'autoit', 'avisynth', 'bash', 'basic4gl', 'bf', 'blitzbasic', 'bnf', 'boo', 'c', 'c_mac', 'caddcl', 'cadlisp', 'cfdg', 'cfm', 'cil', 'cobol', 'cpp', 'cpp-qt', 'csharp', 'css', 'd', 'dcs', 'delphi', 'diff', 'div', 'dos', 'dot', 'eiffel', 'email', 'fortran', 'freebasic', 'genero', 'gettext', 'glsl', 'gml', 'gnuplot', 'groovy', 'haskell', 'hq9plus', 'html4strict', 'idl', 'ini', 'inno', 'intercal', 'io', 'java', 'java5', 'javascript', 'kixtart', 'klonec', 'klonecpp', 'latex', 'lisp', 'lolcode', 'lotusformulas', 'lotusscript', 'lscript', 'lua', 'm68k', 'make', 'matlab', 'mirc', 'modula3', 'mpasm', 'mxml', 'mysql', 'nsis', 'objc', 'ocaml', 'ocaml-brief', 'oobas', 'oracle11', 'oracle8', 'pascal', 'per', 'perl', 'php', 'php-brief', 'pic16', 'pixelbender', 'plsql', 'povray', 'powershell', 'progress', 'prolog', 'providex', 'python', 'qbasic', 'rails', 'rebol', 'reg', 'robots', 'ruby', 'sas', 'scala', 'scheme', 'scilab', 'sdlbasic', 'smalltalk', 'smarty', 'sql', 'tcl', 'teraterm', 'text', 'thinbasic', 'tsql', 'typoscript', 'vb', 'vbnet', 'verilog', 'vhdl', 'vim', 'visualfoxpro', 'visualprolog', 'whitespace', 'whois', 'winbatch', 'xml', 'xorg_conf', 'xpp', 'z80');
 
-        if (in_array($syntax, $supported_syntaxes))
-            return TRUE;
-        else
-            return FALSE;
+        return (bool) in_array($syntax, $supported_syntaxes);
     }
 
     private function validate_website()
@@ -106,29 +103,43 @@ class Proposal extends Data\Update
         $this->validation->rule('content', 'upload_size', '100M');
     }
 
+    public function detect_file_type()
+    {
+        $extension = pathinfo($this->content->name, PATHINFO_EXTENSION);
+        if ($this->is_an_image_extension($extension))
+            return $this->type = 'file/image';
+        elseif ($this->is_a_video_extension($extension))
+            return $this->type = 'file/video';
+        elseif ($this->is_a_sound_extension($extension))
+            return $this->type = 'file/sound';
+    }
+
     public function upload()
     {
         $this->content = $this->upload->save($this->content, '/path/to/upload');
     }
 
+    public function encode_video()
+    {
+        if ($this->type === 'file/video')
+        {
+            $this->filesystem->encode_video_to_webm($this->content);
+        }
+    }
+
     public function generate_metadata()
     {
         $metadata = array();
-        $extension = pathinfo($this->content, PATHINFO_EXTENSION);
-        if ($this->is_an_image_extension($extension))
+        if ($this->type === 'file/image')
         {
-            $dimensions = $this->filesystem->get_image_dimensions($this->content);
-            $metadata['width'] = $dimensions['width'];
-            $metadata['height'] = $dimensions['height'];
+            list($metadata['width'], $metadata['height']) = $this->filesystem->get_image_dimensions($this->content);
         }
-        elseif ($this->is_a_video_extension($extension))
+        elseif ($this->type === 'file/video')
         {
-            $dimensions = $this->filesystem->get_video_dimensions($this->content);
-            $metadata['width'] = $dimensions['width'];
-            $metadata['height'] = $dimensions['height'];
+            list($metadata['width'], $metadata['height']) = $this->filesystem->get_video_dimensions($this->content);
             $metadata['length'] = $this->filesystem->get_video_length($this->content);
         }
-        elseif ($this->is_a_sound_extension($extension))
+        elseif ($this->type === 'file/sound')
         {
             $metadata['length'] = $this->filesystem->get_sound_length($this->content);
         }
@@ -138,57 +149,43 @@ class Proposal extends Data\Update
 
     private function is_an_image_extension($extension)
     {
-        if ($extension === 'gif'
-            OR $extension === 'jpg'
-            OR $extension === 'jpeg'
-            OR $extension === 'png'
-            OR $extension === 'svg'
-            OR $extension === 'tiff'
-            OR $extension === 'bmp'
-            OR $extension === 'exr')
-            return TRUE;
-        else
-            return FALSE;
+        $image_extensions = array('gif', 'jpg', 'jpeg', 'png', 'svg', 'tiff', 'bmp', 'exr');
+        return (bool) in_array($extension, $image_extensions);
     }
 
     private function is_a_video_extension($extension)
     {
-        if ($extension === 'avi')
-            return TRUE;
-        else
-            return FALSE;
+        $video_extensions = array('avi');
+        return (bool) in_array($extension, $video_extensions);
     }
 
     private function is_a_sound_extension($extension)
     {
-        if ($extension === 'mp3')
-            return TRUE;
-        else
-            return FALSE;
+        $sound_extensions = array('mp3');
+        return (bool) in_array($extension, $sound_extensions);
     }
 
     public function generate_thumbnail()
     {
-        $extension = pathinfo($this->content, PATHINFO_EXTENSION);
         if ($this->type === 'website')
             return $this->image->screenshot_website(
                 $this->content,
-                '/path/to/thumbnail/'.preg_replace('/[^a-z0-9]/i', '_', substr($this->content, 7)).'.png'
+                '/path/to/thumbnail/'.substr($this->content, 7).'.png'
             );
-        elseif ($this->is_an_image_extension($extension))
+        elseif ($this->type === 'file/image')
             return $this->image->thumbnail_image(
                 $this->content,
-                '/path/to/thumbnail/'.substr($this->content, 0, -strlen($extension)).'png'
+                '/path/to/thumbnail/'.$this->content.'.png'
             );
-        elseif ($this->is_a_video_extension($extension))
+        elseif ($this->type === 'file/video')
             return $this->image->thumbnail_video(
                 $this->content,
-                '/path/to/thumbnail/'.substr($this->content, 0, -strlen($extension)).'png'
+                '/path/to/thumbnail/'.$this->content.'.png'
             );
-        elseif ($this->is_a_sound_extension($extension))
+        elseif ($this->type === 'file/sound')
             return $this->image->thumbnail_sound(
                 $this->content,
-                '/path/to/thumbnail/'.substr($this->content, 0, -strlen($extension)).'png'
+                '/path/to/thumbnail/'.$this->content.'.png'
             );
     }
 }
