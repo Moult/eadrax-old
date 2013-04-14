@@ -67,6 +67,13 @@ class Interactor extends ObjectBehavior
         $this->interact();
     }
 
+    function it_detects_the_file_type($proposal)
+    {
+        $proposal->type = 'file';
+        $proposal->detect_file_type()->shouldBeCalled();
+        $this->interact();
+    }
+
     function it_generates_metadata_for_files($proposal)
     {
         $proposal->type = 'file';

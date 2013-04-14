@@ -31,6 +31,7 @@ class Interactor
     {
         if ($this->proposal->type === 'file')
         {
+            $this->proposal->detect_file_type();
             $this->proposal->upload();
             $this->proposal->generate_metadata();
         }
