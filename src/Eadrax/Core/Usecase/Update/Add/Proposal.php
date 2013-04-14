@@ -93,7 +93,6 @@ class Proposal extends Data\Update
 
     private function validate_file()
     {
-
         $supported_filetypes = array('gif', 'jpg', 'jpeg', 'png', 'svg', 'tiff', 'bmp', 'exr', 'pdf', 'zip', 'rar', 'tar', 'gz', 'bz', '7z', 'ogg', 'ogv', 'wmv', 'mp3', 'wav', 'avi', 'mpg', 'mpeg', 'mov', 'swf', 'flv', 'blend', 'xcf', 'doc', 'ppt', 'xls', 'odt', 'ods', 'odp', 'odg', 'psd', 'fla', 'ai', 'indd', 'aep', 'txt', 'cab', 'csv', 'exe', 'diff', 'patch', 'rtf', 'torrent', 'mp4');
 
         $this->validation->setup(array('content' => $this->content));
@@ -155,13 +154,13 @@ class Proposal extends Data\Update
 
     private function is_a_video_extension($extension)
     {
-        $video_extensions = array('avi');
+        $video_extensions = array('avi', 'ogv', 'mpg', 'mpeg', 'mov', 'flv', 'ogg', 'wmv', 'mp4');
         return (bool) in_array($extension, $video_extensions);
     }
 
     private function is_a_sound_extension($extension)
     {
-        $sound_extensions = array('mp3');
+        $sound_extensions = array('mp3', 'wav');
         return (bool) in_array($extension, $sound_extensions);
     }
 
