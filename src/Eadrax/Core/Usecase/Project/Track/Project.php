@@ -36,7 +36,6 @@ The WIPUP Team
 EOT;
         $this->mail->send(
             'foo@bar.com',
-            'noreply@wipup.org',
             'Your project "Foo" has a new fan on WIPUP!',
             $message
         );

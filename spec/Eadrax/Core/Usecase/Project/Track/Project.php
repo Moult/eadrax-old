@@ -51,7 +51,6 @@ The WIPUP Team
 EOT;
         $mail->send(
             'foo@bar.com',
-            'noreply@wipup.org',
             'Your project "Foo" has a new fan on WIPUP!',
             $message
         )->shouldBeCalled();

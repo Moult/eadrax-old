@@ -52,7 +52,6 @@ The WIPUP Team
 EOT;
             $this->mail->send(
                 $tracker->email,
-                'noreply@wipup.org',
                 $author_username.' has made a new update on WIPUP: '.$proposal->name,
                 $message
             );

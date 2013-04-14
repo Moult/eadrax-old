@@ -87,7 +87,6 @@ The WIPUP Team
 EOT;
         $mail->send(
             'foo@bar.com',
-            'noreply@wipup.org',
             'Author has made a new update on WIPUP: Foobar',
             $message
         )->shouldBeCalled(1);
@@ -106,7 +105,6 @@ The WIPUP Team
 EOT;
         $mail->send(
             'bar@baz.com',
-            'noreply@wipup.org',
             'Author has made a new update on WIPUP: Foobar',
             $message
         )->shouldBeCalled(1);
