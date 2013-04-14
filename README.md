@@ -59,13 +59,11 @@ Those marked in bold have been implemented.
 
 # About Eadrax-develop
 
-This branch aims to rewrite Eadrax with the following major changes.
-
-## Feature updates
+This branch aims to rewrite Eadrax with the following major changes:
 
  * Improved project privacy settings
  * Support for HTML5 video via webm
- * Separation from project and category assignments
+ * Remove the use of categories
  * Added "highlights" pick for updates
  * Sortable WIPSpaces (to allow for many projects)
  * Revitalise the API and separate delivery mechanism to prepare for native apps
@@ -79,20 +77,9 @@ This branch aims to rewrite Eadrax with the following major changes.
  * Responsive webdesign
  * Redesign with new logo
  * Switch from BBCode to Markdown
-
-## Switch to MIT license
-
-More permissive, well-known, and doesn't make your brain explode.
-
-## Use best practices
-
-I was guilty of code rot.
-
-# System Requirements
-
- * PHP >= 5.3.3
-
-The most recent packages are recommended.
+ * Improve code quality (readability and flexibility) and decouple from delivery
+   mechanism
+ * Switch to MIT license
 
 # Installing Eadrax
 
