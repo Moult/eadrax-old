@@ -26,6 +26,11 @@ class Project extends ObjectBehavior
         $this->author->shouldBe($author);
     }
 
+    function it_should_be_a_project()
+    {
+        $this->shouldHaveType('Eadrax\Core\Data\Project');
+    }
+
     /**
      * @param Eadrax\Core\Data\User $author
      */

@@ -9,7 +9,7 @@ use Eadrax\Core\Data;
 use Eadrax\Core\Tool;
 use Eadrax\Core\Exception;
 
-class Project
+class Project extends Data\Project
 {
     private $auth;
 
