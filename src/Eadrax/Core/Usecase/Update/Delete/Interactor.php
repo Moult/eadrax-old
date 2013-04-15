@@ -16,8 +16,8 @@ class Interactor
     public function interact()
     {
         $this->project->authorise();
-        $this->proposal->delete_thumbnails();
-        $this->proposal->delete_uploads();
+        $this->proposal->delete_thumbnail();
+        $this->proposal->delete_upload();
         $this->proposal->delete();
     }
 }

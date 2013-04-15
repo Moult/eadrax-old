@@ -23,8 +23,8 @@ class Interactor extends ObjectBehavior
     function it_should_run_the_usecase($project, $proposal)
     {
         $project->authorise()->shouldBeCalled();
-        $proposal->delete_thumbnails()->shouldBeCalled();
-        $proposal->delete_uploads()->shouldBeCalled();
+        $proposal->delete_thumbnail()->shouldBeCalled();
+        $proposal->delete_upload()->shouldBeCalled();
         $proposal->delete()->shouldBeCalled();
         $this->interact();
     }
