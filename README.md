@@ -44,7 +44,7 @@ Those marked in bold have been implemented.
  * Update view
  * **Update add**
  * Update edit
- * Update delete
+ * **Update delete**
 
 ### Kudos features
 
