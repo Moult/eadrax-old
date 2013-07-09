@@ -6,13 +6,13 @@
 
 namespace Eadrax\Core\Tool;
 
-interface Auth
+interface Authenticator
 {
     /**
      * Checks whether or not the user is currently logged in.
      *
      * Example:
-     * $auth = new Auth_Class;
+     * $auth = new Authenticator;
      * if ($auth->logged_in() === TRUE) {} // Use is logged in
      *
      * @return bool

@@ -6,15 +6,14 @@
 
 namespace Eadrax\Core\Tool;
 
-interface Validation
+interface Validator
 {
     /**
      * Loads in the input data from the user that you want to perform validation
      * checks on.
      *
      * Example:
-     * $validation = new Validation_Class;
-     * $validation->setup($_POST);
+     * $validator->setup($_POST);
      *
      * @param array $input_data
      * @return void
@@ -25,7 +24,7 @@ interface Validation
      * Adds a rule for checking the input with key $key using a predefined rule.
      *
      * Example:
-     * $validation->rule('username', 'not_empty');
+     * $validator->rule('username', 'not_empty');
      *
      * @param string $key  The key to access the input data value
      * @param string $rule not_empty - passes if there is a value
@@ -54,7 +53,7 @@ interface Validation
      *
      * Example:
      * // will call $this->is_existing_account();
-     * $validation->callback($this, 'is_existing_account');
+     * $validator->callback($this, 'is_existing_account');
      *
      * @param string $key      The key to access the input data value
      * @param array  $function Array($object, string $function_name) which has a
@@ -70,7 +69,7 @@ interface Validation
      * are any validation errors.
      *
      * Example:
-     * if ($validation->check() === TRUE) {} // All items are valid.
+     * if ($validator->check() === TRUE) {} // All items are valid.
      *
      * @return bool
      */
@@ -80,7 +79,7 @@ interface Validation
      * Returns an array with any errors found.
      *
      * Example:
-     * print_r($validation->check()); // return array('keyfoo', 'keybar')
+     * print_r($validator->check()); // return array('keyfoo', 'keybar')
      *
      * @return array
      */
