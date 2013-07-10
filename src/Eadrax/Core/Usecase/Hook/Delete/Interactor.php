@@ -5,21 +5,22 @@
  */
 
 namespace Eadrax\Core\Usecase\Hook\Delete;
+use Eadrax\Core\Data;
 
 class Interactor
 {
+    private $hook;
     private $project;
-    private $service;
 
-    public function __construct(Project $project, Service $service)
+    public function __construct(Data\Hook $hook, Project $project)
     {
+        $this->hook = $hook;
         $this->project = $project;
-        $this->service = $service;
     }
 
     public function interact()
     {
         $this->project->authorise();
-        $this->project->remove_service($this->service);
+        $this->project->remove_service($this->hook->id);
     }
 }

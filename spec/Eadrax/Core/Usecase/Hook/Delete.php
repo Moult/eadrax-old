@@ -10,9 +10,9 @@ class Delete extends ObjectBehavior
      * @param Eadrax\Core\Data\Project $project
      * @param Eadrax\Core\Data\Hook $hook
      * @param Eadrax\Core\Usecase\Hook\Delete\Repository $hook_delete
-     * @param Eadrax\Core\Tool\Auth $auth
+     * @param Eadrax\Core\Tool\Authenticator $authenticator
      */
-    function let($project, $hook, $hook_delete, $auth)
+    function let($project, $hook, $hook_delete, $authenticator)
     {
         $data = array(
             'project' => $project,
@@ -24,7 +24,7 @@ class Delete extends ObjectBehavior
         );
 
         $tools = array(
-            'auth' => $auth
+            'authenticator' => $authenticator
         );
 
         $this->beConstructedWith($data, $repositories, $tools);
