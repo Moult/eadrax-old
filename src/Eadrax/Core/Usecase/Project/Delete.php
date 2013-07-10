@@ -5,7 +5,6 @@
  */
 
 namespace Eadrax\Core\Usecase\Project;
-
 use Eadrax\Core\Usecase\Project\Delete\Interactor;
 use Eadrax\Core\Usecase\Project\Delete\Author;
 use Eadrax\Core\Usecase\Project\Delete\Proposal;
@@ -34,7 +33,7 @@ class Delete
     private function get_author()
     {
         return new Author(
-            $this->tools['auth']
+            $this->tools['authenticator']
         );
     }
 

@@ -23,7 +23,7 @@ class Interactor extends ObjectBehavior
     function it_carries_out_the_interaction_chain($author, $proposal)
     {
         $author->authorise()->shouldBeCalled();
-        $proposal->verify_ownership($author)->shouldBeCalled();
+        $proposal->authorise()->shouldBeCalled();
         $proposal->delete()->shouldBeCalled();
         $this->interact();
     }

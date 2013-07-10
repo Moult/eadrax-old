@@ -20,7 +20,7 @@ class Interactor
     public function interact()
     {
         $this->author->authorise();
-        $this->proposal->verify_ownership($this->author);
+        $this->proposal->authorise();
         $this->proposal->delete();
     }
 }

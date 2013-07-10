@@ -9,12 +9,12 @@ class Proposal extends ObjectBehavior
     /**
      * @param Eadrax\Core\Data\Project $project
      * @param Eadrax\Core\Usecase\Project\Delete\Repository $repository
+     * @param Eadrax\Core\Tool\Authenticator $authenticator
      */
-    function let($project, $repository)
+    function let($project, $repository, $authenticator)
     {
-        $project->id = 42;
-        $this->beConstructedWith($project, $repository);
-        $this->id->shouldBe(42);
+        $project->id = 'project_id';
+        $this->beConstructedWith($project, $repository, $authenticator);
     }
 
     function it_should_be_initializable()
@@ -25,36 +25,37 @@ class Proposal extends ObjectBehavior
     function it_is_a_project()
     {
         $this->shouldHaveType('Eadrax\Core\Data\Project');
-        $this->id->shouldBe(42);
     }
 
     /**
-     * @param Eadrax\Core\Data\User $owner
+     * @param Eadrax\Core\Data\User $author
      */
-    function it_verifies_project_ownership_with_logged_in_user($owner, $repository)
+    function it_authorises_valid_project_authors($author, $authenticator, $repository)
     {
-        $owner->id = 42;
-        $repository->get_owner($this)->shouldBeCalled()->willReturn($owner);
+        $author->id = 1;
+        $authenticator->get_user()->shouldBeCalled()->willReturn($author);
+        $repository->get_project_author_id('project_id')->shouldBeCalled()->willReturn($author);
         $this->shouldNotThrow('Eadrax\Core\Exception\Authorisation')
-            ->duringVerify_ownership($owner);
+            ->duringAuthorise();
     }
 
     /**
-     * @param Eadrax\Core\Data\User $owner
+     * @param Eadrax\Core\Data\User $author
      * @param Eadrax\Core\Data\User $impostor
      */
-    function it_does_not_verify_ownership_with_other_users($owner, $impostor, $repository)
+    function it_does_not_verify_ownership_with_other_users($author, $impostor, $repository, $authenticator)
     {
-        $impostor->id = 24;
-        $owner->id = 42;
-        $repository->get_owner($this)->shouldBeCalled()->willReturn($owner);
+        $author->id = 1;
+        $impostor->id = 1;
+        $authenticator->get_user()->shouldBeCalled()->willReturn($impostor);
+        $repository->get_project_author_id('project_id')->shouldBeCalled()->willReturn($author);
         $this->shouldThrow('Eadrax\Core\Exception\Authorisation')
-            ->duringVerify_ownership($impostor);
+            ->duringAuthorise();
     }
 
     function it_deletes_the_project($repository)
     {
-        $repository->delete($this)->shouldBeCalled();
+        $repository->delete('project_id')->shouldBeCalled();
         $this->delete();
     }
 }

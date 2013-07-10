@@ -9,8 +9,12 @@ namespace Eadrax\Core\Usecase\Project\Delete;
 interface Repository
 {
     /**
-     * @return Eadrax\Core\Data\User
+     * @return int The unique ID of the project's author
      */
-    public function get_author(Proposal $proposal);
-    public function delete(Proposal $proposal);
+    public function get_project_author_id($project_id);
+
+    /**
+     * @return void
+     */
+    public function delete($project_id);
 }

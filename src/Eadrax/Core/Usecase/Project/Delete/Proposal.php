@@ -5,27 +5,31 @@
  */
 
 namespace Eadrax\Core\Usecase\Project\Delete;
-
 use Eadrax\Core\Data;
 use Eadrax\Core\Exception;
 
 class Proposal extends Data\Project
 {
-    public function __construct(Data\Project $project, Repository $repository)
+    public $id;
+    private $repository;
+    private $authenticator;
+
+    public function __construct(Data\Project $project, Repository $repository, Tool\Authenticator $authenticator)
     {
         $this->id = $project->id;
         $this->repository = $repository;
+        $this->authenticator = $authenticator;
     }
 
-    public function verify_ownership(Data\User $user)
+    public function authorise()
     {
-        $owner = $this->repository->get_owner($this);
-        if ($user->id !== $owner->id)
+        $logged_in_user = $this->authenticator->get_user();
+        if ($logged_in_user->id !== $this->repository->get_project_author_id($this->id))
             throw new Exception\Authorisation('You cannot delete a project you do not own.');
     }
 
     public function delete()
     {
-        $this->repository->delete($this);
+        $this->repository->delete($this->id);
     }
 }
