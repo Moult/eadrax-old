@@ -44,7 +44,8 @@ class Edit
     {
         return new Proposal(
             $this->data['project'],
-            $this->repositories['project_edit']
+            $this->repositories['project_edit'],
+            $this->tools['authenticator']
         );
     }
 
