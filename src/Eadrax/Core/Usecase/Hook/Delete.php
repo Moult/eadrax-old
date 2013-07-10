@@ -15,21 +15,6 @@ class Delete
     private $repositories;
     private $tools;
 
-    /**
-     * Deletes a service attached to a service
-     *
-     * Data required:
-     * $project->id
-     * $hook->id
-     *
-     * @param array $data         An array containing Data\Hook and Data\Project
-     * @param array $repositories An array containing Hook\Delete\Repository
-     * @param array $tools        An array containing Tool\Authenticator
-     *
-     * @throw Exception\Authorisation If you do not own the project
-     *
-     * @return void
-     */
     public function __construct(Array $data, Array $repositories, Array $tools)
     {
         $this->data = $data;

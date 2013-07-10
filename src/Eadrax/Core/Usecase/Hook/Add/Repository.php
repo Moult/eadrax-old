@@ -9,7 +9,7 @@ namespace Eadrax\Core\Usecase\Hook\Add;
 interface Repository
 {
     /**
-     * @return bool
+     * @return bool TRUE if a project already has a service url added to it
      */
     public function has_existing_service($project_id, $service_url);
 
