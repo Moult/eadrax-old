@@ -32,23 +32,21 @@ class Proposal extends ObjectBehavior
      */
     function it_authorises_valid_project_authors($author, $authenticator, $repository)
     {
-        $author->id = 1;
+        $author->id = 'author_id';
         $authenticator->get_user()->shouldBeCalled()->willReturn($author);
-        $repository->get_project_author_id('project_id')->shouldBeCalled()->willReturn($author);
+        $repository->get_project_author_id('project_id')->shouldBeCalled()->willReturn('author_id');
         $this->shouldNotThrow('Eadrax\Core\Exception\Authorisation')
             ->duringAuthorise();
     }
 
     /**
-     * @param Eadrax\Core\Data\User $author
      * @param Eadrax\Core\Data\User $impostor
      */
-    function it_does_not_verify_ownership_with_other_users($author, $impostor, $repository, $authenticator)
+    function it_does_not_authorise_invalid_project_authors($impostor, $repository, $authenticator)
     {
-        $author->id = 1;
-        $impostor->id = 1;
+        $impostor->id = 'impostor_id';
         $authenticator->get_user()->shouldBeCalled()->willReturn($impostor);
-        $repository->get_project_author_id('project_id')->shouldBeCalled()->willReturn($author);
+        $repository->get_project_author_id('project_id')->shouldBeCalled()->willReturn('author_id');
         $this->shouldThrow('Eadrax\Core\Exception\Authorisation')
             ->duringAuthorise();
     }
