@@ -5,7 +5,6 @@
  */
 
 namespace Eadrax\Core\Usecase\Project\Add;
-
 use Eadrax\Core\Usecase\Project;
 use Eadrax\Core\Exception;
 

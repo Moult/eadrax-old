@@ -5,7 +5,6 @@
  */
 
 namespace Eadrax\Core\Usecase\Project;
-
 use Eadrax\Core\Usecase\Project\Add\Interactor;
 use Eadrax\Core\Usecase\Project\Add\Proposal;
 use Eadrax\Core\Usecase\Project\Add\Author;
@@ -38,14 +37,14 @@ class Add
         return new Proposal(
             $this->data['project'],
             $this->repositories['project_add'],
-            $this->tools['auth']
+            $this->tools['authenticator']
         );
     }
 
     private function get_author()
     {
         return new Author(
-            $this->tools['auth']
+            $this->tools['authenticator']
         );
     }
 

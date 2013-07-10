@@ -5,13 +5,12 @@
  */
 
 namespace Eadrax\Core\Usecase\Project\Add;
-
 use Eadrax\Core\Data;
 
 interface Repository
 {
     /**
-     * @return string ID of newly added project
+     * @return int Unique ID of newly added project
      */
-    public function add(Proposal $proposal);
+    public function add($project_name, $project_summary, $author_id);
 }

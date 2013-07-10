@@ -8,23 +8,19 @@ class Proposal extends ObjectBehavior
 {
     /**
      * @param Eadrax\Core\Data\Project $project
-     * @param Eadrax\Core\Data\User $user
+     * @param Eadrax\Core\Data\User $author
      * @param Eadrax\Core\Usecase\Project\Add\Repository $repository
-     * @param Eadrax\Core\Tool\Auth $auth
+     * @param Eadrax\Core\Tool\Authenticator $authenticator
      */
-    function let($project, $user, $repository, $auth)
+    function let($project, $author, $repository, $authenticator)
     {
-        $auth->get_user()->willReturn($user);
-        $project->name = 'Project name';
-        $project->summary = 'Project summary';
+        $project->name = 'project_name';
+        $project->summary = 'project_summary';
+        $author->id = 'author_id';
 
-        $this->beConstructedWith($project, $repository, $auth);
+        $authenticator->get_user()->willReturn($author);
 
-        $this->name->shouldBe('Project name');
-        $this->summary->shouldBe('Project summary');
-        $this->author->shouldBe($user);
-        $this->views->shouldBe(0);
-        $this->last_updated->shouldBe(time());
+        $this->beConstructedWith($project, $repository, $authenticator);
     }
 
     function it_should_be_initializable()
@@ -39,7 +35,11 @@ class Proposal extends ObjectBehavior
 
     function it_submits_the_proposal_to_the_repository($repository)
     {
-        $repository->add($this)->shouldBeCalled()->willReturn(42);
+        $repository->add(
+            'project_name',
+            'project_summary',
+            'author_id')
+            ->shouldBeCalled()->willReturn(42);
         $this->submit();
         $this->id->shouldBe(42);
     }
