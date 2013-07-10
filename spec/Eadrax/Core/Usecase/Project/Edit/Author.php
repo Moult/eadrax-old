@@ -7,11 +7,11 @@ use PHPSpec2\ObjectBehavior;
 class Author extends ObjectBehavior
 {
     /**
-     * @param Eadrax\Core\Tool\Auth $auth
+     * @param Eadrax\Core\Tool\Authenticator $authenticator
      */
-    function let($auth)
+    function let($authenticator)
     {
-        $this->beConstructedWith($auth);
+        $this->beConstructedWith($authenticator);
     }
 
     function it_should_be_initializable()
@@ -19,15 +19,15 @@ class Author extends ObjectBehavior
         $this->shouldHaveType('\Eadrax\Core\Usecase\Project\Edit\Author');
     }
 
-    function it_does_not_authorise_guests($auth)
+    function it_does_not_authorise_guests($authenticator)
     {
-        $auth->logged_in()->shouldBeCalled()->willReturn(FALSE);
+        $authenticator->logged_in()->shouldBeCalled()->willReturn(FALSE);
         $this->shouldThrow('\Eadrax\Core\Exception\Authorisation')->duringAuthorise();
     }
 
-    function it_authorises_logged_in_users($auth)
+    function it_authorises_logged_in_users($authenticator)
     {
-        $auth->logged_in()->shouldBeCalled()->willReturn(TRUE);
+        $authenticator->logged_in()->shouldBeCalled()->willReturn(TRUE);
         $this->shouldNotThrow('\Eadrax\Core\Exception\Authorisation')->duringAuthorise();
     }
 }

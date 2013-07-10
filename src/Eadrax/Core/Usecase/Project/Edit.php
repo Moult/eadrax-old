@@ -5,7 +5,6 @@
  */
 
 namespace Eadrax\Core\Usecase\Project;
-
 use Eadrax\Core\Usecase\Project;
 use Eadrax\Core\Usecase\Project\Edit\Interactor;
 use Eadrax\Core\Usecase\Project\Edit\Proposal;
@@ -37,7 +36,7 @@ class Edit
     private function get_author()
     {
         return new Author(
-            $this->tools['auth']
+            $this->tools['authenticator']
         );
     }
 

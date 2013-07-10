@@ -9,23 +9,17 @@ class Proposal extends ObjectBehavior
     /**
      * @param Eadrax\Core\Data\Project $project
      * @param Eadrax\Core\Usecase\Project\Edit\Repository $repository
+     * @param Eadrax\Core\Tool\Authenticator $authenticator
      */
-    function let($project, $repository)
+    function let($project, $repository, $authenticator)
     {
-        $project->id = 'Project id';
-        $project->name = 'Project name';
-        $project->summary = 'Project summary';
-        $project->description = 'Project description';
-        $project->website = 'Project website';
+        $project->id = 'project_id';
+        $project->name = 'project_name';
+        $project->summary = 'project_summary';
+        $project->description = 'project_description';
+        $project->website = 'project_website';
 
-        $this->beConstructedWith($project, $repository);
-
-        $this->id->shouldBe('Project id');
-        $this->name->shouldBe('Project name');
-        $this->summary->shouldBe('Project summary');
-        $this->description->shouldBe('Project description');
-        $this->website->shouldBe('Project website');
-        $this->last_updated->shouldBe(time());
+        $this->beConstructedWith($project, $repository, $authenticator);
     }
 
     function it_should_be_initializable()
@@ -35,32 +29,39 @@ class Proposal extends ObjectBehavior
     }
 
     /**
-     * @param Eadrax\Core\Usecase\Project\Edit\Author $impostor
-     * @param Eadrax\Core\Data\User $author
+     * @param Eadrax\Core\Data\User $impostor
      */
-    function it_does_not_authorise_users_who_do_not_own_the_project($impostor, $author, $repository)
+    function it_does_not_authorise_users_who_do_not_own_the_project($impostor, $repository, $authenticator)
     {
-        $impostor->id = 42;
-        $author->id = 24;
-        $repository->get_author($this)->shouldBeCalled()->willReturn($author);
+        $impostor->id = 'impostor_id';
+        $authenticator->get_user()->shouldBeCalled()->willReturn($impostor);
+        $repository->get_project_author_id('project_id')->shouldBeCalled()->willReturn('author_id');
         $this->shouldThrow('\Eadrax\Core\Exception\Authorisation')
-            ->duringVerify_ownership($impostor);
+            ->duringAuthorise();
     }
 
     /**
-     * @param Eadrax\Core\Usecase\Project\Edit\Author $author
+     * @param Eadrax\Core\Data\User $author
      */
-    function it_authorises_users_who_own_the_project($author, $repository)
+    function it_authorises_users_who_own_the_project($author, $repository, $authenticator)
     {
-        $author->id = 24;
-        $repository->get_author($this)->shouldBeCalled()->willReturn($author);
-        $this->shouldNotThrow('\Eadrax\Core\Exception\Authorisation')
-            ->duringVerify_ownership($author);
+        $author->id = 'author_id';
+        $authenticator->get_user()->shouldBeCalled()->willReturn($author);
+        $repository->get_project_author_id('project_id')->shouldBeCalled()->willReturn('author_id');
+        $this->shouldThrow('\Eadrax\Core\Exception\Authorisation')
+            ->duringAuthorise();
     }
 
     function it_should_be_able_to_update_the_existing_project($repository)
     {
-        $repository->update($this)->shouldBeCalled();
+        $repository->update(
+            'project_id',
+            'project_name',
+            'project_summary',
+            'project_description',
+            'project_website',
+            'project_last_updated'
+        )->shouldBeCalled();
         $this->update();
     }
 }

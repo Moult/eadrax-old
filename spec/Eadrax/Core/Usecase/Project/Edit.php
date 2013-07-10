@@ -9,10 +9,10 @@ class Edit extends ObjectBehavior
     /**
      * @param Eadrax\Core\Data\Project $project
      * @param Eadrax\Core\Usecase\Project\Edit\Repository $project_edit
-     * @param Eadrax\Core\Tool\Auth $auth
-     * @param Eadrax\Core\Tool\Validation $validation
+     * @param Eadrax\Core\Tool\Authenticator $authenticator
+     * @param Eadrax\Core\Tool\Validator $validator
      */
-    function let($project, $project_edit, $auth, $validation)
+    function let($project, $project_edit, $authenticator, $validator)
     {
         $data = array(
             'project' => $project
@@ -21,8 +21,8 @@ class Edit extends ObjectBehavior
             'project_edit' => $project_edit
         );
         $tools = array(
-            'auth' => $auth,
-            'validation' => $validation
+            'authenticator' => $authenticator,
+            'validator' => $validator
         );
         $this->beConstructedWith($data, $repositories, $tools);
     }

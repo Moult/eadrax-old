@@ -5,7 +5,6 @@
  */
 
 namespace Eadrax\Core\Usecase\Project\Edit;
-
 use Eadrax\Core\Usecase\Project;
 use Eadrax\Core\Usecase\Project\Edit\Author;
 use Eadrax\Core\Exception;
@@ -26,7 +25,7 @@ class Interactor
     public function interact()
     {
         $this->author->authorise();
-        $this->proposal->verify_ownership($this->author);
+        $this->proposal->authorise();
         $this->project_prepare->interact();
         $this->proposal->update();
     }
