@@ -15,23 +15,6 @@ class Add
     private $repositories;
     private $tools;
 
-    /**
-     * Adds a hook to a project.
-     *
-     * Data required:
-     * $project->id
-     * $hook->url
-     *
-     * @param array $data         An array containing Data\Project and Data\Hook
-     * @param array $repositories An array containing Hook\Add\Repository
-     * @param array $tools        An array containing Tool\Authenticator and
-     *                            Tool\Validator
-     *
-     * @throw Exception\Authorisation If you do not own the project
-     * @throw Exception\Validation    If the hook url is not valid
-     *
-     * @return void
-     */
     public function __construct(Array $data, Array $repositories, Array $tools)
     {
         $this->data = $data;
