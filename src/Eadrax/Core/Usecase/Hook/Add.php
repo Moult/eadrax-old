@@ -15,6 +15,18 @@ class Add
     private $repositories;
     private $tools;
 
+    /**
+     * Adds a hook to a project.
+     *
+     * Data required:
+     * $project->id
+     * $hook->url
+     *
+     * @throw Exception\Authorisation If you do not own the project
+     * @throw Exception\Validation If the hook url is not valid
+     *
+     * @return void
+     */
     public function __construct(Array $data, Array $repositories, Array $tools)
     {
         $this->data = $data;
@@ -35,7 +47,7 @@ class Add
         return new Project(
             $this->data['project'],
             $this->repositories['hook_add'],
-            $this->tools['auth']
+            $this->tools['authenticator']
         );
     }
 
@@ -43,7 +55,7 @@ class Add
     {
         return new Service(
             $this->data['hook'],
-            $this->tools['validation']
+            $this->tools['validator']
         );
     }
 }

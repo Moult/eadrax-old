@@ -8,12 +8,12 @@ class Service extends ObjectBehavior
 {
     /**
      * @param Eadrax\Core\Data\Hook $hook
-     * @param Eadrax\Core\Tool\Validation $validation
+     * @param Eadrax\Core\Tool\Validator $validator
      */
-    function let($hook, $validation)
+    function let($hook, $validator)
     {
         $hook->url = 'hook_url';
-        $this->beConstructedWith($hook, $validation);
+        $this->beConstructedWith($hook, $validator);
         $this->url->shouldBe('hook_url');
     }
 
@@ -27,18 +27,18 @@ class Service extends ObjectBehavior
         $this->shouldHaveType('Eadrax\Core\Data\Hook');
     }
 
-    function it_should_validate_whether_it_is_valid($validation)
+    function it_should_validate_whether_it_is_valid($validator)
     {
-        $validation->setup(array('url' => 'hook_url'))->shouldBeCalled();
-        $validation->rule('url', 'rss2')->shouldBeCalled();
-        $validation->check()->shouldBeCalled()->willReturn(TRUE);
+        $validator->setup(array('url' => 'hook_url'))->shouldBeCalled();
+        $validator->rule('url', 'rss2')->shouldBeCalled();
+        $validator->check()->shouldBeCalled()->willReturn(TRUE);
         $this->is_valid();
     }
 
-    function it_invalidates_fake_hooks($validation)
+    function it_invalidates_fake_hooks($validator)
     {
-        $validation->check()->shouldBeCalled()->willReturn(FALSE);
-        $validation->errors()->shouldBeCalled()->willReturn(array('url'));
+        $validator->check()->shouldBeCalled()->willReturn(FALSE);
+        $validator->errors()->shouldBeCalled()->willReturn(array('url'));
         $this->shouldThrow('Eadrax\Core\Exception\Validation')
             ->duringIs_valid();
     }

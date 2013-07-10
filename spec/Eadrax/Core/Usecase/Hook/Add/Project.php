@@ -9,13 +9,12 @@ class Project extends ObjectBehavior
     /**
      * @param Eadrax\Core\Data\Project $project
      * @param Eadrax\Core\Usecase\Hook\Add\Repository $repository
-     * @param Eadrax\Core\Tool\Auth $auth
+     * @param Eadrax\Core\Tool\Authenticator $authenticator
      */
-    function let($project, $repository, $auth)
+    function let($project, $repository, $authenticator)
     {
-        $project->id = 'id';
-        $this->beConstructedWith($project, $repository, $auth);
-        $this->id->shouldBe('id');
+        $project->id = 'project_id';
+        $this->beConstructedWith($project, $repository, $authenticator);
     }
 
     function it_should_be_initializable()
@@ -31,23 +30,22 @@ class Project extends ObjectBehavior
     /**
      * @param Eadrax\Core\Data\User $author
      */
-    function it_authorises_project_authors($auth, $author, $repository)
+    function it_authorises_project_authors($authenticator, $author, $repository)
     {
-        $auth->get_user()->shouldBeCalled()->willReturn($author);
-        $repository->get_project_author($this)->shouldBeCalled()->willReturn($author);
+        $author->id = 'author_id';
+        $authenticator->get_user()->shouldBeCalled()->willReturn($author);
+        $repository->get_project_author_id('project_id')->shouldBeCalled()->willReturn('author_id');
         $this->authorise();
     }
 
     /**
      * @param Eadrax\Core\Data\User $user
-     * @param Eadrax\Core\Data\User $author
      */
-    function it_does_not_authorise_users_who_are_not_project_authors($auth, $user, $author, $repository)
+    function it_does_not_authorise_users_who_are_not_project_authors($authenticator, $user, $repository)
     {
-        $user->id = '1';
-        $author->id = '2';
-        $auth->get_user()->shouldBeCalled()->willReturn($user);
-        $repository->get_project_author($this)->shouldBeCalled()->willReturn($author);
+        $user->id = 'user_id';
+        $authenticator->get_user()->shouldBeCalled()->willReturn($user);
+        $repository->get_project_author_id('project_id')->shouldBeCalled()->willReturn('author_id');
         $this->shouldThrow('Eadrax\Core\Exception\Authorisation')
             ->duringAuthorise();
     }
@@ -57,7 +55,8 @@ class Project extends ObjectBehavior
      */
     function it_can_check_if_it_already_has_a_service($service, $repository)
     {
-        $repository->project_has_service($this, $service)->shouldBeCalled()->willReturn(TRUE);
+        $service->url = 'service_url';
+        $repository->has_existing_service('project_id', 'service_url')->shouldBeCalled()->willReturn(TRUE);
         $this->has_service($service)->shouldReturn(TRUE);
     }
 
@@ -66,7 +65,8 @@ class Project extends ObjectBehavior
      */
     function it_can_add_new_service_hooks($service, $repository)
     {
-        $repository->add_service_hook_to_project($this, $service)->shouldBeCalled();
+        $service->url = 'service_url';
+        $repository->add_service_hook('project_id', 'service_url')->shouldBeCalled();
         $this->add_service($service);
     }
 }

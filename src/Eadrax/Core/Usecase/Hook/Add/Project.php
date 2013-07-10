@@ -11,31 +11,31 @@ use Eadrax\Core\Exception;
 
 class Project extends Data\Project
 {
+    public $id;
     private $repository;
-    private $auth;
+    private $authenticator;
 
-    public function __construct(Data\Project $project, Repository $repository, Tool\Auth $auth)
+    public function __construct(Data\Project $project, Repository $repository, Tool\Authenticator $authenticator)
     {
         $this->id = $project->id;
         $this->repository = $repository;
-        $this->auth = $auth;
+        $this->authenticator = $authenticator;
     }
 
     public function authorise()
     {
-        $logged_in_user = $this->auth->get_user();
-        $project_author = $this->repository->get_project_author($this);
-        if ($logged_in_user->id !== $project_author->id)
+        $logged_in_user = $this->authenticator->get_user();
+        if ($logged_in_user->id !== $this->repository->get_project_author_id($this->id))
             throw new Exception\Authorisation('You are not allowed to add a hook to this project');
     }
 
     public function has_service(Service $service)
     {
-        return $this->repository->project_has_service($this, $service);
+        return $this->repository->has_existing_service($this->id, $service->url);
     }
 
     public function add_service(Service $service)
     {
-        $this->repository->add_service_hook_to_project($this, $service);
+        $this->repository->add_service_hook($this->id, $service->url);
     }
 }

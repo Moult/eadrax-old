@@ -11,17 +11,20 @@ use Eadrax\Core\Exception;
 
 class Service extends Data\Hook
 {
-    public function __construct(Data\Hook $hook, Tool\Validation $validation)
+    public $url;
+    private $validator;
+
+    public function __construct(Data\Hook $hook, Tool\Validator $validator)
     {
         $this->url = $hook->url;
-        $this->validation = $validation;
+        $this->validator = $validator;
     }
 
     public function is_valid()
     {
-        $this->validation->setup(array('url' => $this->url));
-        $this->validation->rule('url', 'rss2');
-        if ( ! $this->validation->check())
-            throw new Exception\Validation($this->validation->errors());
+        $this->validator->setup(array('url' => $this->url));
+        $this->validator->rule('url', 'rss2');
+        if ( ! $this->validator->check())
+            throw new Exception\Validation($this->validator->errors());
     }
 }

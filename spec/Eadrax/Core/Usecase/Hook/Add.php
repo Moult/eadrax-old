@@ -10,10 +10,10 @@ class Add extends ObjectBehavior
      * @param Eadrax\Core\Data\Project $project
      * @param Eadrax\Core\Data\Hook $hook
      * @param Eadrax\Core\Usecase\Hook\Add\Repository $hook_add
-     * @param Eadrax\Core\Tool\Auth $auth
-     * @param Eadrax\Core\Tool\Validation $validation
+     * @param Eadrax\Core\Tool\Authenticator $authenticator
+     * @param Eadrax\Core\Tool\Validator $validator
      */
-    function let($project, $hook, $hook_add, $auth, $validation)
+    function let($project, $hook, $hook_add, $authenticator, $validator)
     {
         $data = array(
             'project' => $project,
@@ -25,8 +25,8 @@ class Add extends ObjectBehavior
         );
 
         $tools = array(
-            'auth' => $auth,
-            'validation' => $validation
+            'authenticator' => $authenticator,
+            'validator' => $validator
         );
 
         $this->beConstructedWith($data, $repositories, $tools);
