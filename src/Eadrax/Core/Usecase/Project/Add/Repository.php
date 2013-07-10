@@ -12,5 +12,5 @@ interface Repository
     /**
      * @return int Unique ID of newly added project
      */
-    public function add($project_name, $project_summary, $author_id);
+    public function add($project_name, $project_summary, $author_id, $project_last_updated);
 }

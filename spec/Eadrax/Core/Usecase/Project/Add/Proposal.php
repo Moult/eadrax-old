@@ -38,7 +38,8 @@ class Proposal extends ObjectBehavior
         $repository->add(
             'project_name',
             'project_summary',
-            'author_id')
+            'author_id',
+            time())
             ->shouldBeCalled()->willReturn(42);
         $this->submit();
         $this->id->shouldBe(42);

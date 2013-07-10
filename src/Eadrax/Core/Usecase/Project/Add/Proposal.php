@@ -14,6 +14,7 @@ class Proposal extends Data\Project
     public $name;
     public $summary;
     public $author;
+    public $last_updated;
     private $repository;
 
     public function __construct(Data\Project $project, Repository $repository, Tool\Authenticator $authenticator)
@@ -22,6 +23,7 @@ class Proposal extends Data\Project
         $this->summary = $project->summary;
         $this->author = $authenticator->get_user();
         $this->repository = $repository;
+        $this->last_updated = time();
     }
 
     public function submit()
@@ -29,7 +31,8 @@ class Proposal extends Data\Project
         $this->id = $this->repository->add(
             $this->name,
             $this->summary,
-            $this->author->id
+            $this->author->id,
+            $this->last_updated
         );
     }
 }
