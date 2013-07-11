@@ -57,6 +57,18 @@ interface Emailer
     public function set_subject($subject);
 
     /**
+     * Sets the body of the email.
+     *
+     * Example:
+     * $emailer->set_body('Foo bar foo bar foo bar');
+     *
+     * @param string $body The body of the email
+     *
+     * @return void
+     */
+    public function set_body($body);
+
+    /**
      * Sends out a new email.
      *
      * Example:
