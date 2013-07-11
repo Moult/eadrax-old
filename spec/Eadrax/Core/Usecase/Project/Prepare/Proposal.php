@@ -8,15 +8,15 @@ class Proposal extends ObjectBehavior
 {
     /**
      * @param Eadrax\Core\Data\Project $project
-     * @param Eadrax\Core\Tool\Validation $validation
+     * @param Eadrax\Core\Tool\Validator $validator
      */
-    function let($project, $validation)
+    function let($project, $validator)
     {
         $project->name = 'Project name';
         $project->summary = 'Project summary';
         $project->website = 'Project website';
 
-        $this->beConstructedWith($project, $validation);
+        $this->beConstructedWith($project, $validator);
 
         $this->name->shouldBe('Project name');
         $this->summary->shouldBe('Project summary');
@@ -33,24 +33,24 @@ class Proposal extends ObjectBehavior
         $this->shouldHaveType('Eadrax\Core\Data\Project');
     }
 
-    function it_catches_invalid_proposal_information($validation)
+    function it_catches_invalid_proposal_information($validator)
     {
-        $validation->setup(array(
+        $validator->setup(array(
             'name' => $this->name,
             'summary' => $this->summary,
             'website' => $this->website
         ))->shouldBeCalled();
-        $validation->rule('name', 'not_empty')->shouldBeCalled();
-        $validation->rule('summary', 'not_empty')->shouldBeCalled();
-        $validation->rule('website', 'url')->shouldBeCalled();
-        $validation->check()->shouldBeCalled()->willReturn(FALSE);
-        $validation->errors()->shouldBeCalled()->willReturn(array('foo'));
+        $validator->rule('name', 'not_empty')->shouldBeCalled();
+        $validator->rule('summary', 'not_empty')->shouldBeCalled();
+        $validator->rule('website', 'url')->shouldBeCalled();
+        $validator->check()->shouldBeCalled()->willReturn(FALSE);
+        $validator->errors()->shouldBeCalled()->willReturn(array('foo'));
         $this->shouldThrow('\Eadrax\Core\Exception\Validation')->duringValidate();
     }
 
-    function it_allows_valid_proposal_information($validation)
+    function it_allows_valid_proposal_information($validator)
     {
-        $validation->check()->shouldBeCalled()->willReturn(TRUE);
+        $validator->check()->shouldBeCalled()->willReturn(TRUE);
         $this->shouldNotThrow('\Eadrax\Core\Exception\Validation')->duringValidate();
     }
 }

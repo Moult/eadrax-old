@@ -32,7 +32,7 @@ class Prepare
     {
         return new Proposal(
             $this->data['project'],
-            $this->tools['validation']
+            $this->tools['validator']
         );
     }
 }

@@ -12,34 +12,37 @@ use Eadrax\Core\Exception;
 
 class Proposal extends Data\Project
 {
-    private $validation;
+    public $name;
+    public $summary;
+    public $website;
+    private $validator;
 
-    public function __construct(Data\Project $project, Tool\Validation $validation)
+    public function __construct(Data\Project $project, Tool\Validator $validator)
     {
         $this->name = $project->name;
         $this->summary = $project->summary;
         $this->website = $project->website;
 
-        $this->validation = $validation;
+        $this->validator = $validator;
     }
 
     public function validate()
     {
         $this->setup_validation();
 
-        if ( ! $this->validation->check())
-            throw new Exception\Validation($this->validation->errors());
+        if ( ! $this->validator->check())
+            throw new Exception\Validation($this->validator->errors());
     }
 
     private function setup_validation()
     {
-        $this->validation->setup(array(
+        $this->validator->setup(array(
             'name' => $this->name,
             'summary' => $this->summary,
             'website' => $this->website
         ));
-        $this->validation->rule('name', 'not_empty');
-        $this->validation->rule('summary', 'not_empty');
-        $this->validation->rule('website', 'url');
+        $this->validator->rule('name', 'not_empty');
+        $this->validator->rule('summary', 'not_empty');
+        $this->validator->rule('website', 'url');
     }
 }

@@ -8,15 +8,15 @@ class Prepare extends ObjectBehavior
 {
     /**
      * @param Eadrax\Core\Data\Project $project
-     * @param Eadrax\Core\Tool\Validation $validation
+     * @param Eadrax\Core\Tool\Validator $validator
      */
-    function let($project, $validation)
+    function let($project, $validator)
     {
         $data = array(
             'project' => $project
         );
         $tools = array(
-            'validation' => $validation
+            'validator' => $validator
         );
         $this->beConstructedWith($data, $tools);
     }
