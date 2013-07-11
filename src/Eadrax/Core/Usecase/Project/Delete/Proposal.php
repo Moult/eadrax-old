@@ -7,6 +7,7 @@
 namespace Eadrax\Core\Usecase\Project\Delete;
 use Eadrax\Core\Data;
 use Eadrax\Core\Exception;
+use Eadrax\Core\Tool;
 
 class Proposal extends Data\Project
 {

@@ -48,7 +48,7 @@ class Proposal extends ObjectBehavior
         $author->id = 'author_id';
         $authenticator->get_user()->shouldBeCalled()->willReturn($author);
         $repository->get_project_author_id('project_id')->shouldBeCalled()->willReturn('author_id');
-        $this->shouldThrow('\Eadrax\Core\Exception\Authorisation')
+        $this->shouldNotThrow('\Eadrax\Core\Exception\Authorisation')
             ->duringAuthorise();
     }
 
@@ -60,7 +60,7 @@ class Proposal extends ObjectBehavior
             'project_summary',
             'project_description',
             'project_website',
-            'project_last_updated'
+            time()
         )->shouldBeCalled();
         $this->update();
     }

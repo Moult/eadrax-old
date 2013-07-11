@@ -41,7 +41,8 @@ class Delete
     {
         return new Proposal(
             $this->data['project'],
-            $this->repositories['project_delete']
+            $this->repositories['project_delete'],
+            $this->tools['authenticator']
         );
     }
 }
