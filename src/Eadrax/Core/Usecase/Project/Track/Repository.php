@@ -8,21 +8,38 @@ namespace Eadrax\Core\Usecase\Project\Track;
 
 interface Repository
 {
-    public function is_user_tracking_project($fan, $project);
-    public function remove_project($fan, $project);
-    public function if_fan_of($fan, $idol);
-    public function remove_idol($fan, $idol);
     /**
-     * @return Array of Data\Project
+     * @return array($author_id, $author_username)
      */
-    public function get_projects_by_author($author);
+    public function get_project_author_id_and_username($project_id);
+
     /**
-     * @param Array $projects Contains Data\project
+     * @return void
      */
-    public function add_projects($fan, $projects);
-    public function number_of_projects_by($author);
-    public function number_of_projects_tracked_by($fan, $author);
-    public function remove_projects_by_author($fan, $author);
-    public function add_project($fan, $project);
-    public function get_project_author($project);
+    public function delete_fan_from_projects_owned_by_user($fan_id, $user_id);
+
+    /**
+     * @return array($project_name, $project_author_email)
+     */
+    public function get_project_name_and_author_email($project_id);
+
+    /**
+     * @return int
+     */
+    public function get_number_of_projects_owned_by_author($author_id);
+
+    /**
+     * @return int
+     */
+    public function get_number_of_tracked_projects_owned_by_author($fan_id, $author_id);
+
+    /**
+     * @return bool
+     */
+    public function does_project_have_fan($project_id, $fan_id);
+
+    /**
+     * @return void
+     */
+    public function add_fan_to_project($fan_id, $project_id);
 }

@@ -5,16 +5,17 @@
  */
 
 namespace Eadrax\Core\Usecase\Project\Track;
-use Eadrax\Core\Usecase\User;
 
 class Interactor
 {
+    private $author;
     private $fan;
     private $project;
     private $user_track;
 
-    public function __construct(Fan $fan, Project $project, User\Track\Interactor $user_track)
+    public function __construct(Author $author, Fan $fan, Project $project, User\Track $user_track)
     {
+        $this->author = $author;
         $this->fan = $fan;
         $this->project = $project;
         $this->user_track = $user_track;
@@ -23,36 +24,26 @@ class Interactor
     public function interact()
     {
         $this->fan->authorise();
-        $this->update_fan_track_status();
-    }
 
-    private function update_fan_track_status()
-    {
-        if ($this->fan->is_tracking_project($this->project))
-            return $this->fan->remove_project($this->project);
-        elseif ($this->fan->has_idol($this->project->author))
-            return $this->remove_idol_and_just_track_all_other_projects();
-        elseif ($this->fan->is_fan_of_all_other_projects_by_($this->project->author))
-            return $this->make_project_author_an_idol_of_fan();
+        if ($this->project->has_fan())
+            return;
+
+        $author_id = $this->author->get_id();
+        if ($this->is_fan_of_all_projects_by_author($author_id))
+        {
+            $this->author->remove_fan_from_all_projects();
+            $this->user_track->set_author_id($author_id);
+            $this->user_track->fetch()->interact();
+        }
         else
-            return $this->make_fan_track_project();
+        {
+            $this->project->add_fan();
+            $this->author->notify_about_new_project_tracker($this->project->get_id());
+        }
     }
 
-    private function remove_idol_and_just_track_all_other_projects()
+    private function is_fan_of_all_projects_by_author($author_id)
     {
-        $this->fan->remove_idol($this->project->author);
-        $this->fan->track_all_projects_by_author_except_for($this->project);
-    }
-
-    private function make_project_author_an_idol_of_fan()
-    {
-        $this->fan->untrack_all_projects_by($this->project->author);
-        $this->user_track->interact();
-    }
-
-    private function make_fan_track_project()
-    {
-        $this->fan->add_project($this->project);
-        $this->project->notify_author($this->fan);
+        return (bool) ($this->author->get_number_of_projects() === $this->fan->get_number_of_projects_owned_by_author($author_id) + 1);
     }
 }

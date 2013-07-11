@@ -10,34 +10,26 @@ use Eadrax\Core\Tool;
 
 class Project extends Data\Project
 {
-    private $mail;
+    public $id;
+    private $repository;
+    private $authenticator;
+    private $fan;
 
-    public function __construct(Data\Project $project, Tool\Mail $mail)
+    public function __construct(Data\Project $project, Repository $repository, Tool\Authenticator $authenticator)
     {
         $this->id = $project->id;
-        $this->author = $project->author;
-        $this->name = $project->name;
-
-        $this->mail = $mail;
+        $this->repository = $repository;
+        $this->authenticator = $authenticator;
+        $this->fan = $this->authenticator->get_user();
     }
 
-    public function notify_author(Fan $fan)
+    public function has_fan()
     {
-        $author = $this->author;
-        $message = <<<EOT
-Hey $author->username,
+        return $this->repository->does_project_have_fan($this->id, $this->fan->id);
+    }
 
-$fan->username is now a new fan of your project "$this->name" on WIPUP! They'll be notified whenever you make a new update.
-
-This is obviously because they think you're awesome, so don't disappoint them.
-
-Cheers,
-The WIPUP Team
-EOT;
-        $this->mail->send(
-            'foo@bar.com',
-            'Your project "Foo" has a new fan on WIPUP!',
-            $message
-        );
+    public function add_fan()
+    {
+        $this->repository->add_fan_to_project($this->fan->id, $this->id);
     }
 }

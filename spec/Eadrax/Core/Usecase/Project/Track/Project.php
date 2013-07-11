@@ -8,19 +8,16 @@ class Project extends ObjectBehavior
 {
     /**
      * @param Eadrax\Core\Data\Project $project
-     * @param Eadrax\Core\Data\User $author
-     * @param Eadrax\Core\Tool\Mail $mail
+     * @param Eadrax\Core\Usecase\Project\Track\Repository $repository
+     * @param Eadrax\Core\Tool\Authenticator $authenticator
+     * @param Eadrax\Core\Data\User $fan
      */
-    function let($project, $author, $mail)
+    function let($project, $repository, $authenticator, $fan)
     {
-        $author->username = 'Username';
-        $project->id = 'id';
-        $project->author = $author;
-        $project->name = 'Foo';
-        $this->beConstructedWith($project, $mail);
-        $this->id->shouldBe('id');
-        $this->author->shouldBe($author);
-        $this->name->shouldBe('Foo');
+        $fan->id = 'fan_id';
+        $project->id = 'project_id';
+        $authenticator->get_user()->willReturn($fan);
+        $this->beConstructedWith($project, $repository, $authenticator);
     }
 
     function it_should_be_initializable()
@@ -33,27 +30,15 @@ class Project extends ObjectBehavior
         $this->shouldHaveType('Eadrax\Core\Data\Project');
     }
 
-    /**
-     * @param Eadrax\Core\Usecase\Project\Track\Fan $fan
-     */
-    function it_notifies_the_author_about_a_new_fan($fan, $mail)
+    function it_can_check_whether_it_has_a_fan($repository)
     {
-        $fan->username = 'Fanusername';
-        $message = <<<EOT
-Hey Username,
+        $repository->does_project_have_fan('project_id', 'fan_id')->shouldBeCalled()->willReturn(TRUE);
+        $this->has_fan()->shouldReturn(TRUE);
+    }
 
-$fan->username is now a new fan of your project "Foo" on WIPUP! They'll be notified whenever you make a new update.
-
-This is obviously because they think you're awesome, so don't disappoint them.
-
-Cheers,
-The WIPUP Team
-EOT;
-        $mail->send(
-            'foo@bar.com',
-            'Your project "Foo" has a new fan on WIPUP!',
-            $message
-        )->shouldBeCalled();
-        $this->notify_author($fan);
+    function it_can_add_a_fan($repository)
+    {
+        $repository->add_fan_to_project('fan_id', 'project_id')->shouldBeCalled();
+        $this->add_fan();
     }
 }
