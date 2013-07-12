@@ -5,21 +5,20 @@
  */
 
 namespace Eadrax\Core\Usecase\User;
-
 use Eadrax\Core\Usecase\User\Logout\Interactor;
 use Eadrax\Core\Tool;
 
 class Logout
 {
-    private $auth;
+    private $authenticator;
 
-    public function __construct($auth)
+    public function __construct(Tool\Authenticator $authenticator)
     {
-        $this->auth = $auth;
+        $this->authenticator = $authenticator;
     }
 
     public function fetch()
     {
-        return new Interactor($this->auth);
+        return new Interactor($this->authenticator);
     }
 }

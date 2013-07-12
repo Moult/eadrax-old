@@ -7,11 +7,11 @@ use PHPSpec2\ObjectBehavior;
 class Logout extends ObjectBehavior
 {
     /**
-     * @param Eadrax\Core\Tool\Auth $auth
+     * @param Eadrax\Core\Tool\Authenticator $authenticator
      */
-    function let($auth)
+    function let($authenticator)
     {
-        $this->beConstructedWith($auth);
+        $this->beConstructedWith($authenticator);
     }
 
     function it_should_be_initializable()
