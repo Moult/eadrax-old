@@ -17,6 +17,7 @@ class Registrant extends ObjectBehavior
     {
         $user->username = 'username';
         $user->password = 'password';
+        $user->password_verify = 'password_verify';
         $user->email = 'email';
         $this->beConstructedWith($user, $repository, $authenticator, $validator);
     }
@@ -48,6 +49,7 @@ class Registrant extends ObjectBehavior
         $validator->setup(array(
             'username' => 'username',
             'password' => 'password',
+            'password_verify' => 'password_verify',
             'email' => 'email'
         ))->shouldBeCalled();
         $validator->rule('username', 'not_empty')->shouldBeCalled();
@@ -57,6 +59,7 @@ class Registrant extends ObjectBehavior
         $validator->callback('username', array($this, 'is_unique_username'), array('username'))->shouldBeCalled();
         $validator->rule('password', 'not_empty')->shouldBeCalled();
         $validator->rule('password', 'min_length', '6')->shouldBeCalled();
+        $validator->rule('password', 'matches', 'password_verify')->shouldBeCalled();
         $validator->rule('email', 'not_empty')->shouldBeCalled();
         $validator->rule('email', 'email')->shouldBeCalled();
 

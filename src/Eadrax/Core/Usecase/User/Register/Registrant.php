@@ -14,6 +14,7 @@ class Registrant extends Data\User
 {
     public $username;
     public $password;
+    public $password_verify;
     public $email;
     private $repository;
     private $authenticator;
@@ -23,6 +24,7 @@ class Registrant extends Data\User
     {
         $this->username = $user->username;
         $this->password = $user->password;
+        $this->password_verify = $user->password_verify;
         $this->email = $user->email;
         $this->repository = $repository;
         $this->authenticator = $authenticator;
@@ -48,6 +50,7 @@ class Registrant extends Data\User
         $this->validator->setup(array(
             'username' => $this->username,
             'password' => $this->password,
+            'password_verify' => $this->password_verify,
             'email' => $this->email
         ));
 
@@ -58,6 +61,7 @@ class Registrant extends Data\User
         $this->validator->callback('username', array($this, 'is_unique_username'), array('username'));
         $this->validator->rule('password', 'not_empty');
         $this->validator->rule('password', 'min_length', '6');
+        $this->validator->rule('password', 'matches', 'password_verify');
         $this->validator->rule('email', 'not_empty');
         $this->validator->rule('email', 'email');
     }
