@@ -5,7 +5,6 @@
  */
 
 namespace Eadrax\Core\Usecase\User\Register;
-
 use Eadrax\Core\Usecase\User;
 
 class Interactor

@@ -10,14 +10,15 @@ class Registrant extends ObjectBehavior
     /**
      * @param Eadrax\Core\Data\User $user
      * @param Eadrax\Core\Usecase\User\Register\Repository $repository
-     * @param Eadrax\Core\Tool\Auth $auth
-     * @param Eadrax\Core\Tool\Validation $validation
+     * @param Eadrax\Core\Tool\Authenticator $authenticator
+     * @param Eadrax\Core\Tool\Validator $validator
      */
-    function let($user, $repository, $auth, $validation)
+    function let($user, $repository, $authenticator, $validator)
     {
         $user->username = 'username';
-        $this->beConstructedWith($user, $repository, $auth, $validation);
-        $this->username->shouldBe('username');
+        $user->password = 'password';
+        $user->email = 'email';
+        $this->beConstructedWith($user, $repository, $authenticator, $validator);
     }
 
     function it_should_be_initializable()
@@ -30,52 +31,52 @@ class Registrant extends ObjectBehavior
         $this->shouldHaveType('Eadrax\Core\Data\User');
     }
 
-    function it_does_not_authorise_logged_in_users($auth)
+    function it_does_not_authorise_logged_in_users($authenticator)
     {
-        $auth->logged_in()->willReturn(TRUE);
+        $authenticator->logged_in()->willReturn(TRUE);
         $this->shouldThrow('\Eadrax\Core\Exception\Authorisation')->duringAuthorise();
     }
 
-    function it_authorises_the_registrant_if_not_logged_in($auth)
+    function it_authorises_the_registrant_if_not_logged_in($authenticator)
     {
-        $auth->logged_in()->willReturn(FALSE);
+        $authenticator->logged_in()->willReturn(FALSE);
         $this->shouldNotThrow('\Eadrax\Core\Exception\Authorisation')->duringAuthorise();
     }
 
-    function it_checks_for_invalid_user_information($validation)
+    function it_checks_for_invalid_user_information($validator)
     {
-        $validation->setup(array(
+        $validator->setup(array(
             'username' => 'username',
-            'password' => '',
-            'email' => ''
+            'password' => 'password',
+            'email' => 'email'
         ))->shouldBeCalled();
-        $validation->rule('username', 'not_empty')->shouldBeCalled();
-        $validation->rule('username', 'regex', '/^[a-z_.]++$/iD')->shouldBeCalled();
-        $validation->rule('username', 'min_length', '3')->shouldBeCalled();
-        $validation->rule('username', 'max_length', '15')->shouldBeCalled();
-        $validation->callback('username', array($this, 'is_unique_username'), array('username'))->shouldBeCalled();
-        $validation->rule('password', 'not_empty')->shouldBeCalled();
-        $validation->rule('password', 'min_length', '6')->shouldBeCalled();
-        $validation->rule('email', 'not_empty')->shouldBeCalled();
-        $validation->rule('email', 'email')->shouldBeCalled();
+        $validator->rule('username', 'not_empty')->shouldBeCalled();
+        $validator->rule('username', 'regex', '/^[a-z_.]++$/iD')->shouldBeCalled();
+        $validator->rule('username', 'min_length', '3')->shouldBeCalled();
+        $validator->rule('username', 'max_length', '15')->shouldBeCalled();
+        $validator->callback('username', array($this, 'is_unique_username'), array('username'))->shouldBeCalled();
+        $validator->rule('password', 'not_empty')->shouldBeCalled();
+        $validator->rule('password', 'min_length', '6')->shouldBeCalled();
+        $validator->rule('email', 'not_empty')->shouldBeCalled();
+        $validator->rule('email', 'email')->shouldBeCalled();
 
-        $validation->check()->willReturn(FALSE);
-        $validation->errors()->willReturn(array(
+        $validator->check()->willReturn(FALSE);
+        $validator->errors()->willReturn(array(
             'foo' => 'bar'
         ));
 
         $this->shouldThrow('\Eadrax\Core\Exception\Validation')->duringValidate();
     }
 
-    function it_validates_valid_user_information($validation)
+    function it_validates_valid_user_information($validator)
     {
-        $validation->check()->willReturn(TRUE);
+        $validator->check()->willReturn(TRUE);
         $this->shouldNotThrow('\Eadrax\Core\Exception\Validation')->duringValidate();
     }
 
     function it_registers_the_user($repository)
     {
-        $repository->register($this)->shouldBeCalled();
+        $repository->register('username', 'password', 'email')->shouldBeCalled();
         $this->register();
     }
 

@@ -37,8 +37,8 @@ class Register
         return new Registrant(
             $this->data['user'],
             $this->repositories['user_register'],
-            $this->tools['auth'],
-            $this->tools['validation']
+            $this->tools['authenticator'],
+            $this->tools['validator']
         );
     }
 
@@ -54,8 +54,8 @@ class Register
         return new User\Login\Guest(
             $this->data['user'],
             $this->repositories['user_login'],
-            $this->tools['auth'],
-            $this->tools['validation']
+            $this->tools['authenticator'],
+            $this->tools['validator']
         );
     }
 }

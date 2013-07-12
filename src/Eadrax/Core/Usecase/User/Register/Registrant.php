@@ -12,25 +12,26 @@ use Eadrax\Core\Exception;
 
 class Registrant extends Data\User
 {
+    public $username;
+    public $password;
+    public $email;
     private $repository;
-    private $auth;
-    private $validation;
+    private $authenticator;
+    private $validator;
 
-    public function __construct(Data\User $user, Repository $repository, Tool\Auth $auth, Tool\Validation $validation)
+    public function __construct(Data\User $user, Repository $repository, Tool\Authenticator $authenticator, Tool\Validator $validator)
     {
-        foreach ($user as $property => $value)
-        {
-            $this->$property = $value;
-        }
-
+        $this->username = $user->username;
+        $this->password = $user->password;
+        $this->email = $user->email;
         $this->repository = $repository;
-        $this->auth = $auth;
-        $this->validation = $validation;
+        $this->authenticator = $authenticator;
+        $this->validator = $validator;
     }
 
     public function authorise()
     {
-        if ($this->auth->logged_in())
+        if ($this->authenticator->logged_in())
             throw new Exception\Authorisation('Logged in users cannot register new accounts.');
     }
 
@@ -38,27 +39,27 @@ class Registrant extends Data\User
     {
         $this->setup_validation();
 
-        if ( ! $this->validation->check())
-            throw new Exception\Validation($this->validation->errors());
+        if ( ! $this->validator->check())
+            throw new Exception\Validation($this->validator->errors());
     }
 
     private function setup_validation()
     {
-        $this->validation->setup(array(
+        $this->validator->setup(array(
             'username' => $this->username,
             'password' => $this->password,
             'email' => $this->email
         ));
 
-        $this->validation->rule('username', 'not_empty');
-        $this->validation->rule('username', 'regex', '/^[a-z_.]++$/iD');
-        $this->validation->rule('username', 'min_length', '3');
-        $this->validation->rule('username', 'max_length', '15');
-        $this->validation->callback('username', array($this, 'is_unique_username'), array('username'));
-        $this->validation->rule('password', 'not_empty');
-        $this->validation->rule('password', 'min_length', '6');
-        $this->validation->rule('email', 'not_empty');
-        $this->validation->rule('email', 'email');
+        $this->validator->rule('username', 'not_empty');
+        $this->validator->rule('username', 'regex', '/^[a-z_.]++$/iD');
+        $this->validator->rule('username', 'min_length', '3');
+        $this->validator->rule('username', 'max_length', '15');
+        $this->validator->callback('username', array($this, 'is_unique_username'), array('username'));
+        $this->validator->rule('password', 'not_empty');
+        $this->validator->rule('password', 'min_length', '6');
+        $this->validator->rule('email', 'not_empty');
+        $this->validator->rule('email', 'email');
     }
 
     public function is_unique_username($username)
@@ -68,6 +69,6 @@ class Registrant extends Data\User
 
     public function register()
     {
-        $this->repository->register($this);
+        $this->repository->register($this->username, $this->password, $this->email);
     }
 }

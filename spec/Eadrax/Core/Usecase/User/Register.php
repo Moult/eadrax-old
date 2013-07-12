@@ -10,22 +10,25 @@ class Register extends ObjectBehavior
      * @param Eadrax\Core\Data\User $user
      * @param Eadrax\Core\Usecase\User\Register\Repository $user_register
      * @param Eadrax\Core\Usecase\User\Login\Repository $user_login
-     * @param Eadrax\Core\Tool\Auth $auth
-     * @param Eadrax\Core\Tool\Validation $validation
+     * @param Eadrax\Core\Tool\Authenticator $authenticator
+     * @param Eadrax\Core\Tool\Validator $validator
      */
-    function let($user, $user_register, $user_login, $auth, $validation)
+    function let($user, $user_register, $user_login, $authenticator, $validator)
     {
         $data = array(
             'user' => $user
         );
+
         $repositories = array(
             'user_register' => $user_register,
             'user_login' => $user_login
         );
+
         $tools = array(
-            'auth' => $auth,
-            'validation' => $validation
+            'authenticator' => $authenticator,
+            'validator' => $validator
         );
+
         $this->beConstructedWith($data, $repositories, $tools);
     }
 
