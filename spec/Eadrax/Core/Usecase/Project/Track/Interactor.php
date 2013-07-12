@@ -29,6 +29,7 @@ class Interactor extends ObjectBehavior
     {
         $fan->authorise()->shouldBeCalled();
         $project->has_fan()->shouldBeCalled()->willReturn(FALSE);
+        $author->has_fan()->shouldBeCalled()->willReturn(FALSE);
         $author->get_id()->shouldBeCalled()->willReturn('author_id');
         $author->get_number_of_projects()->shouldBeCalled()->willReturn(10);
         $fan->get_number_of_projects_owned_by_author('author_id')->shouldBeCalled()->willReturn(9);
@@ -44,6 +45,7 @@ class Interactor extends ObjectBehavior
     {
         $fan->authorise()->shouldBeCalled();
         $project->has_fan()->shouldBeCalled()->willReturn(FALSE);
+        $author->has_fan()->shouldBeCalled()->willReturn(FALSE);
         $author->get_id()->shouldBeCalled()->willReturn('author_id');
         $author->get_number_of_projects()->shouldBeCalled()->willReturn(10);
         $fan->get_number_of_projects_owned_by_author('author_id')->shouldBeCalled()->willReturn(1);
@@ -53,10 +55,20 @@ class Interactor extends ObjectBehavior
         $this->interact();
     }
 
-    function it_does_nothing_if_project_already_has_user_as_a_fan($fan, $project, $user_track)
+    function it_does_nothing_if_project_already_has_user_as_a_fan($author, $fan, $project, $user_track)
     {
         $fan->authorise->shouldBeCalled();
         $project->has_fan()->shouldBeCalled()->willReturn(TRUE);
+        $user_track->fetch()->shouldNotBeCalled();
+        $project->add_fan()->shouldNotBeCalled();
+        $this->interact();
+    }
+
+    function it_does_nothing_if_project_author_already_has_user_as_a_fan($author, $fan, $project, $user_track)
+    {
+        $fan->authorise->shouldBeCalled();
+        $project->has_fan()->shouldBeCalled()->willReturn(FALSE);
+        $author->has_fan()->shouldBeCalled()->willReturn(TRUE);
         $user_track->fetch()->shouldNotBeCalled();
         $project->add_fan()->shouldNotBeCalled();
         $this->interact();

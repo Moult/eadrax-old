@@ -63,4 +63,9 @@ class Author extends Data\User
     {
         return $this->repository->get_number_of_projects_owned_by_author($this->id);
     }
+
+    public function has_fan()
+    {
+        return $this->repository->does_author_have_fan($this->id, $this->fan->id);
+    }
 }

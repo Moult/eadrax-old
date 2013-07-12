@@ -25,7 +25,7 @@ class Interactor
     {
         $this->fan->authorise();
 
-        if ($this->project->has_fan())
+        if ($this->project->has_fan() OR $this->author->has_fan())
             return;
 
         $author_id = $this->author->get_id();

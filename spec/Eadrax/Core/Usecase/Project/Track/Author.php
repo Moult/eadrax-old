@@ -73,4 +73,10 @@ class Author extends ObjectBehavior
         $repository->get_number_of_projects_owned_by_author('author_id')->shouldBeCalled()->willReturn(42);
         $this->get_number_of_projects()->shouldReturn(42);
     }
+
+    function it_can_check_whether_or_not_it_has_a_fan($repository)
+    {
+        $repository->does_author_have_fan('author_id', 'fan_id')->shouldBeCalled()->willReturn(TRUE);
+        $this->has_fan()->shouldReturn(TRUE);
+    }
 }

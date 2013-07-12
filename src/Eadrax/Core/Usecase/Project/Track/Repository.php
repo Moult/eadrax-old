@@ -42,4 +42,9 @@ interface Repository
      * @return void
      */
     public function add_fan_to_project($fan_id, $project_id);
+
+    /**
+     * @return bool
+     */
+    public function does_author_have_fan($author_id, $fan_id);
 }
