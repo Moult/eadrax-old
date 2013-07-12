@@ -11,6 +11,23 @@ use Eadrax\Core\Exception;
 
 class User extends Data\User
 {
+    public $id;
+    public $password;
+    public $password_verify;
+    public $email;
+    public $bio;
+    public $website;
+    public $location;
+    public $avatar;
+    public $dob;
+    public $gender;
+    public $show_email;
+    public $receive_notifications;
+
+    private $repository;
+    private $authenticator;
+    private $validator;
+
     public function __construct(Data\User $user, Repository $repository, Tool\Authenticator $authenticator, Tool\Validator $validator)
     {
         $auth_user = $authenticator->get_user();

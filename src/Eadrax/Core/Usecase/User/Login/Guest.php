@@ -11,6 +11,8 @@ use Eadrax\Core\Exception;
 
 class Guest extends Data\User
 {
+    public $username;
+    public $password;
     private $repository;
     private $authenticator;
     private $validator;
@@ -19,7 +21,6 @@ class Guest extends Data\User
     {
         $this->username = $user->username;
         $this->password = $user->password;
-
         $this->repository = $repository;
         $this->authenticator = $authenticator;
         $this->validator = $validator;
