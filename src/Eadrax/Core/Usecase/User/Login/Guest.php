@@ -5,7 +5,6 @@
  */
 
 namespace Eadrax\Core\Usecase\User\Login;
-
 use Eadrax\Core\Data;
 use Eadrax\Core\Tool;
 use Eadrax\Core\Exception;
@@ -13,22 +12,22 @@ use Eadrax\Core\Exception;
 class Guest extends Data\User
 {
     private $repository;
-    private $auth;
-    private $validation;
+    private $authenticator;
+    private $validator;
 
-    public function __construct(Data\User $user, Repository $repository, Tool\Auth $auth, Tool\Validation $validation)
+    public function __construct(Data\User $user, Repository $repository, Tool\Authenticator $authenticator, Tool\Validator $validator)
     {
         $this->username = $user->username;
         $this->password = $user->password;
 
         $this->repository = $repository;
-        $this->auth = $auth;
-        $this->validation = $validation;
+        $this->authenticator = $authenticator;
+        $this->validator = $validator;
     }
 
     public function authorise()
     {
-        if ($this->auth->logged_in())
+        if ($this->authenticator->logged_in())
             throw new Exception\Authorisation('Logged in users don\'t need to login again.');
     }
 
@@ -36,18 +35,19 @@ class Guest extends Data\User
     {
         $this->setup_validation();
 
-        if ( ! $this->validation->check())
-            throw new Exception\Validation($this->validation->errors());
+        if ( ! $this->validator->check())
+            throw new Exception\Validation($this->validator->errors());
     }
 
     private function setup_validation()
     {
-        $this->validation->setup(array(
+        $this->validator->setup(array(
                 'username' => $this->username,
                 'password' => $this->password
             ));
-        $this->validation->rule('username', 'not_empty');
-        $this->validation->callback('username', array($this, 'is_existing_account'), array('username', 'password'));
+        $this->validator->rule('username', 'not_empty');
+        $this->validator->rule('password', 'not_empty');
+        $this->validator->callback('username', array($this, 'is_existing_account'), array('username', 'password'));
     }
 
     public function is_existing_account($username, $password)
@@ -57,6 +57,6 @@ class Guest extends Data\User
 
     public function login()
     {
-        $this->id = $this->auth->login($this->username, $this->password);
+        $this->id = $this->authenticator->login($this->username, $this->password);
     }
 }

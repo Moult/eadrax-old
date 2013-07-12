@@ -32,8 +32,8 @@ class Login
         return new Guest(
             $this->data['user'],
             $this->repositories['user_login'],
-            $this->tools['auth'],
-            $this->tools['validation']
+            $this->tools['authenticator'],
+            $this->tools['validator']
         );
     }
 }

@@ -6,8 +6,6 @@
 
 namespace Eadrax\Core\Usecase\User\Login;
 
-use Eadrax\Core\Exception;
-
 class Interactor
 {
     private $guest;

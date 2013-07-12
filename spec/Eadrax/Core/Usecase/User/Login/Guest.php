@@ -10,15 +10,15 @@ class Guest extends ObjectBehavior
     /**
      * @param Eadrax\Core\Data\User $user
      * @param Eadrax\Core\Usecase\User\Login\Repository $repository
-     * @param Eadrax\Core\Tool\Auth $auth
-     * @param Eadrax\Core\Tool\Validation $validation
+     * @param Eadrax\Core\Tool\Authenticator $authenticator
+     * @param Eadrax\Core\Tool\Validator $validator
      */
-    function let($user, $repository, $auth, $validation)
+    function let($user, $repository, $authenticator, $validator)
     {
         $user->username = 'username';
         $user->password = 'password';
 
-        $this->beConstructedWith($user, $repository, $auth, $validation);
+        $this->beConstructedWith($user, $repository, $authenticator, $validator);
 
         $this->username->shouldBe('username');
         $this->password->shouldBe('password');
@@ -34,43 +34,44 @@ class Guest extends ObjectBehavior
         $this->shouldHaveType('Eadrax\Core\Data\User');
     }
 
-    function it_throws_an_authorisation_error_if_logged_in($auth)
+    function it_throws_an_authorisation_error_if_logged_in($authenticator)
     {
-        $auth->logged_in()->shouldBeCalled()->willReturn(TRUE);
+        $authenticator->logged_in()->shouldBeCalled()->willReturn(TRUE);
         $this->shouldThrow('\Eadrax\Core\Exception\Authorisation')->duringAuthorise();
     }
 
-    function it_authorises_guests($auth)
+    function it_authorises_guests($authenticator)
     {
-        $auth->logged_in()->shouldBeCalled()->willReturn(FALSE);
+        $authenticator->logged_in()->shouldBeCalled()->willReturn(FALSE);
         $this->shouldNotThrow('\Eadrax\Core\Exception\Authorisation')->duringAuthorise();
     }
 
-    function it_checks_for_invalid_information($validation)
+    function it_checks_for_invalid_information($validator)
     {
-        $validation->setup(array(
+        $validator->setup(array(
             'username' => 'username',
             'password' => 'password'
         ))->shouldBeCalled();
-        $validation->rule('username', 'not_empty')->shouldBeCalled();
-        $validation->callback('username', array($this, 'is_existing_account'), array('username', 'password'))->shouldBeCalled();
+        $validator->rule('username', 'not_empty')->shouldBeCalled();
+        $validator->rule('password', 'not_empty')->shouldBeCalled();
+        $validator->callback('username', array($this, 'is_existing_account'), array('username', 'password'))->shouldBeCalled();
 
-        $validation->check()->shouldBeCalled()->willReturn(FALSE);
-        $validation->errors()->shouldBeCalled()->willReturn(array(
+        $validator->check()->shouldBeCalled()->willReturn(FALSE);
+        $validator->errors()->shouldBeCalled()->willReturn(array(
             'foo' => 'bar'
         ));
         $this->shouldThrow('\Eadrax\Core\Exception\Validation')->duringValidate();
     }
 
-    function it_allows_valid_information($validation)
+    function it_allows_valid_information($validator)
     {
-        $validation->check()->shouldBeCalled()->willReturn(TRUE);
+        $validator->check()->shouldBeCalled()->willReturn(TRUE);
         $this->shouldNotThrow('\Eadrax\Core\Exception\Validation')->duringValidate();
     }
 
-    function it_logs_the_user_in($auth)
+    function it_logs_the_user_in($authenticator)
     {
-        $auth->login($this->username, $this->password)->shouldBeCalled()->willReturn('foo');
+        $authenticator->login($this->username, $this->password)->shouldBeCalled()->willReturn('foo');
         $this->login();
         $this->id->shouldBe('foo');
     }
