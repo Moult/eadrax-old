@@ -22,19 +22,22 @@ class Interactor extends ObjectBehavior
 
     function it_tracks_the_idol($idol, $fan)
     {
+        $fan->get_id()->willReturn('fan_id');
+        $idol->get_id()->willReturn('idol_id');
         $fan->authorise()->shouldBeCalled();
-        $fan->has_idol($idol)->shouldBeCalled()->willReturn(FALSE);
-        $fan->remove_tracked_projects_by($idol)->shouldBeCalled();
-        $fan->add_idol($idol)->shouldBeCalled();
-        $idol->notify_new_fan($fan)->shouldBeCalled();
+        $fan->has_idol('idol_id')->shouldBeCalled()->willReturn(FALSE);
+        $fan->remove_tracked_projects_by('idol_id')->shouldBeCalled();
+        $fan->add_idol('idol_id')->shouldBeCalled();
+        $idol->notify_new_fan('fan_id')->shouldBeCalled();
         $this->interact();
     }
 
-    function it_untracks_the_idol($idol, $fan)
+    function it_does_nothing_if_fan_already_has_idol($idol, $fan)
     {
+        $idol->get_id()->willReturn('idol_id');
         $fan->authorise()->shouldBeCalled();
-        $fan->has_idol($idol)->shouldBeCalled()->willReturn(TRUE);
-        $fan->remove_idol($idol)->shouldBeCalled();
+        $fan->has_idol('idol_id')->shouldBeCalled()->willReturn(TRUE);
+        $fan->add_idol('idol_id')->shouldNotBeCalled();
         $this->interact();
     }
 }

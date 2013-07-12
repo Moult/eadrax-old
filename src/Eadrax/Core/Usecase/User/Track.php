@@ -35,7 +35,8 @@ class Track
         return new Idol(
             $this->data['user'],
             $this->repositories['user_track'],
-            $this->tools['mail']
+            $this->tools['emailer'],
+            $this->tools['formatter']
         );
     }
 
@@ -43,7 +44,7 @@ class Track
     {
         return new Fan(
             $this->repositories['user_track'],
-            $this->tools['auth']
+            $this->tools['authenticator']
         );
     }
 }

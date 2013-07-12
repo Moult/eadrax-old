@@ -8,17 +8,14 @@ class Fan extends ObjectBehavior
 {
     /**
      * @param Eadrax\Core\Usecase\User\Track\Repository $repository
-     * @param Eadrax\Core\Tool\Auth $auth
+     * @param Eadrax\Core\Tool\Authenticator $authenticator
      * @param Eadrax\Core\Data\User $user
      */
-    function let($repository, $auth, $user)
+    function let($repository, $authenticator, $user)
     {
-        $user->id = 'id';
-        $user->username = 'Barfoo';
-        $auth->get_user()->willReturn($user);
-        $this->beConstructedWith($repository, $auth);
-        $this->id->shouldBe('id');
-        $this->username->shouldBe('Barfoo');
+        $user->id = 'fan_id';
+        $authenticator->get_user()->willReturn($user);
+        $this->beConstructedWith($repository, $authenticator);
     }
 
     function it_should_be_initializable()
@@ -31,53 +28,39 @@ class Fan extends ObjectBehavior
         $this->shouldHaveType('Eadrax\Core\Data\User');
     }
 
-    function it_authorises_logged_in_users($auth)
+    function it_authorises_logged_in_users($authenticator)
     {
-        $auth->logged_in()->shouldBeCalled()->willReturn(TRUE);
+        $authenticator->logged_in()->shouldBeCalled()->willReturn(TRUE);
         $this->authorise();
     }
 
-    function it_does_not_authorise_guests($auth)
+    function it_does_not_authorise_guests($authenticator)
     {
-        $auth->logged_in()->shouldBeCalled()->willReturn(FALSE);
+        $authenticator->logged_in()->shouldBeCalled()->willReturn(FALSE);
         $this->shouldThrow('Eadrax\Core\Exception\Authorisation')
             ->duringAuthorise();
     }
 
-    /**
-     * @param Eadrax\Core\Usecase\User\Track\Idol $idol
-     */
-    function it_checks_whether_or_not_it_has_an_idol($idol, $repository)
+    function it_checks_whether_or_not_it_has_an_idol($repository)
     {
-        $repository->is_fan_of($this, $idol)->shouldBeCalled()->willReturn(TRUE);
-        $this->has_idol($idol)->shouldReturn(TRUE);
+        $repository->does_fan_have_idol('fan_id', 'idol_id')->shouldBeCalled()->willReturn(TRUE);
+        $this->has_idol('idol_id')->shouldReturn(TRUE);
     }
 
-    /**
-     * @param Eadrax\Core\Usecase\User\Track\Idol $idol
-     */
-    function it_can_add_new_idols($idol, $repository)
+    function it_can_add_new_idols($repository)
     {
-        $repository->add_idol($this, $idol)->shouldBeCalled();
-        $this->add_idol($idol);
+        $repository->add_idol_to_fan('idol_id', 'fan_id')->shouldBeCalled();
+        $this->add_idol('idol_id');
     }
 
-    /**
-     * @param Eadrax\Core\Usecase\User\Track\Idol $idol
-     */
-    function it_can_remove_idols($idol, $repository)
+    function it_can_remove_tracked_projects_by_an_author($repository)
     {
-        $repository->remove_idol($this, $idol)->shouldBeCalled();
-        $this->remove_idol($idol);
+        $repository->remove_tracked_projects_authored_by_idol('fan_id', 'idol_id')->shouldBeCalled();
+        $this->remove_tracked_projects_by('idol_id');
     }
 
-    /**
-     * @param Eadrax\Core\Usecase\User\Track\Idol $idol
-     */
-    function it_can_remove_tracked_projects_by_an_author($idol, $repository)
+    function it_can_get_id()
     {
-        $repository->remove_tracked_projects_by($this, $idol)->shouldBeCalled();
-        $this->remove_tracked_projects_by($idol);
+        $this->get_id()->shouldReturn('fan_id');
     }
-
 }

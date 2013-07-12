@@ -20,15 +20,14 @@ class Interactor
     public function interact()
     {
         $this->fan->authorise();
-        if ($this->fan->has_idol($this->idol))
-        {
-            $this->fan->remove_idol($this->idol);
-        }
-        else
-        {
-            $this->fan->remove_tracked_projects_by($this->idol);
-            $this->fan->add_idol($this->idol);
-            $this->idol->notify_new_fan($this->fan);
-        }
+
+        $idol_id = $this->idol->get_id();
+
+        if ($this->fan->has_idol($idol_id))
+            return;
+
+        $this->fan->remove_tracked_projects_by($idol_id);
+        $this->fan->add_idol($idol_id);
+        $this->idol->notify_new_fan($this->fan->get_id());
     }
 }

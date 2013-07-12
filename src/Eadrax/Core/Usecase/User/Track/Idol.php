@@ -10,34 +10,38 @@ use Eadrax\Core\Tool;
 
 class Idol extends Data\User
 {
-    private $mail;
+    public $id;
+    private $repository;
+    private $emailer;
+    private $formatter;
 
-    public function __construct(Data\User $user, Repository $repository, Tool\Mail $mail)
+    public function __construct(Data\User $user, Repository $repository, Tool\Emailer $emailer, Tool\Formatter $formatter)
     {
         $this->id = $user->id;
-        $user_details = $repository->get_username_and_email($this->id);
-        $this->username = $user_details->username;
-        $this->email = $user_details->email;
-
-        $this->mail = $mail;
+        $this->repository = $repository;
+        $this->emailer = $emailer;
+        $this->formatter = $formatter;
     }
 
-    public function notify_new_fan($fan)
+    public function get_id()
     {
-        $message = <<<EOT
-Hey $this->username,
+        return $this->id;
+    }
 
-$fan->username is now a new fan of your work on WIPUP! They'll be notified whenever you make a new update to any of your projects.
+    public function notify_new_fan($fan_id)
+    {
+        list($idol_username, $idol_email) = $this->repository->get_username_and_email($this->id);
+        $fan_username = $this->repository->get_username($fan_id);
 
-Keep up the great work, stay ambitious, and create like no tomorrow!
+        $this->formatter->setup(array(
+            'idol_username' => $idol_username,
+            'fan_id' => $fan_id,
+            'fan_username' => $fan_username
+        ));
 
-Cheers,
-The WIPUP Team
-EOT;
-        $this->mail->send(
-            $this->email,
-            'You have a new fan on WIPUP!',
-            $message
-        );
+        $this->emailer->set_to($idol_email);
+        $this->emailer->set_subject($this->formatter->format('email_user_track_subject'));
+        $this->emailer->set_body($this->formatter->format('email_user_track_body'));
+        $this->emailer->send();
     }
 }

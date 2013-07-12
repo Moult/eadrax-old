@@ -8,12 +8,28 @@ namespace Eadrax\Core\Usecase\User\Track;
 
 interface Repository
 {
-    public function is_fan_of($fan, $idol);
-    public function add_idol($fan, $idol);
-    public function remove_idol($fan, $idol);
     /**
-     * @return Eadrax\Core\Data\User
+     * @return bool
+     */
+    public function does_fan_have_idol($fan_id, $idol_id);
+
+    /**
+     * @return void
+     */
+    public function add_idol_to_fan($idol_id, $fan_id);
+
+    /**
+     * @return void
+     */
+    public function remove_tracked_projects_authored_by_idol($fan_id, $idol_id);
+
+    /**
+     * @return array($username, $email)
      */
     public function get_username_and_email($user_id);
-    public function remove_tracked_projects_by($fan, $idol);
+
+    /**
+     * @return string
+     */
+    public function get_username($user_id);
 }

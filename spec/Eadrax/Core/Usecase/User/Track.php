@@ -10,25 +10,30 @@ class Track extends ObjectBehavior
      * @param Eadrax\Core\Data\User $user
      * @param Eadrax\Core\Data\User $user_details
      * @param Eadrax\Core\Usecase\User\Track\Repository $user_track
-     * @param Eadrax\Core\Tool\Auth $auth
-     * @param Eadrax\Core\Tool\Mail $mail
+     * @param Eadrax\Core\Tool\Authenticator $authenticator
+     * @param Eadrax\Core\Tool\Emailer $emailer
+     * @param Eadrax\Core\Tool\Formatter $formatter
      */
-    function let($user, $user_details, $user_track, $auth, $mail)
+    function let($user, $user_details, $user_track, $authenticator, $emailer, $formatter)
     {
         $user->id = 'id';
         $user_track->get_username_and_email('id')->willReturn($user_details);
-        $auth->get_user()->willReturn($user);
+        $authenticator->get_user()->willReturn($user);
 
         $data = array(
             'user' => $user
         );
+
         $repositories = array(
             'user_track' => $user_track
         );
+
         $tools = array(
-            'auth' => $auth,
-            'mail' => $mail
+            'authenticator' => $authenticator,
+            'emailer' => $emailer,
+            'formatter' => $formatter
         );
+
         $this->beConstructedWith($data, $repositories, $tools);
     }
 

@@ -11,42 +11,41 @@ use Eadrax\Core\Exception;
 
 class Fan extends Data\User
 {
-    private $auth;
+    public $id;
+    private $authenticator;
     private $repository;
 
-    public function __construct(Repository $repository, Tool\Auth $auth)
+    public function __construct(Repository $repository, Tool\Authenticator $authenticator)
     {
-        $auth_user = $auth->get_user();
+        $auth_user = $authenticator->get_user();
         $this->id = $auth_user->id;
-        $this->username = $auth_user->username;
-
         $this->repository = $repository;
-        $this->auth = $auth;
+        $this->authenticator = $authenticator;
     }
 
     public function authorise()
     {
-        if ( ! $this->auth->logged_in())
+        if ( ! $this->authenticator->logged_in())
             throw new Exception\Authorisation('You need to be logged in.');
     }
 
-    public function has_idol(Idol $idol)
+    public function has_idol($idol_id)
     {
-        return $this->repository->is_fan_of($this, $idol);
+        return $this->repository->does_fan_have_idol($this->id, $idol_id);
     }
 
-    public function add_idol($idol)
+    public function add_idol($idol_id)
     {
-        $this->repository->add_idol($this, $idol);
+        $this->repository->add_idol_to_fan($idol_id, $this->id);
     }
 
-    public function remove_idol($idol)
+    public function remove_tracked_projects_by($idol_id)
     {
-        $this->repository->remove_idol($this, $idol);
+        $this->repository->remove_tracked_projects_authored_by_idol($this->id, $idol_id);
     }
 
-    public function remove_tracked_projects_by($idol)
+    public function get_id()
     {
-        $this->repository->remove_tracked_projects_by($this, $idol);
+        return $this->id;
     }
 }

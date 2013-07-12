@@ -8,22 +8,15 @@ class Idol extends ObjectBehavior
 {
     /**
      * @param Eadrax\Core\Data\User $user
-     * @param Eadrax\Core\Data\User $user_details
      * @param Eadrax\Core\Usecase\User\Track\Repository $repository
-     * @param Eadrax\Core\Tool\Mail $mail
+     * @param Eadrax\Core\Tool\Emailer $emailer
+     * @param Eadrax\Core\Tool\Formatter $formatter
      */
-    function let($user, $user_details, $repository, $mail)
+    function let($user, $repository, $emailer, $formatter)
     {
-        $user->id = 'id';
-        $user_details->username = 'Foobar';
-        $user_details->email = 'foo@bar.com';
+        $user->id = 'idol_id';
+        $this->beConstructedWith($user, $repository, $emailer, $formatter);
 
-        $repository->get_username_and_email('id')->shouldBeCalled()->willReturn($user_details);
-        $this->beConstructedWith($user, $repository, $mail);
-
-        $this->id->shouldBe('id');
-        $this->username->shouldBe('Foobar');
-        $this->email->shouldBe('foo@bar.com');
     }
 
     function it_should_be_initializable()
@@ -36,27 +29,26 @@ class Idol extends ObjectBehavior
         $this->shouldHaveType('Eadrax\Core\Data\User');
     }
 
-    /**
-     * @param Eadrax\Core\Usecase\User\Track\User $fan
-     */
-    function it_sends_notification_messages($fan, $mail)
+    function it_can_get_id()
     {
-        $fan->username = 'Barfoo';
-        $message = <<<EOT
-Hey Foobar,
+        $this->get_id()->shouldReturn('idol_id');
+    }
 
-Barfoo is now a new fan of your work on WIPUP! They'll be notified whenever you make a new update to any of your projects.
-
-Keep up the great work, stay ambitious, and create like no tomorrow!
-
-Cheers,
-The WIPUP Team
-EOT;
-        $mail->send(
-            'foo@bar.com',
-            'You have a new fan on WIPUP!',
-            $message
-        )->shouldBeCalled();
-        $this->notify_new_fan($fan);
+    function it_can_notify_about_new_fan($repository, $emailer, $formatter)
+    {
+        $repository->get_username_and_email('idol_id')->willReturn(array('idol_username', 'idol_email'));
+        $repository->get_username('fan_id')->willReturn('fan_username');
+        $formatter->setup(array(
+            'idol_username' => 'idol_username',
+            'fan_id' => 'fan_id',
+            'fan_username' => 'fan_username'
+        ))->shouldBeCalled();
+        $formatter->format('email_user_track_body')->shouldBeCalled()->willReturn('email_body');
+        $formatter->format('email_user_track_subject')->shouldBeCalled()->willReturn('email_subject');
+        $emailer->set_to('idol_email')->shouldBeCalled();
+        $emailer->set_subject('email_subject')->shouldBeCalled();
+        $emailer->set_body('email_body')->shouldBeCalled();
+        $emailer->send()->shouldBeCalled();
+        $this->notify_new_fan('fan_id');
     }
 }

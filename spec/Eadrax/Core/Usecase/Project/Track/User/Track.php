@@ -11,8 +11,9 @@ class Track extends ObjectBehavior
      * @param Eadrax\Core\Usecase\User\Track\Repository $user_track
      * @param Eadrax\Core\Tool\Authenticator $authenticator
      * @param Eadrax\Core\Tool\Emailer $emailer
+     * @param Eadrax\Core\Tool\Formatter $formatter
      */
-    function let($user, $user_track, $authenticator, $emailer)
+    function let($user, $user_track, $authenticator, $emailer, $formatter)
     {
         $data = array(
             'user' => $user
@@ -24,7 +25,8 @@ class Track extends ObjectBehavior
 
         $tools = array(
             'authenticator' => $authenticator,
-            'emailer' => $emailer
+            'emailer' => $emailer,
+            'formatter' => $formatter
         );
 
         $this->beConstructedWith($data, $repositories, $tools);

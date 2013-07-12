@@ -74,7 +74,8 @@ class Track
             ),
             array(
                 'authenticator' => $this->tools['authenticator'],
-                'emailer' => $this->tools['emailer']
+                'emailer' => $this->tools['emailer'],
+                'formatter' => $this->tools['formatter']
             )
         );
     }
