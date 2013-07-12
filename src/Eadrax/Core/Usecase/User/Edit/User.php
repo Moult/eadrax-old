@@ -11,9 +11,9 @@ use Eadrax\Core\Exception;
 
 class User extends Data\User
 {
-    public function __construct(Data\User $user, Repository $repository, Tool\Auth $auth, Tool\Validation $validation)
+    public function __construct(Data\User $user, Repository $repository, Tool\Authenticator $authenticator, Tool\Validator $validator)
     {
-        $auth_user = $auth->get_user();
+        $auth_user = $authenticator->get_user();
         $this->id = $auth_user->id;
 
         $this->password = $user->password;
@@ -29,13 +29,13 @@ class User extends Data\User
         $this->receive_notifications = $user->receive_notifications;
 
         $this->repository = $repository;
-        $this->auth = $auth;
-        $this->validation = $validation;
+        $this->authenticator = $authenticator;
+        $this->validator = $validator;
     }
 
     public function authorise()
     {
-        if ( ! $this->auth->logged_in())
+        if ( ! $this->authenticator->logged_in())
             throw new Exception\Authorisation('You need to be logged in.');
     }
 
@@ -43,33 +43,60 @@ class User extends Data\User
     {
         $this->setup_validation();
 
-        if ( ! $this->validation->check())
-            throw new Exception\Validation($this->validation->errors());
+        if ( ! $this->validator->check())
+            throw new Exception\Validation($this->validator->errors());
     }
 
     private function setup_validation()
     {
-        $this->validation->setup(array(
+        $this->validator->setup(array(
             'password' => $this->password,
             'email' => $this->email,
             'website' => $this->website,
-            'avatar' => $this->avatar,
+            'avatar' => array(
+                'name' => $this->avatar->name,
+                'tmp_name' => $this->avatar->tmp_name,
+                'type' => $this->avatar->mimetype,
+                'size' => $this->avatar->filesize_in_bytes,
+                'error' => $this->avatar->error_code
+            ),
             'dob' => $this->dob
         ));
-        $this->validation->rule('password', 'not_empty');
-        $this->validation->rule('password', 'min_length', '6');
-        $this->validation->rule('password', 'matches', 'password_verify');
-        $this->validation->rule('email', 'not_empty');
-        $this->validation->rule('email', 'email');
-        $this->validation->rule('website', 'url');
-        $this->validation->rule('avatar', 'upload_valid');
-        $this->validation->rule('avatar', 'upload_type', array('jpg', 'png'));
-        $this->validation->rule('avatar', 'upload_size', '1M');
-        $this->validation->rule('dob', 'date');
+        $this->validator->rule('password', 'not_empty');
+        $this->validator->rule('password', 'min_length', '6');
+        $this->validator->rule('password', 'matches', 'password_verify');
+        $this->validator->rule('email', 'not_empty');
+        $this->validator->rule('email', 'email');
+        $this->validator->rule('website', 'url');
+        $this->validator->rule('avatar', 'upload_valid');
+        $this->validator->rule('avatar', 'upload_type', array('jpg', 'png'));
+        $this->validator->rule('avatar', 'upload_size', '1M');
+        $this->validator->rule('dob', 'date');
     }
 
     public function update()
     {
-        $this->repository->edit_user($this);
+        $avatar_path = $this->repository->update_avatar(
+            $this->id,
+            $this->avatar->name,
+            $this->avatar->tmp_name,
+            $this->avatar->mimetype,
+            $this->avatar->filesize_in_bytes,
+            $this->avatar->error_code
+        );
+
+        $this->repository->edit_user(
+            $this->id,
+            $this->password,
+            $this->email,
+            $this->bio,
+            $this->website,
+            $this->location,
+            $avatar_path,
+            $this->dob,
+            $this->gender,
+            $this->show_email,
+            $this->receive_notifications
+        );
     }
 }

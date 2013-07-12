@@ -9,21 +9,24 @@ class Edit extends ObjectBehavior
     /**
      * @param Eadrax\Core\Data\User $user
      * @param Eadrax\Core\Usecase\User\Edit\Repository $user_edit
-     * @param Eadrax\Core\Tool\Auth $auth
-     * @param Eadrax\Core\Tool\Validation $validation
+     * @param Eadrax\Core\Tool\Authenticator $authenticator
+     * @param Eadrax\Core\Tool\Validator $validator
      */
-    function let($user, $user_edit, $auth, $validation)
+    function let($user, $user_edit, $authenticator, $validator)
     {
-        $auth->get_user()->willReturn($user);
+        $authenticator->get_user()->willReturn($user);
+
         $data = array(
             'user' => $user
         );
+
         $repositories = array(
             'user_edit' => $user_edit
         );
+
         $tools = array(
-                'auth' => $auth,
-                'validation' => $validation
+            'authenticator' => $authenticator,
+            'validator' => $validator
         );
         $this->beConstructedWith($data, $repositories, $tools);
     }
