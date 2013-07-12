@@ -11,8 +11,8 @@ class User
     public $id;
     public $username;
     public $password;
-    public $email;
     public $password_verify;
+    public $email;
     public $bio;
     public $website;
     public $location;
