@@ -11,6 +11,8 @@ use Eadrax\Core\Usecase\User\Untrack\Idol;
 
 class Untrack
 {
+    private $data;
+    private $repositories;
     private $tools;
 
     public function __construct(array $data, array $repositories, array $tools)
