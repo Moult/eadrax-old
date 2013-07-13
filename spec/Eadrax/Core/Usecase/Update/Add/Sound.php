@@ -90,7 +90,7 @@ class Sound extends ObjectBehavior
         $this->filesize->shouldBe('filesize');
     }
 
-    function it_submits_the_image($sound, $project, $file, $repository, $filemanager, $soundeditor, $validator)
+    function it_submits_the_sound($sound, $project, $file, $repository, $filemanager, $soundeditor, $validator)
     {
         $project->id = 'project_id';
         $file->name = 'name';
