@@ -16,21 +16,6 @@ class Update extends ObjectBehavior
         $this->id->shouldBe(NULL);
     }
 
-    function it_has_a_type()
-    {
-        $this->type->shouldBe(NULL);
-    }
-
-    function it_has_content()
-    {
-        $this->content->shouldBe(NULL);
-    }
-
-    function it_has_extra()
-    {
-        $this->extra->shouldBe(NULL);
-    }
-
     function it_has_a_private_option()
     {
         $this->private->shouldBe(NULL);

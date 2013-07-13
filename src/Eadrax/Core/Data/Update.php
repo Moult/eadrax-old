@@ -9,9 +9,6 @@ namespace Eadrax\Core\Data;
 class Update
 {
     public $id;
-    public $type;
-    public $content;
-    public $extra;
     public $private;
     public $project;
 }
