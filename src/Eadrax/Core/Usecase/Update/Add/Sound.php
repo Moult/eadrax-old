@@ -98,5 +98,4 @@ class Sound extends Data\Sound implements Proposal
     {
         $this->filesize = $this->filemanager->get_file_size($this->file->tmp_name);
     }
-
 }
