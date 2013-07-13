@@ -57,12 +57,12 @@ class Sound extends ObjectBehavior
                 'error' => 'error_code'
             )
         ))->shouldBeCalled();
-        $validator->rule('content', 'not_empty')->shouldBeCalled();
-        $validator->rule('content', 'upload_valid')->shouldBeCalled();
-        $validator->rule('content', 'upload_type', $supported_filetypes)->shouldBeCalled();
-        $validator->rule('content', 'upload_size', '100M')->shouldBeCalled();
+        $validator->rule('file', 'not_empty')->shouldBeCalled();
+        $validator->rule('file', 'upload_valid')->shouldBeCalled();
+        $validator->rule('file', 'upload_type', $supported_filetypes)->shouldBeCalled();
+        $validator->rule('file', 'upload_size', '100M')->shouldBeCalled();
         $validator->check()->shouldBeCalled();
-        $validator->errors()->shouldBeCalled()->willReturn(array('content'));
+        $validator->errors()->shouldBeCalled()->willReturn(array('file'));
         $this->shouldThrow('Eadrax\Core\Exception\Validation')
             ->duringValidate();
     }

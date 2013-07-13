@@ -44,10 +44,10 @@ class Image extends Data\Image implements Proposal
                 'error' => $this->file->error_code
             )
         ));
-        $this->validator->rule('content', 'not_empty');
-        $this->validator->rule('content', 'upload_valid');
-        $this->validator->rule('content', 'upload_type', $supported_filetypes);
-        $this->validator->rule('content', 'upload_size', '100M');
+        $this->validator->rule('image', 'not_empty');
+        $this->validator->rule('image', 'upload_valid');
+        $this->validator->rule('image', 'upload_type', $supported_filetypes);
+        $this->validator->rule('image', 'upload_size', '100M');
 
         if ( ! $this->validator->check())
             throw new Exception\Validation($this->validator->errors());

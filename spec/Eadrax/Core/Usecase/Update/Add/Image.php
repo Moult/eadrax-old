@@ -56,12 +56,12 @@ class Image extends ObjectBehavior
                 'error' => 'error_code'
             )
         ))->shouldBeCalled();
-        $validator->rule('content', 'not_empty')->shouldBeCalled();
-        $validator->rule('content', 'upload_valid')->shouldBeCalled();
-        $validator->rule('content', 'upload_type', $supported_filetypes)->shouldBeCalled();
-        $validator->rule('content', 'upload_size', '100M')->shouldBeCalled();
+        $validator->rule('image', 'not_empty')->shouldBeCalled();
+        $validator->rule('image', 'upload_valid')->shouldBeCalled();
+        $validator->rule('image', 'upload_type', $supported_filetypes)->shouldBeCalled();
+        $validator->rule('image', 'upload_size', '100M')->shouldBeCalled();
         $validator->check()->shouldBeCalled();
-        $validator->errors()->shouldBeCalled()->willReturn(array('content'));
+        $validator->errors()->shouldBeCalled()->willReturn(array('image'));
         $this->shouldThrow('Eadrax\Core\Exception\Validation')
             ->duringValidate();
     }

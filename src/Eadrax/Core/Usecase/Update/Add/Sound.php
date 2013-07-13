@@ -46,10 +46,10 @@ class Sound extends Data\Sound implements Proposal
                 'error' => $this->file->error_code
             )
         ));
-        $this->validator->rule('content', 'not_empty');
-        $this->validator->rule('content', 'upload_valid');
-        $this->validator->rule('content', 'upload_type', $supported_filetypes);
-        $this->validator->rule('content', 'upload_size', '100M');
+        $this->validator->rule('file', 'not_empty');
+        $this->validator->rule('file', 'upload_valid');
+        $this->validator->rule('file', 'upload_type', $supported_filetypes);
+        $this->validator->rule('file', 'upload_size', '100M');
 
         if ( ! $this->validator->check())
             throw new Exception\Validation($this->validator->errors());
