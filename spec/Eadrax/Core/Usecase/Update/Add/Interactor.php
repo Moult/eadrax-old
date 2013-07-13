@@ -69,4 +69,20 @@ class Interactor extends ObjectBehavior
         $image->get_id()->shouldBeCalled()->willReturn('update_id');
         $this->interact()->shouldReturn('update_id');
     }
+
+    /**
+     * @param Eadrax\Core\Usecase\Update\Add\Sound $sound
+     */
+    function it_carries_out_the_sound_submit_process($project, $sound)
+    {
+        $this->beConstructedWith($project, $sound);
+        $project->authorise()->shouldBeCalled();
+        $sound->validate()->shouldBeCalled();
+        $sound->generate_thumbnail()->shouldBeCalled();
+        $sound->calculate_length()->shouldBeCalled();
+        $sound->calculate_filesize()->shouldBeCalled();
+        $sound->submit()->shouldBeCalled();
+        $sound->get_id()->shouldBeCalled()->willReturn('update_id');
+        $this->interact()->shouldReturn('update_id');
+    }
 }

@@ -27,6 +27,10 @@ class Interactor
         {
             $this->interact_image();
         }
+        elseif ($this->proposal instanceof Data\Sound)
+        {
+            $this->interact_sound();
+        }
 
         $this->proposal->submit();
         return $this->proposal->get_id();
@@ -36,5 +40,12 @@ class Interactor
     {
         $this->proposal->generate_thumbnail();
         $this->proposal->calculate_dimensions();
+    }
+
+    private function interact_sound()
+    {
+        $this->proposal->generate_thumbnail();
+        $this->proposal->calculate_length();
+        $this->proposal->calculate_filesize();
     }
 }

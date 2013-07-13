@@ -37,4 +37,9 @@ interface Repository
      * @return int Unique ID of the saved update
      */
     public function save_image($project_id, $update_private, $image_file_path, $image_thumbnail_path, $image_width, $image_height);
+
+    /**
+     * @return int Unique ID of the saved update
+     */
+    public function save_sound($project_id, $update_private, $sound_file_path, $sound_thumbnail_path, $sound_length, $sound_filesize);
 }
