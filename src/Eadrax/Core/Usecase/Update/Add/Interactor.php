@@ -31,6 +31,10 @@ class Interactor
         {
             $this->interact_sound();
         }
+        elseif ($this->proposal instanceof Data\Video)
+        {
+            $this->interact_video();
+        }
 
         $this->proposal->submit();
         return $this->proposal->get_id();
@@ -47,5 +51,14 @@ class Interactor
         $this->proposal->generate_thumbnail();
         $this->proposal->calculate_length();
         $this->proposal->calculate_filesize();
+    }
+
+    private function interact_video()
+    {
+        $this->proposal->encode_to_webm();
+        $this->proposal->generate_thumbnail();
+        $this->proposal->calculate_length();
+        $this->proposal->calculate_filesize();
+        $this->proposal->calculate_dimensions();
     }
 }

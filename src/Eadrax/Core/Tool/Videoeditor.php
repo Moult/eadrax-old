@@ -53,4 +53,14 @@ interface Videoeditor
      * @return void
      */
     public function thumbnail();
+
+    /**
+     * Encodes the video to a HTML5 friendly webm format
+     *
+     * Example:
+     * $videoeditor->encode_to_webm();
+     *
+     * @return void
+     */
+    public function encode_to_webm();
 }

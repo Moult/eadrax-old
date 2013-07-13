@@ -85,4 +85,22 @@ class Interactor extends ObjectBehavior
         $sound->get_id()->shouldBeCalled()->willReturn('update_id');
         $this->interact()->shouldReturn('update_id');
     }
+
+    /**
+     * @param Eadrax\Core\Usecase\Update\Add\Video $video
+     */
+    function it_carries_out_the_video_submit_process($project, $video)
+    {
+        $this->beConstructedWith($project, $video);
+        $project->authorise()->shouldBeCalled();
+        $video->validate()->shouldBeCalled();
+        $video->encode_to_webm()->shouldBeCalled();
+        $video->generate_thumbnail()->shouldBeCalled();
+        $video->calculate_length()->shouldBeCalled();
+        $video->calculate_filesize()->shouldBeCalled();
+        $video->calculate_dimensions()->shouldBeCalled();
+        $video->submit()->shouldBeCalled();
+        $video->get_id()->shouldBeCalled()->willReturn('update_id');
+        $this->interact()->shouldReturn('update_id');
+    }
 }

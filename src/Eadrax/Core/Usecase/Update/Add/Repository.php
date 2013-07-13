@@ -42,4 +42,9 @@ interface Repository
      * @return int Unique ID of the saved update
      */
     public function save_sound($project_id, $update_private, $sound_file_path, $sound_thumbnail_path, $sound_length, $sound_filesize);
+
+    /**
+     * @return int Unique ID of the saved update
+     */
+    public function save_video($project_id, $update_private, $video_file_path, $video_thumbnail_path, $video_length, $video_filesize, $video_width, $video_height);
 }
