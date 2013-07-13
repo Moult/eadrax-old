@@ -39,10 +39,15 @@ class Text extends Data\Text implements Proposal
 
     public function submit()
     {
-        $this->repository->save_text(
+        $this->id = $this->repository->save_text(
             $this->project->id,
             $this->private,
             $this->message
         );
+    }
+
+    public function get_id()
+    {
+        return $this->id;
     }
 }

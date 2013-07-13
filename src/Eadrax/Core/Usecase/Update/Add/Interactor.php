@@ -22,13 +22,7 @@ class Interactor
     {
         $this->project->authorise();
         $this->proposal->validate();
-
-        if ($this->proposal instanceof Data\Text)
-            return $this->interact_text();
-    }
-
-    private function interact_text()
-    {
-        return $this->proposal->submit();
+        $this->proposal->submit();
+        return $this->proposal->get_id();
     }
 }

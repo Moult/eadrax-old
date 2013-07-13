@@ -33,7 +33,19 @@ class Interactor extends ObjectBehavior
     function it_carries_out_the_text_submit_process($project, $text)
     {
         $this->beConstructedWith($project, $text);
-        $text->submit()->shouldBeCalled()->willReturn('update_id');
+        $text->submit()->shouldBeCalled();
+        $text->get_id()->shouldBeCalled()->willReturn('update_id');
+        $this->interact()->shouldReturn('update_id');
+    }
+
+    /**
+     * @param Eadrax\Core\Usecase\Update\Add\Paste $paste
+     */
+    function it_carries_out_the_paste_submit_process($project, $paste)
+    {
+        $this->beConstructedWith($project, $paste);
+        $paste->submit()->shouldBeCalled();
+        $paste->get_id()->shouldBeCalled()->willReturn('update_id');
         $this->interact()->shouldReturn('update_id');
     }
 }

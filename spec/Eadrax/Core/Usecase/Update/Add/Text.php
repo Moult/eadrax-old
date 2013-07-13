@@ -46,9 +46,11 @@ class Text extends ObjectBehavior
             ->duringValidate();
     }
 
-    function it_can_submit($repository)
+    function it_can_submit_and_get_id($repository)
     {
-        $repository->save_text('project_id', 'update_private', 'message')->shouldBeCalled();
+        $repository->save_text('project_id', 'update_private', 'message')->shouldBeCalled()->willReturn('update_id');
         $this->submit();
+        $this->id->shouldBe('update_id');
+        $this->get_id()->shouldReturn('update_id');
     }
 }
