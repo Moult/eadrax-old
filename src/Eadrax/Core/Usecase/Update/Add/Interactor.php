@@ -22,7 +22,19 @@ class Interactor
     {
         $this->project->authorise();
         $this->proposal->validate();
+
+        if ($this->proposal instanceof Data\Image)
+        {
+            $this->interact_image();
+        }
+
         $this->proposal->submit();
         return $this->proposal->get_id();
+    }
+
+    private function interact_image()
+    {
+        $this->proposal->generate_thumbnail();
+        $this->proposal->calculate_dimensions();
     }
 }

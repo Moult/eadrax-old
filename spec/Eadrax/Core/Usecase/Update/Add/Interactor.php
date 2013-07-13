@@ -24,7 +24,9 @@ class Interactor extends ObjectBehavior
     {
         $project->authorise()->shouldBeCalled();
         $proposal->validate()->shouldBeCalled();
-        $this->interact();
+        $proposal->submit()->shouldBeCalled();
+        $proposal->get_id()->shouldBeCalled()->willReturn('update_id');
+        $this->interact()->shouldReturn('update_id');
     }
 
     /**
@@ -33,6 +35,8 @@ class Interactor extends ObjectBehavior
     function it_carries_out_the_text_submit_process($project, $text)
     {
         $this->beConstructedWith($project, $text);
+        $project->authorise()->shouldBeCalled();
+        $text->validate()->shouldBeCalled();
         $text->submit()->shouldBeCalled();
         $text->get_id()->shouldBeCalled()->willReturn('update_id');
         $this->interact()->shouldReturn('update_id');
@@ -44,8 +48,25 @@ class Interactor extends ObjectBehavior
     function it_carries_out_the_paste_submit_process($project, $paste)
     {
         $this->beConstructedWith($project, $paste);
+        $project->authorise()->shouldBeCalled();
+        $paste->validate()->shouldBeCalled();
         $paste->submit()->shouldBeCalled();
         $paste->get_id()->shouldBeCalled()->willReturn('update_id');
+        $this->interact()->shouldReturn('update_id');
+    }
+
+    /**
+     * @param Eadrax\Core\Usecase\Update\Add\Image $image
+     */
+    function it_carries_out_the_image_submit_process($project, $image)
+    {
+        $this->beConstructedWith($project, $image);
+        $project->authorise()->shouldBeCalled();
+        $image->validate()->shouldBeCalled();
+        $image->generate_thumbnail()->shouldBeCalled();
+        $image->calculate_dimensions()->shouldBeCalled();
+        $image->submit()->shouldBeCalled();
+        $image->get_id()->shouldBeCalled()->willReturn('update_id');
         $this->interact()->shouldReturn('update_id');
     }
 }
