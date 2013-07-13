@@ -103,4 +103,18 @@ class Interactor extends ObjectBehavior
         $video->get_id()->shouldBeCalled()->willReturn('update_id');
         $this->interact()->shouldReturn('update_id');
     }
+
+    /**
+     * @param Eadrax\Core\Usecase\Update\Add\Website $website
+     */
+    function it_carries_out_the_website_submit_process($project, $website)
+    {
+        $this->beConstructedWith($project, $website);
+        $project->authorise()->shouldBeCalled();
+        $website->validate()->shouldBeCalled();
+        $website->generate_thumbnail()->shouldBeCalled();
+        $website->submit()->shouldBeCalled();
+        $website->get_id()->shouldBeCalled()->willReturn('update_id');
+        $this->interact()->shouldReturn('update_id');
+    }
 }

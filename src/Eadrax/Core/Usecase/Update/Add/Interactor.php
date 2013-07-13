@@ -35,6 +35,10 @@ class Interactor
         {
             $this->interact_video();
         }
+        elseif ($this->proposal instanceof Data\Website)
+        {
+            $this->interact_website();
+        }
 
         $this->proposal->submit();
         return $this->proposal->get_id();
@@ -60,5 +64,10 @@ class Interactor
         $this->proposal->calculate_length();
         $this->proposal->calculate_filesize();
         $this->proposal->calculate_dimensions();
+    }
+
+    private function interact_website()
+    {
+        $this->proposal->generate_thumbnail();
     }
 }

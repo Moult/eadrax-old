@@ -47,4 +47,9 @@ interface Repository
      * @return int Unique ID of the saved update
      */
     public function save_video($project_id, $update_private, $video_file_path, $video_thumbnail_path, $video_length, $video_filesize, $video_width, $video_height);
+
+    /**
+     * @return int Unique ID of the saved update
+     */
+    public function save_website($project_id, $update_private, $website_url, $website_thumbnail_path);
 }

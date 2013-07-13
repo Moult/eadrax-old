@@ -12,12 +12,11 @@ interface Browser
      * Screenshots a website, and generates a thumbnail of it
      *
      * Example:
-     * $image->screenshot('http://foo.com', '/path/to/image.png');
+     * $image->screenshot('http://foo.com');
      *
-     * @param string $url          The website to screenshot
-     * @param string $path_to_file The image path to save to
+     * @param string $url The website to screenshot
      *
-     * @return void
+     * @return string The path to the screenshot file
      */
-    public function screenshot($url, $path_to_file);
+    public function screenshot($url);
 }
