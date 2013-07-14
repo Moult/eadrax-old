@@ -48,7 +48,7 @@ Those marked in bold have been implemented.
  * **Update add**
  * **Update prepare**
  * **Update edit**
- * Update delete
+ * **Update delete**
 
 ### Kudos features
 
