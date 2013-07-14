@@ -8,7 +8,6 @@ namespace Eadrax\Core\Usecase\Update\Add;
 
 interface Proposal
 {
-    public function validate();
     public function submit();
     public function get_id();
 }

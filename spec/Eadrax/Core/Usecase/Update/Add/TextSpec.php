@@ -10,15 +10,14 @@ class TextSpec extends ObjectBehavior
      * @param Eadrax\Core\Data\Text $text
      * @param Eadrax\Core\Data\Project $project
      * @param Eadrax\Core\Usecase\Update\Add\Repository $repository
-     * @param Eadrax\Core\Tool\Validator $validator
      */
-    function let($text, $project, $repository, $validator)
+    function let($text, $project, $repository)
     {
         $project->id = 'project_id';
         $text->project = $project;
         $text->private = 'update_private';
         $text->message = 'message';
-        $this->beConstructedWith($text, $repository, $validator);
+        $this->beConstructedWith($text, $repository);
     }
 
     function it_should_be_initializable()
@@ -34,16 +33,6 @@ class TextSpec extends ObjectBehavior
     function it_is_a_proposal()
     {
         $this->shouldHaveType('Eadrax\Core\Usecase\Update\Add\Proposal');
-    }
-
-    function it_can_validate($validator)
-    {
-        $validator->setup(array('message' => 'message'))->shouldBeCalled();
-        $validator->rule('message', 'not_empty')->shouldBeCalled();
-        $validator->check()->shouldBeCalled()->willReturn(FALSE);
-        $validator->errors()->shouldBeCalled()->willReturn(array('message'));
-        $this->shouldThrow('Eadrax\Core\Exception\Validation')
-            ->duringValidate();
     }
 
     function it_can_submit_and_get_id($repository)

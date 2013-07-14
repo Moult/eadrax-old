@@ -6,8 +6,6 @@
 
 namespace Eadrax\Core\Usecase\Update\Add;
 use Eadrax\Core\Data;
-use Eadrax\Core\Tool;
-use Eadrax\Core\Exception;
 
 class Video extends Data\Video implements Proposal
 {
@@ -20,19 +18,18 @@ class Video extends Data\Video implements Proposal
     public $width;
     public $height;
     private $repository;
-    private $filemanager;
-    private $videoeditor;
-    private $validator;
 
-    public function __construct(Data\Video $video, Repository $repository, Tool\Filemanager $filemanager, Tool\Videoeditor $videoeditor, Tool\Validator $validator)
+    public function __construct(Data\Video $video, Repository $repository)
     {
         $this->project = $video->project;
         $this->private = $video->private;
         $this->file = $video->file;
+        $this->thumbnail = $video->thumbnail;
+        $this->length = $video->length;
+        $this->filesize = $video->filesize;
+        $this->width = $video->width;
+        $this->height = $video->height;
         $this->repository = $repository;
-        $this->filemanager = $filemanager;
-        $this->videoeditor = $videoeditor;
-        $this->validator = $validator;
     }
 
     public function submit()
@@ -52,60 +49,5 @@ class Video extends Data\Video implements Proposal
     public function get_id()
     {
         return $this->id;
-    }
-
-    public function validate()
-    {
-        $supported_filetypes = array('ogg', 'ogv', 'wmv', 'avi', 'mpg', 'mpeg', 'mov');
-
-        $this->validator->setup(array(
-            'file' => array(
-                'name' => $this->file->name,
-                'tmp_name' => $this->file->tmp_name,
-                'type' => $this->file->mimetype,
-                'size' => $this->file->filesize_in_bytes,
-                'error' => $this->file->error_code
-            )
-        ));
-        $this->validator->rule('file', 'not_empty');
-        $this->validator->rule('file', 'upload_valid');
-        $this->validator->rule('file', 'upload_type', $supported_filetypes);
-        $this->validator->rule('file', 'upload_size', '100M');
-
-        if ( ! $this->validator->check())
-            throw new Exception\Validation($this->validator->errors());
-    }
-
-    public function encode_to_webm()
-    {
-        $webm_path = $this->file->tmp_name.'.webm';
-        $this->videoeditor->setup($this->file->tmp_name, $webm_path);
-        $this->videoeditor->encode_to_webm();
-        $this->file = $webm_path;
-    }
-
-    public function generate_thumbnail()
-    {
-        $thumbnail_path = $this->file.'.thumb.png';
-        $this->videoeditor->setup($this->file, $thumbnail_path);
-        $this->videoeditor->thumbnail(300, 100);
-        $this->thumbnail = $thumbnail_path;
-    }
-
-    public function calculate_length()
-    {
-        $this->videoeditor->setup($this->file);
-        $this->length = $this->videoeditor->get_length();
-    }
-
-    public function calculate_filesize()
-    {
-        $this->filesize = $this->filemanager->get_file_size($this->file);
-    }
-
-    public function calculate_dimensions()
-    {
-        $this->videoeditor->setup($this->file);
-        list($this->width, $this->height) = $this->videoeditor->get_dimensions();
     }
 }
