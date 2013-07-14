@@ -22,6 +22,7 @@ Those marked in bold have been implemented.
  * **User edit**
  * **User logout**
  * **User track**
+ * **User untrack**
  * User newsfeed
  * User view
 
@@ -32,6 +33,7 @@ Those marked in bold have been implemented.
  * **Project edit**
  * **Project delete**
  * **Project track**
+ * **Project untrack**
 
 ### Hook features
 
