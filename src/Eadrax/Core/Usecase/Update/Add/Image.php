@@ -17,7 +17,12 @@ class Image extends Data\Image implements Proposal
     public $height;
     private $repository;
 
-    public function __construct(Data\Image $image, Repository $repository)
+    public function __construct(Repository $repository)
+    {
+        $this->repository = $repository;
+    }
+
+    public function load_prepared_proposal(Data\Update $image)
     {
         $this->project = $image->project;
         $this->private = $image->private;
@@ -25,7 +30,6 @@ class Image extends Data\Image implements Proposal
         $this->thumbnail = $image->thumbnail;
         $this->width = $image->width;
         $this->height = $image->height;
-        $this->repository = $repository;
     }
 
     public function submit()

@@ -22,7 +22,8 @@ class VideoSpec extends ObjectBehavior
         $video->filesize = 'filesize';
         $video->width = 'width';
         $video->height = 'height';
-        $this->beConstructedWith($video, $repository);
+        $this->beConstructedWith($repository);
+        $this->load_prepared_proposal($video);
     }
 
     function it_should_be_initializable()

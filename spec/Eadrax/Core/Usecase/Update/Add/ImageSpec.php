@@ -26,8 +26,8 @@ class ImageSpec extends ObjectBehavior
         $image->thumbnail = 'tmp_name.thumb.png';
         $image->width = 'width';
         $image->height = 'height';
-
-        $this->beConstructedWith($image, $repository);
+        $this->beConstructedWith($repository);
+        $this->load_prepared_proposal($image);
     }
 
     function it_should_be_initializable()

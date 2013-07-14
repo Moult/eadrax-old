@@ -15,13 +15,17 @@ class Website extends Data\Website implements Proposal
     public $url;
     private $repository;
 
-    public function __construct(Data\Website $website, Repository $repository)
+    public function __construct(Repository $repository)
+    {
+        $this->repository = $repository;
+    }
+
+    public function load_prepared_proposal(Data\Update $website)
     {
         $this->project = $website->project;
         $this->private = $website->private;
         $this->url = $this->normalise_url($website->url);
         $this->thumbnail = $website->thumbnail;
-        $this->repository = $repository;
     }
 
     private function normalise_url($url)

@@ -18,7 +18,8 @@ class PasteSpec extends ObjectBehavior
         $paste->private = 'update_private';
         $paste->text = 'text';
         $paste->syntax = 'syntax';
-        $this->beConstructedWith($paste, $repository);
+        $this->beConstructedWith($repository);
+        $this->load_prepared_proposal($paste);
     }
 
     function it_should_be_initializable()

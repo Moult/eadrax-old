@@ -26,7 +26,8 @@ class SoundSpec extends ObjectBehavior
         $sound->thumbnail = 'tmp_name.thumb.png';
         $sound->length = 'length';
         $sound->filesize = 'filesize';
-        $this->beConstructedWith($sound, $repository);
+        $this->beConstructedWith($repository);
+        $this->load_prepared_proposal($sound);
     }
 
     function it_should_be_initializable()

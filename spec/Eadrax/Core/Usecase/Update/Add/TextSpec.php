@@ -17,7 +17,8 @@ class TextSpec extends ObjectBehavior
         $text->project = $project;
         $text->private = 'update_private';
         $text->message = 'message';
-        $this->beConstructedWith($text, $repository);
+        $this->beConstructedWith($repository);
+        $this->load_prepared_proposal($text);
     }
 
     function it_should_be_initializable()

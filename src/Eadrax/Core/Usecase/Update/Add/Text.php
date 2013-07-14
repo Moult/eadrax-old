@@ -14,12 +14,16 @@ class Text extends Data\Text implements Proposal
     public $message;
     private $repository;
 
-    public function __construct(Data\Text $text, Repository $repository)
+    public function __construct(Repository $repository)
+    {
+        $this->repository = $repository;
+    }
+
+    public function load_prepared_proposal(Data\Update $text)
     {
         $this->project = $text->project;
         $this->private = $text->private;
         $this->message = $text->message;
-        $this->repository = $repository;
     }
 
     public function submit()

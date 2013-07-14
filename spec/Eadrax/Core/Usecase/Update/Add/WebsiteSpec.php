@@ -18,7 +18,8 @@ class WebsiteSpec extends ObjectBehavior
         $website->private = 'update_private';
         $website->url = 'url';
         $website->thumbnail = 'screenshot_path';
-        $this->beConstructedWith($website, $repository);
+        $this->beConstructedWith($repository);
+        $this->load_prepared_proposal($website);
     }
 
     function it_should_be_initializable()

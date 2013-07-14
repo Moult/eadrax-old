@@ -13,6 +13,7 @@ use Eadrax\Core\Usecase\Update\Add\Image;
 use Eadrax\Core\Usecase\Update\Add\Sound;
 use Eadrax\Core\Usecase\Update\Add\Video;
 use Eadrax\Core\Usecase\Update\Add\Website;
+use Eadrax\Core\Usecase;
 use Eadrax\Core\Data;
 
 class Add
@@ -32,7 +33,8 @@ class Add
     {
         return new Interactor(
             $this->get_project(),
-            $this->get_proposal()
+            $this->get_proposal(),
+            $this->get_update_prepare()
         );
     }
 
@@ -51,46 +53,36 @@ class Add
     {
         if ($this->data['update'] instanceof Data\Text)
             return new Text(
-                $this->data['update'],
-                $this->repositories['update_add'],
-                $this->tools['validator']
+                $this->repositories['update_add']
             );
         elseif ($this->data['update'] instanceof Data\Paste)
             return new Paste(
-                $this->data['update'],
-                $this->repositories['update_add'],
-                $this->tools['validator']
+                $this->repositories['update_add']
             );
         elseif ($this->data['update'] instanceof Data\Image)
             return new Image(
-                $this->data['update'],
-                $this->repositories['update_add'],
-                $this->tools['photoshopper'],
-                $this->tools['validator']
+                $this->repositories['update_add']
             );
         elseif ($this->data['update'] instanceof Data\Sound)
             return new Sound(
-                $this->data['update'],
-                $this->repositories['update_add'],
-                $this->tools['filemanager'],
-                $this->tools['soundeditor'],
-                $this->tools['validator']
+                $this->repositories['update_add']
             );
         elseif ($this->data['update'] instanceof Data\Video)
             return new Video(
-                $this->data['update'],
-                $this->repositories['update_add'],
-                $this->tools['filemanager'],
-                $this->tools['videoeditor'],
-                $this->tools['validator']
+                $this->repositories['update_add']
             );
         elseif ($this->data['update'] instanceof Data\Website)
             return new Website(
-                $this->data['update'],
-                $this->repositories['update_add'],
-                $this->tools['browser'],
-                $this->tools['photoshopper'],
-                $this->tools['validator']
+                $this->repositories['update_add']
             );
+    }
+
+    private function get_update_prepare()
+    {
+        $usecase = new Usecase\Update\Prepare(
+            $this->data,
+            $this->tools
+        );
+        return $usecase->fetch();
     }
 }

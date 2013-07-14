@@ -15,13 +15,17 @@ class Paste extends Data\Paste implements Proposal
     public $syntax;
     private $repository;
 
-    public function __construct(Data\Paste $paste, Repository $repository)
+    public function __construct(Repository $repository)
+    {
+        $this->repository = $repository;
+    }
+
+    public function load_prepared_proposal(Data\Update $paste)
     {
         $this->project = $paste->project;
         $this->private = $paste->private;
         $this->text = $paste->text;
         $this->syntax = $paste->syntax;
-        $this->repository = $repository;
     }
 
     public function submit()

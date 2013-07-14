@@ -17,7 +17,12 @@ class Sound extends Data\Sound implements Proposal
     public $filesize;
     private $repository;
 
-    public function __construct(Data\Sound $sound, Repository $repository)
+    public function __construct(Repository $repository)
+    {
+        $this->repository = $repository;
+    }
+
+    public function load_prepared_proposal(Data\Update $sound)
     {
         $this->project = $sound->project;
         $this->private = $sound->private;
@@ -25,7 +30,6 @@ class Sound extends Data\Sound implements Proposal
         $this->thumbnail = $sound->thumbnail;
         $this->length = $sound->length;
         $this->filesize = $sound->filesize;
-        $this->repository = $repository;
     }
 
     public function submit()

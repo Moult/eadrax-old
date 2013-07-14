@@ -19,7 +19,12 @@ class Video extends Data\Video implements Proposal
     public $height;
     private $repository;
 
-    public function __construct(Data\Video $video, Repository $repository)
+    public function __construct(Repository $repository)
+    {
+        $this->repository = $repository;
+    }
+
+    public function load_prepared_proposal(Data\Update $video)
     {
         $this->project = $video->project;
         $this->private = $video->private;
@@ -29,7 +34,6 @@ class Video extends Data\Video implements Proposal
         $this->filesize = $video->filesize;
         $this->width = $video->width;
         $this->height = $video->height;
-        $this->repository = $repository;
     }
 
     public function submit()
