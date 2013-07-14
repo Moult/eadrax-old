@@ -8,18 +8,18 @@ use Prophecy\Argument;
 class AddSpec extends ObjectBehavior
 {
     /**
-     * @param Eadrax\Core\Data\Project $project
      * @param Eadrax\Core\Data\Text $text
+     * @param Eadrax\Core\Data\Project $project
      * @param Eadrax\Core\Usecase\Update\Add\Repository $update_add
      * @param Eadrax\Core\Tool\Authenticator $authenticator
      * @param Eadrax\Core\Tool\Emailer $emailer
      * @param Eadrax\Core\Tool\Formatter $formatter
      * @param Eadrax\Core\Tool\Validator $validator
      */
-    function let($project, $text, $update_add, $authenticator, $emailer, $formatter, $validator)
+    function let($text, $project, $update_add, $authenticator, $emailer, $formatter, $validator)
     {
+        $text->project = $project;
         $data = array(
-            'project' => $project,
             'update' => $text
         );
 
@@ -52,8 +52,8 @@ class AddSpec extends ObjectBehavior
      */
     function it_fetches_the_interactor_with_paste_data($project, $paste, $update_add, $authenticator, $emailer, $formatter, $validator)
     {
+        $paste->project = $project;
         $data = array(
-            'project' => $project,
             'update' => $paste
         );
 
@@ -78,8 +78,8 @@ class AddSpec extends ObjectBehavior
      */
     function it_fetches_the_interactor_with_image_data($project, $image, $update_add, $authenticator, $emailer, $formatter, $validator, $photoshopper)
     {
+        $image->project = $project;
         $data = array(
-            'project' => $project,
             'update' => $image
         );
 
@@ -106,8 +106,8 @@ class AddSpec extends ObjectBehavior
      */
     function it_fetches_the_interactor_with_sound_data($project, $sound, $update_add, $authenticator, $emailer, $formatter, $validator, $filemanager, $soundeditor)
     {
+        $sound->project = $project;
         $data = array(
-            'project' => $project,
             'update' => $sound
         );
 
@@ -135,8 +135,8 @@ class AddSpec extends ObjectBehavior
      */
     function it_fetches_the_interactor_with_video_data($project, $video, $update_add, $authenticator, $emailer, $formatter, $validator, $filemanager, $videoeditor)
     {
+        $video->project = $project;
         $data = array(
-            'project' => $project,
             'update' => $video
         );
 
@@ -164,8 +164,8 @@ class AddSpec extends ObjectBehavior
      */
     function it_fetches_the_interactor_with_website_data($project, $website, $update_add, $authenticator, $emailer, $formatter, $validator, $browser, $photoshopper)
     {
+        $website->project = $project;
         $data = array(
-            'project' => $project,
             'update' => $website
         );
 

@@ -41,7 +41,7 @@ class Add
     private function get_project()
     {
         return new Project(
-            $this->data['project'],
+            $this->data['update']->project,
             $this->repositories['update_add'],
             $this->tools['authenticator'],
             $this->tools['emailer'],
