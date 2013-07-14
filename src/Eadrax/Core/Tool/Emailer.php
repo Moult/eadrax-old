@@ -72,9 +72,29 @@ interface Emailer
      * Sends out a new email.
      *
      * Example:
-     * $mail->send();
+     * $emailer->send();
      *
      * @return void
      */
     public function send();
+
+    /**
+     * Queues the message for sending.
+     *
+     * Example:
+     * $emailer->queue();
+     *
+     * @return void
+     */
+    public function queue();
+
+    /**
+     * Sends all queued messages.
+     *
+     * Example:
+     * $emailer->send_queue();
+     *
+     * @return void
+     */
+    public function send_queue();
 }

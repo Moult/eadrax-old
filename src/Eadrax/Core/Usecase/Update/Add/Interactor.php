@@ -41,6 +41,7 @@ class Interactor
         }
 
         $this->proposal->submit();
+        $this->project->notify_trackers();
         return $this->proposal->get_id();
     }
 

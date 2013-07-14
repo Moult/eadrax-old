@@ -26,6 +26,7 @@ class Interactor extends ObjectBehavior
         $proposal->validate()->shouldBeCalled();
         $proposal->submit()->shouldBeCalled();
         $proposal->get_id()->shouldBeCalled()->willReturn('update_id');
+        $project->notify_trackers()->shouldBeCalled();
         $this->interact()->shouldReturn('update_id');
     }
 
@@ -39,6 +40,7 @@ class Interactor extends ObjectBehavior
         $text->validate()->shouldBeCalled();
         $text->submit()->shouldBeCalled();
         $text->get_id()->shouldBeCalled()->willReturn('update_id');
+        $project->notify_trackers()->shouldBeCalled();
         $this->interact()->shouldReturn('update_id');
     }
 
@@ -52,6 +54,7 @@ class Interactor extends ObjectBehavior
         $paste->validate()->shouldBeCalled();
         $paste->submit()->shouldBeCalled();
         $paste->get_id()->shouldBeCalled()->willReturn('update_id');
+        $project->notify_trackers()->shouldBeCalled();
         $this->interact()->shouldReturn('update_id');
     }
 
@@ -67,6 +70,7 @@ class Interactor extends ObjectBehavior
         $image->calculate_dimensions()->shouldBeCalled();
         $image->submit()->shouldBeCalled();
         $image->get_id()->shouldBeCalled()->willReturn('update_id');
+        $project->notify_trackers()->shouldBeCalled();
         $this->interact()->shouldReturn('update_id');
     }
 
@@ -83,6 +87,7 @@ class Interactor extends ObjectBehavior
         $sound->calculate_filesize()->shouldBeCalled();
         $sound->submit()->shouldBeCalled();
         $sound->get_id()->shouldBeCalled()->willReturn('update_id');
+        $project->notify_trackers()->shouldBeCalled();
         $this->interact()->shouldReturn('update_id');
     }
 
@@ -101,6 +106,7 @@ class Interactor extends ObjectBehavior
         $video->calculate_dimensions()->shouldBeCalled();
         $video->submit()->shouldBeCalled();
         $video->get_id()->shouldBeCalled()->willReturn('update_id');
+        $project->notify_trackers()->shouldBeCalled();
         $this->interact()->shouldReturn('update_id');
     }
 
@@ -115,6 +121,7 @@ class Interactor extends ObjectBehavior
         $website->generate_thumbnail()->shouldBeCalled();
         $website->submit()->shouldBeCalled();
         $website->get_id()->shouldBeCalled()->willReturn('update_id');
+        $project->notify_trackers()->shouldBeCalled();
         $this->interact()->shouldReturn('update_id');
     }
 }
