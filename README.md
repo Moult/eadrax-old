@@ -30,6 +30,7 @@ Those marked in bold have been implemented.
 
  * Project view
  * **Project add**
+ * **Project prepare**
  * **Project edit**
  * **Project delete**
  * **Project track**
@@ -45,8 +46,9 @@ Those marked in bold have been implemented.
 
  * Update view
  * **Update add**
- * Update edit
- * **Update delete**
+ * **Update prepare**
+ * **Update edit**
+ * Update delete
 
 ### Kudos features
 
