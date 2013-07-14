@@ -32,4 +32,9 @@ class Project extends Data\Project
     {
         $this->repository->add_fan_to_project($this->fan->id, $this->id);
     }
+
+    public function get_id()
+    {
+        return $this->id;
+    }
 }

@@ -52,4 +52,13 @@ interface Repository
      * @return int Unique ID of the saved update
      */
     public function save_website($project_id, $update_private, $website_url, $website_thumbnail_path);
+
+    /**
+     * @return array(
+     *             array('tracker1_id', 'tracker1_username', 'tracker1_email'),
+     *             array('tracker2_id', 'tracker2_username', 'tracker2_email'),
+     *             // ...
+     *         )
+     */
+    public function get_id_and_username_and_email_of_all_trackers($project_id);
 }

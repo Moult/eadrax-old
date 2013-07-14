@@ -27,4 +27,14 @@ interface Repository
      * @return void
      */
     public function remove_fan_from_project($project_id);
+
+    /**
+     * @return array($project1_id, $project2_id, ...)
+     */
+    public function get_project_ids_by_author($author_id);
+
+    /**
+     * @return void
+     */
+    public function add_fan_to_project($fan_id, $project_id);
 }

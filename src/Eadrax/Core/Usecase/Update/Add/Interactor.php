@@ -20,7 +20,7 @@ class Interactor
 
     public function interact()
     {
-        $this->project->authorise();
+        $this->project->authorise_ownership();
         $this->proposal->validate();
 
         if ($this->proposal instanceof Data\Image)
