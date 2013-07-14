@@ -14,7 +14,6 @@ use Eadrax\Core\Usecase\Update\Prepare\Video;
 use Eadrax\Core\Usecase\Update\Prepare\Website;
 use Eadrax\Core\Data;
 
-
 class Prepare
 {
     private $data;
