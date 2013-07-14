@@ -23,7 +23,7 @@ class InteractorSpec extends ObjectBehavior
     function it_carries_out_the_generic_interaction_chain($proposal)
     {
         $proposal->validate()->shouldBeCalled();
-        $this->interact();
+        $this->interact()->shouldReturn($proposal);
     }
 
     /**
@@ -33,7 +33,7 @@ class InteractorSpec extends ObjectBehavior
     {
         $this->beConstructedWith($text);
         $text->validate()->shouldBeCalled();
-        $this->interact();
+        $this->interact()->shouldReturn($text);
     }
 
     /**
@@ -43,7 +43,7 @@ class InteractorSpec extends ObjectBehavior
     {
         $this->beConstructedWith($paste);
         $paste->validate()->shouldBeCalled();
-        $this->interact();
+        $this->interact()->shouldReturn($paste);
     }
 
     /**
@@ -55,7 +55,7 @@ class InteractorSpec extends ObjectBehavior
         $image->validate()->shouldBeCalled();
         $image->generate_thumbnail()->shouldBeCalled();
         $image->calculate_dimensions()->shouldBeCalled();
-        $this->interact();
+        $this->interact()->shouldReturn($image);
     }
 
     /**
@@ -68,7 +68,7 @@ class InteractorSpec extends ObjectBehavior
         $sound->generate_thumbnail()->shouldBeCalled();
         $sound->calculate_length()->shouldBeCalled();
         $sound->calculate_filesize()->shouldBeCalled();
-        $this->interact();
+        $this->interact()->shouldReturn($sound);
     }
 
     /**
@@ -83,7 +83,7 @@ class InteractorSpec extends ObjectBehavior
         $video->calculate_length()->shouldBeCalled();
         $video->calculate_filesize()->shouldBeCalled();
         $video->calculate_dimensions()->shouldBeCalled();
-        $this->interact();
+        $this->interact()->shouldReturn($video);
     }
 
     /**
@@ -94,6 +94,6 @@ class InteractorSpec extends ObjectBehavior
         $this->beConstructedWith($website);
         $website->validate()->shouldBeCalled();
         $website->generate_thumbnail()->shouldBeCalled();
-        $this->interact();
+        $this->interact()->shouldReturn($website);
     }
 }

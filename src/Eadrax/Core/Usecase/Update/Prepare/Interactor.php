@@ -36,6 +36,8 @@ class Interactor
         {
             $this->interact_website();
         }
+
+        return $this->proposal;
     }
 
     private function interact_image()
