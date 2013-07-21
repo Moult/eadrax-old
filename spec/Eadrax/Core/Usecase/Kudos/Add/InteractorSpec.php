@@ -22,7 +22,7 @@ class InteractorSpec extends ObjectBehavior
 
     function it_calls_the_interaction_chain($nomination)
     {
-        $nomination->has_kudos()->shouldBeCalled()->willReturn(TRUE);
+        $nomination->has_kudos()->shouldBeCalled()->willReturn(FALSE);
         $nomination->add_kudos()->shouldBeCalled();
         $nomination->notify_author()->shouldBeCalled();
         $this->interact();
@@ -30,7 +30,7 @@ class InteractorSpec extends ObjectBehavior
 
     function it_does_not_do_anything_if_the_nomination_already_has_a_kudos($nomination)
     {
-        $nomination->has_kudos()->shouldBeCalled()->willReturn(FALSE);
+        $nomination->has_kudos()->shouldBeCalled()->willReturn(TRUE);
         $nomination->add_kudos()->shouldNotBeCalled();
         $nomination->notify_author()->shouldNotBeCalled();
         $this->interact();

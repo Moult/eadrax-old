@@ -17,7 +17,7 @@ class Interactor
 
     public function interact()
     {
-        if ($this->nomination->has_kudos())
+        if ( ! $this->nomination->has_kudos())
         {
             $this->nomination->add_kudos();
             $this->nomination->notify_author();
