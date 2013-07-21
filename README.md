@@ -53,7 +53,7 @@ Those marked in bold have been implemented.
 ### Kudos features
 
  * **Kudos add**
- * Kudos remove
+ * **Kudos delete**
 
 ### Comment features
 
