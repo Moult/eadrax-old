@@ -57,7 +57,7 @@ Those marked in bold have been implemented.
 
 ### Comment features
 
- * Comment add
+ * **Comment add**
  * Comment edit
  * Comment delete
 
