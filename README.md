@@ -58,7 +58,7 @@ Those marked in bold have been implemented.
 ### Comment features
 
  * **Comment add**
- * Comment edit
+ * **Comment edit**
  * Comment delete
 
 # About Eadrax-develop
