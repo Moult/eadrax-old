@@ -59,7 +59,7 @@ Those marked in bold have been implemented.
 
  * **Comment add**
  * **Comment edit**
- * Comment delete
+ * **Comment delete**
 
 # About Eadrax-develop
 
