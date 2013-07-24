@@ -12,9 +12,11 @@ class AddSpec extends ObjectBehavior
      * @param Eadrax\Core\Data\Update $update
      * @param Eadrax\Core\Usecase\Comment\Add\Repository $comment_add
      * @param Eadrax\Core\Tool\Authenticator $authenticator
+     * @param Eadrax\Core\Tool\Emailer $emailer
+     * @param Eadrax\Core\Tool\Formatter $formatter
      * @param Eadrax\Core\Tool\Validator $validator
      */
-    function let($comment, $update, $comment_add, $authenticator, $validator)
+    function let($comment, $update, $comment_add, $authenticator, $emailer, $formatter, $validator)
     {
         $comment->update = $update;
         $data = array(
@@ -27,6 +29,8 @@ class AddSpec extends ObjectBehavior
 
         $tools = array(
             'authenticator' => $authenticator,
+            'emailer' => $emailer,
+            'formatter' => $formatter,
             'validator' => $validator
         );
 

@@ -44,7 +44,9 @@ class Add
     {
         return new Update(
             $this->data['comment']->update,
-            $this->repositories['comment_add']
+            $this->repositories['comment_add'],
+            $this->tools['emailer'],
+            $this->tools['formatter']
         );
     }
 }

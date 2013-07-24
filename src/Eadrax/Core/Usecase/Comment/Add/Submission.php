@@ -47,4 +47,14 @@ class Submission extends Data\Comment
     {
         $this->repository->add_comment($this->text, $this->author->id, $this->update->id);
     }
+
+    public function get_author_username()
+    {
+        return $this->author->username;
+    }
+
+    public function get_text()
+    {
+        return $this->text;
+    }
 }

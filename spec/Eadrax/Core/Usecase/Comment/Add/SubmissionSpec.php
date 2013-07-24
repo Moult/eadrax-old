@@ -19,6 +19,7 @@ class SubmissionSpec extends ObjectBehavior
     {
         $update->id = 'update_id';
         $logged_in_user->id = 'author_id';
+        $logged_in_user->username = 'author_username';
         $authenticator->get_user()->willReturn($logged_in_user);
         $comment->text = 'text';
         $comment->update = $update;
@@ -58,5 +59,15 @@ class SubmissionSpec extends ObjectBehavior
     {
         $repository->add_comment('text', 'author_id', 'update_id')->shouldBeCalled();
         $this->submit();
+    }
+
+    function it_gets_the_author_username()
+    {
+        $this->get_author_username()->shouldReturn('author_username');
+    }
+
+    function it_gets_the_comment_text()
+    {
+        $this->get_text()->shouldReturn('text');
     }
 }

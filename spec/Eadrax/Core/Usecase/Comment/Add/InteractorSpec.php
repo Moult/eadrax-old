@@ -27,6 +27,9 @@ class InteractorSpec extends ObjectBehavior
         $submission->authorise()->shouldBeCalled();
         $submission->validate()->shouldBeCalled();
         $submission->submit()->shouldBeCalled();
+        $submission->get_author_username()->shouldBeCalled()->willReturn('comment_author_username');
+        $submission->get_text()->shouldBeCalled()->willReturn('comment_text');
+        $update->notify_author_about_comment('comment_author_username', 'comment_text')->shouldBeCalled();
         $this->interact();
     }
 }

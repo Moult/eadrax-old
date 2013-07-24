@@ -25,5 +25,10 @@ class Interactor
         $this->submission->authorise();
         $this->submission->validate();
         $this->submission->submit();
+
+        $this->update->notify_author_about_comment(
+            $this->submission->get_author_username(),
+            $this->submission->get_text()
+        );
     }
 }
