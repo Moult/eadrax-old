@@ -22,6 +22,7 @@ class Interactor
         if ( ! $this->update->does_exist())
             return;
 
+        $this->submission->authorise();
         $this->submission->validate();
         $this->submission->submit();
     }
